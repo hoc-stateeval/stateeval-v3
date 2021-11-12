@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="SeedData\Core\00001_LEADER_2021.sql" />
+    <None Remove="SeedData\Core\00002_DAN_TR_2021.sql" />
+    <None Remove="SeedData\Core\00003_MAR_TR_2021.sql" />
+    <None Remove="SeedData\Core\00004_CEL_TR_2021.sql" />
+    <None Remove="SeedData\Core\00005_MAR_PR_2021.sql" />
+    <None Remove="SeedData\Core\00006_initRoles.sql" />
+    <None Remove="SeedData\Core\00007_initWorkAreas.sql" />
+    <None Remove="SeedData\Development\00009_initBuildings.sql" />
+    <None Remove="SeedData\Development\00010_initFrameworksToLoad.sql" />
+    <None Remove="SeedData\Development\00011_loadTestData.sql" />
+    <None Remove="StoredProcedures\InsertEvaluation.sql" />
+    <None Remove="StoredProcedures\loadFrameworkContext.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="SeedData\Core\00001_LEADER_2021.sql" />
+    <EmbeddedResource Include="SeedData\Core\00002_DAN_TR_2021.sql" />
+    <EmbeddedResource Include="SeedData\Core\00003_MAR_TR_2021.sql" />
+    <EmbeddedResource Include="SeedData\Core\00004_CEL_TR_2021.sql" />
+    <EmbeddedResource Include="SeedData\Core\00005_MAR_PR_2021.sql" />
+    <EmbeddedResource Include="SeedData\Core\00006_initRoles.sql" />
+    <EmbeddedResource Include="SeedData\Core\00007_initWorkAreas.sql" />
+    <EmbeddedResource Include="SeedData\Development\00009_initBuildings.sql" />
+    <EmbeddedResource Include="SeedData\Development\00010_initFrameworksToLoad.sql" />
+    <EmbeddedResource Include="SeedData\Development\00011_loadTestData.sql" />
+    <EmbeddedResource Include="StoredProcedures\InsertEvaluation.sql" />
+    <EmbeddedResource Include="StoredProcedures\loadFrameworkContext.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="dbup-core" Version="4.5.0" />
+    <PackageReference Include="dbup-sqlserver" Version="4.5.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
