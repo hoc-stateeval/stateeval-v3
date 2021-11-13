@@ -17,7 +17,8 @@ namespace SE.Services.Queries
     {
         public GetEvaluationsForWorkAreaContextQueryValidator()
         {
-            RuleFor(x => x.UserId).NotEmpty();
+            RuleFor(x => x.UserId).NotEmpty()
+                .WithMessage("UserId cannot be empty.");
         }
     }
     public sealed class GetEvaluationsForWorkAreaContextQuery : 
