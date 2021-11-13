@@ -85,7 +85,7 @@ function QuickPanel(props) {
       const { districtCode } = distinctDistricts[0];
       setSelectedDistrictCode(districtCode);
     };
-    initDistricts();
+    if (workAreaContexts.length > 0) initDistricts();
   }, [workAreaContexts]);
 
   const onClickChangeWorkArea = (e) => {

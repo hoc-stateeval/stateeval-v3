@@ -1,5 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { debounce } from 'debounce';
 import createReducer from './rootReducer';
+import { saveState, loadState } from '../main/core/persist';
 
 if (process.env.NODE_ENV === 'development' && module.hot) {
   module.hot.accept('./rootReducer', () => {
@@ -19,6 +21,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const store = configureStore({
   reducer: createReducer(),
+  preloadedState: loadState(),
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       immutableCheck: false,
@@ -26,6 +29,14 @@ const store = configureStore({
     }).concat(middlewares),
   devTools: process.env.NODE_ENV === 'development',
 });
+
+store.subscribe(
+  // we use debounce to save the state once each 800ms
+  // for better performances in case multiple changes occur in a short time
+  debounce(() => {
+    saveState(store.getState());
+  }, 800)
+);
 
 store.asyncReducers = {};
 
