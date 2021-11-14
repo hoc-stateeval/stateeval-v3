@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "SQL": "Data Source=localhost;Initial Catalog=stateeval-v3;Trusted_Connection=True"
+  }
+}

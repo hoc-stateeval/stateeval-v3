@@ -17,10 +17,10 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Text.Json;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 
 builder.Services.AddControllers()
     .AddFluentValidation(s =>
@@ -44,50 +44,6 @@ builder.Services.AddSwaggerGen();
 AuthConfig.Configure(builder);
 
 var app = builder.Build();
-//app.UseExceptionHandler(errorApp =>
-//{
-//    errorApp.Run(async context =>
-//    {
-//        var errorFeature = context.Features.Get<IExceptionHandlerFeature>();
-//        var exception = errorFeature.Error;
-
-//        // https://tools.ietf.org/html/rfc7807#section-3.1
-//        var problemDetails = new Microsoft.AspNetCore.Mvc.ProblemDetails
-//        {
-//            Type = $"https://example.com/problem-types/{exception.GetType().Name}",
-//            Title = "An unexpected error occurred!",
-//            Detail = "Something went wrong",
-//            Instance = errorFeature switch
-//            {
-//                ExceptionHandlerFeature e => e.Path,
-//                _ => "unknown"
-//            },
-//            Status = StatusCodes.Status400BadRequest,
-//            Extensions =
-//                    {
-//                        ["trace"] = Activity.Current?.Id ?? context?.TraceIdentifier
-//                    }
-//        };
-
-//        switch (exception)
-//        {
-//            case ValidationException validationException:
-//                problemDetails.Status = StatusCodes.Status403Forbidden;
-//                problemDetails.Title = "One or more validation errors occurred";
-//                problemDetails.Detail = "The request contains invalid parameters. More information can be found in the errors.";
-//                problemDetails.Extensions["errors"] = validationException.Message;
-//                break;
-//        }
-
-//        context.Response.ContentType = "application/problem+json";
-//        context.Response.StatusCode = problemDetails.Status.Value;
-//        context.Response.GetTypedHeaders().CacheControl = new CacheControlHeaderValue()
-//        {
-//            NoCache = true,
-//        };
-//        await JsonSerializer.SerializeAsync(context.Response.Body, problemDetails);
-//    });
-//});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -105,3 +61,9 @@ app.MapControllers();
 
 app.Run();
 
+
+#pragma warning disable CA1050 // Declare types in namespaces
+public partial class Program
+{
+}
+#pragma warning restore CA1050 // Declare types in namespaces

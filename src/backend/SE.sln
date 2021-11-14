@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SE.API", "SE.API\SE.API.csproj", "{52787C04-FFA0-4C63-B2BE-273A36A71186}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SE.API", "SE.API\SE.API.csproj", "{52787C04-FFA0-4C63-B2BE-273A36A71186}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SE.Domain", "SE.Domain\SE.Domain.csproj", "{85002898-D31B-498B-82AD-AF6BD3E6F986}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SE.Domain", "SE.Domain\SE.Domain.csproj", "{85002898-D31B-498B-82AD-AF6BD3E6F986}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SE.Data", "SE.Data\SE.Data.csproj", "{D9B62331-EC86-4856-A761-B66BCF54F41E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SE.Data", "SE.Data\SE.Data.csproj", "{D9B62331-EC86-4856-A761-B66BCF54F41E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SE.Core", "SE.Services\SE.Core.csproj", "{95CC15A6-FD7A-4B98-AC7E-8D46D2677985}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SE.Core", "SE.Services\SE.Core.csproj", "{95CC15A6-FD7A-4B98-AC7E-8D46D2677985}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbUpMigrationRunner", "DbUpMigrationRunner\DbUpMigrationRunner.csproj", "{63EC0400-AEFE-4F16-84FC-5C580AB8D5AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbUpMigrationRunner", "DbUpMigrationRunner\DbUpMigrationRunner.csproj", "{63EC0400-AEFE-4F16-84FC-5C580AB8D5AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SE.API.Tests", "SE.API.Tests\SE.API.Tests.csproj", "{C5B3DB32-89CA-473E-9C98-3FBE4E59619C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{63EC0400-AEFE-4F16-84FC-5C580AB8D5AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63EC0400-AEFE-4F16-84FC-5C580AB8D5AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63EC0400-AEFE-4F16-84FC-5C580AB8D5AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5B3DB32-89CA-473E-9C98-3FBE4E59619C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5B3DB32-89CA-473E-9C98-3FBE4E59619C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5B3DB32-89CA-473E-9C98-3FBE4E59619C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5B3DB32-89CA-473E-9C98-3FBE4E59619C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
