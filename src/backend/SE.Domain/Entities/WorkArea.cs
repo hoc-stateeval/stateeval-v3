@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,11 +9,21 @@ namespace SE.Domain.Entities
 {
     public class WorkArea : BaseEntity
     {
-        public string Title { get; }
-        public string TagName { get; }
+        [MaxLength(50)]
+        [Required]
+        public string Title { get; set; }
 
-        public virtual EvaluationType EvaluationType { get; }
+
+        [MaxLength(20)]
+        [Required]
+        public string TagName { get; set; }
+
+        public virtual EvaluationType EvaluationType { get; set; }
+
+        [Required]
         public virtual Role Role { get; set; }
+
+        [Required]
         public virtual Role EvaluateeRole { get; set; }
 
         public bool IsEvaluatee { get; set; }

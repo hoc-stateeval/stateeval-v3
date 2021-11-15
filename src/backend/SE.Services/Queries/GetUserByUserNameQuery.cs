@@ -49,7 +49,7 @@ namespace SE.Core.Queries
                     FirstName = User.FirstName,
                     LastName = User.LastName,
                     DisplayName = User.FirstName + " "  + User.LastName,
-                    Email = User.Email,
+                    Email = User.EmailAddress,
                     ProfileImageUrl = User.ProfileImageUrl,
                     UserName = User.UserName,
                 };

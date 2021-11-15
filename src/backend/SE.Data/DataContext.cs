@@ -15,11 +15,13 @@ namespace SE.Data
         public DbSet<WorkAreaContext> WorkAreaContexts { get; set; }
         public DbSet<Framework> Frameworks { get; set; }
         public DbSet<Evaluation> Evaluations { get; set; }
+
+        public DbSet<Observation> Observations { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfig).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(EvaluationConfig).Assembly);
             modelBuilder.HasDefaultSchema("dbo");
         }
     }

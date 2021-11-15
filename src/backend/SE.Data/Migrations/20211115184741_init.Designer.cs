@@ -12,7 +12,7 @@ using SE.Data;
 namespace SE.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211112070852_init")]
+    [Migration("20211115184741_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,227 +35,28 @@ namespace SE.Data.Migrations
 
                     b.Property<string>("DistrictCode")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("DistrictName")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<bool>("IsSchool")
                         .HasColumnType("bit");
 
                     b.Property<string>("SchoolCode")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("SchoolName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Building", "dbo");
-                });
-
-            modelBuilder.Entity("SE.Domain.Entities.DistrictConfiguration", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<bool?>("AllowCollectedEvidenceSelectionInFinalReport")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool?>("AllowDownloadReportsSchoolAdmins")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<bool?>("AllowFocusedComponentScoring")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool?>("AllowPackagedEvidenceSelectionInFinalReport")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool?>("AllowTeeYTDEvidence")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<int?>("AssignedCalibrationExerciseSharingType")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(3);
-
-                    b.Property<bool?>("CalibrationExercisesEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("CalibrationExercisesModuleEnabled")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool?>("CriticalAttributesEnabled")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool?>("CriticalAttributesReferenceOnly")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<bool?>("DistrictAssignsCalibrationExercises")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool?>("ExemplarVideosModuleEnabled")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<string>("FinalReportCustomText")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("FinalReportTitle")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValue("eVAL Summative Report");
-
-                    b.Property<long>("FrameworkContextId")
-                        .HasColumnType("bigint");
-
-                    b.Property<bool?>("IsFinalReportConfigDelegated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool?>("IsMidYearReportConfigDelegated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool?>("IsObsReportConfigDelegated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool?>("IsSelfAssessReportConfigDelegated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool?>("IsStudentGrowthReportConfigDelegated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<string>("MidYearReportCustomText")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("MidYearReportTitle")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValue("eVAL Mid Year Report");
-
-                    b.Property<bool?>("NonSummativeScoringEnabled")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<string>("ObservationReportCustomText")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("ObservationReportTitle")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValue("eVAL Observation Report");
-
-                    b.Property<bool?>("ReportArchivesPurged")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<string>("SelfAssessReportTitle")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValue("eVAL Self Assessment Report");
-
-                    b.Property<string>("SelfAssessmentReportCustomText")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
-
-                    b.Property<bool?>("SelfAssessmentsModuleEnabled")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<bool?>("ShowArchivedEvaluateeReports")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<string>("StudentGrowthGoalSettingReportCustomText")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("StudentGrowthGoalSettingReportTitle")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValue("eVAL Student Growth Goal Setting Report");
-
-                    b.Property<bool?>("SummativeCriteriaStmtOfPerfRequired")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool?>("SummativeEvaluationEnabled")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<bool?>("SummativeNextYearEvalCycleIsRequired")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool?>("SummativeTorFinalRecIsRequired")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FrameworkContextId")
-                        .IsUnique();
-
-                    b.ToTable("DistrictConfiguration", "dbo");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.Evaluation", b =>
@@ -267,40 +68,25 @@ namespace SE.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<bool?>("AutoSubmitAfterReceipt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<bool?>("ByPassReceipt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<string>("ByPassReceiptOverrideComment")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)")
-                        .HasDefaultValue("");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("ByPassSGScores")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<bool?>("Complete")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<bool?>("ComprehensiveCarryForward")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<int?>("ComprehensiveCarryForwardPerformanceLevel")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
+                        .HasColumnType("int");
 
                     b.Property<int?>("ComprehensiveCarryForwardSchoolYear")
                         .HasColumnType("int");
@@ -309,10 +95,7 @@ namespace SE.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeactivateMessage")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValue("");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DistrictCode")
                         .IsRequired()
@@ -320,15 +103,10 @@ namespace SE.Data.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<bool?>("DropToPaper")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<string>("DropToPaperOverrideComment")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)")
-                        .HasDefaultValue("");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EOYConfDateTime")
                         .HasColumnType("datetime2");
@@ -340,20 +118,13 @@ namespace SE.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<int?>("EvaluateePlanType")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
+                        .HasColumnType("int");
 
                     b.Property<string>("EvaluateeReflections")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(5000)
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("EvaluateeReflectionsIsPublic")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<int>("EvaluationType")
                         .HasColumnType("int");
@@ -362,23 +133,16 @@ namespace SE.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("EvaluatorRecommendations")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(5000)
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("EvaluatorScoresShared")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("FinalAcknowledgementSentDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool?>("FinalReportShared")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<long?>("FocusedFrameworkNodeId")
                         .HasColumnType("bigint");
@@ -390,21 +154,15 @@ namespace SE.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int?>("LastYearEvaluateePlanType")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
+                        .HasColumnType("int");
 
                     b.Property<string>("LastYearFocusedFrameworkNodeShortName")
-                        .ValueGeneratedOnAdd()
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasDefaultValue("");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("LastYearFocusedSGframeworkNodeShortName")
-                        .ValueGeneratedOnAdd()
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasDefaultValue("");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime?>("LockDateTime")
                         .HasColumnType("datetime2");
@@ -413,17 +171,13 @@ namespace SE.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool?>("MidYearReportsShared")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<long?>("ModifiedCompFocusedFrameworkNode2Id")
                         .HasColumnType("bigint");
 
                     b.Property<int?>("NextYearEvaluateePlanType")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
+                        .HasColumnType("int");
 
                     b.Property<long?>("NextYearFocusedFrameworkNodeId")
                         .HasColumnType("bigint");
@@ -432,9 +186,7 @@ namespace SE.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<int?>("PerformanceLevel")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("PromptsTeeSentDate")
                         .HasColumnType("datetime2");
@@ -443,25 +195,17 @@ namespace SE.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("SGScoreOverrideComment")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)")
-                        .HasDefaultValue("");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SchoolCode")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasDefaultValue("");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int>("SchoolYear")
                         .HasColumnType("int");
 
                     b.Property<bool?>("SelfEvalComplete")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("SelfEvalCompleteDateTime")
                         .HasColumnType("datetime2");
@@ -470,44 +214,30 @@ namespace SE.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool?>("SelfEvalShared")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("SendFinalDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("StudentGrowthImpactRating")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
+                        .HasColumnType("int");
 
                     b.Property<int?>("SuggestedEvaluateePlanType")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
+                        .HasColumnType("int");
 
                     b.Property<string>("SuggestedFocusedFrameworkNodeShortName")
-                        .ValueGeneratedOnAdd()
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasDefaultValue("");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("SuggestedFocusedSgframeworkNodeShortName")
-                        .ValueGeneratedOnAdd()
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasDefaultValue("");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<bool?>("VisibleToEvaluatee")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<int>("WfState")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -543,15 +273,15 @@ namespace SE.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("SchoolYear")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Framework", "dbo");
+                    b.ToTable("Frameworks", "dbo");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.FrameworkContext", b =>
@@ -589,8 +319,8 @@ namespace SE.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<long>("PrototypeFrameworkContextId")
                         .HasColumnType("bigint");
@@ -635,13 +365,13 @@ namespace SE.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("SchoolYear")
                         .HasColumnType("int");
 
-                    b.Property<long?>("StateFrameworkId")
+                    b.Property<long>("StateFrameworkId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -685,8 +415,8 @@ namespace SE.Data.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(600)
-                        .HasColumnType("nvarchar(600)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
 
@@ -711,6 +441,42 @@ namespace SE.Data.Migrations
                     b.HasIndex("RubricRowId");
 
                     b.ToTable("FrameworkNodeRubricRow", "dbo");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.Observation", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreationDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("EvaluationId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("EvaluatorId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ShortName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EvaluationId");
+
+                    b.HasIndex("EvaluatorId");
+
+                    b.ToTable("Observation", "dbo");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.Role", b =>
@@ -746,8 +512,7 @@ namespace SE.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FrameworkTagName")
                         .IsRequired()
@@ -758,40 +523,32 @@ namespace SE.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LookFor1")
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LookFor2")
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LookFor3")
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LookFor4")
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PL1Descriptor")
                         .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PL2Descriptor")
                         .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PL3Descriptor")
                         .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PL4Descriptor")
                         .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SchoolYear")
                         .HasColumnType("int");
@@ -803,38 +560,12 @@ namespace SE.Data.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(600)
-                        .HasColumnType("nvarchar(600)");
+                        .HasMaxLength(350)
+                        .HasColumnType("nvarchar(350)");
 
                     b.HasKey("Id");
 
                     b.ToTable("RubricRow", "dbo");
-                });
-
-            modelBuilder.Entity("SE.Domain.Entities.SchoolConfiguration", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<long>("FrameworkContextId")
-                        .HasColumnType("bigint");
-
-                    b.Property<bool?>("IsPrincipalAssignmentDelegated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<string>("SchoolCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FrameworkContextId");
-
-                    b.ToTable("SchoolConfiguration", "dbo");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.StudentGrowthGoal", b =>
@@ -851,9 +582,6 @@ namespace SE.Data.Migrations
                     b.Property<DateTime>("CreationDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("EvaluateeId")
-                        .HasColumnType("bigint");
-
                     b.Property<long>("EvaluationId")
                         .HasColumnType("bigint");
 
@@ -864,31 +592,24 @@ namespace SE.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<long?>("ProcessRubricRowId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("ResultsRubricRowId")
+                    b.Property<long>("ResultsRubricRowId")
                         .HasColumnType("bigint");
 
                     b.Property<long?>("StudentGrowthGoalBundleId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Title")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(10000)
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BundleId");
-
-                    b.HasIndex("EvaluateeId");
 
                     b.HasIndex("EvaluationId");
 
@@ -912,28 +633,13 @@ namespace SE.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<string>("EvaluateeEoyconfNotes")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(5000)
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
-
-                    b.Property<long>("EvaluateeId")
-                        .HasColumnType("bigint");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EvaluateeMidConfNotes")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(5000)
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EvaluateeProcessConfNotes")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(5000)
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("EvaluationId")
                         .HasColumnType("bigint");
@@ -942,38 +648,22 @@ namespace SE.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("EvaluatorEoyconfNotes")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(5000)
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EvaluatorMidConfNotes")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(5000)
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EvaluatorProcessConfNotes")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(5000)
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("EvaluatorScoresShared")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("GoalSettingConfDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("InRevision")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("ProcessCompleteDateTime")
                         .HasColumnType("datetime2");
@@ -981,18 +671,13 @@ namespace SE.Data.Migrations
                     b.Property<DateTime?>("ProcessSharedDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("SharingDraft")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                    b.Property<bool>("SharingDraft")
+                        .HasColumnType("bit");
 
                     b.Property<int>("WfState")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EvaluateeId");
 
                     b.HasIndex("EvaluationId");
 
@@ -1007,7 +692,11 @@ namespace SE.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<string>("Email")
+                    b.Property<string>("CertificateNumber")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("EmailAddress")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -1017,24 +706,25 @@ namespace SE.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTime>("LastLoginDateTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LoginName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("OTPW")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("ProfileImageUrl")
-                        .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -1043,7 +733,7 @@ namespace SE.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User", "dbo");
+                    b.ToTable("Users", "dbo");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.UserBuildingRole", b =>
@@ -1113,8 +803,8 @@ namespace SE.Data.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -1158,49 +848,33 @@ namespace SE.Data.Migrations
                     b.ToTable("WorkAreaContext", "dbo");
                 });
 
-            modelBuilder.Entity("SE.Domain.Entities.DistrictConfiguration", b =>
-                {
-                    b.HasOne("SE.Domain.Entities.FrameworkContext", "FrameworkContext")
-                        .WithOne("DistrictConfiguration")
-                        .HasForeignKey("SE.Domain.Entities.DistrictConfiguration", "FrameworkContextId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("FrameworkContext");
-                });
-
             modelBuilder.Entity("SE.Domain.Entities.Evaluation", b =>
                 {
                     b.HasOne("SE.Domain.Entities.User", "Evaluatee")
                         .WithMany()
                         .HasForeignKey("EvaluateeId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SE.Domain.Entities.User", "Evaluator")
                         .WithMany()
-                        .HasForeignKey("EvaluatorId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("EvaluatorId");
 
                     b.HasOne("SE.Domain.Entities.FrameworkNode", "FocusedFrameworkNode")
                         .WithMany()
-                        .HasForeignKey("FocusedFrameworkNodeId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("FocusedFrameworkNodeId");
 
                     b.HasOne("SE.Domain.Entities.FrameworkNode", "FocusedSGFrameworkNode")
                         .WithMany()
-                        .HasForeignKey("FocusedSGFrameworkNodeId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("FocusedSGFrameworkNodeId");
 
                     b.HasOne("SE.Domain.Entities.FrameworkNode", "ModifiedCompFocusedFrameworkNode2")
                         .WithMany()
-                        .HasForeignKey("ModifiedCompFocusedFrameworkNode2Id")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("ModifiedCompFocusedFrameworkNode2Id");
 
                     b.HasOne("SE.Domain.Entities.FrameworkNode", "NextYearFocusedFrameworkNode")
                         .WithMany()
-                        .HasForeignKey("NextYearFocusedFrameworkNodeId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("NextYearFocusedFrameworkNodeId");
 
                     b.HasOne("SE.Domain.Entities.FrameworkNode", "NextYearFocusedSGframeworkNode")
                         .WithMany()
@@ -1231,13 +905,12 @@ namespace SE.Data.Migrations
 
                     b.HasOne("SE.Domain.Entities.Framework", "InstructionalFramework")
                         .WithMany()
-                        .HasForeignKey("InstructionalFrameworkId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("InstructionalFrameworkId");
 
                     b.HasOne("SE.Domain.Entities.FrameworkContextPrototype", "PrototypeFrameworkContext")
                         .WithMany()
                         .HasForeignKey("PrototypeFrameworkContextId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SE.Domain.Entities.Framework", "StateFramework")
@@ -1259,13 +932,13 @@ namespace SE.Data.Migrations
                 {
                     b.HasOne("SE.Domain.Entities.Framework", "InstructionalFramework")
                         .WithMany()
-                        .HasForeignKey("InstructionalFrameworkId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("InstructionalFrameworkId");
 
                     b.HasOne("SE.Domain.Entities.Framework", "StateFramework")
                         .WithMany()
                         .HasForeignKey("StateFrameworkId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("InstructionalFramework");
 
@@ -1277,7 +950,7 @@ namespace SE.Data.Migrations
                     b.HasOne("SE.Domain.Entities.Framework", "Framework")
                         .WithMany("FrameworkNodes")
                         .HasForeignKey("FrameworkId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Framework");
@@ -1302,15 +975,23 @@ namespace SE.Data.Migrations
                     b.Navigation("RubricRow");
                 });
 
-            modelBuilder.Entity("SE.Domain.Entities.SchoolConfiguration", b =>
+            modelBuilder.Entity("SE.Domain.Entities.Observation", b =>
                 {
-                    b.HasOne("SE.Domain.Entities.FrameworkContext", "FrameworkContext")
-                        .WithMany("SchoolConfigurations")
-                        .HasForeignKey("FrameworkContextId")
+                    b.HasOne("SE.Domain.Entities.Evaluation", "Evaluation")
+                        .WithMany()
+                        .HasForeignKey("EvaluationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SE.Domain.Entities.User", "Evaluator")
+                        .WithMany()
+                        .HasForeignKey("EvaluatorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("FrameworkContext");
+                    b.Navigation("Evaluation");
+
+                    b.Navigation("Evaluator");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.StudentGrowthGoal", b =>
@@ -1321,16 +1002,10 @@ namespace SE.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("SE.Domain.Entities.User", "Evaluatee")
-                        .WithMany()
-                        .HasForeignKey("EvaluateeId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("SE.Domain.Entities.Evaluation", "Evaluation")
                         .WithMany()
                         .HasForeignKey("EvaluationId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SE.Domain.Entities.FrameworkNode", "FrameworkNode")
@@ -1341,19 +1016,17 @@ namespace SE.Data.Migrations
 
                     b.HasOne("SE.Domain.Entities.RubricRow", "ProcessRubricRow")
                         .WithMany()
-                        .HasForeignKey("ProcessRubricRowId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("ProcessRubricRowId");
 
                     b.HasOne("SE.Domain.Entities.RubricRow", "ResultsRubricRow")
                         .WithMany()
                         .HasForeignKey("ResultsRubricRowId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SE.Domain.Entities.StudentGrowthGoalBundle", null)
                         .WithMany("Goals")
                         .HasForeignKey("StudentGrowthGoalBundleId");
-
-                    b.Navigation("Evaluatee");
 
                     b.Navigation("Evaluation");
 
@@ -1368,19 +1041,11 @@ namespace SE.Data.Migrations
 
             modelBuilder.Entity("SE.Domain.Entities.StudentGrowthGoalBundle", b =>
                 {
-                    b.HasOne("SE.Domain.Entities.User", "Evaluatee")
-                        .WithMany()
-                        .HasForeignKey("EvaluateeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("SE.Domain.Entities.Evaluation", "Evaluation")
                         .WithMany()
                         .HasForeignKey("EvaluationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Evaluatee");
 
                     b.Navigation("Evaluation");
                 });
@@ -1390,21 +1055,20 @@ namespace SE.Data.Migrations
                     b.HasOne("SE.Domain.Entities.Building", "Building")
                         .WithMany()
                         .HasForeignKey("BuildingId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SE.Domain.Entities.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SE.Domain.Entities.User", "User")
                         .WithMany("UserBuildingRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_UserBuildingRole_User_UserId");
+                        .IsRequired();
 
                     b.Navigation("Building");
 
@@ -1437,26 +1101,25 @@ namespace SE.Data.Migrations
                     b.HasOne("SE.Domain.Entities.Building", "Building")
                         .WithMany()
                         .HasForeignKey("BuildingId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SE.Domain.Entities.FrameworkContext", "FrameworkContext")
                         .WithMany()
                         .HasForeignKey("FrameworkContextId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SE.Domain.Entities.User", "User")
                         .WithMany("WorkAreaContexts")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
-                        .HasConstraintName("FK_WorkAreaContext_User_UserId");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SE.Domain.Entities.WorkArea", "WorkArea")
                         .WithMany()
                         .HasForeignKey("WorkAreaId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Building");
@@ -1471,13 +1134,6 @@ namespace SE.Data.Migrations
             modelBuilder.Entity("SE.Domain.Entities.Framework", b =>
                 {
                     b.Navigation("FrameworkNodes");
-                });
-
-            modelBuilder.Entity("SE.Domain.Entities.FrameworkContext", b =>
-                {
-                    b.Navigation("DistrictConfiguration");
-
-                    b.Navigation("SchoolConfigurations");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.FrameworkNode", b =>

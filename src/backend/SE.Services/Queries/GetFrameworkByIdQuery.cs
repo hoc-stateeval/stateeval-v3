@@ -18,6 +18,7 @@ namespace SE.Core.Queries
     {
         public GetFrameworkByIdQueryValidator()
         {
+            RuleFor(x => x.Id).NotEmpty();
         }
     }
     public sealed class GetFrameworkByIdQuery : 

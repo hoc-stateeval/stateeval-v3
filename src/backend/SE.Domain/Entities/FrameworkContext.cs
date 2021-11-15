@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,23 +10,41 @@ namespace SE.Domain.Entities
 {
     public class FrameworkContext : BaseEntity
     {
-        public string Name { get; }
-        public SchoolYear SchoolYear { get; }
-        public string DistrictCode { get; }
-        public EvaluationType EvaluationType { get; }
+        [MaxLength(100)]
+        [Required]
+        public string Name { get; set; }
+        public SchoolYear SchoolYear { get; set; }
 
-        public long StateFrameworkId { get; }
-        public virtual Framework StateFramework { get; }
-        public long? InstructionalFrameworkId { get; }
-        public virtual Framework InstructionalFramework { get; }
-        public long DefaultFrameworkId { get; }
+        [MaxLength(20)]
+        [Required]
+        public string DistrictCode { get; set; }
+        public EvaluationType EvaluationType { get; set; }
+
+        [MaxLength(20)]
+        [Required]
+        public string FrameworkTagName { get; set; }
+        public FrameworkViewType FrameworkViewType { get; set; }
+        public DateTime LoadDateTime { get; set; }
+
+
+        [ForeignKey("StateFramework")]
+        public long StateFrameworkId { get; set; }
+
+        [Required]
+        public virtual Framework StateFramework { get; set; }
+
+        [ForeignKey("InstructionalFramework")]
+        public long? InstructionalFrameworkId { get; set; }
+        public virtual Framework InstructionalFramework { get; set; }
+
+        [ForeignKey("DefaultFramework")]
+        public long DefaultFrameworkId { get; set; }
+        [Required]
         public virtual Framework DefaultFramework { get; }
-        public string FrameworkTagName { get; }
-        public FrameworkViewType FrameworkViewType { get; }
-        public DateTime LoadDateTime { get; }
 
-        public virtual FrameworkContextPrototype PrototypeFrameworkContext { get; }
-        public virtual DistrictConfiguration DistrictConfiguration { get; }
-        public virtual ICollection<SchoolConfiguration> SchoolConfigurations { get; }
+        [ForeignKey("PrototypeFrameworkContext")]
+        public long PrototypeFrameworkContextId { get; set; }
+        [Required]
+        public virtual FrameworkContextPrototype PrototypeFrameworkContext { get; set; }
     }
 }

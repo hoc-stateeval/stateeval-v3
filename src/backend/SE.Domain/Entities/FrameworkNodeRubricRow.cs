@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,12 +10,18 @@ namespace SE.Domain.Entities
 {
     public class FrameworkNodeRubricRow
     {
-        public long FrameworkNodeId { get; }
-        public long RubricRowId { get; }
+        public int Sequence { get; set; }
 
-        public int Sequence { get; }
+        [ForeignKey("FrameworkNode")]
+        public long FrameworkNodeId { get; set; }
 
-        public virtual FrameworkNode FrameworkNode { get; }
-        public virtual RubricRow RubricRow { get; }
+        [ForeignKey("RubricRow")]
+        public long RubricRowId { get; set; }
+
+        [Required]
+        public virtual FrameworkNode FrameworkNode { get; set; }
+
+        [Required]
+        public virtual RubricRow RubricRow { get; set; }
     }
 }

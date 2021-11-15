@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,22 +9,36 @@ namespace SE.Domain.Entities
 {
     public class RubricRow : BaseEntity
     {
-        public string ShortName { get; }
-        public string Title { get; }
-        public string Description { get; }
-        public SchoolYear SchoolYear { get; }
-        public string FrameworkTagName { get; }
-        public bool IsStudentGrowthAligned { get; }
+        [MaxLength(50)]
+        [Required]
+        public string ShortName { get; set; }
 
-        public string PL1Descriptor { get; }
-        public string PL2Descriptor { get; }
-        public string PL3Descriptor { get; }
-        public string PL4Descriptor { get; }
+        [MaxLength(350)]
+        [Required]
+        public string Title { get; set; }
 
-        public string LookFor1 { get; }
-        public string LookFor2 { get; }
-        public string LookFor3 { get; }
-        public string LookFor4 { get; }
+        [Required]
+        public string Description { get; set; }
+        public SchoolYear SchoolYear { get; set; }
+
+        [MaxLength(20)]
+        [Required]
+        public string FrameworkTagName { get; set; }
+        public bool IsStudentGrowthAligned { get; set; }
+
+        [Required]
+        public string PL1Descriptor { get; set; }
+        [Required]
+        public string PL2Descriptor { get; set; }
+        [Required]
+        public string PL3Descriptor { get; set; }
+        [Required]
+        public string PL4Descriptor { get; set; }
+
+        public string LookFor1 { get; set; }
+        public string LookFor2 { get; set; }
+        public string LookFor3 { get; set; }
+        public string LookFor4 { get; set; }
 
         public virtual ICollection<FrameworkNodeRubricRow> FrameworkNodeRubricRows { get; }
     }
