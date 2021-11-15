@@ -1,8 +1,10 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SE.Domain.Entities
 {
+    [Table("User")]
     public class User : BaseEntity
     {
         [MaxLength(50)]
@@ -32,7 +34,7 @@ namespace SE.Domain.Entities
         [MaxLength(1000)]
         public string OTPW { get; set; }
 
-        public DateTime LastLoginDateTime { get; set; }
+        public DateTime? LastLoginDateTime { get; set; }
 
         public virtual ICollection<UserBuildingRole> UserBuildingRoles { get;  }
         public virtual ICollection<WorkAreaContext> WorkAreaContexts { get; }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SE.Domain.Entities
 {
+    [Table("SchoolConfiguration")]
     public class SchoolConfiguration : BaseEntity
     {
         [MaxLength(20)]

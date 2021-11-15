@@ -8,10 +8,6 @@ using System.Threading.Tasks;
 
 namespace SE.Domain.Entities
 {
-    // TODO: add-migration is making this class plural. can't figure out why because I 
-    // have it specified in the configuration to be singular. So I am setting it
-    // here and that seems to work.
-
     [Table("WorkAreaContext")]
     public class WorkAreaContext : BaseEntity
     {

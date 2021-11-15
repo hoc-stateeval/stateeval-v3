@@ -165,7 +165,10 @@ BEGIN
 				   ReportArchivesPurged,
 				   AssignedCalibrationExerciseSharingType,
 				   DistrictAssignsCalibrationExercises,
-				   CalibrationExercisesEnabled
+				   CalibrationExercisesModuleEnabled,
+				   AllowTeeYTDEvidence,
+				   AllowFocusedComponentScoring,
+				   ExemplarVideosModuleEnabled
 
 				 )
 		SELECT @FrameworkContextID , -- FrameworkContextID - bigint
@@ -194,7 +197,11 @@ BEGIN
 				0,   -- ReportArchivesPurged
 				3,   -- AssignedCalibrationExerciseSharingType
 				0,    -- DistrictAssignsCalibrationExercises
-				0   -- CalibrationExercisesEnabled
+				0,   -- CalibrationExercisesEnabled
+				0, -- AllowTeeYTDEvidence
+				0, -- AllowFocusedComponentScoring
+				0  -- ExemplarVideosModuleEnabled
+
 
 
 		SELECT @sql_error = @@ERROR

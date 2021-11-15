@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SE.Domain.Entities
 {
+    [Table("StudentGrowthGoal")]
     public class StudentGrowthGoal : BaseEntity
     {
         [MaxLength(250)]
@@ -37,7 +38,7 @@ namespace SE.Domain.Entities
         public virtual RubricRow? ProcessRubricRow { get; set; }
 
         [ForeignKey("ResultsRubricRow")]
-        public long ResultsRubricRowId { get; set; }
-        public virtual RubricRow ResultsRubricRow { get; set; }
+        public long? ResultsRubricRowId { get; set; }
+        public virtual RubricRow? ResultsRubricRow { get; set; }
     }
 }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SE.Domain.Entities
 {
+    [Table("FrameworkNode")]
     public class FrameworkNode : BaseEntity
     {
         [MaxLength(50)]

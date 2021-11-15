@@ -57,6 +57,126 @@ namespace SE.Data.Migrations
                     b.ToTable("Building", "dbo");
                 });
 
+            modelBuilder.Entity("SE.Domain.Entities.DistrictConfiguration", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<bool>("AllowCollectedEvidenceSelectionInFinalReport")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AllowDownloadReportsSchoolAdmins")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AllowFocusedComponentScoring")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AllowPackagedEvidenceSelectionInFinalReport")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AllowTeeYTDEvidence")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("AssignedCalibrationExerciseSharingType")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("CalibrationExercisesModuleEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CriticalAttributesEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CriticalAttributesReferenceOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("DistrictAssignsCalibrationExercises")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ExemplarVideosModuleEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FinalReportCustomText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FinalReportTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("FrameworkContextId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsFinalReportConfigDelegated")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsMidYearReportConfigDelegated")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsObsReportConfigDelegated")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSelfAssessReportConfigDelegated")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsStudentGrowthReportConfigDelegated")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MidYearReportCustomText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MidYearReportTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("NonSummativeScoringEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ObservationReportCustomText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ObservationReportTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("ReportArchivesPurged")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SelfAssessReportTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SelfAssessmentReportCustomText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("SelfAssessmentsModuleEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ShowArchivedEvaluateeReports")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("StudentGrowthGoalSettingReportCustomText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StudentGrowthGoalSettingReportTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("SummativeCriteriaStmtOfPerfRequired")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SummativeEvaluationEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SummativeNextYearEvalCycleIsRequired")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SummativeTorFinalRecIsRequired")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FrameworkContextId");
+
+                    b.ToTable("DistrictConfiguration", "dbo");
+                });
+
             modelBuilder.Entity("SE.Domain.Entities.Evaluation", b =>
                 {
                     b.Property<long>("Id")
@@ -279,7 +399,7 @@ namespace SE.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Frameworks", "dbo");
+                    b.ToTable("Framework", "dbo");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.FrameworkContext", b =>
@@ -566,6 +686,32 @@ namespace SE.Data.Migrations
                     b.ToTable("RubricRow", "dbo");
                 });
 
+            modelBuilder.Entity("SE.Domain.Entities.SchoolConfiguration", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<long>("FrameworkContextId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsPrincipalAssignmentDelegated")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SchoolCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FrameworkContextId");
+
+                    b.ToTable("SchoolConfiguration", "dbo");
+                });
+
             modelBuilder.Entity("SE.Domain.Entities.StudentGrowthGoal", b =>
                 {
                     b.Property<long>("Id")
@@ -595,7 +741,7 @@ namespace SE.Data.Migrations
                     b.Property<long?>("ProcessRubricRowId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("ResultsRubricRowId")
+                    b.Property<long?>("ResultsRubricRowId")
                         .HasColumnType("bigint");
 
                     b.Property<long?>("StudentGrowthGoalBundleId")
@@ -704,7 +850,7 @@ namespace SE.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime>("LastLoginDateTime")
+                    b.Property<DateTime?>("LastLoginDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastName")
@@ -731,7 +877,7 @@ namespace SE.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", "dbo");
+                    b.ToTable("User", "dbo");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.UserBuildingRole", b =>
@@ -844,6 +990,17 @@ namespace SE.Data.Migrations
                     b.HasIndex("WorkAreaId");
 
                     b.ToTable("WorkAreaContext", "dbo");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.DistrictConfiguration", b =>
+                {
+                    b.HasOne("SE.Domain.Entities.FrameworkContext", "FrameworkContext")
+                        .WithMany()
+                        .HasForeignKey("FrameworkContextId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FrameworkContext");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.Evaluation", b =>
@@ -992,6 +1149,17 @@ namespace SE.Data.Migrations
                     b.Navigation("Evaluator");
                 });
 
+            modelBuilder.Entity("SE.Domain.Entities.SchoolConfiguration", b =>
+                {
+                    b.HasOne("SE.Domain.Entities.FrameworkContext", "FrameworkContext")
+                        .WithMany()
+                        .HasForeignKey("FrameworkContextId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FrameworkContext");
+                });
+
             modelBuilder.Entity("SE.Domain.Entities.StudentGrowthGoal", b =>
                 {
                     b.HasOne("SE.Domain.Entities.StudentGrowthGoalBundle", "GoalBundle")
@@ -1018,9 +1186,7 @@ namespace SE.Data.Migrations
 
                     b.HasOne("SE.Domain.Entities.RubricRow", "ResultsRubricRow")
                         .WithMany()
-                        .HasForeignKey("ResultsRubricRowId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ResultsRubricRowId");
 
                     b.HasOne("SE.Domain.Entities.StudentGrowthGoalBundle", null)
                         .WithMany("Goals")

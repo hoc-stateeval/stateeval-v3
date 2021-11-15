@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SE.Domain.Entities
 {
+    [Table("FrameworkContextPrototype")]
     public class FrameworkContextPrototype : BaseEntity
     {
         [MaxLength(100)]

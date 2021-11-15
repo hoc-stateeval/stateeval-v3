@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SE.Domain.Entities
 {
+    [Table("FrameworkNodeRubricRow")]
     public class FrameworkNodeRubricRow
     {
         public int Sequence { get; set; }

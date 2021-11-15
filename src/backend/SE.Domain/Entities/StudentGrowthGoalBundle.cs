@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SE.Domain.Entities
 {
+    [Table("StudentGrowthGoalBundle")]
     public class StudentGrowthGoalBundle : BaseEntity
     {
         public EvaluationType EvaluationType { get; set; }

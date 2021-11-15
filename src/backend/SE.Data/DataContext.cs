@@ -15,8 +15,10 @@ namespace SE.Data
         public DbSet<WorkAreaContext> WorkAreaContexts { get; set; }
         public DbSet<Framework> Frameworks { get; set; }
         public DbSet<Evaluation> Evaluations { get; set; }
-
         public DbSet<Observation> Observations { get; set; }
+        public DbSet<DistrictConfiguration> DistrictConfigurations { get; set; }
+        public DbSet<SchoolConfiguration> SchoolConfigurations { get; set;}
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

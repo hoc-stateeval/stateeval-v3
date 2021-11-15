@@ -31,7 +31,7 @@ namespace SE.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Frameworks",
+                name: "Framework",
                 schema: "dbo",
                 columns: table => new
                 {
@@ -43,7 +43,7 @@ namespace SE.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Frameworks", x => x.Id);
+                    table.PrimaryKey("PK_Framework", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -89,7 +89,7 @@ namespace SE.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "User",
                 schema: "dbo",
                 columns: table => new
                 {
@@ -103,11 +103,11 @@ namespace SE.Data.Migrations
                     LoginName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     CertificateNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     OTPW = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    LastLoginDateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    LastLoginDateTime = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_User", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -128,16 +128,16 @@ namespace SE.Data.Migrations
                 {
                     table.PrimaryKey("PK_FrameworkContextPrototype", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FrameworkContextPrototype_Frameworks_InstructionalFrameworkId",
+                        name: "FK_FrameworkContextPrototype_Framework_InstructionalFrameworkId",
                         column: x => x.InstructionalFrameworkId,
                         principalSchema: "dbo",
-                        principalTable: "Frameworks",
+                        principalTable: "Framework",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_FrameworkContextPrototype_Frameworks_StateFrameworkId",
+                        name: "FK_FrameworkContextPrototype_Framework_StateFrameworkId",
                         column: x => x.StateFrameworkId,
                         principalSchema: "dbo",
-                        principalTable: "Frameworks",
+                        principalTable: "Framework",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -161,10 +161,10 @@ namespace SE.Data.Migrations
                 {
                     table.PrimaryKey("PK_FrameworkNode", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FrameworkNode_Frameworks_FrameworkId",
+                        name: "FK_FrameworkNode_Framework_FrameworkId",
                         column: x => x.FrameworkId,
                         principalSchema: "dbo",
-                        principalTable: "Frameworks",
+                        principalTable: "Framework",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -233,10 +233,10 @@ namespace SE.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserBuildingRole_Users_UserId",
+                        name: "FK_UserBuildingRole_User_UserId",
                         column: x => x.UserId,
                         principalSchema: "dbo",
-                        principalTable: "Users",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -264,30 +264,30 @@ namespace SE.Data.Migrations
                 {
                     table.PrimaryKey("PK_FrameworkContext", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_FrameworkContext_Framework_DefaultFrameworkId",
+                        column: x => x.DefaultFrameworkId,
+                        principalSchema: "dbo",
+                        principalTable: "Framework",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FrameworkContext_Framework_InstructionalFrameworkId",
+                        column: x => x.InstructionalFrameworkId,
+                        principalSchema: "dbo",
+                        principalTable: "Framework",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FrameworkContext_Framework_StateFrameworkId",
+                        column: x => x.StateFrameworkId,
+                        principalSchema: "dbo",
+                        principalTable: "Framework",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_FrameworkContext_FrameworkContextPrototype_PrototypeFrameworkContextId",
                         column: x => x.PrototypeFrameworkContextId,
                         principalSchema: "dbo",
                         principalTable: "FrameworkContextPrototype",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_FrameworkContext_Frameworks_DefaultFrameworkId",
-                        column: x => x.DefaultFrameworkId,
-                        principalSchema: "dbo",
-                        principalTable: "Frameworks",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_FrameworkContext_Frameworks_InstructionalFrameworkId",
-                        column: x => x.InstructionalFrameworkId,
-                        principalSchema: "dbo",
-                        principalTable: "Frameworks",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_FrameworkContext_Frameworks_StateFrameworkId",
-                        column: x => x.StateFrameworkId,
-                        principalSchema: "dbo",
-                        principalTable: "Frameworks",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -387,17 +387,17 @@ namespace SE.Data.Migrations
                         principalTable: "FrameworkNode",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Evaluation_Users_EvaluateeId",
+                        name: "FK_Evaluation_User_EvaluateeId",
                         column: x => x.EvaluateeId,
                         principalSchema: "dbo",
-                        principalTable: "Users",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Evaluation_Users_EvaluatorId",
+                        name: "FK_Evaluation_User_EvaluatorId",
                         column: x => x.EvaluatorId,
                         principalSchema: "dbo",
-                        principalTable: "Users",
+                        principalTable: "User",
                         principalColumn: "Id");
                 });
 
@@ -425,6 +425,84 @@ namespace SE.Data.Migrations
                         column: x => x.RubricRowId,
                         principalSchema: "dbo",
                         principalTable: "RubricRow",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DistrictConfiguration",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FinalReportTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FinalReportCustomText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AllowCollectedEvidenceSelectionInFinalReport = table.Column<bool>(type: "bit", nullable: false),
+                    AllowPackagedEvidenceSelectionInFinalReport = table.Column<bool>(type: "bit", nullable: false),
+                    IsFinalReportConfigDelegated = table.Column<bool>(type: "bit", nullable: false),
+                    MidYearReportTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MidYearReportCustomText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsMidYearReportConfigDelegated = table.Column<bool>(type: "bit", nullable: false),
+                    StudentGrowthGoalSettingReportTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StudentGrowthGoalSettingReportCustomText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsStudentGrowthReportConfigDelegated = table.Column<bool>(type: "bit", nullable: false),
+                    ObservationReportTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ObservationReportCustomText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsObsReportConfigDelegated = table.Column<bool>(type: "bit", nullable: false),
+                    SelfAssessmentsModuleEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    SelfAssessReportTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SelfAssessmentReportCustomText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsSelfAssessReportConfigDelegated = table.Column<bool>(type: "bit", nullable: false),
+                    SummativeCriteriaStmtOfPerfRequired = table.Column<bool>(type: "bit", nullable: false),
+                    SummativeNextYearEvalCycleIsRequired = table.Column<bool>(type: "bit", nullable: false),
+                    SummativeTorFinalRecIsRequired = table.Column<bool>(type: "bit", nullable: false),
+                    SummativeEvaluationEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    NonSummativeScoringEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    CriticalAttributesEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    CriticalAttributesReferenceOnly = table.Column<bool>(type: "bit", nullable: false),
+                    AllowDownloadReportsSchoolAdmins = table.Column<bool>(type: "bit", nullable: false),
+                    ShowArchivedEvaluateeReports = table.Column<bool>(type: "bit", nullable: false),
+                    ReportArchivesPurged = table.Column<bool>(type: "bit", nullable: false),
+                    AllowTeeYTDEvidence = table.Column<bool>(type: "bit", nullable: false),
+                    AllowFocusedComponentScoring = table.Column<bool>(type: "bit", nullable: false),
+                    AssignedCalibrationExerciseSharingType = table.Column<int>(type: "int", nullable: false),
+                    DistrictAssignsCalibrationExercises = table.Column<bool>(type: "bit", nullable: false),
+                    CalibrationExercisesModuleEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    ExemplarVideosModuleEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    FrameworkContextId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DistrictConfiguration", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DistrictConfiguration_FrameworkContext_FrameworkContextId",
+                        column: x => x.FrameworkContextId,
+                        principalSchema: "dbo",
+                        principalTable: "FrameworkContext",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SchoolConfiguration",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SchoolCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    IsPrincipalAssignmentDelegated = table.Column<bool>(type: "bit", nullable: false),
+                    FrameworkContextId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SchoolConfiguration", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SchoolConfiguration_FrameworkContext_FrameworkContextId",
+                        column: x => x.FrameworkContextId,
+                        principalSchema: "dbo",
+                        principalTable: "FrameworkContext",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -459,10 +537,10 @@ namespace SE.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_WorkAreaContext_Users_UserId",
+                        name: "FK_WorkAreaContext_User_UserId",
                         column: x => x.UserId,
                         principalSchema: "dbo",
-                        principalTable: "Users",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -498,10 +576,10 @@ namespace SE.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Observation_Users_EvaluatorId",
+                        name: "FK_Observation_User_EvaluatorId",
                         column: x => x.EvaluatorId,
                         principalSchema: "dbo",
-                        principalTable: "Users",
+                        principalTable: "User",
                         principalColumn: "Id");
                 });
 
@@ -555,7 +633,7 @@ namespace SE.Data.Migrations
                     FrameworkNodeId = table.Column<long>(type: "bigint", nullable: false),
                     BundleId = table.Column<long>(type: "bigint", nullable: false),
                     ProcessRubricRowId = table.Column<long>(type: "bigint", nullable: true),
-                    ResultsRubricRowId = table.Column<long>(type: "bigint", nullable: false),
+                    ResultsRubricRowId = table.Column<long>(type: "bigint", nullable: true),
                     StudentGrowthGoalBundleId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
@@ -586,8 +664,7 @@ namespace SE.Data.Migrations
                         column: x => x.ResultsRubricRowId,
                         principalSchema: "dbo",
                         principalTable: "RubricRow",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_StudentGrowthGoal_StudentGrowthGoalBundle_BundleId",
                         column: x => x.BundleId,
@@ -601,6 +678,12 @@ namespace SE.Data.Migrations
                         principalTable: "StudentGrowthGoalBundle",
                         principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DistrictConfiguration_FrameworkContextId",
+                schema: "dbo",
+                table: "DistrictConfiguration",
+                column: "FrameworkContextId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Evaluation_EvaluateeId",
@@ -705,6 +788,12 @@ namespace SE.Data.Migrations
                 column: "EvaluatorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SchoolConfiguration_FrameworkContextId",
+                schema: "dbo",
+                table: "SchoolConfiguration",
+                column: "FrameworkContextId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_StudentGrowthGoal_BundleId",
                 schema: "dbo",
                 table: "StudentGrowthGoal",
@@ -804,11 +893,19 @@ namespace SE.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "DistrictConfiguration",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
                 name: "FrameworkNodeRubricRow",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
                 name: "Observation",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "SchoolConfiguration",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
@@ -860,11 +957,11 @@ namespace SE.Data.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "Users",
+                name: "User",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "Frameworks",
+                name: "Framework",
                 schema: "dbo");
         }
     }

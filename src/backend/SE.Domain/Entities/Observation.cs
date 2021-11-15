@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SE.Domain.Entities
 {
+    [Table("Observation")]
     public class Observation : BaseEntity
     {
         [MaxLength(50)]

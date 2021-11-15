@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SE.Domain.Entities
 {
+    [Table("DistrictConfiguration")]
     public class DistrictConfiguration : BaseEntity
     {
         public string FinalReportTitle { get; set; }
@@ -53,8 +54,6 @@ namespace SE.Domain.Entities
         public bool AllowFocusedComponentScoring { get; set; }
 
 
-
-        public bool CalibrationExercisesEnabled { get; set; }
         public CalibrationExerciseDistrictSharingType AssignedCalibrationExerciseSharingType { get; set; }
         public bool DistrictAssignsCalibrationExercises { get; set; }
         public bool CalibrationExercisesModuleEnabled { get; set; }

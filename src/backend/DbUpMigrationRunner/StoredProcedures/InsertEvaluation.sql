@@ -106,8 +106,26 @@ IF @pDebug=1 SELECT '#User', * FROM #user
 
 DECLARE @EvalID BIGINT
 
-INSERT dbo.Evaluation(EvaluateeID, IsActive, EvaluatorID, EvaluationType, SchoolYear, DistrictCode, SchoolCode, WfState, ComprehensiveCarryForward, CreationDateTime) 
-SELECT u.Id, 1, NULL, @pEvaluationType, @SchoolYear, @pDistrictCode, u.SchoolCode, 1, 0, getdate()
+INSERT dbo.Evaluation(EvaluateeID, 
+	IsActive, 
+	EvaluatorID, 
+	EvaluationType, 
+	SchoolYear, 
+	DistrictCode, 
+	SchoolCode, 
+	WfState, 
+	ComprehensiveCarryForward, 
+	CreationDateTime)
+SELECT u.Id, 
+	1,
+	NULL, 
+	@pEvaluationType, 
+	@SchoolYear, 
+	@pDistrictCode, 
+	u.SchoolCode, 
+	1, 
+	0, 
+	getdate()
   FROM #User u
 
   SELECT @EvalID=SCOPE_IDENTITY(), @sql_error = @@ERROR
@@ -123,15 +141,20 @@ DECLARE @PR_WfStateID BIGINT
 SELECT @TR_WfStateID = 11 --'SGBUNDLE STARTED'
 SELECT @PR_WfStateID = 12 -- 'SGBUNDLE PROCESS-COMPLETE'
 
-INSERT dbo.StudentGrowthGoalBundle(EvaluationID, EvaluatorScoresShared, EvaluateeID, WfState, EvaluationType, InRevision) 
+INSERT dbo.StudentGrowthGoalBundle(
+	EvaluationID, 
+	WfState, 
+	EvaluationType, 
+	InRevision,
+	SharingDraft,
+	EvaluatorScoresShared) 
 SELECT e.Id,
-	   0, 
-	   e.EvaluateeID,
 	   CASE e.EvaluationType WHEN 2 THEN @TR_WfStateID ELSE @PR_WfStateID END,
 	   e.EvaluationType,
+	   0,
+	   0,
 	   0
   FROM dbo.Evaluation e
-  JOIN #User u ON e.EvaluateeID=u.Id
  WHERE e.DistrictCode=@pDistrictCode
    AND e.SchoolYear=@SchoolYear
    AND e.EvaluationType=@pEvaluationType
@@ -193,11 +216,18 @@ SELECT e.Id,
 
 	-- set up default prompts
 
-	INSERT dbo.StudentGrowthGoal(BundleId, EvaluationID, EvaluateeID, FrameworkNodeID, ProcessRubricRowID, ResultsRubricRowID,IsActive, CreationDateTime, Title)
+	INSERT dbo.StudentGrowthGoal(
+		BundleId, 
+		EvaluationID, 
+		FrameworkNodeID, 
+		ProcessRubricRowID, 
+		ResultsRubricRowID,
+		IsActive, 
+		CreationDateTime, 
+		Title)
 	SELECT DISTINCT 
 			gb.Id,
 			e.Id,
-			e.EvaluateeID,
 			fn.Id,
 			NULL,
 			NULL,
@@ -209,7 +239,6 @@ SELECT e.Id,
 	  JOIN dbo.FrameworkContext fc on fc.DistrictCode = e.DistrictCode AND fc.SchoolYear = e.SchoolYear AND fc.EvaluationType = e.EvaluationType
 	  JOIN dbo.Framework f on fc.StateFrameworkID=f.Id
 	  JOIN dbo.FrameworkNode fn on f.Id=fn.FrameworkID
-	  JOIN #User u ON e.EvaluateeID=u.Id
 	 WHERE e.DistrictCode=@pDistrictCode
 	   AND e.SchoolYear=@SchoolYear
 	   AND e.EvaluationType=@pEvaluationType
@@ -227,7 +256,6 @@ SELECT e.Id,
 	UPDATE g
 		SET ProcessRubricRowID=rr.Id
 		FROM dbo.StudentGrowthGoal g
-	    JOIN #User u ON g.EvaluateeID=u.Id
 		JOIN dbo.FrameworkNode fn on g.FrameworkNodeID=fn.Id
 		JOIN dbo.FrameworkNodeRubricRow rrfn on fn.Id=rrfn.FrameworkNodeID
 		JOIN dbo.RubricRow rr on rrfn.RubricRowID=rr.Id
@@ -236,7 +264,6 @@ SELECT e.Id,
 	UPDATE g
 		SET ResultsRubricRowID=rr.Id
 		FROM dbo.StudentGrowthGoal g
-	    JOIN #User u ON g.EvaluateeID=u.Id
 		JOIN dbo.FrameworkNode fn on g.FrameworkNodeID=fn.Id
 		JOIN dbo.FrameworkNodeRubricRow rrfn on fn.Id=rrfn.FrameworkNodeID
 		JOIN dbo.RubricRow rr on rrfn.RubricRowID=rr.Id

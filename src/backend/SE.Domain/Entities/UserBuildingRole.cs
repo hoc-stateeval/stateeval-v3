@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SE.Domain.Entities
 {
+    [Table("UserBuildingRole")]
     public class UserBuildingRole : BaseEntity
     {
         [ForeignKey("User")]

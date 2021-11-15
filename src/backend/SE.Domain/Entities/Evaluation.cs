@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SE.Domain.Entities
 {
+    [Table("Evaluation")]
     public class Evaluation : BaseEntity
     {
         public DateTime CreationDateTime { get; set; }

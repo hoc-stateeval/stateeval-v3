@@ -42,8 +42,8 @@ BEGIN
 		SELECT @teacherId=Id, @BaseName=BaseName FROM #teacher t WHERE Id = @nextTeacherId
 		SELECT @nextTeacherId = min( id ) FROM #teacher WHERE Id > @teacherId
 
-		INSERT [User](UserName, FirstName, LastName, [Password], Email, ProfileImageUrl) 
-		SELECT  @BaseName + ' ' + @SchoolName, @BaseName , @SchoolName ,'password','noop@noop.com', ''
+		INSERT [User](UserName, FirstName, LastName, OTPW, LoginName, EmailAddress, ProfileImageUrl) 
+		SELECT  @BaseName + ' ' + @SchoolName, @BaseName , @SchoolName ,'password', 'noop@noop.com', 'noop@noop.com', ''
 		INSERT UserBuildingRole(UserId, RoleId, BuildingId)
 		SELECT @@IDENTITY, @TeacherRoleId, @BuildingId
 	end
@@ -66,8 +66,8 @@ BEGIN
 		SELECT @principalId=Id, @BaseName=BaseName FROM #principal t WHERE Id = @nextPrincipalId
 		SELECT @nextPrincipalId = min( id ) FROM #principal WHERE Id > @principalId
 
-		INSERT [User](UserName, FirstName, LastName, [Password], Email, ProfileImageUrl) 
-		SELECT  @BaseName + ' ' + @SchoolName,@BaseName ,@SchoolName ,'','noop@noop.com' , ''
+		INSERT [User](UserName, FirstName, LastName, OTPW, LoginName, EmailAddress, ProfileImageUrl) 
+		SELECT  @BaseName + ' ' + @SchoolName,@BaseName ,@SchoolName ,'','noop@noop.com', 'noop@noop.com' , ''
 		SELECT @userId = @@IDENTITY
 		INSERT UserBuildingRole(UserId, RoleId, BuildingId)
 		SELECT @userId, @PrincipalRoleId, @BuildingId
@@ -101,8 +101,8 @@ BEGIN
 		SELECT @roleId=Id, @RoleName=RoleName FROM #role r WHERE Id = @nextRoleId
 		SELECT @nextRoleId = min( id ) FROM #role WHERE Id > @roleId
 
-		INSERT [User](UserName, FirstName, LastName, [Password], Email, ProfileImageUrl) 
-		SELECT  @RoleName + ' ' + @DistrictName,@RoleName ,@DistrictName ,'','noop@noop.com', ''
+		INSERT [User](UserName, FirstName, LastName, OTPW, LoginName, EmailAddress, ProfileImageUrl) 
+		SELECT  @RoleName + ' ' + @DistrictName,@RoleName ,@DistrictName ,'', 'noop@noop.com', 'noop@noop.com', ''
 		INSERT UserBuildingRole(UserId, RoleId, BuildingId)
 		SELECT @@IDENTITY, (Select Id From [Role] WHERE DisplayName=@RoleName), @BuildingId
 	end
