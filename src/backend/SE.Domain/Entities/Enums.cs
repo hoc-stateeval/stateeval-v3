@@ -215,6 +215,14 @@ namespace SE.Domain.Entities
     static public class EnumUtils
     {
         public static SchoolYear CurrentSchoolYear = SchoolYear.SY_2021;
+
+        public static string GetCurrentSchoolYearDisplayName()
+        {
+            var currentSchoolYear = Convert.ToInt32(EnumUtils.CurrentSchoolYear);
+
+            return $"{Convert.ToString(currentSchoolYear - 1)} - {Convert.ToString(currentSchoolYear)}";
+
+        }
         public static RoleType MapEvaluationTypeToEvaluateeRole(EvaluationType evaluationType)
         {
             var roleType = evaluationType switch

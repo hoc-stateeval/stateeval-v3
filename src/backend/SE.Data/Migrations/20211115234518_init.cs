@@ -562,6 +562,7 @@ namespace SE.Data.Migrations
                     ShortName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Title = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EvaluateePlanType = table.Column<int>(type: "int", nullable: false),
                     EvaluationId = table.Column<long>(type: "bigint", nullable: false),
                     EvaluatorId = table.Column<long>(type: "bigint", nullable: false)
                 },

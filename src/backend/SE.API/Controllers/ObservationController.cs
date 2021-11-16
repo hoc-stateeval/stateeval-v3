@@ -16,9 +16,30 @@ namespace SE.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateObservation(CreateObservationCommand command)
+        public async Task<IActionResult> Create(CreateObservationCommand command)
         {
             return Ok(await _mediator.Send(command));
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(long id, UpdateObservationCommand command)
+        {
+            if (id != command.ObservationId)
+            {
+                return BadRequest();
+            }
+
+            await _mediator.Send(command);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(long id)
+        {
+            await _mediator.Send(new DeleteObservationCommand(id));
+
+            return NoContent();
         }
     }
 }

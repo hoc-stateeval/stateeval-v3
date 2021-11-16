@@ -20,6 +20,7 @@ namespace SE.Domain.Entities
         public string Title { get; set; }
         public DateTime CreationDateTime { get; set; }
 
+        public EvaluateePlanType EvaluateePlanType { get; set;}
 
         [ForeignKey("Evaluation")]
         public long EvaluationId { get; set; }

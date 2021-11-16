@@ -20,30 +20,29 @@ namespace SE.Core.Commands
         public CreateObservationCommandValidator()
         {
             RuleFor(x=>x.EvaluationId).NotEmpty();
-            RuleFor(x=>x.ShortName).NotEmpty();
-            RuleFor(x => x.Type).NotEmpty();
+            RuleFor(x => x.EvaluateePlanType).NotEmpty();
             RuleFor(x=>x.EvaluatorId).NotEmpty();
         }
     }
     public sealed class CreateObservationCommand : 
-        IRequest<ObservationDTO>
+        IRequest<long>
     {
         public long EvaluationId { get; }
-        public string ShortName { get; }
-        public EvaluateePlanType Type { get; }
+        public string Title { get; }
+        public EvaluateePlanType EvaluateePlanType { get; }
         public long EvaluatorId { get; }
 
-        public CreateObservationCommand(long evaluationId, string shortName, EvaluateePlanType type, long evaluatorId)
+        public CreateObservationCommand(long evaluationId, string title, EvaluateePlanType evaluateePlanType, long evaluatorId)
         {
             EvaluationId = evaluationId;
-            ShortName = shortName;
-            Type = type;
+            Title = title;
+            EvaluateePlanType = evaluateePlanType;
             EvaluatorId = evaluatorId;  
         }
     }
 
     public class CreateObservationCommandHandler :
-    IRequestHandler<CreateObservationCommand, ObservationDTO>
+    IRequestHandler<CreateObservationCommand, long>
     {
         private readonly DataContext _dataContext;
         public CreateObservationCommandHandler(DataContext dataContext)
@@ -51,10 +50,11 @@ namespace SE.Core.Commands
             _dataContext = dataContext;
         }
 
-        public async Task<ObservationDTO> Handle(CreateObservationCommand request, CancellationToken cancellationToken)
+        public async Task<long> Handle(CreateObservationCommand request, CancellationToken cancellationToken)
         {
             Evaluation? evaluation = await _dataContext.Evaluations
-                 .Where(x => x.Id == request.EvaluationId).FirstOrDefaultAsync();
+                 .Where(x => x.Id == request.EvaluationId)
+                 .FirstOrDefaultAsync();
 
             if (evaluation == null)
             {
@@ -62,14 +62,35 @@ namespace SE.Core.Commands
             }
 
             User? evaluator = await _dataContext.Users
-                .Where(x => x.Id == request.EvaluatorId).FirstOrDefaultAsync();
+                .Where(x => x.Id == request.EvaluatorId)
+                .FirstOrDefaultAsync();
 
             if (evaluator == null)
             {
                 throw new NotFiniteNumberException(nameof(User), request.EvaluatorId);
             }
 
-            return new ObservationDTO();
+            int count = _dataContext.Observations
+                .Where(x => x.EvaluationId == evaluation.Id)
+                .ToList()
+                .Count();
+
+            string shortName = $"Obs {EnumUtils.GetCurrentSchoolYearDisplayName()} .{Convert.ToString(count + 1)}";
+
+            Observation observation = new Observation()
+            {
+                EvaluationId = request.EvaluationId,
+                EvaluatorId = request.EvaluatorId,
+                ShortName = shortName,
+                Title = String.IsNullOrEmpty(request.Title) ? shortName : request.Title,
+                CreationDateTime = DateTime.Now,
+                EvaluateePlanType = request.EvaluateePlanType,
+            };
+
+            _dataContext.Observations.Add(observation);
+            _dataContext.SaveChanges();
+
+            return observation.Id;
         }
     }
 }

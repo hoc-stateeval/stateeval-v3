@@ -572,6 +572,9 @@ namespace SE.Data.Migrations
                     b.Property<DateTime>("CreationDateTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("EvaluateePlanType")
+                        .HasColumnType("int");
+
                     b.Property<long>("EvaluationId")
                         .HasColumnType("bigint");
 

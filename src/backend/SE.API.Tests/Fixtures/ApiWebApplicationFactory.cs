@@ -24,6 +24,7 @@ namespace SE.API.Tests.Fixtures
                   .Build();
 
                 config.AddConfiguration(Configuration);
+                //config.SetBasePath = new Uri("http://localhost/api/products/");
             });
         }
     }

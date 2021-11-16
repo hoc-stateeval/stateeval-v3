@@ -12,7 +12,7 @@ using SE.Data;
 namespace SE.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211115200858_init")]
+    [Migration("20211115234518_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -573,6 +573,9 @@ namespace SE.Data.Migrations
 
                     b.Property<DateTime>("CreationDateTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("EvaluateePlanType")
+                        .HasColumnType("int");
 
                     b.Property<long>("EvaluationId")
                         .HasColumnType("bigint");
