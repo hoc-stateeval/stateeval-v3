@@ -24,8 +24,6 @@ namespace SE.API.Tests
         [Fact]
         public async Task GET_Observation_by_id()
         {
-
-
             var command = new CreateObservationCommand(1, "Observation 1", EvaluateePlanType.COMPREHENSIVE, 49);
 
             var response = await _client.PostAsJsonAsync("/observations", command);
@@ -38,5 +36,6 @@ namespace SE.API.Tests
             //observation = await _client.GetAndDeserialize<ObservationDTO>("/observations/1");
             //observation.Should().NotBeNull();
         }
+
     }
 }

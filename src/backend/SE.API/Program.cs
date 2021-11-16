@@ -15,8 +15,8 @@ using SE.Core.Utils;
 using SE.Data;
 using System.Diagnostics;
 using System.Reflection;
-using System.Text.Json;
-
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +28,12 @@ builder.Services.AddControllers()
         s.RegisterValidatorsFromAssemblyContaining<GetFrameworkByIdQueryValidator>();
         s.DisableDataAnnotationsValidation = true;
     });
+
+builder.Services.AddControllers()
+      .AddNewtonsoftJson(options =>
+      {
+          options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Include;
+      });
 
 builder.Services.AddMediatR(typeof(BaseService).GetTypeInfo().Assembly);
 

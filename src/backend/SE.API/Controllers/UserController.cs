@@ -24,7 +24,7 @@ namespace SE.API.Controllers
         }
 
         [HttpGet]
-        [Route("/{userId}/workarea-contexts")]
+        [Route("{userId}/workarea-contexts")]
         public async Task<IActionResult> GetWorkAreaContextsForUser(long userId)
         {
             var user = await _mediator.Send(new GetWorkAreaContextsForUserQuery(userId));
@@ -32,7 +32,7 @@ namespace SE.API.Controllers
         }
 
         [HttpGet]
-        [Route("/{userId}/workarea-contexts/{workAreaContextId}/evaluations")]
+        [Route("{userId}/workarea-contexts/{workAreaContextId}/evaluations")]
         public async Task<IActionResult> GetEvaluationsForWorkAreaContext(long userId, long workAreaContextId)
         {
             var user = await _mediator.Send(new GetEvaluationsForWorkAreaContextQuery(userId, workAreaContextId));
