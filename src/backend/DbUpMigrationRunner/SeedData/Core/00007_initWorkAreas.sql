@@ -11,7 +11,7 @@
 	insert WorkArea(TagName, IsDistrictAdmin, IsSchoolAdmin, IsEvaluator, IsEvaluatee, Priority, Title, EvaluationType, EvaluateeRoleId, RoleId) 
 	select 'DA_CT_SPS', 1, 0, 0, 0, 3, 'Admin Teacher Eval (CT)',4, @TRRoleID, r.Id from dbo.Role r where EDSName='SEDistrictAdmin'
 	insert WorkArea(TagName, IsDistrictAdmin, IsSchoolAdmin, IsEvaluator, IsEvaluatee, Priority, Title, EvaluationType, EvaluateeRoleId, RoleId) 
-	select 'DTE', 0, 0, 1, 0, 4, 'Evaluate Teachers  (DTE)',2, @TRRoleID, r.Id from dbo.Role r where EDSName='SEDistrictWideTeacherEvaluator'
+	select 'DTE', 0, 0, 1, 0, 4, 'Evaluate Teachers (DTE)',2, @TRRoleID, r.Id from dbo.Role r where EDSName='SEDistrictWideTeacherEvaluator'
 	insert WorkArea(TagName, IsDistrictAdmin, IsSchoolAdmin, IsEvaluator, IsEvaluatee, Priority, Title, EvaluationType, EvaluateeRoleId, RoleId) 
 	select 'DE', 0, 0, 1, 0, 5, 'Evaluate Principals (District Evaluator)',1, @HEADPRRoleID, r.Id from dbo.Role r where EDSName='SEDistrictEvaluator'
 	insert WorkArea(TagName, IsDistrictAdmin, IsSchoolAdmin, IsEvaluator, IsEvaluatee, Priority, Title, EvaluationType, EvaluateeRoleId, RoleId) 

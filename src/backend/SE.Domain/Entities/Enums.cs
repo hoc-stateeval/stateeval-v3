@@ -223,6 +223,33 @@ namespace SE.Domain.Entities
             return $"{Convert.ToString(currentSchoolYear - 1)} - {Convert.ToString(currentSchoolYear)}";
 
         }
+
+        public static string MapEvaluationTypeToEvaluateeTerm(EvaluationType evaluationType)
+        {
+            var evaluateeTerm = evaluationType switch
+            {
+                EvaluationType.TEACHER => "Teacher",
+                EvaluationType.PRINCIPAL => "Principal",
+                EvaluationType.TEACHER_CT_SPS => "Teacher",
+                _ => "",
+            };
+
+            return evaluateeTerm;
+        }
+
+        public static string MapEvaluationTypeToEvaluatorTerm(EvaluationType evaluationType)
+        {
+            var evaluatorTerm = evaluationType switch
+            {
+                EvaluationType.TEACHER => "Evaluator",
+                EvaluationType.PRINCIPAL => "Evaluator",
+                EvaluationType.TEACHER_CT_SPS => "CT",
+                _ => "",
+            };
+
+            return evaluatorTerm;
+        }
+
         public static RoleType MapEvaluationTypeToEvaluateeRole(EvaluationType evaluationType)
         {
             var roleType = evaluationType switch

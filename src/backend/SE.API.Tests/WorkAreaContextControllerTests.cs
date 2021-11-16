@@ -18,6 +18,244 @@ namespace SE.API.Tests
         public WorkAreaContextControllerTests(ApiWebApplicationFactory fixture)
             : base(fixture) { }
 
+
+        [Fact]
+        public async Task DAN_PR_TR_WorkAreaContext_Should_Have_Basic_Properties()
+        {
+            var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
+            var userName = DAN_District.School1.PrincipalA.UserName;
+
+            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
+            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+
+            workAreaContexts.Count.Should().Be(2);
+            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_TR));
+            workAreaContext.Should().NotBeNull();
+
+            workAreaContext.DistrictName.Should().Be(DAN_District.DistrictName);
+            workAreaContext.DistrictCode.Should().Be(DAN_District.DistrictCode);
+            workAreaContext.SchoolName.Should().Be(DAN_District.School1.SchoolName);
+            workAreaContext.SchoolCode.Should().Be(DAN_District.School1.SchoolCode);
+            workAreaContext.IsSchool.Should().BeTrue();
+            workAreaContext.FrameworkContextName.Should().Be("Charlotte Danielson's Framework for Teaching (2011)");
+            workAreaContext.Title.Should().Be("Evaluate Teachers");
+            workAreaContext.RoleName.Should().Be("Principal");
+            workAreaContext.EvaluatorTerm.Should().Be("Evaluator");
+            workAreaContext.EvaluatorTermLC.Should().Be("evaluator");
+            workAreaContext.EvaluateeTerm.Should().Be("Teacher");
+            workAreaContext.EvaluateeTermLC.Should().Be("teacher");
+            workAreaContext.EvaluationType.Should().Be(EvaluationType.TEACHER);
+            workAreaContext.IsEvaluatee.Should().BeFalse();
+            workAreaContext.IsEvaluator.Should().BeTrue();
+            workAreaContext.IsSchoolAdmin.Should().BeFalse();
+            workAreaContext.IsDistrictAdmin.Should().BeFalse();
+
+            workAreaContext.Priority.Should().BeGreaterThanOrEqualTo(0);
+
+        }
+
+        [Fact]
+        public async Task DAN_TR_ME_WorkAreaContext_Should_Have_Basic_Properties()
+        {
+            var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
+            var userName = DAN_District.School1.TeacherA.UserName;
+
+            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
+            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+
+            workAreaContexts.Count.Should().Be(1);
+            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.TR_ME));
+            workAreaContext.Should().NotBeNull();
+
+            workAreaContext.DistrictName.Should().Be(DAN_District.DistrictName);
+            workAreaContext.DistrictCode.Should().Be(DAN_District.DistrictCode);
+            workAreaContext.SchoolName.Should().Be(DAN_District.School1.SchoolName);
+            workAreaContext.SchoolCode.Should().Be(DAN_District.School1.SchoolCode);
+            workAreaContext.IsSchool.Should().BeTrue();
+            workAreaContext.FrameworkContextName.Should().Be("Charlotte Danielson's Framework for Teaching (2011)");
+            workAreaContext.Title.Should().Be("Prepare for My Evaluation (Teacher)");
+            workAreaContext.RoleName.Should().Be("Teacher");
+            workAreaContext.EvaluatorTerm.Should().Be("Evaluator");
+            workAreaContext.EvaluatorTermLC.Should().Be("evaluator");
+            workAreaContext.EvaluateeTerm.Should().Be("Teacher");
+            workAreaContext.EvaluateeTermLC.Should().Be("teacher");
+            workAreaContext.EvaluationType.Should().Be(EvaluationType.TEACHER);
+            workAreaContext.IsEvaluatee.Should().BeTrue();
+            workAreaContext.IsEvaluator.Should().BeFalse();
+            workAreaContext.IsSchoolAdmin.Should().BeFalse();
+            workAreaContext.IsDistrictAdmin.Should().BeFalse();
+
+            workAreaContext.Priority.Should().BeGreaterThanOrEqualTo(0);
+
+        }
+
+        [Fact]
+        public async Task DAN_PR_ME_WorkAreaContext_Should_Have_Basic_Properties()
+        {
+            var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
+            var userName = DAN_District.School1.PrincipalA.UserName;
+
+            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
+            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+
+            workAreaContexts.Count.Should().Be(2);
+            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_ME));
+            workAreaContext.Should().NotBeNull();
+
+            workAreaContext.DistrictName.Should().Be(DAN_District.DistrictName);
+            workAreaContext.DistrictCode.Should().Be(DAN_District.DistrictCode);
+            workAreaContext.SchoolName.Should().Be(DAN_District.School1.SchoolName);
+            workAreaContext.SchoolCode.Should().Be(DAN_District.School1.SchoolCode);
+            workAreaContext.IsSchool.Should().BeTrue();
+            workAreaContext.FrameworkContextName.Should().Be("The AWSP Leadership Framework");
+            workAreaContext.Title.Should().Be("Prepare for My Evaluation (Principal)");
+            workAreaContext.RoleName.Should().Be("Principal");
+            workAreaContext.EvaluatorTerm.Should().Be("Evaluator");
+            workAreaContext.EvaluatorTermLC.Should().Be("evaluator");
+            workAreaContext.EvaluateeTerm.Should().Be("Principal");
+            workAreaContext.EvaluateeTermLC.Should().Be("principal");
+            workAreaContext.EvaluationType.Should().Be(EvaluationType.PRINCIPAL);
+            workAreaContext.IsEvaluatee.Should().BeTrue();
+            workAreaContext.IsEvaluator.Should().BeFalse();
+            workAreaContext.IsSchoolAdmin.Should().BeFalse();
+            workAreaContext.IsDistrictAdmin.Should().BeFalse();
+
+            workAreaContext.Priority.Should().BeGreaterThanOrEqualTo(0);
+
+        }
+
+        public async Task DAN_DA_TR_WorkAreaContext_Should_Have_Basic_Properties()
+        {
+            var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
+            var userName = DAN_District.DistrictAdmin.UserName;
+
+            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
+            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+
+            workAreaContexts.Count.Should().Be(2);
+            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DA_TR));
+            workAreaContext.Should().NotBeNull();
+
+            workAreaContext.DistrictName.Should().Be(DAN_District.DistrictName);
+            workAreaContext.DistrictCode.Should().Be(DAN_District.DistrictCode);
+            workAreaContext.SchoolName.Should().BeEmpty();
+            workAreaContext.SchoolCode.Should().BeEmpty();
+            workAreaContext.IsSchool.Should().BeFalse();
+            workAreaContext.FrameworkContextName.Should().Be("Charlotte Danielson's Framework for Teaching (2011)");
+            workAreaContext.Title.Should().Be("Admin Teacher Evaluations");
+            workAreaContext.RoleName.Should().Be("District Admin");
+            workAreaContext.EvaluatorTerm.Should().Be("Evaluator");
+            workAreaContext.EvaluatorTermLC.Should().Be("evaluator");
+            workAreaContext.EvaluateeTerm.Should().Be("Teacher");
+            workAreaContext.EvaluateeTermLC.Should().Be("teacher");
+            workAreaContext.EvaluationType.Should().Be(EvaluationType.TEACHER);
+            workAreaContext.IsEvaluatee.Should().BeFalse();
+            workAreaContext.IsEvaluator.Should().BeFalse();
+            workAreaContext.IsSchoolAdmin.Should().BeFalse();
+            workAreaContext.IsDistrictAdmin.Should().BeTrue();
+
+            workAreaContext.Priority.Should().BeGreaterThanOrEqualTo(0);
+        }
+
+        public async Task DAN_DTE_WorkAreaContext_Should_Have_Basic_Properties()
+        {
+            var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
+            var userName = DAN_District.DTE.UserName;
+
+            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
+            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+
+            workAreaContexts.Count.Should().Be(1);
+            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DTE));
+            workAreaContext.Should().NotBeNull();
+
+            workAreaContext.DistrictName.Should().Be(DAN_District.DistrictName);
+            workAreaContext.DistrictCode.Should().Be(DAN_District.DistrictCode);
+            workAreaContext.SchoolName.Should().BeEmpty();
+            workAreaContext.SchoolCode.Should().BeEmpty();
+            workAreaContext.IsSchool.Should().BeFalse();
+            workAreaContext.FrameworkContextName.Should().Be("Charlotte Danielson's Framework for Teaching (2011)");
+            workAreaContext.Title.Should().Be("Evaluate Teachers (DTE)");
+            workAreaContext.RoleName.Should().Be("District-wide Teacher Evaluator");
+            workAreaContext.EvaluatorTerm.Should().Be("Evalator");
+            workAreaContext.EvaluatorTermLC.Should().Be("evaluator");
+            workAreaContext.EvaluateeTerm.Should().Be("Teacher");
+            workAreaContext.EvaluateeTermLC.Should().Be("teacher");
+            workAreaContext.EvaluationType.Should().Be(EvaluationType.TEACHER);
+            workAreaContext.IsEvaluatee.Should().BeFalse();
+            workAreaContext.IsEvaluator.Should().BeTrue();
+            workAreaContext.IsSchoolAdmin.Should().BeFalse();
+            workAreaContext.IsDistrictAdmin.Should().BeFalse();
+
+            workAreaContext.Priority.Should().BeGreaterThanOrEqualTo(0);
+        }
+
+        public async Task DAN_CT_WorkAreaContext_Should_Have_Basic_Properties()
+        {
+            var SPS_District = new District(DistrictNames.Seattle, DistrictCodes.Seattle);
+            var userName = SPS_District.School2.PrincipalA.UserName;
+
+            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
+            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+
+            workAreaContexts.Count.Should().Be(1);
+            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.CT_SPS));
+            workAreaContext.Should().NotBeNull();
+
+            workAreaContext.DistrictName.Should().Be(SPS_District.DistrictName);
+            workAreaContext.DistrictCode.Should().Be(SPS_District.DistrictCode);
+            workAreaContext.SchoolName.Should().BeEmpty();
+            workAreaContext.SchoolCode.Should().BeEmpty();
+            workAreaContext.IsSchool.Should().BeFalse();
+            workAreaContext.FrameworkContextName.Should().Be("Charlotte Danielson's Framework for Teaching (2011)");
+            workAreaContext.Title.Should().Be("Evaluate Teachers (CT)");
+            workAreaContext.RoleName.Should().Be("Consulting Teacher");
+            workAreaContext.EvaluatorTerm.Should().Be("CT");
+            workAreaContext.EvaluatorTermLC.Should().Be("CT");
+            workAreaContext.EvaluateeTerm.Should().Be("Teacher");
+            workAreaContext.EvaluateeTermLC.Should().Be("teacher");
+            workAreaContext.EvaluationType.Should().Be(EvaluationType.TEACHER_CT_SPS);
+            workAreaContext.IsEvaluatee.Should().BeFalse();
+            workAreaContext.IsEvaluator.Should().BeTrue();
+            workAreaContext.IsSchoolAdmin.Should().BeFalse();
+            workAreaContext.IsDistrictAdmin.Should().BeFalse();
+
+            workAreaContext.Priority.Should().BeGreaterThanOrEqualTo(0);
+        }
+
+        public async Task DAN_SA_TR_WorkAreaContext_Should_Have_Basic_Properties()
+        {
+            var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
+            var userName = DAN_District.School1.SchoolAdmin.UserName;
+
+            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
+            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+
+            workAreaContexts.Count.Should().Be(2);
+            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.SA_TR));
+            workAreaContext.Should().NotBeNull();
+
+            workAreaContext.DistrictName.Should().Be(DAN_District.DistrictName);
+            workAreaContext.DistrictCode.Should().Be(DAN_District.DistrictCode);
+            workAreaContext.SchoolName.Should().Be(DAN_District.School1.SchoolName);
+            workAreaContext.SchoolCode.Should().Be(DAN_District.School1.SchoolCode);
+            workAreaContext.IsSchool.Should().BeTrue();
+            workAreaContext.FrameworkContextName.Should().Be("Charlotte Danielson's Framework for Teaching (2011)");
+            workAreaContext.Title.Should().Be("Admin Teacher Evaluations");
+            workAreaContext.RoleName.Should().Be("School Admin");
+            workAreaContext.EvaluatorTerm.Should().Be("Evaluator");
+            workAreaContext.EvaluatorTermLC.Should().Be("evaluator");
+            workAreaContext.EvaluateeTerm.Should().Be("Teacher");
+            workAreaContext.EvaluateeTermLC.Should().Be("teacher");
+            workAreaContext.EvaluationType.Should().Be(EvaluationType.TEACHER);
+            workAreaContext.IsEvaluatee.Should().BeFalse();
+            workAreaContext.IsEvaluator.Should().BeFalse();
+            workAreaContext.IsSchoolAdmin.Should().BeTrue();
+            workAreaContext.IsDistrictAdmin.Should().BeFalse();
+
+            workAreaContext.Priority.Should().BeGreaterThanOrEqualTo(0);
+        }
+
         [Fact]
         public async Task DAN_HEAD_PR_Should_Have_Four_WorkAreaContext_PR_PR_and_PR_TR_and_PR_ME_and_SA_PR_and_SA_TR()
         {

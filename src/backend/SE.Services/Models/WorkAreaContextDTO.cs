@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SE.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,12 +19,12 @@ namespace SE.Core.Models
         public string SchoolCode { get; set; }
         public Boolean IsSchool { get; set; }
         public string RoleName { get; set; }
-        public string EvaluatorRoleName { get; set; }
-        public string EvaluateeRoleName { get; set; }
+        public string EvaluatorTerm { get; set; }
+        public string EvaluateeTerm { get; set; }
 
-        public string EvaluatorRoleNameLC { get; set; }
-        public string EvaluateeRoleNameLC { get; set; }
-        public int EvaluationType { get; set; }
+        public string EvaluatorTermLC { get; set; }
+        public string EvaluateeTermLC { get; set; }
+        public EvaluationType EvaluationType { get; set; }
 
         public long FrameworkContextId { get; set; }
         public string FrameworkContextName { get; set; }
@@ -38,8 +39,6 @@ namespace SE.Core.Models
         public bool IsDistrictAdmin { get; set; }
 
         public int Priority { get; set; }
-
-        public string RouteParam { get; set; }
     }
   
 }
