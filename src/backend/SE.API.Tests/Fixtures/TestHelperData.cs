@@ -70,7 +70,7 @@ namespace SE.API.Tests.Fixtures
             TeacherB = CreateUser(RoleType.TR, schoolIndex, "B");
             PrincipalA = CreateUser(RoleType.PR, schoolIndex, "A");
             PrincipalB = CreateUser(RoleType.PR, schoolIndex, "B");
-            SchoolAdmin = PrincipalB;
+            SchoolAdmin = CreateUser(RoleType.SA, schoolIndex, "");
             HeadPrincipal = PrincipalB;
 
         }

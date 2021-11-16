@@ -45,6 +45,7 @@ namespace SE.Services.Queries
                 User? user = await _dataContext.Users
                     .Include(x => x.WorkAreaContexts).ThenInclude(x => x.FrameworkContext)
                     .Include(x => x.WorkAreaContexts).ThenInclude(x => x.Building)
+                    .Include(x => x.WorkAreaContexts).ThenInclude(x => x.WorkArea).ThenInclude(x => x.Role)
                     .Include(x => x.WorkAreaContexts).ThenInclude(x => x.WorkArea).ThenInclude(x=>x.EvaluateeRole)
                     .Where(x => x.Id == request.Id).FirstOrDefaultAsync(cancellationToken: cancellationToken);
 

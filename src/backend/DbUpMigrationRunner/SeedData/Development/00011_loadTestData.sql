@@ -73,9 +73,17 @@ BEGIN
 		SELECT @userId, @PrincipalRoleId, @BuildingId
 
 		IF (@nextPrincipalId is null) BEGIN
+			-- make the last principal also head principal and school admin
 			INSERT UserBuildingRole(UserId, RoleId, BuildingId)
 			SELECT @userId, @HeadPrincipalRoleId, @BuildingId
 
+			INSERT UserBuildingRole(UserId, RoleId, BuildingId)
+			SELECT @userId, @SchoolAdminRoleId, @BuildingId
+
+			-- add one school admin with no other role
+			INSERT [User](UserName, FirstName, LastName, OTPW, LoginName, EmailAddress, ProfileImageUrl) 
+			SELECT  'School Admin' + ' ' + @SchoolName,'School Admin' ,@SchoolName ,'','noop@noop.com', 'noop@noop.com' , ''
+			SELECT @userId = @@IDENTITY
 			INSERT UserBuildingRole(UserId, RoleId, BuildingId)
 			SELECT @userId, @SchoolAdminRoleId, @BuildingId
 		end
