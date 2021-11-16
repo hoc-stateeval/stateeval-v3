@@ -50,6 +50,7 @@ namespace SE.Core.Queries
                 {
                     Id = framework.Id,
                     Name = framework.Name,
+                    FrameworkTagName = framework.FrameworkTagName,
                     FrameworkNodes = framework.FrameworkNodes.Select(fn => new FrameworkNodeDTO()
                     {
                         Id = fn.Id,

@@ -10,6 +10,7 @@ namespace SE.Core.Models
     {
         public long Id { get; set; }
         public string Name { get; set; }
+        public string FrameworkTagName { get; set; }
 
         public List<FrameworkNodeDTO> FrameworkNodes { get; set; }
     }
