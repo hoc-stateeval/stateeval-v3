@@ -14,6 +14,9 @@ namespace SE.Core.Models
         public long EvaluateeId { get; set; }
         public long EvaluatorId { get; set; }
 
+        public EvaluationType EvaluationType { get; set; }
+        public string EvaluationTypeDisplayName { get; set; }
+
         public string ProfileImageUrl { get; set; }
 
         public string EvaluateeDisplayName { get; set; }

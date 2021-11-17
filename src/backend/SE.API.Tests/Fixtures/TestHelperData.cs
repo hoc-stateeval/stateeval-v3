@@ -68,6 +68,8 @@ namespace SE.API.Tests.Fixtures
 
             TeacherA = CreateUser(RoleType.TR, schoolIndex, "A");
             TeacherB = CreateUser(RoleType.TR, schoolIndex, "B");
+            TeacherC = CreateUser(RoleType.TR, schoolIndex, "C");
+            TeacherD = CreateUser(RoleType.TR, schoolIndex, "D");
             PrincipalA = CreateUser(RoleType.PR, schoolIndex, "A");
             PrincipalB = CreateUser(RoleType.PR, schoolIndex, "B");
             SchoolAdmin = CreateUser(RoleType.SA, schoolIndex, "");
@@ -82,6 +84,9 @@ namespace SE.API.Tests.Fixtures
         public TestUser SchoolAdmin { get; set; }
         public TestUser TeacherA { get; set; }
         public TestUser TeacherB { get; set; }
+        public TestUser TeacherC { get; set; }
+        public TestUser TeacherD { get; set; }
+
         public TestUser PrincipalA { get; set; }
         public TestUser PrincipalB { get; set; }
         public TestUser HeadPrincipal { get; set; }

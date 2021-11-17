@@ -13,9 +13,9 @@ using SE.Domain.Entities;
 
 namespace SE.API.Tests
 {
-    public class FrameworkControllerTests : IntegrationTest
+    public class FrameworkTests : IntegrationTest
     {
-        public FrameworkControllerTests(ApiWebApplicationFactory fixture)
+        public FrameworkTests(ApiWebApplicationFactory fixture)
             : base(fixture) { }
 
         [Fact]
@@ -31,18 +31,19 @@ namespace SE.API.Tests
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
             var userName = DAN_District.School1.PrincipalA.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(2);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_TR));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
+            workAreaContext.InstructionalFrameworkId.Should().NotBeNull();
 
-            var framework = await _client.GetAndDeserialize<FrameworkDTO>($"/frameworks/{workAreaContext.StateFrameworkId}");
+            var framework = await TestHelpers.GetFrameworkById(_client, workAreaContext.StateFrameworkId);
             framework.Should().NotBeNull();
             framework.Name.Should().Be("Danielson State");
 
-            framework = await _client.GetAndDeserialize<FrameworkDTO>($"/frameworks/{workAreaContext.InstructionalFrameworkId}");
+            framework = await TestHelpers.GetFrameworkById(_client, Convert.ToInt32(workAreaContext.InstructionalFrameworkId));
             framework.Should().NotBeNull();
             framework.Name.Should().Be("Danielson Instructional");
         }
@@ -53,15 +54,15 @@ namespace SE.API.Tests
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
             var userName = DAN_District.School1.PrincipalA.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(2);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_ME));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_ME);
             workAreaContext.Should().NotBeNull();
             workAreaContext.InstructionalFrameworkId.Should().BeNull();
 
-            var framework = await _client.GetAndDeserialize<FrameworkDTO>($"/frameworks/{workAreaContext.StateFrameworkId}");
+            var framework = await TestHelpers.GetFrameworkById(_client, workAreaContext.StateFrameworkId);
             framework.Should().NotBeNull();
             framework.Name.Should().Be("Leadership");
         }
@@ -72,18 +73,19 @@ namespace SE.API.Tests
             var CEL_District = new District(DistrictNames.CEL, DistrictCodes.CEL);
             var userName = CEL_District.School1.PrincipalA.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(2);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_TR));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
 
-            var framework = await _client.GetAndDeserialize<FrameworkDTO>($"/frameworks/{workAreaContext.StateFrameworkId}");
+            var framework = await TestHelpers.GetFrameworkById(_client, workAreaContext.StateFrameworkId);
             framework.Should().NotBeNull();
             framework.Name.Should().Be("CEL State");
 
-            framework = await _client.GetAndDeserialize<FrameworkDTO>($"/frameworks/{workAreaContext.InstructionalFrameworkId}");
+            workAreaContext.InstructionalFrameworkId.Should().NotBeNull();
+            framework = await TestHelpers.GetFrameworkById(_client, Convert.ToInt32(workAreaContext.InstructionalFrameworkId));
             framework.Should().NotBeNull();
             framework.Name.Should().Be("CEL Instructional");
         }
@@ -94,15 +96,15 @@ namespace SE.API.Tests
             var CEL_District = new District(DistrictNames.CEL, DistrictCodes.CEL);
             var userName = CEL_District.School1.PrincipalA.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(2);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_ME));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_ME);
             workAreaContext.Should().NotBeNull();
             workAreaContext.InstructionalFrameworkId.Should().BeNull();
 
-            var framework = await _client.GetAndDeserialize<FrameworkDTO>($"/frameworks/{workAreaContext.StateFrameworkId}");
+            var framework = await TestHelpers.GetFrameworkById(_client, workAreaContext.StateFrameworkId);
             framework.Should().NotBeNull();
             framework.Name.Should().Be("Leadership");
         }
@@ -114,19 +116,20 @@ namespace SE.API.Tests
             var MAR_District = new District(DistrictNames.MAR, DistrictCodes.MAR);
             var userName = MAR_District.School1.PrincipalA.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(2);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_TR));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
+            workAreaContext.InstructionalFrameworkId.Should().NotBeNull();
 
-            var framework = await _client.GetAndDeserialize<FrameworkDTO>($"/frameworks/{workAreaContext.StateFrameworkId}");
+            var framework = await TestHelpers.GetFrameworkById(_client, workAreaContext.StateFrameworkId);
             framework.Should().NotBeNull();
             framework.Name.Should().Be("Marzano State");
             framework.FrameworkTagName.Should().Be("MAR-TR");
 
-            framework = await _client.GetAndDeserialize<FrameworkDTO>($"/frameworks/{workAreaContext.InstructionalFrameworkId}");
+            framework = await TestHelpers.GetFrameworkById(_client, Convert.ToInt32(workAreaContext.InstructionalFrameworkId));
             framework.Should().NotBeNull();
             framework.Name.Should().Be("Marzano Instructional");
             framework.FrameworkTagName.Should().Be("MAR-TR");
@@ -138,20 +141,20 @@ namespace SE.API.Tests
             var MAR_District = new District(DistrictNames.MAR, DistrictCodes.MAR);
             var userName = MAR_District.School1.PrincipalA.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(2);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_ME));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_ME);
             workAreaContext.Should().NotBeNull();
             workAreaContext.InstructionalFrameworkId.Should().NotBeNull();
 
-            var framework = await _client.GetAndDeserialize<FrameworkDTO>($"/frameworks/{workAreaContext.StateFrameworkId}");
+            var framework = await TestHelpers.GetFrameworkById(_client, workAreaContext.StateFrameworkId);
             framework.Should().NotBeNull();
             framework.Name.Should().Be("Marzano State");
             framework.FrameworkTagName.Should().Be("MAR-PR");
 
-            framework = await _client.GetAndDeserialize<FrameworkDTO>($"/frameworks/{workAreaContext.InstructionalFrameworkId}");
+            framework = await TestHelpers.GetFrameworkById(_client, Convert.ToInt32(workAreaContext.InstructionalFrameworkId));
             framework.Should().NotBeNull();
             framework.Name.Should().Be("Marzano Instructional");
             framework.FrameworkTagName.Should().Be("MAR-PR");
@@ -163,14 +166,14 @@ namespace SE.API.Tests
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
             var userName = DAN_District.School1.PrincipalA.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(2);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_TR));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
 
-            var framework = await _client.GetAndDeserialize<FrameworkDTO>($"/frameworks/{workAreaContext.StateFrameworkId}");
+            var framework = await TestHelpers.GetFrameworkById(_client, workAreaContext.StateFrameworkId);
             framework.Should().NotBeNull();
             framework.Name.Should().Be("Danielson State");
 
@@ -191,14 +194,14 @@ namespace SE.API.Tests
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
             var userName = DAN_District.School1.PrincipalA.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(2);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_TR));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
 
-            var framework = await _client.GetAndDeserialize<FrameworkDTO>($"/frameworks/{workAreaContext.StateFrameworkId}");
+            var framework = await TestHelpers.GetFrameworkById(_client, workAreaContext.StateFrameworkId);
             framework.Should().NotBeNull();
             framework.Name.Should().Be("Danielson State");
 
@@ -212,19 +215,43 @@ namespace SE.API.Tests
         }
 
         [Fact]
+        public async Task DAN_TR_Eval_Instructional_Framework_Should_Have_Eight_FrameworkNodes()
+        {
+            var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
+            var userName = DAN_District.School1.PrincipalA.UserName;
+
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
+
+            workAreaContexts.Count.Should().Be(2);
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
+            workAreaContext.Should().NotBeNull();
+
+            var framework = await TestHelpers.GetFrameworkById(_client, workAreaContext.StateFrameworkId);
+            framework.Should().NotBeNull();
+            framework.Name.Should().Be("Danielson Instructional");
+
+            framework.FrameworkNodes.Count.Should().Be(4);
+            framework.FrameworkNodes.Where(x => x.ShortName == "D1").Count().Should().Be(1);
+            framework.FrameworkNodes.Where(x => x.ShortName == "D2").Count().Should().Be(1);
+            framework.FrameworkNodes.Where(x => x.ShortName == "D3").Count().Should().Be(1);
+            framework.FrameworkNodes.Where(x => x.ShortName == "D4").Count().Should().Be(1);
+        }
+
+        [Fact]
         public async Task DAN_TR_Eval_Instructional_Framework_D1_Should_Have_Six_RubricRows()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
             var userName = DAN_District.School1.PrincipalA.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(2);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_TR));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
 
-            var framework = await _client.GetAndDeserialize<FrameworkDTO>($"/frameworks/{workAreaContext.InstructionalFrameworkId}");
+            var framework = await TestHelpers.GetFrameworkById(_client, workAreaContext.StateFrameworkId);
             framework.Should().NotBeNull();
             framework.Name.Should().Be("Danielson Instructional");
 
@@ -238,34 +265,6 @@ namespace SE.API.Tests
             rubricRows.Where(x => x.ShortName == "1d").Count().Should().Be(1);
             rubricRows.Where(x => x.ShortName == "1e").Count().Should().Be(1);
             rubricRows.Where(x => x.ShortName == "1f").Count().Should().Be(1);
-        }
-
-        [Fact]
-        public async Task DAN_TR_Eval_Instructional_Framework_Should_Have_Eight_FrameworkNodes()
-        {
-            var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.School1.PrincipalA.UserName;
-
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
-
-            workAreaContexts.Count.Should().Be(2);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_TR));
-            workAreaContext.Should().NotBeNull();
-
-            var framework = await _client.GetAndDeserialize<FrameworkDTO>($"/frameworks/{workAreaContext.InstructionalFrameworkId}");
-            framework.Should().NotBeNull();
-            framework.Name.Should().Be("Danielson Instructional");
-
-            framework.FrameworkNodes.Count.Should().Be(8);
-            framework.FrameworkNodes.Where(x => x.ShortName == "D1").Count().Should().Be(1);
-            framework.FrameworkNodes.Where(x => x.ShortName == "D2").Count().Should().Be(1);
-            framework.FrameworkNodes.Where(x => x.ShortName == "D3").Count().Should().Be(1);
-            framework.FrameworkNodes.Where(x => x.ShortName == "D4").Count().Should().Be(1);
-            framework.FrameworkNodes.Where(x => x.ShortName == "D5").Count().Should().Be(1);
-            framework.FrameworkNodes.Where(x => x.ShortName == "D6").Count().Should().Be(1);
-            framework.FrameworkNodes.Where(x => x.ShortName == "D7").Count().Should().Be(1);
-            framework.FrameworkNodes.Where(x => x.ShortName == "D8").Count().Should().Be(1);
         }
 
 

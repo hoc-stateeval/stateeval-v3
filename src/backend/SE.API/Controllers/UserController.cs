@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SE.Core.Commands;
 using SE.Core.Queries;
 using SE.Services.Queries;
 
@@ -37,6 +38,30 @@ namespace SE.API.Controllers
         {
             var user = await _mediator.Send(new GetEvaluationsForWorkAreaContextQuery(userId, workAreaContextId));
             return Ok(user);
+        }
+
+        [HttpPut("[action]")]
+        [Route("{userId}/workarea-contexts/{workAreaContextId}/evaluations/{evaluationId}")]
+        public async Task<IActionResult> UpdateEvaluateePlanTypeToFocused(long userId, long workAreaContextId, long evaluationId, UpdateEvaluateePlanTypeToFocusedCommand command)
+        {
+            if (userId != command.UserId || workAreaContextId != command.WorkAreaContextId || evaluationId != command.EvaluationId)
+            {
+                return BadRequest();
+            }
+            await _mediator.Send(command);
+            return NoContent();
+        }
+
+        [HttpPut("[action]")]
+        [Route("{userId}/workarea-contexts/{workAreaContextId}/evaluations/{evaluationId}")]
+        public async Task<IActionResult> UpdateEvaluateePlanTypeToFocused(long userId, long workAreaContextId, long evaluationId, UpdateEvaluateePlanTypeToComprehensiveCommand command)
+        {
+            if (userId != command.UserId || workAreaContextId != command.WorkAreaContextId || evaluationId != command.EvaluationId)
+            {
+                return BadRequest();
+            }
+            await _mediator.Send(command);
+            return NoContent();
         }
     }
 }

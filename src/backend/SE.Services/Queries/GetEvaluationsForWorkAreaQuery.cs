@@ -83,6 +83,9 @@ namespace SE.Services.Queries
                     EvaluateeId = e.EvaluateeId,
                     EvaluatorId = e.Evaluator.Id,
 
+                    EvaluationType = e.EvaluationType,
+                    EvaluationTypeDisplayName = EnumUtils.EvaluationTypeDisplayName(e.EvaluationType),
+
                     PlanType = (EvaluateePlanType)e.EvaluateePlanType,
                     EvaluateePlanTypeDisplayName = EnumUtils.MapEvaluateePlanTypeToDisplayName(e.EvaluateePlanType),
 

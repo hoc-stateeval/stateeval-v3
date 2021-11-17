@@ -237,6 +237,19 @@ namespace SE.Domain.Entities
             return evaluateeTerm;
         }
 
+        public static string EvaluationTypeDisplayName(EvaluationType evaluationType)
+        {
+            var displayName = evaluationType switch
+            {
+                EvaluationType.TEACHER => "Teacher",
+                EvaluationType.PRINCIPAL => "Principal",
+                EvaluationType.TEACHER_CT_SPS => "Teacher (CT)",
+                _ => throw new NotImplementedException($"EvaluationTypeDisplayName: Unknown evalType: {evaluationType}")
+            };
+
+            return displayName;
+        }
+
         public static string MapEvaluationTypeToEvaluatorTerm(EvaluationType evaluationType)
         {
             var evaluatorTerm = evaluationType switch

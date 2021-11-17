@@ -13,9 +13,9 @@ using SE.Domain.Entities;
 
 namespace SE.API.Tests
 {
-    public class WorkAreaContextControllerTests : IntegrationTest
+    public class WorkAreaContextTests : IntegrationTest
     {
-        public WorkAreaContextControllerTests(ApiWebApplicationFactory fixture)
+        public WorkAreaContextTests(ApiWebApplicationFactory fixture)
             : base(fixture) { }
 
 
@@ -26,10 +26,10 @@ namespace SE.API.Tests
             var userName = DAN_District.School1.PrincipalA.UserName;
 
             var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
-
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
+  
             workAreaContexts.Count.Should().Be(2);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_TR));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
 
             workAreaContext.DistrictName.Should().Be(DAN_District.DistrictName);
@@ -61,10 +61,10 @@ namespace SE.API.Tests
             var userName = DAN_District.School1.TeacherA.UserName;
 
             var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(1);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.TR_ME));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.TR_ME);
             workAreaContext.Should().NotBeNull();
 
             workAreaContext.DistrictName.Should().Be(DAN_District.DistrictName);
@@ -96,10 +96,10 @@ namespace SE.API.Tests
             var userName = DAN_District.School1.PrincipalA.UserName;
 
             var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(2);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_ME));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_ME);
             workAreaContext.Should().NotBeNull();
 
             workAreaContext.DistrictName.Should().Be(DAN_District.DistrictName);
@@ -129,11 +129,11 @@ namespace SE.API.Tests
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
             var userName = DAN_District.DistrictAdmin.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(2);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DA_TR));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DA_TR);
             workAreaContext.Should().NotBeNull();
 
             workAreaContext.DistrictName.Should().Be(DAN_District.DistrictName);
@@ -162,11 +162,11 @@ namespace SE.API.Tests
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
             var userName = DAN_District.DTE.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(1);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DTE));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DTE);
             workAreaContext.Should().NotBeNull();
 
             workAreaContext.DistrictName.Should().Be(DAN_District.DistrictName);
@@ -195,11 +195,11 @@ namespace SE.API.Tests
             var SPS_District = new District(DistrictNames.Seattle, DistrictCodes.Seattle);
             var userName = SPS_District.School2.PrincipalA.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(1);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.CT_SPS));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.CT_SPS);
             workAreaContext.Should().NotBeNull();
 
             workAreaContext.DistrictName.Should().Be(SPS_District.DistrictName);
@@ -228,11 +228,11 @@ namespace SE.API.Tests
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
             var userName = DAN_District.School1.SchoolAdmin.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(2);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.SA_TR));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.SA_TR);
             workAreaContext.Should().NotBeNull();
 
             workAreaContext.DistrictName.Should().Be(DAN_District.DistrictName);
@@ -264,23 +264,23 @@ namespace SE.API.Tests
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
             var userName = DAN_District.School1.PrincipalB.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(5);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_TR));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
 
-            workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_PR));
+            workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_PR);
             workAreaContext.Should().NotBeNull();
 
-            workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.SA_PR));
+            workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.SA_PR);
             workAreaContext.Should().NotBeNull();
 
-            workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.SA_TR));
+            workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.SA_TR);
             workAreaContext.Should().NotBeNull();
 
-            workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_ME));
+            workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_ME);
             workAreaContext.Should().NotBeNull();
         }
 
@@ -291,14 +291,14 @@ namespace SE.API.Tests
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
             var userName = DAN_District.School1.PrincipalA.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(2);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_TR));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
 
-            workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_ME));
+            workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_ME);
             workAreaContext.Should().NotBeNull();
         }
 
@@ -308,8 +308,8 @@ namespace SE.API.Tests
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
             var userName = DAN_District.School1.TeacherA.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(1);
             var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.TR_ME));
@@ -322,14 +322,14 @@ namespace SE.API.Tests
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
             var userName = DAN_District.DistrictAdmin.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(2);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DA_PR));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DA_PR);
             workAreaContext.Should().NotBeNull();
 
-            workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DA_TR));
+            workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DA_TR);
             workAreaContext.Should().NotBeNull();
         }
 
@@ -339,14 +339,14 @@ namespace SE.API.Tests
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
             var userName = DAN_District.School1.SchoolAdmin.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(2);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.SA_PR));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.SA_PR);
             workAreaContext.Should().NotBeNull();
 
-            workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.SA_TR));
+            workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.SA_TR);
             workAreaContext.Should().NotBeNull();
         }
 
@@ -356,11 +356,11 @@ namespace SE.API.Tests
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
             var userName = DAN_District.DTE.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(1);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DTE));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DTE);
             workAreaContext.Should().NotBeNull();
         }
 
@@ -371,11 +371,11 @@ namespace SE.API.Tests
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
             var userName = DAN_District.DistrictViewer.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(1);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DV));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DV);
             workAreaContext.Should().NotBeNull();
         }
 
@@ -385,14 +385,14 @@ namespace SE.API.Tests
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
             var userName = DAN_District.DistrictAssignmentManager.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(2);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DAM_PR));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DAM_PR);
             workAreaContext.Should().NotBeNull();
 
-            workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DAM_TR));
+            workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DAM_TR);
             workAreaContext.Should().NotBeNull();
         }
 
@@ -402,11 +402,11 @@ namespace SE.API.Tests
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
             var userName = DAN_District.DistrictEvaluator.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(1);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DE));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DE);
             workAreaContext.Should().NotBeNull();
         }
 
@@ -418,17 +418,17 @@ namespace SE.API.Tests
             var SPS_District = new District(DistrictNames.Seattle, DistrictCodes.Seattle);
             var userName = SPS_District.School2.PrincipalA.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(3);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.CT_SPS));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.CT_SPS);
             workAreaContext.Should().NotBeNull();
 
-            workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_TR));
+            workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
 
-            workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.PR_ME));
+            workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_ME);
             workAreaContext.Should().NotBeNull();
         }
 
@@ -440,18 +440,72 @@ namespace SE.API.Tests
             var SPS_District = new District(DistrictNames.Seattle, DistrictCodes.Seattle);
             var userName = SPS_District.DistrictAdmin.UserName;
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await _client.GetAndDeserialize<List<WorkAreaContextDTO>>($"/users/{user.Id}/workarea-contexts");
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
 
             workAreaContexts.Count.Should().Be(3);
-            var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DA_PR));
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DA_PR);
             workAreaContext.Should().NotBeNull();
 
-            workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DA_TR));
+            workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DA_TR);
             workAreaContext.Should().NotBeNull();
 
-            workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DA_CT_SPS));
+            workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DA_CT_SPS);
             workAreaContext.Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task MAR2__CEL2_DA_Should_Have_Two_DA_WorkAreas_For_Each_District()
+        {
+            // MAR2.DA is in roles in two districts: CEL2 and MAR2, and should therefore have DA workarea contexts in
+            // both districts
+
+            var MAR2_District = new District(DistrictNames.MAR2, DistrictCodes.MAR2);
+            var userName = MAR2_District.DistrictAdmin.UserName;
+
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
+
+            workAreaContexts.Count.Should().Be(4);
+           
+            workAreaContexts.FindAll(x => x.DistrictCode == DistrictCodes.CEL2 &&
+                                          x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DA_TR))
+                            .Count().Should().Be(1);
+
+            workAreaContexts.FindAll(x => x.DistrictCode == DistrictCodes.CEL2 &&
+                              x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DA_PR))
+                .Count().Should().Be(1);
+
+            workAreaContexts.FindAll(x => x.DistrictCode == DistrictCodes.MAR2 &&
+                                          x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DA_TR))
+                            .Count().Should().Be(1);
+
+            workAreaContexts.FindAll(x => x.DistrictCode == DistrictCodes.MAR2 &&
+                              x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DA_PR))
+                .Count().Should().Be(1);
+        }
+
+        [Fact]
+        public async Task MAR2_CEL2_Teacher_Should_Have_Two_TR_ME_WorkAreas_For_Each_District()
+        {
+            // MAR2.School2.TeacherB is a teacher in two districts: CEL2 and MAR2, and should therefore
+            // have TR_ME workarea contexts in both districts
+
+            var MAR2_District = new District(DistrictNames.MAR2, DistrictCodes.MAR2);
+            var userName = MAR2_District.School2.TeacherB.UserName;
+
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
+
+            workAreaContexts.Count.Should().Be(2);
+
+            workAreaContexts.FindAll(x => x.DistrictCode == DistrictCodes.CEL2 &&
+                                          x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.TR_ME))
+                            .Count().Should().Be(1);
+
+            workAreaContexts.FindAll(x => x.DistrictCode == DistrictCodes.MAR2 &&
+                                          x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.TR_ME))
+                            .Count().Should().Be(1);
         }
 
     }
