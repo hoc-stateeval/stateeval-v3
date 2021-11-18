@@ -1,12 +1,15 @@
-﻿using SE.Core.Commands;
+﻿using FluentAssertions;
+using SE.Core.Commands;
 using SE.Core.Models;
 using SE.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace SE.API.Tests.Utils
@@ -45,19 +48,17 @@ namespace SE.API.Tests.Utils
             return framework;
         }
 
-        public async static Task<HttpResponseMessage> UpdateEvaluateePlanTypeToFocused(HttpClient client, long userId, long workAreaContextId, 
-            long evaluationId, UpdateEvaluateePlanTypeToFocusedCommand command)
+        public async static Task<HttpResponseMessage> UpdateEvaluateePlanType(HttpClient client, long userId, long workAreaContextId, 
+            long evaluationId, UpdateEvaluateePlanTypeCommand command)
         {
-            var url = $"/users/{userId}/workarea-contexts/{workAreaContextId}/evaluations/{evaluationId}";
-            var response = await client.PostAsJsonAsync(url, command);
-            return response;
-        }
 
-        public async static Task<HttpResponseMessage> UpdateEvaluateePlanTypeToComprehensive(HttpClient client, long userId, long workAreaContextId,
-            long evaluationId, UpdateEvaluateePlanTypeToComprehensiveCommand command)
-        {
+            //string json = JsonSerializer.Serialize(command);
+            //using var content = new StringContent(json);
+            //content.Headers.ContentType.MediaType = "application/json";
+
             var url = $"/users/{userId}/workarea-contexts/{workAreaContextId}/evaluations/{evaluationId}";
-            var response = await client.PostAsJsonAsync(url, command);
+            var response = await client.PutAsJsonAsync(url, command);
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
             return response;
         }
     }

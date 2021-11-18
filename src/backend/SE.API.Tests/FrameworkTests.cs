@@ -226,8 +226,9 @@ namespace SE.API.Tests
             workAreaContexts.Count.Should().Be(2);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
+            workAreaContext.InstructionalFrameworkId.Should().NotBeNull();
 
-            var framework = await TestHelpers.GetFrameworkById(_client, workAreaContext.StateFrameworkId);
+            var framework = await TestHelpers.GetFrameworkById(_client, Convert.ToInt32(workAreaContext.InstructionalFrameworkId));
             framework.Should().NotBeNull();
             framework.Name.Should().Be("Danielson Instructional");
 
@@ -250,8 +251,9 @@ namespace SE.API.Tests
             workAreaContexts.Count.Should().Be(2);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
+            workAreaContext.InstructionalFrameworkId.Should().NotBeNull();
 
-            var framework = await TestHelpers.GetFrameworkById(_client, workAreaContext.StateFrameworkId);
+            var framework = await TestHelpers.GetFrameworkById(_client, Convert.ToInt32(workAreaContext.InstructionalFrameworkId));
             framework.Should().NotBeNull();
             framework.Name.Should().Be("Danielson Instructional");
 

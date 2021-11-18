@@ -68,7 +68,7 @@ namespace SE.API.Tests
         public async Task Evaluation_Should_Be_Able_To_Change_EvaluateePlanType()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.School1.PrincipalA.UserName;
+            var userName = DAN_District.School2.PrincipalA.UserName;
 
             var user = await TestHelpers.GetUserByUserName(_client, userName);
             var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
@@ -78,7 +78,7 @@ namespace SE.API.Tests
             workAreaContext.Should().NotBeNull();
 
             var evaluations = await TestHelpers.GetEvaluationsForWorkArea(_client, user.Id, workAreaContext.Id);
-            var evaluation = evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School1.TeacherA.UserName);
+            var evaluation = evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School2.TeacherD.UserName);
             evaluation.Should().NotBeNull();
 
             var framework = await TestHelpers.GetFrameworkById(_client, workAreaContext.StateFrameworkId);
@@ -88,12 +88,15 @@ namespace SE.API.Tests
             var focusSGFrameworkNode = framework.FrameworkNodes.Find(x => x.ShortName == "C6");
             focusSGFrameworkNode.Should().NotBeNull();
 
-            var command = new UpdateEvaluateePlanTypeToFocusedCommand(user.Id, workAreaContext.Id, evaluation.Id,
-                                    focusFrameworkNode.Id, focusSGFrameworkNode.Id, SchoolYear.SY_2020, 
-                                    RubricPerformanceLevel.PL3);
+            var command = new UpdateEvaluateePlanTypeCommand(user.Id, workAreaContext.Id, evaluation.Id, EvaluateePlanType.FOCUSED, 
+                                        focusFrameworkNode.Id, focusSGFrameworkNode.Id, SchoolYear.SY_2020, RubricPerformanceLevel.PL3);
 
-            await TestHelpers.UpdateEvaluateePlanTypeToFocused(_client, user.Id, workAreaContext.Id, evaluation.Id, command);
 
+            await TestHelpers.UpdateEvaluateePlanType(_client, user.Id, workAreaContext.Id, evaluation.Id, command);
+
+            evaluations = await TestHelpers.GetEvaluationsForWorkArea(_client, user.Id, workAreaContext.Id);
+            evaluation = evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School2.TeacherD.UserName);
+            evaluation.Should().NotBeNull();
 
             evaluation.PlanType.Should().Be(EvaluateePlanType.FOCUSED);
             evaluation.ComprehensiveCarryForward.Should().Be(true);
@@ -104,17 +107,19 @@ namespace SE.API.Tests
             evaluation.ComprehensiveCarryForwardPerformanceLevel.Should().Be(RubricPerformanceLevel.PL3);
             evaluation.ComprehensiveCarryForwardSchoolYear.Should().Be(SchoolYear.SY_2020);
 
-            var command2 = new UpdateEvaluateePlanTypeToComprehensiveCommand(user.Id, workAreaContext.Id, evaluation.Id);
+            var command2 = new UpdateEvaluateePlanTypeCommand(user.Id, workAreaContext.Id, evaluation.Id, EvaluateePlanType.COMPREHENSIVE);
 
-            await TestHelpers.UpdateEvaluateePlanTypeToComprehensive(_client, user.Id, workAreaContext.Id, evaluation.Id, command2);
-
+            await TestHelpers.UpdateEvaluateePlanType(_client, user.Id, workAreaContext.Id, evaluation.Id, command2);
+            evaluations = await TestHelpers.GetEvaluationsForWorkArea(_client, user.Id, workAreaContext.Id);
+            evaluation = evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School2.TeacherD.UserName);
+            evaluation.Should().NotBeNull();
 
             evaluation.PlanType.Should().Be(EvaluateePlanType.COMPREHENSIVE);
             evaluation.ComprehensiveCarryForward.Should().Be(false);
             evaluation.FocusedFrameworkNodeId.Should().BeNull();
             evaluation.FocusedSGFrameworkNodeId.Should().BeNull();
-            evaluation.FocusedFrameworkNodeDisplayName.Should().BeNull();
-            evaluation.FocusedSGFrameworkNodeDisplayName.Should().BeNull();
+            evaluation.FocusedFrameworkNodeDisplayName.Should().BeEmpty();
+            evaluation.FocusedSGFrameworkNodeDisplayName.Should().BeEmpty();
             evaluation.ComprehensiveCarryForwardPerformanceLevel.Should().BeNull();
             evaluation.ComprehensiveCarryForwardSchoolYear.Should().BeNull();
         }

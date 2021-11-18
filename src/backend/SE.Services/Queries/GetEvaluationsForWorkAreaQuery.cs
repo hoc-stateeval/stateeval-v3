@@ -54,6 +54,8 @@ namespace SE.Services.Queries
                 var query = _dataContext.Evaluations
                     .Include(x => x.Evaluatee)
                     .Include(x => x.Evaluator)
+                    .Include(x => x.FocusedFrameworkNode)
+                    .Include(x => x.FocusedSGFrameworkNode)
                     .Where(x => x.IsActive &&
                                 x.SchoolYear == EnumUtils.CurrentSchoolYear &&
                                 x.DistrictCode == workAreaContext.Building.DistrictCode &&
@@ -90,11 +92,14 @@ namespace SE.Services.Queries
                     EvaluateePlanTypeDisplayName = EnumUtils.MapEvaluateePlanTypeToDisplayName(e.EvaluateePlanType),
 
                     ComprehensiveCarryForward = System.Convert.ToBoolean(e.ComprehensiveCarryForward),
-                    ComprehensiveCarryForwardPerformanceLevel =
-                     (RubricPerformanceLevel)System.Convert.ToInt16(e.ComprehensiveCarryForwardPerformanceLevel),
-                    ComprehensiveCarryForwardSchoolYear = (SchoolYear)System.Convert.ToInt16(e.ComprehensiveCarryForwardSchoolYear),
+                    ComprehensiveCarryForwardPerformanceLevel = e.ComprehensiveCarryForwardPerformanceLevel!=null?
+                                        (RubricPerformanceLevel)System.Convert.ToInt16(e.ComprehensiveCarryForwardPerformanceLevel):null,
+                    ComprehensiveCarryForwardSchoolYear = e.ComprehensiveCarryForwardPerformanceLevel!=null?
+                                        (SchoolYear)System.Convert.ToInt16(e.ComprehensiveCarryForwardSchoolYear):null,
                     FocusedFrameworkNodeId = e.FocusedFrameworkNodeId,
                     FocusedSGFrameworkNodeId = e.FocusedSGFrameworkNodeId,
+                    FocusedFrameworkNodeDisplayName = (e.FocusedFrameworkNode!=null)? e.FocusedFrameworkNode.ShortName:"",
+                    FocusedSGFrameworkNodeDisplayName = (e.FocusedSGFrameworkNode != null) ? e.FocusedSGFrameworkNode.ShortName : "",
 
                 }).OrderBy(x => x.EvaluateeDisplayName).ToList();
 
