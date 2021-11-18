@@ -26,15 +26,15 @@ namespace SE.API.Controllers
         [HttpGet("{userId}/workarea-contexts")]
         public async Task<IActionResult> GetWorkAreaContextsForUser(long userId)
         {
-            var user = await _mediator.Send(new GetWorkAreaContextsForUserQuery(userId));
-            return Ok(user);
+            var workAreaContexts = await _mediator.Send(new GetWorkAreaContextsForUserQuery(userId));
+            return Ok(workAreaContexts);
         }
 
         [HttpGet("{userId}/workarea-contexts/{workAreaContextId}/evaluations")]
         public async Task<IActionResult> GetEvaluationsForWorkAreaContext(long userId, long workAreaContextId)
         {
-            var user = await _mediator.Send(new GetEvaluationsForWorkAreaContextQuery(userId, workAreaContextId));
-            return Ok(user);
+            var evaluations = await _mediator.Send(new GetEvaluationsForWorkAreaContextQuery(userId, workAreaContextId));
+            return Ok(evaluations);
         }
 
         [HttpPut("{userId}/workarea-contexts/{workAreaContextId}/evaluations/{evaluationId}/updateplantype")]
