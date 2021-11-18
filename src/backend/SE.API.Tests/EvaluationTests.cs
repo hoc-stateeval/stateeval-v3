@@ -123,5 +123,37 @@ namespace SE.API.Tests
             evaluation.ComprehensiveCarryForwardPerformanceLevel.Should().BeNull();
             evaluation.ComprehensiveCarryForwardSchoolYear.Should().BeNull();
         }
+
+        [Fact]
+        public async Task Evaluation_Should_Be_Able_To_Change_Evalator()
+        {
+            var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
+            var userName = DAN_District.School2.PrincipalA.UserName;
+
+            var user = await TestHelpers.GetUserByUserName(_client, userName);
+            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
+
+            workAreaContexts.Count.Should().Be(2);
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
+            workAreaContext.Should().NotBeNull();
+
+            var evaluations = await TestHelpers.GetEvaluationsForWorkArea(_client, user.Id, workAreaContext.Id);
+            var evaluation = evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School2.TeacherD.UserName);
+            evaluation.Should().NotBeNull();
+
+            var prB = await TestHelpers.GetUserByUserName(_client, DAN_District.School2.PrincipalB.UserName);
+
+
+            var command = new UpdateEvaluatorCommand(user.Id, workAreaContext.Id, evaluation.Id, prB.Id);
+
+            await TestHelpers.UpdateEvaluator(_client, user.Id, workAreaContext.Id, evaluation.Id, command);
+
+            evaluations = await TestHelpers.GetEvaluationsForWorkArea(_client, user.Id, workAreaContext.Id);
+            evaluation = evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School2.TeacherD.UserName);
+            evaluation.Should().NotBeNull();
+
+            evaluation.EvaluatorId.Should().Be(prB.Id);
+
+        }
     }
 }

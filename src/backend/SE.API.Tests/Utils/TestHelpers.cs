@@ -51,12 +51,16 @@ namespace SE.API.Tests.Utils
         public async static Task<HttpResponseMessage> UpdateEvaluateePlanType(HttpClient client, long userId, long workAreaContextId, 
             long evaluationId, UpdateEvaluateePlanTypeCommand command)
         {
+            var url = $"/users/{userId}/workarea-contexts/{workAreaContextId}/evaluations/{evaluationId}/updateplantype";
+            var response = await client.PutAsJsonAsync(url, command);
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+            return response;
+        }
 
-            //string json = JsonSerializer.Serialize(command);
-            //using var content = new StringContent(json);
-            //content.Headers.ContentType.MediaType = "application/json";
-
-            var url = $"/users/{userId}/workarea-contexts/{workAreaContextId}/evaluations/{evaluationId}";
+        public async static Task<HttpResponseMessage> UpdateEvaluator(HttpClient client, long userId, long workAreaContextId,
+            long evaluationId, UpdateEvaluatorCommand command)
+        {
+            var url = $"/users/{userId}/workarea-contexts/{workAreaContextId}/evaluations/{evaluationId}/updateevaluator";
             var response = await client.PutAsJsonAsync(url, command);
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
             return response;
