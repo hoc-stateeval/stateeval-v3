@@ -15,8 +15,7 @@ namespace SE.API.Controllers
         {
         }
 
-        [HttpGet]
-        [Route("{districtcode}")]
+        [HttpGet("{districtcode}")]
         public async Task<IActionResult> GetDistrictById(string districtcode)
         {
             throw new NotImplementedException();
@@ -24,8 +23,7 @@ namespace SE.API.Controllers
             //return Ok(evaluation);
         }
 
-        [HttpGet]
-        [Route("{districtcode}/schools")]
+        [HttpGet("{districtcode}/schools")]
         public async Task<IActionResult> GetSchoolsInDistrict(string districtcode)
         {
             throw new NotImplementedException();
@@ -33,11 +31,10 @@ namespace SE.API.Controllers
             //return Ok(evaluation);
         }
 
-        [HttpGet]
-        [Route("{districtCode}/schools/{schoolCode}/evauations/{evaluationType}")]
-        public async Task<IActionResult> GetEvaluationsInSchool(string districtCode, string schoolCode, EvaluationType evaluationType)
+        [HttpGet("{districtCode}/schools/{schoolCode}/evaluations/{evaluationType}")]
+        public async Task<IActionResult> GetEvaluationsForSchool(string districtCode, string schoolCode, int evaluationType)
         {
-            var evaluations = await _mediator.Send(new GetEvaluationsForSchoolQuery(districtCode, schoolCode, evaluationType));
+            var evaluations = await _mediator.Send(new GetEvaluationsForSchoolQuery(districtCode, schoolCode, (EvaluationType)evaluationType));
             return Ok(evaluations);
         }
     }

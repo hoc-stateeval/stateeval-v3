@@ -36,10 +36,16 @@ namespace SE.API.Tests.Utils
             return evaluations;
         }
 
+        public async static Task<List<EvaluationSummaryDTO>> GetEvaluationsForSchool(HttpClient client, string districtCode, string schoolCode, EvaluationType evaluationType)
+        {
+            var url = $"/districts/{districtCode}/schools/{schoolCode}/evaluations/{Convert.ToInt32(evaluationType)}";
+            var evaluations = await client.GetAndDeserialize<List<EvaluationSummaryDTO>>(url);
+            return evaluations;
+        }
+
         public static WorkAreaContextDTO FindWorkAreaWithTagName(List<WorkAreaContextDTO> list, WorkAreaType workAreaType)
         {
             return list.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(workAreaType));
-
         }
 
         public async static Task<FrameworkDTO> GetFrameworkById(HttpClient client, long id)

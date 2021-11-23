@@ -321,7 +321,7 @@ namespace SE.Domain.Entities
             return roleString;
         }
 
-        public static string MapWfStateToDisplayName(WfState wfState, string evaluatorRoleName, string evaluateeRoleName)
+        public static string MapWfStateToDisplayName(WfState wfState, string evaluateeTerm)
         {
             var displayName = wfState switch
             {
@@ -329,13 +329,13 @@ namespace SE.Domain.Entities
                 WfState.EVAL_LOCKED_SEALED => "Locked/Sealed",
                 WfState.EVAL_READY_FOR_FORMAL_RECEIPT => "Ready For Review",
                 WfState.EVAL_RECEIVED => "Received",
-                WfState.EVAL_UNLOCK_REQUEST_TEE => $"Unlock Request from {evaluateeRoleName}",
-                WfState.EVAL_UNLOCK_REQUEST_TOR => $"Unlock Request from {evaluatorRoleName}",
+                WfState.EVAL_UNLOCK_REQUEST_TEE => $"Unlock Request from {evaluateeTerm}",
+                WfState.EVAL_UNLOCK_REQUEST_TOR => $"Unlock Request from Evaluator",
                 WfState.OBS_IN_PROGRESS_TOR => "In Progress",
                 WfState.OBS_LOCKED_SEALED => "Locked/Sealed",
-                WfState.OBS_LOCKED_TEE_REVIEW => $"{evaluateeRoleName} Review",
-                WfState.OBS_UNLOCK_REQUEST_TEE => $"Unlock Request from {evaluateeRoleName}",
-                WfState.OBS_UNLOCK_REQUEST_TOR => $"Unlock Request from {evaluatorRoleName}",
+                WfState.OBS_LOCKED_TEE_REVIEW => $"{evaluateeTerm} Review",
+                WfState.OBS_UNLOCK_REQUEST_TEE => $"Unlock Request from {evaluateeTerm}",
+                WfState.OBS_UNLOCK_REQUEST_TOR => $"Unlock Request from Evalutor",
                 WfState.PERCEPTION_SURVEY_BUILDING => "Building",
                 WfState.PERCEPTION_SURVEY_CLOSED => "Closed",
                 WfState.PERCEPTION_SURVEY_COMPLETE => "Complete",
@@ -343,8 +343,8 @@ namespace SE.Domain.Entities
                 WfState.SGBUNDLE_PROCESS_COMPLETE => "Complete",
                 WfState.SGBUNDLE_PROCESS_SHARED => "Shared",
                 WfState.SGBUNDLE_STARTED => "In Progress",
-                WfState.SGBUNDLE_UNLOCK_REQUEST_TEE => $"Unlock Request from {evaluateeRoleName}",
-                WfState.SGBUNDLE_UNLOCK_REQUEST_TOR => $"Unlock Request from {evaluatorRoleName}",
+                WfState.SGBUNDLE_UNLOCK_REQUEST_TEE => $"Unlock Request from Evaluatee",
+                WfState.SGBUNDLE_UNLOCK_REQUEST_TOR => $"Unlock Request from Evaluator",
                 _ => throw new Exception($"MapWfStateToDisplayName: Unknown mapping: {wfState}")
             };
 

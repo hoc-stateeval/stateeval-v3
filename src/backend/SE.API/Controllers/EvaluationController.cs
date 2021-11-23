@@ -14,8 +14,7 @@ namespace SE.API.Controllers
         {
         }
 
-        [HttpGet]
-        [Route("{id:long}")]
+        [HttpGet("{id:long}")]
         public async Task<IActionResult> GetEvaluationById(long id)
         {
             throw new NotImplementedException();

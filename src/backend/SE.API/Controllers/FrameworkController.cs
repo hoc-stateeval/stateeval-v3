@@ -14,8 +14,7 @@ namespace SE.API.Controllers
         {
         }
 
-        [HttpGet]
-        [Route("{id:long}")]
+        [HttpGet("{id:long}")]
         public async Task<IActionResult> GetFrameworkById(long id)
         {
             var framework = await _mediator.Send(new GetFrameworkByIdQuery(id));

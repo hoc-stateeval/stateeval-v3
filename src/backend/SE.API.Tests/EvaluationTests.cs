@@ -155,5 +155,30 @@ namespace SE.API.Tests
             evaluation.EvaluatorId.Should().Be(prB.Id);
 
         }
+
+        [Fact]
+        public async Task DAN_District_School1_Should_Have_4_Teacher_Evaluations()
+        {
+            var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
+
+            var evaluations = await TestHelpers.GetEvaluationsForSchool(_client, DAN_District.DistrictCode, DAN_District.School1.SchoolCode, EvaluationType.TEACHER);
+            evaluations.Count().Should().Be(4);
+            evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School1.TeacherA.UserName).Should().NotBeNull();
+            evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School1.TeacherB.UserName).Should().NotBeNull();
+            evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School1.TeacherC.UserName).Should().NotBeNull();
+            evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School1.TeacherD.UserName).Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task DAN_District_School1_Should_Have_2_Principal_Evaluations()
+        {
+            var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
+
+            var evaluations = await TestHelpers.GetEvaluationsForSchool(_client, DAN_District.DistrictCode, DAN_District.School1.SchoolCode, EvaluationType.PRINCIPAL);
+            evaluations.Count().Should().Be(2);
+            evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School1.PrincipalA.UserName).Should().NotBeNull();
+            evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School1.PrincipalB.UserName).Should().NotBeNull();
+
+        }
     }
 }

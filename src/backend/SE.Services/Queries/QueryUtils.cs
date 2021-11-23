@@ -10,13 +10,14 @@ namespace SE.Core.Queries
 {
     internal class QueryUtils
     {
-        public static List<EvaluationSummaryDTO> BuildEvaluationSummaryDTO(IQueryable<Evaluation> query, WorkAreaContext workAreaContext)
+        public static List<EvaluationSummaryDTO> BuildEvaluationSummaryDTO(IQueryable<Evaluation> query)
         {
             return query.Select(e => new EvaluationSummaryDTO
             {
                 Id = e.Id,
                 WfState = (WfState)e.WfState,
-                WfStateDisplayName = workAreaContext == null ? "" : EnumUtils.MapWfStateToDisplayName((WfState)e.WfState, workAreaContext.WorkArea.Role.DisplayName, workAreaContext.WorkArea.EvaluateeRole.DisplayName),
+                WfStateDisplayName = EnumUtils.MapWfStateToDisplayName((WfState)e.WfState, 
+                                                    EnumUtils.MapEvaluationTypeToEvaluateeTerm(e.EvaluationType)),
                 LockDateTime = e.LockDateTime,
                 EvaluateeDisplayName = e.Evaluatee.FirstName + " " + e.Evaluatee.LastName,
                 EvaluatorDisplayName = e.Evaluator.FirstName + " " + e.Evaluator.LastName,

@@ -1,66 +1,29 @@
-import 'fake-db';
-import FuseAuthorization from '@fuse/core/FuseAuthorization';
-import FuseLayout from '@fuse/core/FuseLayout';
-import FuseTheme from '@fuse/core/FuseTheme';
-import history from '@history';
-import { Router } from 'react-router-dom';
-import { SnackbarProvider } from 'notistack';
-import { useSelector } from 'react-redux';
-import rtlPlugin from 'stylis-plugin-rtl';
-import createCache from '@emotion/cache';
+import { ThemeProvider } from '@mui/material/styles';
+import { createTheme } from './theme';
 import { CacheProvider } from '@emotion/react';
-import { selectCurrLangDir } from 'app/store/i18nSlice';
-import withAppProviders from './withAppProviders';
-import { Auth } from './auth';
+import { createEmotionCache } from './utils/create-emotion-cache';
 
-// import axios from 'axios';
-/**
- * Axios HTTP Request defaults
- */
-// axios.defaults.baseURL = "";
-// axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-// axios.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded';
+import Layout from './layout/Layout';
 
-const emotionCacheOptions = {
-  rtl: {
-    key: 'muirtl',
-    stylisPlugins: [rtlPlugin],
-    prepend: true,
-  },
-  ltr: {
-    key: 'muiltr',
-    stylisPlugins: [],
-    prepend: true,
-  },
-};
 
-const App = () => {
-  const langDirection = useSelector(selectCurrLangDir);
+const emotionCache = createEmotionCache();
 
+function App() {
   return (
-    <CacheProvider value={createCache(emotionCacheOptions[langDirection])}>
-      <Auth>
-        <Router history={history}>
-          <FuseAuthorization>
-            <FuseTheme>
-              <SnackbarProvider
-                maxSnack={5}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                classes={{
-                  containerRoot: 'bottom-0 right-0 mb-52 md:mb-68 mr-8 lg:mr-80 z-99',
-                }}
-              >
-                <FuseLayout />
-              </SnackbarProvider>
-            </FuseTheme>
-          </FuseAuthorization>
-        </Router>
-      </Auth>
-    </CacheProvider>
+    <>
+      <CacheProvider value={emotionCache}>
+        <ThemeProvider
+            theme={createTheme({
+              direction: 'ltr',
+              responsiveFontSizes: true,
+              mode: 'light'
+            })}
+          >
+          <Layout/>
+        </ThemeProvider>
+      </CacheProvider>
+    </>
   );
-};
+}
 
-export default withAppProviders(App)();
+export default App;

@@ -59,7 +59,7 @@ namespace SE.Services.Queries
                                 x.SchoolCode == request.SchoolCode &&
                                 x.EvaluationType == request.EvaluationType);
 
-                List<EvaluationSummaryDTO> evaluations = QueryUtils.BuildEvaluationSummaryDTO(query, null);
+                List<EvaluationSummaryDTO> evaluations = QueryUtils.BuildEvaluationSummaryDTO(query);
                 return evaluations;
             }
         }
