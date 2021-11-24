@@ -41,7 +41,16 @@ namespace SE.Core.Queries
                 FocusedSGFrameworkNodeId = e.FocusedSGFrameworkNodeId,
                 FocusedFrameworkNodeDisplayName = (e.FocusedFrameworkNode != null) ? e.FocusedFrameworkNode.ShortName : "",
                 FocusedSGFrameworkNodeDisplayName = (e.FocusedSGFrameworkNode != null) ? e.FocusedSGFrameworkNode.ShortName : "",
-            }).OrderBy(x => x.EvaluateeDisplayName).ToList();
+
+                LastYearEvaluateePlanType = e.LastYearEvaluateePlanType,
+                NextYearEvaluateePlanType = e.NextYearEvaluateePlanType,
+                LastYearFocusedFrameworkNodeShortName = e.LastYearFocusedFrameworkNodeShortName,
+                LastYearFocusedSGframeworkNodeShortName = e.LastYearFocusedSGframeworkNodeShortName,
+                SuggestedEvaluateePlanType = e.SuggestedEvaluateePlanType,
+                SuggestedFocusedFrameworkNodeShortName = e.SuggestedFocusedFrameworkNodeShortName,
+                SuggestedFocusedSgframeworkNodeShortName = e.SuggestedFocusedSgframeworkNodeShortName,
+
+    }).OrderBy(x => x.EvaluateeDisplayName).ToList();
         }
     }
 }

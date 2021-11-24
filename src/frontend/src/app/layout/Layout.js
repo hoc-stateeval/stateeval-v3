@@ -11,13 +11,14 @@ const LayoutRoot = styled('div')(({ theme }) => ({
   display: 'flex',
   flex: '1 1 auto',
   maxWidth: '100%',
+  backgroundColor: theme.palette.background.default,
   paddingTop: 64,
   [theme.breakpoints.up('lg')]: {
     paddingLeft: `${sidebarWidth}px`
   }
 }));
 
-function Layout(props) {
+const Layout = (props) => {
   const { children } = props;
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   return (
@@ -31,15 +32,23 @@ function Layout(props) {
             width: '100%'
           }}
         >
-          <Box sx={{
-              backgroundColor:'white',
-              height:'100px',
-            }}>
-              <Container maxWidth="md">
-                <Typography variant="h2">Page Title</Typography>
-              </Container>
-            </Box>
-          {children}
+          <Box  sx={{
+            height:'80px', 
+            display:'flex',
+            flexDirection:'column',
+            justifyContent:'center',
+            backgroundColor:'#FFF'}}>
+
+            <Container maxWidth="md">
+              <Typography variant="h2">Page Title</Typography>
+            </Container>
+          </Box>
+
+          <Box sx={{mt:3}}>
+            <Container maxWidth="md">
+              {children}
+            </Container>
+          </Box>
         </Box>
       </LayoutRoot>
       <Navbar sidebarWidth={sidebarWidth} onOpenSidebar={() => setIsSidebarOpen(true)} />

@@ -1,14 +1,16 @@
 import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme } from './theme';
 import { CacheProvider } from '@emotion/react';
 import { createEmotionCache } from './utils/create-emotion-cache';
 
 import Layout from './layout/Layout';
+import Test from './features/Test';
 
 
 const emotionCache = createEmotionCache();
 
-function App() {
+const App = () => {
   return (
     <>
       <CacheProvider value={emotionCache}>
@@ -19,7 +21,10 @@ function App() {
               mode: 'light'
             })}
           >
-          <Layout/>
+          <CssBaseline/>
+          <Layout>
+            <Test/>
+          </Layout>
         </ThemeProvider>
       </CacheProvider>
     </>

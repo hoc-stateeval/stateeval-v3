@@ -1,8 +1,10 @@
 import { useRef, useState } from 'react';
+import MenuIcon from '@mui/icons-material/Menu';
 import PropTypes from 'prop-types';
 import {
   AppBar,
   Box,
+  IconButton,
   Toolbar
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -39,6 +41,17 @@ function Navbar(props) {
             px: 2
           }}
         >
+          <IconButton
+            onClick={onOpenSidebar}
+            sx={{
+              display: {
+                xs: 'inline-flex',
+                lg: 'none'
+              }
+            }}
+          >
+            <MenuIcon fontSize="small" />
+          </IconButton>
           <Box sx={{ flexGrow: 1 }} />
         </Toolbar>
       </NavbarRoot>

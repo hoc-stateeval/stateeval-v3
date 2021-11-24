@@ -196,8 +196,33 @@ SET     EvaluateePlanType = 1;
 	--assign evaluatees to evaluators...
 	-- all teachers get principals as evaluators
     UPDATE  Evaluation
-    SET     EvaluatorID = torULR.UserId
-
+    SET     EvaluatorID = torULR.UserId,
+			LastYearEvaluateePlanType = 
+			CASE
+			WHEN (teeU.FirstName = 'Teacher A') THEN 1 
+			WHEN (teeU.FirstName = 'Teacher B') THEN 2
+			END,
+			LastYearFocusedFrameworkNodeShortName = 
+			CASE
+			WHEN (teeU.FirstName = 'Teacher B') THEN 'C1'
+			END,
+			LastYearFocusedSGframeworkNodeShortName =
+			CASE
+			WHEN (teeU.FirstName = 'Teacher B') THEN 'C3'
+			END,
+			SuggestedEvaluateePlanType = 
+			CASE
+			WHEN (teeU.FirstName = 'Teacher A') THEN 1 
+			WHEN (teeU.FirstName = 'Teacher B') THEN 2
+			END,
+			SuggestedFocusedFrameworkNodeShortName = 
+			CASE
+			WHEN (teeU.FirstName = 'Teacher B') THEN 'C3'
+			END,
+			SuggestedFocusedSgframeworkNodeShortName =
+			CASE
+			WHEN (teeU.FirstName = 'Teacher B') THEN 'C3'
+			END
     FROM    Evaluation se
             JOIN [User] teeU ON teeU.Id = se.EvaluateeID
             JOIN UserBuildingRole teeULR ON teeULR.UserId = se.EvaluateeID
