@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { List, ListSubheader } from '@mui/material';
-import { SidebarItem } from './SidebarItem';
+import SidebarItem from './SidebarItem';
 
 const renderNavItems = ({ depth = 0, items, path }) => (
   <List disablePadding>

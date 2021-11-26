@@ -3,10 +3,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme } from './theme';
 import { CacheProvider } from '@emotion/react';
 import { createEmotionCache } from './utils/create-emotion-cache';
-
-import Layout from './layout/Layout';
-import Test from './features/Test';
-
+import { Router } from 'react-router-dom';
+import PrivateRoutes from './routing/PrivateRoutes'
 
 const emotionCache = createEmotionCache();
 
@@ -14,18 +12,18 @@ const App = () => {
   return (
     <>
       <CacheProvider value={emotionCache}>
-        <ThemeProvider
-            theme={createTheme({
-              direction: 'ltr',
-              responsiveFontSizes: true,
-              mode: 'light'
-            })}
-          >
-          <CssBaseline/>
-          <Layout>
-            <Test/>
-          </Layout>
-        </ThemeProvider>
+        {/* <Router> */}
+          <ThemeProvider
+              theme={createTheme({
+                direction: 'ltr',
+                responsiveFontSizes: true,
+                mode: 'light'
+              })}
+            >
+            <CssBaseline/>
+            <PrivateRoutes/>
+          </ThemeProvider>
+        {/* </Router> */}
       </CacheProvider>
     </>
   );
