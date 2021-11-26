@@ -57,8 +57,9 @@ const reduceChildRoutes = ({ acc, item, depth, path }) => {
 };
 
 const SidebarSection = (props) => {
-  const { items, path, title, ...other } = props;
+  const { items, path, title} = props;
 
+  const navItems = renderNavItems({ items, path });
   return (
     <List
       subheader={(
@@ -77,11 +78,8 @@ const SidebarSection = (props) => {
           {title}
         </ListSubheader>
       )}
-      {...other}>
-      {renderNavItems({
-        items,
-        path
-      })}
+      >
+      {navItems}
     </List>
   );
 };

@@ -1,4 +1,4 @@
-// import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -10,7 +10,6 @@ import {
 } from '@mui/material';
 import { Scrollbar } from '../components/scrollbar';
 import SidebarSection from './SidebarSection';
-import { EvaluationWorkAreas } from '../core/workAreas';
 
 import logo from '../../images/logo.jpg';
 import HomeIcon  from '@mui/icons-material/Home';
@@ -23,7 +22,7 @@ const navSections = [
       {
         title: 'Dashboard',
         icon: <HomeIcon fontSize="small" />,
-        path: '/dashboard',
+        path: '/app/dashboard',
       },
       // {
       //   title: 'Artifacts',
@@ -118,7 +117,8 @@ const navSections = [
 ];
 
 export const getNavSectionsForWorkArea = (workAreaTag) => {
-  return navSections.filter(x=>x.workAreaTags.includes(workAreaTag));
+  const result = navSections.filter(x=>x.workAreaTags.includes(workAreaTag));
+  return result;
 }
 
 const buildContent = (location, workAreaTag) => (
@@ -147,12 +147,11 @@ const buildContent = (location, workAreaTag) => (
               src={logo} alt="logo"/>
           </Button>
         </Box>
-      </Box>
-      <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1 }}>
             {getNavSectionsForWorkArea(workAreaTag).map((section) => (
               <SidebarSection
                 key={section.title}
-                path={location}
+                path={location.pathname}
                 sx={{
                   mt: 2,
                   '& + &': {
@@ -161,14 +160,15 @@ const buildContent = (location, workAreaTag) => (
                 }}
                 {...section} />
             ))}
-          </Box>
+        </Box>
+      </Box>
     </Scrollbar>
   </>
 );
 
 const Sidebar = (props) => {
 
-  //const location = useLocation();
+  const location = useLocation();
   const { onClose, open, sidebarWidth } = props;
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
@@ -191,7 +191,7 @@ const Sidebar = (props) => {
         }}
         variant="permanent"
       >
-        {buildContent("/dashboard", workAreaTag)}
+        {buildContent(location, workAreaTag)}
       </Drawer>
     );
   }
@@ -211,7 +211,7 @@ const Sidebar = (props) => {
       sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
       variant="temporary"
     >
-      <Typography variant="h4">{buildContent("/dashboard", workAreaTag)}</Typography>
+      <Typography variant="h4">{buildContent(location, workAreaTag)}</Typography>
     </Drawer>
   );
 }
