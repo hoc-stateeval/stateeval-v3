@@ -69,33 +69,38 @@ export const setActiveWorkAreaContext = createAsyncThunk(
   'userContext/setActiveWorkAreaContext',
   async (workAreaContext, { dispatch, getState }) => {
     const { userContext: state } = getState().stateEval;
-    // await dispatch(updateUserRole(workAreaContext.tagName));
-
     const newState = await createWorkAreaContextState(state, workAreaContext);
     return newState;
   }
 );
+
+// TODO: 
+// save out access token,
+// add to header 
+// expire, and check with each api call
+
+export const submitLocalLogin =
+  ({ userName, password = 'password' }) =>
+  async (dispatch) => {
+    const response = await axios.get('/api/auth', {
+      data: {
+        grant_type: 'password',
+        userName,
+        password,
+        client_id: 'ngSEAuthApp',
+      },
+    });
+
+    const user = await response.data.user;
+    // const accessToken = await response.data.access_token;
+    dispatch(setCurrentUser(user));
+  };
 
 export const setCurrentUser = createAsyncThunk(
   'userContext/setCurrentUser',
   async (user, { dispatch, getState }) => {
     const workAreaContexts = await getWorkAreaContextsForUser(user.id);
     const defaultWorkAreaContext = workAreaContexts[0];
-    // await dispatch(
-    //   setUserData({
-    //     role: defaultWorkAreaContext.tagName,
-    //     data: {
-    //       displayName: user.displayName,
-    //       photoURL: user.profileImageURL,
-    //       email: 'useremail@useremail.com',
-    //       settings: {
-    //         layout: {
-    //           style: 'layout1',
-    //         },
-    //       },
-    //     },
-    //   })
-    // );
 
     const { userContext: state } = getState().stateEval;
 
@@ -184,6 +189,15 @@ const userContextSlice = createSlice({
       errorMessage: action.payload,
     }),
   },
+});
+
+const getCurrentUser = (state) => {
+  const { user } = state.stateEval.userContext;
+  return user;
+}
+
+export const selectCurrentUser = createSelector([getCurrentUser], (user) => {
+  return userContextSlice;
 });
 
 const getEvaluationsAll = (state) => {

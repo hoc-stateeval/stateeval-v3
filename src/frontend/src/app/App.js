@@ -8,13 +8,12 @@ import { createTheme } from './theme';
 import { CacheProvider } from '@emotion/react';
 import { createEmotionCache } from './utils/create-emotion-cache';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Routes from './routing/Routes';
-import Layout from './layout/Layout';
+import MainLayout from './layout/MainLayout';
 
 const emotionCache = createEmotionCache();
 
 const App = () => {
-  return (
+   return (
     <>
       <Provider store={store}>
         <CacheProvider value={emotionCache}>
@@ -28,9 +27,7 @@ const App = () => {
                   })}
                 >
                 <CssBaseline/>
-                <Layout>
-                    <Routes/>
-                </Layout>
+                <MainLayout />
               </ThemeProvider>
             </Suspense>
           </Router>

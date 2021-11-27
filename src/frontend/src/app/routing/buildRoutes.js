@@ -6,16 +6,15 @@ const TestPage = lazy(() => import('../features/Test'));
 const Artifacts = lazy(() => import('../features/evaluation/artifacts/Artifacts'));
 const NotFound = lazy(() => import('./NotFound'));
 
-const workArea = 'PR_TR';
-
 const generateRoutesFromConfigs = (routeConfigs, workArea) => {
   return routeConfigs;
 }
 
-const Routes = () => {
+const buildRoutes = (activeWorkAreaContext) => {
 
   const routeConfigs = [...evaluationRoutesConfigs];
-  const appRoutes = generateRoutesFromConfigs(routeConfigs, workArea);
+  const appRoutes = activeWorkAreaContext?
+          generateRoutesFromConfigs(routeConfigs, activeWorkAreaContext.tagName): [];
   const routes = [
     ...appRoutes,
     {
@@ -28,9 +27,8 @@ const Routes = () => {
     // { path: "/", element: <Navigate to="/app/dashboard" /> }
   ];
 
-  const elements = useRoutes(routes);
-  return elements;
+  return routes;
 }
  
-export default Routes;
+export default buildRoutes;
  
