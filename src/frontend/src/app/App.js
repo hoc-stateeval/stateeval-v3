@@ -1,5 +1,8 @@
+import '../fake-db';
 import { Suspense } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
+import { Provider } from 'react-redux';
+import store from './store';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme } from './theme';
 import { CacheProvider } from '@emotion/react';
@@ -13,24 +16,26 @@ const emotionCache = createEmotionCache();
 const App = () => {
   return (
     <>
-      <CacheProvider value={emotionCache}>
-        <Router>
-          <Suspense fallback={<div>Loading...</div>}>
-            <ThemeProvider
-                theme={createTheme({
-                  direction: 'ltr',
-                  responsiveFontSizes: true,
-                  mode: 'light'
-                })}
-              >
-              <CssBaseline/>
-              <Layout>
-                  <Routes/>
-              </Layout>
-            </ThemeProvider>
-          </Suspense>
-        </Router>
-      </CacheProvider>
+      <Provider store={store}>
+        <CacheProvider value={emotionCache}>
+          <Router>
+            <Suspense fallback={<div>Loading...</div>}>
+              <ThemeProvider
+                  theme={createTheme({
+                    direction: 'ltr',
+                    responsiveFontSizes: true,
+                    mode: 'light'
+                  })}
+                >
+                <CssBaseline/>
+                <Layout>
+                    <Routes/>
+                </Layout>
+              </ThemeProvider>
+            </Suspense>
+          </Router>
+        </CacheProvider>
+      </Provider>
     </>
   );
 }

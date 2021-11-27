@@ -5,4 +5,5 @@ const ThunkState = {
   FAILED: 'FAILED',
 };
 
-export default { ThunkState };
+export default ThunkState;
+
