@@ -94,6 +94,7 @@ export const submitLocalLogin =
     const user = await response.data.user;
     // const accessToken = await response.data.access_token;
     dispatch(setCurrentUser(user));
+
   };
 
 export const setCurrentUser = createAsyncThunk(

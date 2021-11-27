@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { 
@@ -16,7 +17,7 @@ import { submitLocalLogin } from '../app/store/stateEval/userContextSlice';
 
 
 const LocalLogin = () => {
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [districts, setDistricts] = useState([]);
@@ -52,9 +53,10 @@ const LocalLogin = () => {
     setUserId(parseInt(e.target.value, 10));
   };
 
-  const onClickLogin = (e) => {
+  const onClickLogin = async (e) => {
     const user = users.find((x) => x.id === userId);
-    dispatch(submitLocalLogin(user));
+    await dispatch(submitLocalLogin(user));
+    navigate("/app/dashboard");
   };
   return (
     <>
