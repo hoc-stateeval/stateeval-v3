@@ -24,11 +24,11 @@ const navSections = [
         icon: <HomeIcon fontSize="small" />,
         path: '/app/dashboard',
       },
-      // {
-      //   title: 'Artifacts',
-      //   icon: <HomeIcon fontSize="small" />,
-      //   path: '/evaluation/artifacts',
-      // },
+      {
+        title: 'Artifacts',
+        icon: <HomeIcon fontSize="small" />,
+        path: '/app/evaluation/artifacts',
+      },
       // {
       //   title: 'YTD Evidence',
       //   icon: <HomeIcon fontSize="small" />,
@@ -121,7 +121,7 @@ export const getNavSectionsForWorkArea = (workAreaTag) => {
   return result;
 }
 
-const buildContent = (location, workAreaTag) => (
+const buildContent = (workAreaTag) => (
   <>
     <Scrollbar
       sx={{
@@ -151,7 +151,7 @@ const buildContent = (location, workAreaTag) => (
             {getNavSectionsForWorkArea(workAreaTag).map((section) => (
               <SidebarSection
                 key={section.title}
-                path={location.pathname}
+                path={section.path}
                 sx={{
                   mt: 2,
                   '& + &': {
@@ -168,13 +168,14 @@ const buildContent = (location, workAreaTag) => (
 
 const Sidebar = (props) => {
 
-  const location = useLocation();
-  const { onClose, open, sidebarWidth } = props;
-  const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
+  //const location = useLocation();
+  const { sidebarWidth } = props;
+  // const { onClose, open, sidebarWidth } = props;
+ // const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
   const workAreaTag = 'PR_TR';
 
-  if (lgUp) {
+  //if (lgUp) {
     return (
       <Drawer
         anchor="left"
@@ -191,29 +192,29 @@ const Sidebar = (props) => {
         }}
         variant="permanent"
       >
-        {buildContent(location, workAreaTag)}
+        {buildContent(workAreaTag)}
       </Drawer>
     );
-  }
+  //}
   
-  return (
-    <Drawer
-      anchor="left"
-      onClose={onClose}
-      open={open}
-      PaperProps={{
-        sx: {
-          backgroundColor: 'neutral.900',
-          color: '#FFFFFF',
-          width: `${sidebarWidth}px`
-        }
-      }}
-      sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
-      variant="temporary"
-    >
-      <Typography variant="h4">{buildContent(location, workAreaTag)}</Typography>
-    </Drawer>
-  );
+  // return (
+  //   <Drawer
+  //     anchor="left"
+  //     onClose={onClose}
+  //     open={open}
+  //     PaperProps={{
+  //       sx: {
+  //         backgroundColor: 'neutral.900',
+  //         color: '#FFFFFF',
+  //         width: `${sidebarWidth}px`
+  //       }
+  //     }}
+  //     sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
+  //     variant="temporary"
+  //   >
+  //     <Typography variant="h4">{buildContent(workAreaTag)}</Typography>
+  //   </Drawer>
+  // );
 }
 
 Sidebar.propTypes = {

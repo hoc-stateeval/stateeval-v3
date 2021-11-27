@@ -15,7 +15,7 @@ const renderNavItems = ({ depth = 0, items, path }) => (
 
 const reduceChildRoutes = ({ acc, item, depth, path }) => {
   const key = `${item.title}-${depth}`;
-  const partialMatch = path.includes(item.path);
+  const partialMatch = true; // path.includes(item.path);
   const exactMatch = path === item.path;
 
   if (item.children) {

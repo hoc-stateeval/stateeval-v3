@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Box, Button, Collapse, ListItem, Link } from '@mui/material';
+import { Box, Button, Collapse, ListItem } from '@mui/material';
 import ExpandMoreIcon  from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
@@ -94,7 +95,7 @@ const SidebarItem = (props) => {
       }}
     >
       <Button
-        component={Link}
+        component={RouterLink}
         startIcon={icon}
         endIcon={chip}
         to={path}

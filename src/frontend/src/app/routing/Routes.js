@@ -3,6 +3,7 @@ import { lazy } from 'react'
 import evaluationRoutesConfigs from './evaluationRoutesConfig';
 
 const TestPage = lazy(() => import('../features/Test'));
+const Artifacts = lazy(() => import('../features/evaluation/artifacts/Artifacts'));
 const NotFound = lazy(() => import('./NotFound'));
 
 const workArea = 'PR_TR';
@@ -23,8 +24,8 @@ const Routes = () => {
     },
     { path: "404", element: <NotFound /> },
     { path: "*", element: <Navigate to="/404" /> },
-    { path: "", element: <Navigate to="/app/dashboard" /> },
-    { path: "/", element: <Navigate to="/app/dashboard" /> }
+    // { path: "", element: <Navigate to="/app/dashboard" /> },
+    // { path: "/", element: <Navigate to="/app/dashboard" /> }
   ];
 
   const elements = useRoutes(routes);
