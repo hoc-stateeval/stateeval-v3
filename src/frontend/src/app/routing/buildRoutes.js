@@ -25,8 +25,6 @@ const buildRoutes = (activeWorkAreaContext) => {
     ...appRoutes,
     { path: "404", element: <NotFound /> },
     { path: "*", element: <Navigate to="/404" /> },
-    // { path: "", element: <Navigate to="/app/dashboard" /> },
-    // { path: "/", element: <Navigate to="/app/dashboard" /> }
   ];
 
   return routes;
