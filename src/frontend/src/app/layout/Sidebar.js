@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -5,6 +6,11 @@ import {
   Avatar,
   Box,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   Drawer,
   Link,
@@ -125,80 +131,103 @@ export const getNavSectionsForWorkArea = (workAreaTag) => {
   return result;
 }
 
-const buildContent = (location, currentWorkAreaContext, currentUser, workAreaTag) => (
-  <>
-    <Scrollbar
-      sx={{
-        height: '100%',
-        '& .simplebar-content': {
-          height: '100%'
-        }
-      }}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          height: '100%',
-        }}
-      >
-        <Box sx={{p:3}}>
-          <Button component={Link}
-            disableRipple
-            to="/"
-            sx={{padding:'0'}}>
-            <Box component="img"
-              src={logo} alt="logo"/>
-          </Button>
-        </Box>
-        <Divider sx={{ my: 3 }} />
-        <Box
-         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems:'center',
-        }}>
-          <Avatar alt="profile image" src={currentUser?.profileImageURL} />
-          <Typography>{currentUser?.displayName}</Typography>
-          <Typography>{currentWorkAreaContext.districtName}</Typography>
-          {currentWorkAreaContext.schoolName ?
-          (<Typography>{currentWorkAreaContext.schoolName}</Typography>) :(<></>)}
-          <Typography>{currentWorkAreaContext.title}</Typography>
-        </Box>
-        <Divider sx={{ my: 3 }} />
-        <Box sx={{ flexGrow: 1 }}>
-            {getNavSectionsForWorkArea(workAreaTag).map((section) => (
-              <SidebarSection
-                key={section.title}
-                path={location.pathname}
-                sx={{
-                  mt: 2,
-                  '& + &': {
-                    mt: 2
-                  }
-                }}
-                {...section} />
-            ))}
-        </Box>
-      </Box>
-    </Scrollbar>
-  </>
-);
-
 const Sidebar = (props) => {
+  const { onClose, open, sidebarWidth } = props;
   const location = useLocation();
-
   const currentUser = useSelector(selectCurrentUser);
   const currentWorkAreaContext = useSelector(selectActiveWorkAreaContext);
+  const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
-  //const location = useLocation();
-  const { sidebarWidth } = props;
-  // const { onClose, open, sidebarWidth } = props;
- // const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
+  const [dlgOpen, setDlgOpen] = useState(false);
 
-  const workAreaTag = 'PR_TR';
+  const handleClickDlgOpen = () => {
+    setDlgOpen(true);
+  };
 
-  //if (lgUp) {
+  const handleClickDlgClose = () => {
+    setDlgOpen(false);
+  };
+
+  const handleClickOptions = () => {
+
+  }
+
+  const buildContent = () => (
+    <>
+      <Scrollbar
+        sx={{
+          height: '100%',
+          '& .simplebar-content': {
+            height: '100%'
+          }
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+          }}
+        >
+          <Box sx={{p:3}}>
+            <Button component={Link}
+              disableRipple
+              to="/"
+              sx={{padding:'0'}}>
+              <Box component="img"
+                src={logo} alt="logo"/>
+            </Button>
+          </Box>
+          <Divider sx={{ my: 3 }} />
+          <Box
+           sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems:'center',
+          }}>
+            <Avatar alt="profile image" src={currentUser?.profileImageURL} />
+            <Typography variant="h5">{currentUser?.displayName}</Typography>
+            <Typography variant="profile">{currentWorkAreaContext.districtName}</Typography>
+            {currentWorkAreaContext.schoolName ?
+            (<Typography variant="profile">{currentWorkAreaContext.schoolName}</Typography>) :(<></>)}
+            <Typography variant="profile">{currentWorkAreaContext.title}</Typography>
+            <Button variant="outlined" onClick={handleClickDlgOpen}>
+              Options
+            </Button>
+            <Dialog open={dlgOpen} onClose={handleClickDlgClose}>
+              <DialogTitle>Subscribe</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Here are the instructions
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClickDlgClose}>Cancel</Button>
+                <Button onClick={handleClickDlgClose}>OK</Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
+          <Divider sx={{ my: 3 }} />
+          <Box sx={{ flexGrow: 1 }}>
+              {getNavSectionsForWorkArea(currentWorkAreaContext.tagName).map((section) => (
+                <SidebarSection
+                  key={section.title}
+                  path={location.pathname}
+                  sx={{
+                    mt: 2,
+                    '& + &': {
+                      mt: 2
+                    }
+                  }}
+                  {...section} />
+              ))}
+          </Box>
+        </Box>
+      </Scrollbar>
+    </>
+  );
+
+  if (lgUp) {
     return (
       <Drawer
         anchor="left"
@@ -215,29 +244,29 @@ const Sidebar = (props) => {
         }}
         variant="permanent"
       >
-        {buildContent(location, currentWorkAreaContext, currentUser, workAreaTag)}
+        {buildContent()}
       </Drawer>
     );
-  //}
+  }
   
-  // return (
-  //   <Drawer
-  //     anchor="left"
-  //     onClose={onClose}
-  //     open={open}
-  //     PaperProps={{
-  //       sx: {
-  //         backgroundColor: 'neutral.900',
-  //         color: '#FFFFFF',
-  //         width: `${sidebarWidth}px`
-  //       }
-  //     }}
-  //     sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
-  //     variant="temporary"
-  //   >
-  //     <Typography variant="h4">{buildContent(location, currentWorkAreaContext, currentUser, workAreaTag)}</Typography>
-  //   </Drawer>
-  // );
+  return (
+    <Drawer
+      anchor="left"
+      onClose={onClose}
+      open={open}
+      PaperProps={{
+        sx: {
+          backgroundColor: 'neutral.900',
+          color: '#FFFFFF',
+          width: `${sidebarWidth}px`
+        }
+      }}
+      sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
+      variant="temporary"
+    >
+      <Typography variant="h4">{buildContent()}</Typography>
+    </Drawer>
+  );
 }
 
 Sidebar.propTypes = {

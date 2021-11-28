@@ -312,6 +312,10 @@ export const baseThemeOptions = {
       fontWeight: 100,
       fontSize: '.625rem',
       lineHeight: 1.375
+    },
+    profile: {
+      color:'#8095a8',
+      fontSize: '.68rem'
     }
   },
   zIndex: {
