@@ -1,8 +1,11 @@
+import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
+  Avatar,
   Box,
   Button,
+  Divider,
   Drawer,
   Link,
   Typography,
@@ -13,6 +16,7 @@ import SidebarSection from './SidebarSection';
 
 import logo from '../../images/logo.jpg';
 import HomeIcon  from '@mui/icons-material/Home';
+import { selectCurrentUser, selectActiveWorkAreaContext } from '../store/stateEval/userContextSlice';
 
 const navSections = [
   {
@@ -121,7 +125,7 @@ export const getNavSectionsForWorkArea = (workAreaTag) => {
   return result;
 }
 
-const buildContent = (workAreaTag) => (
+const buildContent = (location, currentWorkAreaContext, currentUser, workAreaTag) => (
   <>
     <Scrollbar
       sx={{
@@ -147,11 +151,26 @@ const buildContent = (workAreaTag) => (
               src={logo} alt="logo"/>
           </Button>
         </Box>
+        <Divider sx={{ my: 3 }} />
+        <Box
+         sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems:'center',
+        }}>
+          <Avatar alt="profile image" src={currentUser?.profileImageURL} />
+          <Typography>{currentUser?.displayName}</Typography>
+          <Typography>{currentWorkAreaContext.districtName}</Typography>
+          {currentWorkAreaContext.schoolName ?
+          (<Typography>{currentWorkAreaContext.schoolName}</Typography>) :(<></>)}
+          <Typography>{currentWorkAreaContext.title}</Typography>
+        </Box>
+        <Divider sx={{ my: 3 }} />
         <Box sx={{ flexGrow: 1 }}>
             {getNavSectionsForWorkArea(workAreaTag).map((section) => (
               <SidebarSection
                 key={section.title}
-                path={section.path}
+                path={location.pathname}
                 sx={{
                   mt: 2,
                   '& + &': {
@@ -167,6 +186,10 @@ const buildContent = (workAreaTag) => (
 );
 
 const Sidebar = (props) => {
+  const location = useLocation();
+
+  const currentUser = useSelector(selectCurrentUser);
+  const currentWorkAreaContext = useSelector(selectActiveWorkAreaContext);
 
   //const location = useLocation();
   const { sidebarWidth } = props;
@@ -192,7 +215,7 @@ const Sidebar = (props) => {
         }}
         variant="permanent"
       >
-        {buildContent(workAreaTag)}
+        {buildContent(location, currentWorkAreaContext, currentUser, workAreaTag)}
       </Drawer>
     );
   //}
@@ -212,7 +235,7 @@ const Sidebar = (props) => {
   //     sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
   //     variant="temporary"
   //   >
-  //     <Typography variant="h4">{buildContent(workAreaTag)}</Typography>
+  //     <Typography variant="h4">{buildContent(location, currentWorkAreaContext, currentUser, workAreaTag)}</Typography>
   //   </Drawer>
   // );
 }

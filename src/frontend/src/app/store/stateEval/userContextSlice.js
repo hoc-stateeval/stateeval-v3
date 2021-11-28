@@ -45,7 +45,7 @@ const createWorkAreaContextState = async (state, workAreaContext) => {
   const activeEvaluationId = workAreaContext.isEvaluatee ? evaluations[0].id : null;
 
   const newState = {
-    ...state.currentUser,
+    currentUser: state.currentUser,
     ids: {
       activeWorkAreaContextId: workAreaContext.id,
       activeFrameworkId: workAreaContext.defaultFrameworkId,
@@ -215,12 +215,12 @@ const userContextSlice = createSlice({
 });
 
 const getCurrentUser = (state) => {
-  const { user } = state.stateEval.userContext;
-  return user;
+  const { currentUser } = state.stateEval.userContext;
+  return currentUser;
 }
 
 export const selectCurrentUser = createSelector([getCurrentUser], (user) => {
-  return userContextSlice;
+  return user;
 });
 
 const getEvaluationsAll = (state) => {
