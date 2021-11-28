@@ -85,10 +85,6 @@ const ChangeWorkAreaDialog = () => {
     if (workAreaContexts.length > 0) initDistricts();
   }, [workAreaContexts]);
 
-  const onClickChangeWorkArea = (e) => {
-    const workArea = workAreaContexts.find((x) => x.id === selectedWorkAreaContextId);
-    dispatch(setActiveWorkAreaContext(workArea));
-  };
   const handleClickDlgOpen = () => {
     setDlgOpen(true);
   };

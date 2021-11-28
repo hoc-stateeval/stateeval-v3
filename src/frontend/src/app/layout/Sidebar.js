@@ -11,7 +11,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
-import { Scrollbar } from '../components/scrollbar';
+import { Scrollbar } from '../components/Scrollbar';
 import SidebarSection from './SidebarSection';
 import ChangeWorkAreaDialog from './ChangeWorkAreaDialog';
 import UserProfile from './UserProfile';
