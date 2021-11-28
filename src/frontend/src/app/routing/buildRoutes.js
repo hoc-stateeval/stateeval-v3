@@ -4,15 +4,25 @@ import evaluationRoutesConfigs from './evaluationRoutesConfig';
 
 const NotFound = lazy(() => import('./NotFound'));
 
-const generateRoutesFromConfigs = (routeConfigs, workArea) => {
-  return routeConfigs;
+const generateRoutesFromConfigs = (routeConfigs, workAreaTag) => {
+  const result = routeConfigs.reduce( (acc, next) => {
+    if (next.workAreaTags.includes(workAreaTag)) {
+      let routes = next.items.filter(x=>(!x.workAreaTags?x:x.workAreaTags.includes(workAreaTag)));
+      acc.push(...routes);
+    }
+    return acc;
+  }, []);
+
+  return result;
 }
 
 const buildRoutes = (activeWorkAreaContext) => {
 
-  const routeConfigs = [...evaluationRoutesConfigs];
-  const appRoutes = activeWorkAreaContext?
-          generateRoutesFromConfigs(routeConfigs, activeWorkAreaContext.tagName): [];
+  const routeConfigs = [evaluationRoutesConfigs];
+  // const appRoutes = activeWorkAreaContext?
+  //         generateRoutesFromConfigs(routeConfigs, activeWorkAreaContext.tagName): [];
+  const appRoutes = activeWorkAreaContext? evaluationRoutesConfigs.items: [];
+  const appRoutes2 = activeWorkAreaContext? generateRoutesFromConfigs([evaluationRoutesConfigs], activeWorkAreaContext.tagName): [];
   const routes = [
     ...appRoutes,
     { path: "404", element: <NotFound /> },

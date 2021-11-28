@@ -4,7 +4,7 @@ import {
   Container,
   Typography } from '@mui/material';
 
-function TR_ME(props) {
+function TRME(props) {
   return (
     <>
       <Typography variant="h1">Hello from TR_ME</Typography>
@@ -12,4 +12,4 @@ function TR_ME(props) {
   );
 };
 
-export default TR_ME;
+export default TRME;

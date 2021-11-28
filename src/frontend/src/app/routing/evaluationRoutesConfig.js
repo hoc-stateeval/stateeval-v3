@@ -1,14 +1,18 @@
 import { lazy } from 'react'
+import { EvaluationWorkAreas } from '../core/workAreas';
 const Artifacts = lazy(() => import('../features/evaluation/artifacts/Artifacts'));
 const Artifact = lazy(() => import('../features/evaluation/artifacts/Artifact'));
 const TestPage = lazy(() => import('../features/Test'));
-const TR_ME = lazy(() => import('../features/TR_ME'));
-const PR_TR = lazy(() => import('../features/PR_TR'));
+const TRME = lazy(() => import('../features/TRME'));
+const PRTR = lazy(() => import('../features/PRTR'));
 
-const EvaluationRoutes = [
+
+const EvaluationRoutes =   {
+  workAreaTags: EvaluationWorkAreas,
+  items: [
   {
     path: "/app/dashboard",
-    element: <TestPage />
+    element: <TestPage />,
   },
   {
     path: "/app/evaluation/artifacts",
@@ -19,11 +23,13 @@ const EvaluationRoutes = [
   },
   {
     path: "/app/evaluation/tr_me",
-    element: <TR_ME />,
+    element: <TRME />,
+    // workAreaTags: ['TR_ME'],
   },
   {
     path: "/app/evaluation/pr_tr",
-    element: <PR_TR />,
+    element: <PRTR />,
+    // workAreaTags: ['PR_TR'],
   },
   // {
   //   path: "/app/evaluation/ytd-ec",
@@ -51,6 +57,7 @@ const EvaluationRoutes = [
   //   path: "/app/evaluation/summative-eval",
   //   element: <TestPage />,
   // },
-];
+], 
+};
 
 export default EvaluationRoutes;

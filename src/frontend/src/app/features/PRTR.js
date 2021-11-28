@@ -4,7 +4,7 @@ import {
   Container,
   Typography } from '@mui/material';
 
-function PR_TR(props) {
+function PRTR(props) {
   return (
     <>
       <Typography variant="h1">Hello from PR_TR</Typography>
@@ -12,4 +12,4 @@ function PR_TR(props) {
   );
 };
 
-export default PR_TR;
+export default PRTR;
