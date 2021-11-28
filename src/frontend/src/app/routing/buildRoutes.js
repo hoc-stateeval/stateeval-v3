@@ -19,11 +19,9 @@ const generateRoutesFromConfigs = (routeConfigs, workAreaTag) => {
 const buildRoutes = (activeWorkAreaContext) => {
 
   const routeConfigs = [evaluationRoutesConfigs];
-  // const appRoutes = activeWorkAreaContext?
-  //         generateRoutesFromConfigs(routeConfigs, activeWorkAreaContext.tagName): [];
-  const appRoutes = activeWorkAreaContext? evaluationRoutesConfigs.items: [];
-  const appRoutes2 = activeWorkAreaContext? generateRoutesFromConfigs([evaluationRoutesConfigs], activeWorkAreaContext.tagName): [];
-  const routes = [
+  const appRoutes = activeWorkAreaContext?
+          generateRoutesFromConfigs(routeConfigs, activeWorkAreaContext.tagName): [];
+   const routes = [
     ...appRoutes,
     { path: "404", element: <NotFound /> },
     { path: "*", element: <Navigate to="/404" /> },
