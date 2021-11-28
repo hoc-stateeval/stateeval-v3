@@ -3,14 +3,8 @@ import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
-  Avatar,
   Box,
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   Divider,
   Drawer,
   Link,
@@ -19,6 +13,8 @@ import {
 } from '@mui/material';
 import { Scrollbar } from '../components/scrollbar';
 import SidebarSection from './SidebarSection';
+import ChangeWorkAreaDialog from './ChangeWorkAreaDialog';
+import UserProfile from './UserProfile';
 
 import logo from '../../images/logo.jpg';
 import HomeIcon  from '@mui/icons-material/Home';
@@ -27,7 +23,7 @@ import { selectCurrentUser, selectActiveWorkAreaContext } from '../store/stateEv
 const navSections = [
   {
     title: 'Evaluation',
-    workAreaTags: ['PR_TR'],
+    workAreaTags: ['PR_TR', 'TR_ME'],
     items: [
       {
         title: 'Dashboard',
@@ -131,26 +127,11 @@ export const getNavSectionsForWorkArea = (workAreaTag) => {
   return result;
 }
 
-const Sidebar = (props) => {
-  const { onClose, open, sidebarWidth } = props;
+const Sidebar = ({ onClose, open, sidebarWidth }) => {
   const location = useLocation();
   const currentUser = useSelector(selectCurrentUser);
   const currentWorkAreaContext = useSelector(selectActiveWorkAreaContext);
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
-
-  const [dlgOpen, setDlgOpen] = useState(false);
-
-  const handleClickDlgOpen = () => {
-    setDlgOpen(true);
-  };
-
-  const handleClickDlgClose = () => {
-    setDlgOpen(false);
-  };
-
-  const handleClickOptions = () => {
-
-  }
 
   const buildContent = () => (
     <>
@@ -185,27 +166,8 @@ const Sidebar = (props) => {
             flexDirection: 'column',
             alignItems:'center',
           }}>
-            <Avatar alt="profile image" src={currentUser?.profileImageURL} />
-            <Typography variant="h5">{currentUser?.displayName}</Typography>
-            <Typography variant="profile">{currentWorkAreaContext.districtName}</Typography>
-            {currentWorkAreaContext.schoolName ?
-            (<Typography variant="profile">{currentWorkAreaContext.schoolName}</Typography>) :(<></>)}
-            <Typography variant="profile">{currentWorkAreaContext.title}</Typography>
-            <Button variant="outlined" onClick={handleClickDlgOpen}>
-              Options
-            </Button>
-            <Dialog open={dlgOpen} onClose={handleClickDlgClose}>
-              <DialogTitle>Subscribe</DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  Here are the instructions
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClickDlgClose}>Cancel</Button>
-                <Button onClick={handleClickDlgClose}>OK</Button>
-              </DialogActions>
-            </Dialog>
+            <UserProfile currentUser={currentUser} currentWorkAreaContext={currentWorkAreaContext} />
+            <ChangeWorkAreaDialog />
           </Box>
           <Divider sx={{ my: 3 }} />
           <Box sx={{ flexGrow: 1 }}>
