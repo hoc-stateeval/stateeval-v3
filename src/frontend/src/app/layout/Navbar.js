@@ -1,13 +1,19 @@
-import { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 import MenuIcon from '@mui/icons-material/Menu';
 import PropTypes from 'prop-types';
 import {
   AppBar,
   Box,
+  Button,
   IconButton,
+  Stack,
   Toolbar
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { logout } from '../store/stateEval/userContextSlice';
+
 
 const NavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -17,9 +23,15 @@ const NavbarRoot = styled(AppBar)(({ theme }) => ({
   boxShadow: 'none'
 }));
 
-
-function Navbar(props) {
+const Navbar = (props) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { onOpenSidebar, sidebarWidth, ...other } = props;
+
+  const onClickLogout = async () => {
+    await dispatch(logout());
+    navigate("/localLogin");
+  }
 
   return (
     <>
@@ -53,6 +65,13 @@ function Navbar(props) {
             <MenuIcon fontSize="small" />
           </IconButton>
           <Box sx={{ flexGrow: 1 }} />
+          <Stack direction="row" spacing={2}>
+            <Button variant="outlined" 
+              startIcon={<LogoutIcon />}
+              onClick={onClickLogout}>
+              Logout
+            </Button>
+          </Stack>
         </Toolbar>
       </NavbarRoot>
     </>

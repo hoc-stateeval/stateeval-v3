@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit'
 import axios from 'axios';
 import ThunkState from '../../core/thunkState';
 import { convertArrayToHashMap } from '../../core/utils';
-//import { updateUserRole, setUserData } from '../../auth/store/userSlice';
+import { clearState } from '../../core/persist';
 
 const getEvaluationsForWorkAreaContext = async (workAreaContext) => {
   const response = await axios.get(
@@ -97,6 +97,14 @@ export const submitLocalLogin =
 
   };
 
+  export const logout = createAsyncThunk(
+    'userContext/logout',
+    async (user, { dispatch, getState }) => {
+      clearState();
+      return initialState;
+    }
+  );
+
 export const setCurrentUser = createAsyncThunk(
   'userContext/setCurrentUser',
   async (user, { dispatch, getState }) => {
@@ -163,6 +171,20 @@ const userContextSlice = createSlice({
     },
   },
   extraReducers: {
+    [logout.pending]: (state, action) => ({
+      ...state,
+      thunkState: ThunkState.RUNNING,
+    }),
+    [logout.fulfilled]: (state, action) => ({
+      ...action.payload,
+      thunkState: ThunkState.COMPLETE,
+    }),
+    [logout.rejected]: (state, action) => ({
+      ...state,
+      thunkState: ThunkState.FAILED,
+      errorMessage: action.payload,
+    }),
+
     [setCurrentUser.pending]: (state, action) => ({
       ...state,
       thunkState: ThunkState.RUNNING,

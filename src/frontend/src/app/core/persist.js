@@ -1,6 +1,6 @@
 const KEY = 'redux';
 
-export function loadState() {
+export const loadState = () => {
   try {
     const serializedState = localStorage.getItem(KEY);
     if (!serializedState) return undefined;
@@ -10,11 +10,15 @@ export function loadState() {
   }
 }
 
-export async function saveState(state) {
+export const saveState = (state) => {
   try {
     const serializedState = JSON.stringify(state);
     localStorage.setItem(KEY, serializedState);
   } catch (e) {
     // Ignore
   }
+}
+
+export const clearState = () => {
+  localStorage.setItem(KEY, null);
 }
