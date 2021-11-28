@@ -15,6 +15,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { logout } from '../store/stateEval/userContextSlice';
 
 import FrameworkSwitcher from '../components/FrameworkSwitcher';
+import EvaluationSwitcher from '../components/EvaluationSwitcher';
 
 
 const NavbarRoot = styled(AppBar)(({ theme }) => ({
@@ -68,6 +69,7 @@ const Navbar = (props) => {
           </IconButton>
           <Box sx={{ flexGrow: 1 }} />
           <Stack direction="row" spacing={2}>
+            <EvaluationSwitcher />
             <FrameworkSwitcher />
             <Button variant="outlined" 
               startIcon={<LogoutIcon />}
