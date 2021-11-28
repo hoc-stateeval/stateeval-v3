@@ -15,6 +15,7 @@ import { Scrollbar } from '../components/scrollbar';
 import SidebarSection from './SidebarSection';
 import ChangeWorkAreaDialog from './ChangeWorkAreaDialog';
 import UserProfile from './UserProfile';
+import { EvaluationWorkAreas } from '../core/workAreas';
 
 import logo from '../../images/logo.jpg';
 import HomeIcon  from '@mui/icons-material/Home';
@@ -23,7 +24,7 @@ import { selectCurrentUser, selectActiveWorkAreaContext } from '../store/stateEv
 const navSections = [
   {
     title: 'Evaluation',
-    workAreaTags: ['PR_TR', 'TR_ME'],
+    workAreaTags: EvaluationWorkAreas,
     items: [
       {
         title: 'Dashboard',
@@ -34,6 +35,18 @@ const navSections = [
         title: 'Artifacts',
         icon: <HomeIcon fontSize="small" />,
         path: '/app/evaluation/artifacts',
+      },
+      {
+        title: 'TR_ME only',
+        icon: <HomeIcon fontSize="small" />,
+        path: '/app/evaluation/tr_me',
+        workAreaTags: ['TR_ME'],
+      },
+      {
+        title: 'PR_TR only',
+        icon: <HomeIcon fontSize="small" />,
+        path: '/app/evaluation/pr_tr',
+        workAreaTags: ['PR_TR'],
       },
       // {
       //   title: 'YTD Evidence',
@@ -123,7 +136,16 @@ const navSections = [
 ];
 
 export const getNavSectionsForWorkArea = (workAreaTag) => {
-  const result = navSections.filter(x=>x.workAreaTags.includes(workAreaTag));
+
+  const result = navSections.reduce( (acc, nextSection) => {
+    if (nextSection.workAreaTags.includes(workAreaTag)) {
+      let section = {...nextSection};
+      section.items = section.items.filter(x=>(!x.workAreaTags?x:x.workAreaTags.includes(workAreaTag)));
+      acc.push(section);
+    }
+    return acc;
+  }, []);
+
   return result;
 }
 

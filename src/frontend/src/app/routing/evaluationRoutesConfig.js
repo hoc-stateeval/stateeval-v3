@@ -2,6 +2,8 @@ import { lazy } from 'react'
 const Artifacts = lazy(() => import('../features/evaluation/artifacts/Artifacts'));
 const Artifact = lazy(() => import('../features/evaluation/artifacts/Artifact'));
 const TestPage = lazy(() => import('../features/Test'));
+const TR_ME = lazy(() => import('../features/TR_ME'));
+const PR_TR = lazy(() => import('../features/PR_TR'));
 
 const EvaluationRoutes = [
   {
@@ -14,6 +16,14 @@ const EvaluationRoutes = [
     children: [
       { path: ":id", element: <Artifact /> },
     ]
+  },
+  {
+    path: "/app/evaluation/tr_me",
+    element: <TR_ME />,
+  },
+  {
+    path: "/app/evaluation/pr_tr",
+    element: <PR_TR />,
   },
   // {
   //   path: "/app/evaluation/ytd-ec",
