@@ -5,7 +5,7 @@ import { Box, Container, Typography } from "@mui/material";
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 
-const sidebarWidth = 240;
+const sidebarWidth = 220;
 
 const LayoutRoot = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -40,7 +40,7 @@ const Layout = (props) => {
             backgroundColor:'#FFF'}}>
 
             <Container maxWidth="md">
-              <Typography variant="h2">Page Title</Typography>
+              <Typography variant="h4">Page Title</Typography>
             </Container>
           </Box>
 

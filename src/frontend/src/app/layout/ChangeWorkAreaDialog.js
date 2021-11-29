@@ -5,18 +5,15 @@ import {
   setActiveWorkAreaContext,
 } from '../store/stateEval/userContextSlice';
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Divider,
   FormControl,
   MenuItem,
   Select,
-  Typography,
 } from '@mui/material';
 
 const ChangeWorkAreaDialog = () => {

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -8,7 +7,6 @@ import {
   Divider,
   Drawer,
   Link,
-  Typography,
   useMediaQuery,
 } from '@mui/material';
 import { Scrollbar } from '../components/Scrollbar';
@@ -172,7 +170,7 @@ const Sidebar = ({ onClose, open, sidebarWidth }) => {
             height: '100%',
           }}
         >
-          <Box sx={{p:3}}>
+          <Box sx={{px:2, py:1}}>
             <Button component={Link}
               disableRipple
               to="/"
@@ -181,7 +179,7 @@ const Sidebar = ({ onClose, open, sidebarWidth }) => {
                 src={logo} alt="logo"/>
             </Button>
           </Box>
-          <Divider sx={{ my: 3 }} />
+          <Divider sx={{ mb: 2 }} />
           <Box
            sx={{
             display: 'flex',
@@ -191,7 +189,7 @@ const Sidebar = ({ onClose, open, sidebarWidth }) => {
             <UserProfile currentUser={currentUser} currentWorkAreaContext={currentWorkAreaContext} />
             <ChangeWorkAreaDialog />
           </Box>
-          <Divider sx={{ my: 3 }} />
+          <Divider sx={{ mb: 2 }} />
           <Box sx={{ flexGrow: 1 }}>
               {getNavSectionsForWorkArea(currentWorkAreaContext.tagName).map((section) => (
                 <SidebarSection
@@ -218,11 +216,7 @@ const Sidebar = ({ onClose, open, sidebarWidth }) => {
         open
         PaperProps={{
           sx: {
-            backgroundColor: 'neutral.900',
-            borderRightColor: 'divider',
-            borderRightStyle: 'solid',
-            borderRightWidth: 0,
-            color: '#FFFFFF',
+            backgroundColor: 'primary.main',
             width: `${sidebarWidth}px`
           }
         }}
@@ -240,15 +234,14 @@ const Sidebar = ({ onClose, open, sidebarWidth }) => {
       open={open}
       PaperProps={{
         sx: {
-          backgroundColor: 'neutral.900',
-          color: '#FFFFFF',
+          backgroundColor: 'primary.main',
           width: `${sidebarWidth}px`
         }
       }}
       sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
       variant="temporary"
     >
-      <Typography variant="h4">{buildContent()}</Typography>
+      {buildContent()}
     </Drawer>
   );
 }

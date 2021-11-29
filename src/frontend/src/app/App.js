@@ -4,7 +4,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { Provider } from 'react-redux';
 import store from './store';
 import CssBaseline from '@mui/material/CssBaseline';
-import { createTheme } from './theme';
+import theme from './Theme';
 import { CacheProvider } from '@emotion/react';
 import { createEmotionCache } from './utils/create-emotion-cache';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -19,13 +19,7 @@ const App = () => {
         <CacheProvider value={emotionCache}>
           <Router>
             <Suspense fallback={<div>Loading...</div>}>
-              <ThemeProvider
-                  theme={createTheme({
-                    direction: 'ltr',
-                    responsiveFontSizes: true,
-                    mode: 'light'
-                  })}
-                >
+              <ThemeProvider theme={theme}>
                 <CssBaseline/>
                 <MainLayout />
               </ThemeProvider>
