@@ -15,6 +15,9 @@ let theme = createTheme(
         default: '#f3f3f4',
         paper: '#FFFFFF'
       },
+      text : {
+        primary: '#676a6c'
+      }
     },
     typography: {
       fontFamily: [
@@ -24,6 +27,11 @@ let theme = createTheme(
         'Arial', 
         'sans-serif',
       ].join(','),
+      h2: {
+        fontSize:'1.5rem',
+        fontWeight: 100,
+        lineHeight: 3
+      }
     }
   }
  );

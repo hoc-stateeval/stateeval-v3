@@ -12,11 +12,17 @@ import {
   DialogContentText,
   DialogTitle,
   FormControl,
+  Link,
   MenuItem,
   Select,
 } from '@mui/material';
 
+import { styled } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
+
 const ChangeWorkAreaDialog = () => {
+  const theme = useTheme();
+
   const [dlgOpen, setDlgOpen] = useState(false);
 
   const dispatch = useDispatch();
@@ -96,12 +102,28 @@ const ChangeWorkAreaDialog = () => {
     setDlgOpen(false);
   };
 
+  const styles = {
+    optionsLink: {
+      color: '#dfe4ed',
+      textAlign: 'right',
+      textDecoration: 'underline',
+      paddingRight:'5px',
+      fontSize: '.813rem'
+
+    }
+  }
+  const StyledDialog = styled(Dialog)`
+  // .MuiDialog-paper {
+  //   background-color: ${theme.palette.primary.main};
+  // }
+`;
   return (
     <>
-      <Button variant="outlined" onClick={handleClickDlgOpen}>
+      {/* <Button variant="outlined" onClick={handleClickDlgOpen}>
         Options
-      </Button>
-      <Dialog open={dlgOpen} onClose={handleClickDlgCancel}>
+      </Button> */}
+      <Link component="button" sx={{...styles.optionsLink, mt:1}} onClick={handleClickDlgOpen}>Options</Link>
+      <StyledDialog open={dlgOpen} onClose={handleClickDlgCancel}>
         <DialogTitle>Select a Work Area</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -167,7 +189,7 @@ const ChangeWorkAreaDialog = () => {
           <Button onClick={handleClickDlgCancel}>Cancel</Button>
           <Button onClick={handleClickChangeWorkArea}>OK</Button>
         </DialogActions>
-      </Dialog>
+      </StyledDialog>
       </>
   );
 };

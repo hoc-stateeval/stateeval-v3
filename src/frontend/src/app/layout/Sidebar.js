@@ -2,22 +2,26 @@ import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
+  Avatar,
   Box,
   Button,
   Divider,
   Drawer,
   Link,
+  Stack,
+  Typography,
   useMediaQuery,
 } from '@mui/material';
 import { Scrollbar } from '../components/Scrollbar';
 import SidebarSection from './SidebarSection';
 import ChangeWorkAreaDialog from './ChangeWorkAreaDialog';
-import UserProfile from './UserProfile';
+import SidebarProfile from './SidebarProfile';
 import { EvaluationWorkAreas } from '../core/workAreas';
 
 import logo from '../../images/logo.jpg';
 import HomeIcon  from '@mui/icons-material/Home';
 import { selectCurrentUser, selectActiveWorkAreaContext } from '../store/stateEval/userContextSlice';
+import backgroundImg from '../../images/header-profile.png';
 
 const navSections = [
   {
@@ -153,57 +157,72 @@ const Sidebar = ({ onClose, open, sidebarWidth }) => {
   const currentWorkAreaContext = useSelector(selectActiveWorkAreaContext);
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
+  const styles = {
+    profile: {
+      color: '#dfe4ed',
+      background: `url(${backgroundImg})`,
+      // padding: '25px 5px 5px 25px',
+      fontSize: '.688rem',
+      paddingTop:'20px',
+    },
+    workArea: {
+      color: '#8095a8',
+      fontSize: '.688rem',
+    },
+  }
+
   const buildContent = () => (
     <>
       <Scrollbar
-        sx={{
-          height: '100%',
-          '& .simplebar-content': {
-            height: '100%'
-          }
-        }}
+        // sx={{
+        //   height: '100%',
+        //   '& .simplebar-content': {
+        //     height: '100%'
+        //   }
+        // }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100%',
-          }}
-        >
-          <Box sx={{px:2, py:1}}>
-            <Button component={Link}
-              disableRipple
-              to="/"
-              sx={{padding:'0'}}>
-              <Box component="img"
-                src={logo} alt="logo"/>
-            </Button>
-          </Box>
-          <Divider sx={{ mb: 2 }} />
-          <Box
-           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems:'center',
-          }}>
-            <UserProfile currentUser={currentUser} currentWorkAreaContext={currentWorkAreaContext} />
-            <ChangeWorkAreaDialog />
-          </Box>
-          <Divider sx={{ mb: 2 }} />
-          <Box sx={{ flexGrow: 1 }}>
-              {getNavSectionsForWorkArea(currentWorkAreaContext.tagName).map((section) => (
-                <SidebarSection
-                  key={section.title}
-                  path={location.pathname}
-                  sx={{
-                    mt: 2,
-                    '& + &': {
-                      mt: 2
-                    }
-                  }}
-                  {...section} />
-              ))}
-          </Box>
+        <Box sx={{pt:2}}>
+          <Stack spacing={1}>
+            <Box sx={{pl:2}}>
+              <Button component={Link}
+                disableRipple
+                sx={{p:'0'}}
+                to="/">
+                <Box component="img"
+                  src={logo} alt="logo"/>
+              </Button>
+            </Box>
+            <Box sx={{...styles.profile}}>
+              <Box sx={{pl:2, pb:2}}>
+                <Avatar alt="profile image" src={currentUser?.profileImageURL} />
+                <Typography sx={{fontSize:'.688rem', mt: 1, fontWeight: 600}} >{currentUser?.displayName}</Typography>
+              </Box>           
+            </Box>
+            <Box
+             sx={{
+              pl:2,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems:'left',
+            }}>
+              <SidebarProfile currentUser={currentUser} currentWorkAreaContext={currentWorkAreaContext} />
+              <ChangeWorkAreaDialog />
+            </Box>
+            <Box sx={{ flexGrow: 1 }}>
+                {getNavSectionsForWorkArea(currentWorkAreaContext.tagName).map((section) => (
+                  <SidebarSection
+                    key={section.title}
+                    path={location.pathname}
+                    sx={{
+                      mt: 2,
+                      '& + &': {
+                        mt: 2
+                      }
+                    }}
+                    {...section} />
+                ))}
+            </Box>
+          </Stack>
         </Box>
       </Scrollbar>
     </>

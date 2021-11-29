@@ -40,7 +40,7 @@ const Layout = (props) => {
             backgroundColor:'#FFF'}}>
 
             <Container maxWidth="md">
-              <Typography variant="h4">Page Title</Typography>
+              <Typography variant="h2">Page Title</Typography>
             </Container>
           </Box>
 
