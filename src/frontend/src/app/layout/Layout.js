@@ -2,7 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { Box, Container, Typography } from "@mui/material";
-import Sidebar from './Sidebar';
+import Sidebar from './SideBar/Sidebar';
 import Navbar from './Navbar';
 
 const sidebarWidth = 220;

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   selectWorkAreaContextsAll,
   setActiveWorkAreaContext,
-} from '../store/stateEval/userContextSlice';
+} from '../../store/stateEval/userContextSlice';
 import {
   Button,
   Dialog,
@@ -119,9 +119,6 @@ const ChangeWorkAreaDialog = () => {
 `;
   return (
     <>
-      {/* <Button variant="outlined" onClick={handleClickDlgOpen}>
-        Options
-      </Button> */}
       <Link component="button" sx={{...styles.optionsLink, mt:1}} onClick={handleClickDlgOpen}>Options</Link>
       <StyledDialog open={dlgOpen} onClose={handleClickDlgCancel}>
         <DialogTitle>Select a Work Area</DialogTitle>

@@ -62,22 +62,22 @@ const SidebarSection = (props) => {
   const navItems = renderNavItems({ items, path });
   return (
     <List
-      subheader={(
-        <ListSubheader
-          disableGutters
-          disableSticky
-          sx={{
-            color: 'neutral.500',
-            fontSize: '0.75rem',
-            fontWeight: 700,
-            lineHeight: 2.5,
-            ml: 4,
-            textTransform: 'uppercase'
-          }}
-        >
-          {title}
-        </ListSubheader>
-      )}
+      // subheader={(
+      //   <ListSubheader
+      //     disableGutters
+      //     disableSticky
+      //     sx={{
+      //       color: 'neutral.500',
+      //       fontSize: '0.75rem',
+      //       fontWeight: 700,
+      //       lineHeight: 2.5,
+      //       ml: 4,
+      //       textTransform: 'uppercase'
+      //     }}
+      //   >
+      //     {title}
+      //   </ListSubheader>
+      // )}
       >
       {navItems}
     </List>
