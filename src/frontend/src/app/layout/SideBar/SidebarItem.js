@@ -1,9 +1,21 @@
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import HomeIcon  from '@mui/icons-material/Home';
 import PropTypes from 'prop-types';
-import { Box, Button, Collapse, ListItem } from '@mui/material';
+import { 
+  Box, 
+  Button,
+  Collapse, 
+  Link,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText
+} from '@mui/material';
 import ExpandMoreIcon  from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { Title } from '@mui/icons-material';
+
 
 const SidebarItem = (props) => {
   const {
@@ -83,6 +95,12 @@ const SidebarItem = (props) => {
     );
   }
 
+  const styles = {
+    activeStyles: {
+      borderLeft: '4px solid #19aa8d',
+      backgroundColor: '#293846',
+    }
+  }
   // Leaf
   return (
     <ListItem
@@ -90,40 +108,24 @@ const SidebarItem = (props) => {
       sx={{
         display: 'flex',
         mb: 0.5,
-        py: 0,
-        px: 2
+        py: 0
       }}
     >
-      <Button
-        component={RouterLink}
-        startIcon={icon}
-        endIcon={chip}
-        to={path}
-        disableRipple
-        sx={{
-          backgroundColor: active && 'rgba(255,255,255, 0.08)',
-          borderRadius: 1,
-          color: active ? 'secondary.main' : 'neutral.300',
-          fontWeight: active && 'fontWeightBold',
-          justifyContent: 'flex-start',
-          pl: `${paddingLeft}px`,
-          pr: 3,
-          textAlign: 'left',
-          textTransform: 'none',
-          width: '100%',
-          '& .MuiButton-startIcon': {
-            color: active ? 'secondary.main' : 'neutral.400'
-          },
-          '&:hover': {
-            backgroundColor: 'rgba(255,255,255, 0.08)'
-          }
-        }}
-      >
-        <Box sx={{ flexGrow: 1 }}>
-          {title}
-        </Box>
-        {info}
-      </Button>
+      <ListItemButton component={RouterLink} to={path}
+      sx={{
+        borderLeft: active ? '4px solid #19aa8d': '',
+        backgroundColor: active ? '#293846': '#2f4050',
+        color: '#8095a8',
+        '&:hover': {
+          color: '#FFF',
+          textDecoration: 'none'
+        }
+      }}>
+        <ListItemIcon sx={{minWidth:'25px'}}>
+          <HomeIcon fontSize="small" style={{ color: '#FFF'}} />
+        </ListItemIcon>
+        <ListItemText  primaryTypographyProps={{fontSize: '.688rem'}}  primary={title} />
+      </ListItemButton>
     </ListItem>
   );
 };

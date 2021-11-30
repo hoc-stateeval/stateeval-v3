@@ -44,12 +44,6 @@ const Sidebar = ({ onClose, open, sidebarWidth }) => {
                 <SidebarSection
                   key={section.title}
                   path={location.pathname}
-                  sx={{
-                    mt: 2,
-                    '& + &': {
-                      mt: 2
-                    }
-                  }}
                   {...section} />
               ))}
           </Box>
