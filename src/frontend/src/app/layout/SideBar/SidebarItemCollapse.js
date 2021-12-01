@@ -34,11 +34,9 @@ const SidebarItemCollapse = (props) => {
         display: 'block',
         mb: 0.5,
         py: 0,
-        // px: 2
       }}>
         <ListItemButton onClick={handleToggle}
         sx={{
-          // borderLeft: active ? '4px solid #19aa8d': '',
           backgroundColor: active ? '#293846': '#2f4050',
           color: '#8095a8',
           '&:hover': {
@@ -54,38 +52,6 @@ const SidebarItemCollapse = (props) => {
         <ListItemText  primaryTypographyProps={{fontSize: '.813rem', fontWeight: 600, color: active ? '#FFF': '#8095a8'}}  primary={title} />
         {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </ListItemButton>
-
-      {/* <Button
-        // endIcon={!open
-        //   ? <ChevronRightIcon fontSize="small" />
-        //   : <ExpandMoreIcon fontSize="small" />}
-        disableRipple
-        onClick={handleToggle}
-        startIcon={icon}
-        sx={{
-          color: active ? '#FFF' : '#8095a8',
-          justifyContent: 'flex-start',
-          // pl: `${paddingLeft}px`,
-          pr: 3,
-          textAlign: 'left',
-          textTransform: 'none',
-          width: '100%',
-          '&:hover': {
-            backgroundColor: 'rgba(255,255,255, 0.08)'
-          },
-          '& .MuiButton-startIcon': {
-            color: active ? '#FFF' : '#8095a8'
-          },
-          '& .MuiButton-endIcon': {
-            color: 'neutral.400'
-          }
-        }}
-      >
-        <Box sx={{ flexGrow: 1 }}>
-          {title}
-        </Box>
-        {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-      </Button> */}
       <Collapse
         in={open}
         sx={{ mt: 0.5 }}

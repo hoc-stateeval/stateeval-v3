@@ -3,7 +3,6 @@ import { List, ListSubheader } from '@mui/material';
 import SidebarItem from './SidebarItem';
 import SidebarItemCollapse from './SidebarItemCollapse';
 import SidebarItemNested from './SidebarItemNested';
-import { isEvaluatee } from '../../core/workAreas';
 
 const renderNavItems = ({ depth = 0, items, path }) => (
   <List disablePadding>

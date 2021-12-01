@@ -19,7 +19,6 @@ const SidebarItemNested = (props) => {
       sx={{
         display: 'flex',
         mb: 0.5,
-        // pl:4,
         py: 0
       }}
     >
