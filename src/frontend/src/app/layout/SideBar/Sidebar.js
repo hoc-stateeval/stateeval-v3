@@ -23,53 +23,9 @@ const Sidebar = ({ onClose, open, sidebarWidth }) => {
   const navSections = buildNavSectionsForWorkArea(currentWorkAreaContext.tagName);
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
-  // const buildContent = () => (
-  //   <>
-  //     <Scrollbar
-  //       // sx={{
-  //       //   height: '100%',
-  //       //   '& .simplebar-content': {
-  //       //     height: '100%'
-  //       //   }
-  //       // }}
-  //     >
-  //       <Stack sx={{pt:2}} spacing={2}>
-  //         <SidebarLogo/>
-  //         <SidebarAvatar currentUser={currentUser} />
-  //         <SidebarProfile currentUser={currentUser} currentWorkAreaContext={currentWorkAreaContext} />
-  //         <SidebarEvaluatingDropdown currentWorkAreaContext={currentWorkAreaContext} />
-
-  //         <Box sx={{ flexGrow: 1 }}>
-  //             {navSections.map((section) => (
-  //               <SidebarSection
-  //                 key={section.title}
-  //                 path={location.pathname}
-  //                 {...section} />
-  //             ))}
-  //         </Box>
-  //       </Stack>
-  //     </Scrollbar>
-  //   </>
-  // );
-
-  return (
-    <Drawer
-      anchor="left"
-      open
-      PaperProps={{
-        sx: {
-          backgroundColor: 'primary.main',
-          width: `${sidebarWidth}px`
-        }
-      }}
-      variant={lgUp?"permanent":"temporary"}
-      sx={{ 
-        ...(!lgUp && {
-          zIndex: (theme) => theme.zIndex.appBar + 100,
-        })
-      }}
-    >
-     <Scrollbar
+  const buildContent = () => (
+    <>
+      <Scrollbar
         // sx={{
         //   height: '100%',
         //   '& .simplebar-content': {
@@ -93,45 +49,44 @@ const Sidebar = ({ onClose, open, sidebarWidth }) => {
           </Box>
         </Stack>
       </Scrollbar>
+    </>
+  );
+
+  if (lgUp) {
+    return (
+      <Drawer
+        anchor="left"
+        open
+        PaperProps={{
+          sx: {
+            backgroundColor: 'primary.main',
+            width: `${sidebarWidth}px`
+          }
+        }}
+        variant="permanent"
+      >
+        {buildContent()}
+      </Drawer>
+    );
+  }
+  
+  return (
+    <Drawer
+      anchor="left"
+      onClose={onClose}
+      open={open}
+      PaperProps={{
+        sx: {
+          backgroundColor: 'primary.main',
+          width: `${sidebarWidth}px`
+        }
+      }}
+      sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
+      variant="temporary"
+    >
+      {buildContent()}
     </Drawer>
   );
-  
-
-  // if (lgUp) {
-  //   return (
-  //     <Drawer
-  //       anchor="left"
-  //       open
-  //       PaperProps={{
-  //         sx: {
-  //           backgroundColor: 'primary.main',
-  //           width: `${sidebarWidth}px`
-  //         }
-  //       }}
-  //       variant="permanent"
-  //     >
-  //       {buildContent()}
-  //     </Drawer>
-  //   );
-  // }
-  
-//   return (
-//     <Drawer
-//       anchor="left"
-//       onClose={onClose}
-//       open={open}
-//       PaperProps={{
-//         sx: {
-//           backgroundColor: 'primary.main',
-//           width: `${sidebarWidth}px`
-//         }
-//       }}
-//       sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
-//       variant="temporary"
-//     >
-//       {buildContent()}
-//     </Drawer>
-//   );
 }
 
 Sidebar.propTypes = {
