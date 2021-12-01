@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
 import { List, ListSubheader } from '@mui/material';
 import SidebarItem from './SidebarItem';
+import SidebarItemCollapse from './SidebarItemCollapse';
+import SidebarItemNested from './SidebarItemNested';
+import { isEvaluatee } from '../../core/workAreas';
 
 const renderNavItems = ({ depth = 0, items, path }) => (
   <List disablePadding>
@@ -15,20 +18,16 @@ const renderNavItems = ({ depth = 0, items, path }) => (
 
 const reduceChildRoutes = ({ acc, item, depth, path }) => {
   const key = `${item.title}-${depth}`;
-  const partialMatch = true; // path.includes(item.path);
-  const exactMatch = path === item.path;
+  const activeChild = path.includes(item.path);
+  const activeItem = path === item.path;
 
   if (item.children) {
     acc.push(
-      <SidebarItem
-        active={partialMatch}
-        chip={item.chip}
-        depth={depth}
-        icon={item.icon}
-        info={item.info}
+      <SidebarItemCollapse
+        active={activeChild}
         key={key}
-        open={partialMatch}
-        path={item.path}
+        icon={item.icon}
+        open={activeChild}
         title={item.title}
       >
         {renderNavItems({
@@ -36,16 +35,24 @@ const reduceChildRoutes = ({ acc, item, depth, path }) => {
           items: item.children,
           path
         })}
-      </SidebarItem>
+      </SidebarItemCollapse>
     );
-  } else {
+  }
+  else if (depth===0) {
     acc.push(
       <SidebarItem
-        active={exactMatch}
-        chip={item.chip}
-        depth={depth}
+        active={activeItem}
         icon={item.icon}
-        info={item.info}
+        key={key}
+        path={item.path}
+        title={item.title}
+      />
+    );
+  }
+  else {
+    acc.push(
+      <SidebarItemNested
+        active={activeItem}
         key={key}
         path={item.path}
         title={item.title}
@@ -60,26 +67,26 @@ const SidebarSection = (props) => {
   const { items, path, title} = props;
 
   const navItems = renderNavItems({ items, path });
+  
   return (
     <List
-    
-      // subheader={(
-      //   <ListSubheader
-      //     disableGutters
-      //     disableSticky
-      //     sx={{
-      //       color: 'neutral.500',
-      //       fontSize: '0.75rem',
-      //       fontWeight: 700,
-      //       lineHeight: 2.5,
-      //       ml: 4,
-      //       textTransform: 'uppercase'
-      //     }}
-      //   >
-      //     {title}
-      //   </ListSubheader>
-      // )}
-      >
+      subheader={(
+        <ListSubheader
+          disableGutters
+          disableSticky
+          sx={{
+            color: 'neutral.500',
+            fontSize: '0.75rem',
+            fontWeight: 700,
+            lineHeight: 2.5,
+            pl: 2,
+            textTransform: 'uppercase'
+          }}
+        >
+          {title}
+        </ListSubheader>
+      )}
+    >
       {navItems}
     </List>
   );

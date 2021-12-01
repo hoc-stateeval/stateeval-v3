@@ -1,4 +1,11 @@
-import HomeIcon  from '@mui/icons-material/Home';
+import ArtifactsIcon  from '@mui/icons-material/Article';
+import SGGIcon from '@mui/icons-material/Face';
+import GridViewIcon from '@mui/icons-material/GridView';
+import YTDIcon from '@mui/icons-material/VerticalSplit';
+import ObservationsIcon from '@mui/icons-material/Visibility';
+import SelfAssessmentsIcon from '@mui/icons-material/LocalCafe';
+import SummativeEvalIcon from '@mui/icons-material/Summarize';
+import SettingsIcon from '@mui/icons-material/SettingsApplications';
 import { EvaluationWorkAreas } from '../../core/workAreas';
 
 const navSections = [
@@ -8,54 +15,53 @@ const navSections = [
     items: [
       {
         title: 'Dashboard',
-        icon: <HomeIcon fontSize="small" />,
-        path: '/app/dashboard',
+        icon: <GridViewIcon fontSize="small" />,
+        path: '/app/evaluation/dashboards',
       },
       {
         title: 'Artifacts',
-        icon: <HomeIcon fontSize="small" />,
+        icon: <ArtifactsIcon fontSize="small" />,
         path: '/app/evaluation/artifacts',
       },
       {
-        title: 'TR_ME only',
-        icon: <HomeIcon fontSize="small" />,
-        path: '/app/evaluation/tr_me',
-        workAreaTags: ['TR_ME'],
+        title: 'YTD Evidence',
+        icon: <YTDIcon fontSize="small" />,
+        path: '/app/evaluation/ytd',
       },
       {
-        title: 'PR_TR only',
-        icon: <HomeIcon fontSize="small" />,
-        path: '/app/evaluation/pr_tr',
-        workAreaTags: ['PR_TR'],
+        title: 'Student Growth',
+        icon: <SGGIcon fontSize="small" />,
+        path: '/app/evaluation/sgg',
+      },
+      {
+        title: 'Observations',
+        icon: <ObservationsIcon fontSize="small" />,
+        path: '/app/evaluation/observations',
+      },
+      {
+        title: 'Self-Assessments',
+        icon: <SelfAssessmentsIcon fontSize="small" />,
+        path: '/app/evaluation/self-assessments',
+      },
+      {
+        title: 'Summative Evaluation',
+        icon: <SummativeEvalIcon fontSize="small" />,
+        path: '/app/evaluation/summative-eval',
+      },
+       {
+        title: 'Settings',
+        icon: <SettingsIcon fontSize="small" />,
+        path: '/app/evaluation/settings',
+        children: [
+          {
+            title: 'Prompt Bank',
+            path: '/app/evaluation/settings/prompt-bank',
+          },
+        ],
       },
       // {
-      //   title: 'YTD Evidence',
-      //   icon: <HomeIcon fontSize="small" />,
-      //   path: '/evaluation/ytd',
-      // },
-      // {
-      //   title: 'Student Growth',
-      //   icon: <HomeIcon fontSize="small" />,
-      //   path: '/evaluation/sg',
-      // },
-      // {
-      //   title: 'Observations',
-      //   icon: <HomeIcon fontSize="small" />,
-      //   path: '/evaluation/observations',
-      // },
-      // {
-      //   title: 'Self-Assessments',
-      //   icon: <HomeIcon fontSize="small" />,
-      //   path: '/evaluation/self-assessments',
-      // },
-      // {
-      //   title: 'Summative Evaluation',
-      //   icon: <HomeIcon fontSize="small" />,
-      //   path: '/evaluation/summative-eval',
-      // },
-      // {
       //   title: 'Setup',
-      //   icon: <HomeIcon fontSize="small" />,
+      //   icon: <SettingsIcon fontSize="small" />,
       //   path: '/evaluation/setup',
       //   children: [
       //     {

@@ -1,17 +1,14 @@
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { 
-  Icon,
   ListItem,
   ListItemButton,
-  ListItemIcon,
   ListItemText
 } from '@mui/material';
 
-const SidebarItem = (props) => {
+const SidebarItemNested = (props) => {
   const {
     active,
-    icon,
     path,
     title,
   } = props;
@@ -22,6 +19,7 @@ const SidebarItem = (props) => {
       sx={{
         display: 'flex',
         mb: 0.5,
+        // pl:4,
         py: 0
       }}
     >
@@ -35,26 +33,20 @@ const SidebarItem = (props) => {
             textDecoration: 'none'
           }
         }}>
-        <ListItemIcon sx={{minWidth:'25px'}}>
-          <Icon fontSize="small" style={{ marginLeft: active? '-4px': '0px', color: active ? '#FFF' : '#8095a8'}} >
-            {icon}
-          </Icon>
-        </ListItemIcon>
-        <ListItemText  primaryTypographyProps={{fontSize: '.813rem', marginLeft: active? '-4px': '0px', fontWeight: 600, color: active ? '#FFF': '#8095a8'}}  primary={title} />
+        <ListItemText  primaryTypographyProps={{fontSize: '.813rem', paddingLeft: '20px', fontWeight: 600, color: active ? '#FFF': '#8095a8'}}  primary={title} />
       </ListItemButton>
     </ListItem>
   );
 };
 
-SidebarItem.propTypes = {
+SidebarItemNested.propTypes = {
   active: PropTypes.bool,
-  icon: PropTypes.node,
   path: PropTypes.string,
   title: PropTypes.string.isRequired
 };
 
-SidebarItem.defaultProps = {
+SidebarItemNested.defaultProps = {
   active: false,
 };
 
-export default SidebarItem;
+export default SidebarItemNested;
