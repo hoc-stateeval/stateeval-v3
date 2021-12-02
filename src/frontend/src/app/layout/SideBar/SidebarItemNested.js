@@ -5,13 +5,20 @@ import {
   ListItemButton,
   ListItemText
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { getListItemButtonStyles, getListItemTextStyles } from './listItemStyles';
+
 
 const SidebarItemNested = (props) => {
+  const theme = useTheme();
   const {
     active,
     path,
     title,
   } = props;
+
+  const listItemButtonStyles = getListItemButtonStyles(active, theme);
+  const listItemTextStyles = getListItemTextStyles(active, theme);
 
   return (
     <ListItem
@@ -23,16 +30,8 @@ const SidebarItemNested = (props) => {
       }}
     >
       <ListItemButton component={RouterLink} to={path}
-        sx={{
-          borderLeft: active ? '4px solid #19aa8d': '',
-          backgroundColor: active ? '#293846': '#2f4050',
-          color: '#8095a8',
-          '&:hover': {
-            color: '#FFF',
-            textDecoration: 'none'
-          }
-        }}>
-        <ListItemText  primaryTypographyProps={{fontSize: '.813rem', paddingLeft: '20px', fontWeight: 600, color: active ? '#FFF': '#8095a8'}}  primary={title} />
+        sx={listItemButtonStyles}>
+        <ListItemText  primaryTypographyProps={{...listItemTextStyles, paddingLeft: '20px'}}  primary={title} />
       </ListItemButton>
     </ListItem>
   );

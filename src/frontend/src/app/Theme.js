@@ -1,5 +1,18 @@
 import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 
+const neutral = {
+  100: '#F3F4F6',
+  200: '#E5E7EB',
+  300: '#D1D5DB',
+  400: '#9CA3AF',
+  500: '#6B7280',
+  600: '#4B5563',
+  700: '#374151',
+  800: '#1F2937',
+  900: '#2f4050',
+  1000: '#293846'
+};
+
 const navBarFontSize = '.688rem';
 
 let theme = createTheme(
@@ -7,7 +20,7 @@ let theme = createTheme(
     palette: {
       type: 'light',
       primary: {
-        main: '#2f4050',
+        main: '#1ab394',
       },
       secondary: {
         main: '#1ab394',
@@ -19,7 +32,8 @@ let theme = createTheme(
       },
       text : {
         primary: '#676a6c'
-      }
+      },
+      neutral,
     },
     typography: {
       fontFamily: [
@@ -37,6 +51,7 @@ let theme = createTheme(
       sideBar: {
         fontSize:navBarFontSize,
         fontWeight:600,
+        backgroundColor: neutral[900]
       },
       sideBarProfile: {
         color: '#8095a8',

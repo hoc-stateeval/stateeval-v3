@@ -7,14 +7,27 @@ import {
   ListItemIcon,
   ListItemText
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { getListItemButtonStyles, getListItemTextStyles } from './listItemStyles';
 
 const SidebarItem = (props) => {
+
+  const theme = useTheme();
   const {
     active,
     icon,
     path,
     title,
   } = props;
+
+const listItemButtonStyles = getListItemButtonStyles(active, theme);
+
+const listItemIconStyles = { 
+  marginLeft: active? '-4px': '0px', 
+  color: active ? '#FFF' : `${theme.palette.neutral[400]}`,
+};
+
+const listItemTextStyles = getListItemTextStyles(active, theme);
 
   return (
     <ListItem
@@ -26,21 +39,13 @@ const SidebarItem = (props) => {
       }}
     >
       <ListItemButton component={RouterLink} to={path}
-        sx={{
-          borderLeft: active ? '4px solid #19aa8d': '',
-          backgroundColor: active ? '#293846': '#2f4050',
-          color: '#8095a8',
-          '&:hover': {
-            color: '#FFF',
-            textDecoration: 'none'
-          }
-        }}>
+        sx={listItemButtonStyles}>
         <ListItemIcon sx={{minWidth:'25px'}}>
-          <Icon fontSize="small" style={{ marginLeft: active? '-4px': '0px', color: active ? '#FFF' : '#8095a8'}} >
+          <Icon fontSize="small" style={listItemIconStyles} >
             {icon}
           </Icon>
         </ListItemIcon>
-        <ListItemText  primaryTypographyProps={{fontSize: '.813rem', marginLeft: active? '-4px': '0px', fontWeight: 600, color: active ? '#FFF': '#8095a8'}}  primary={title} />
+        <ListItemText  primaryTypographyProps={listItemTextStyles}  primary={title} />
       </ListItemButton>
     </ListItem>
   );

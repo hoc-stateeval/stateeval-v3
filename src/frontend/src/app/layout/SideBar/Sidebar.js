@@ -52,17 +52,19 @@ const Sidebar = ({ onClose, open, sidebarWidth }) => {
     </>
   );
 
+  const paperProps = {
+      sx: {
+        backgroundColor: 'neutral.900',
+        width: `${sidebarWidth}px`
+      }
+  };
+
   if (lgUp) {
     return (
       <Drawer
         anchor="left"
         open
-        PaperProps={{
-          sx: {
-            backgroundColor: 'primary.main',
-            width: `${sidebarWidth}px`
-          }
-        }}
+        PaperProps={ paperProps }
         variant="permanent"
       >
         {buildContent()}
@@ -75,12 +77,7 @@ const Sidebar = ({ onClose, open, sidebarWidth }) => {
       anchor="left"
       onClose={onClose}
       open={open}
-      PaperProps={{
-        sx: {
-          backgroundColor: 'primary.main',
-          width: `${sidebarWidth}px`
-        }
-      }}
+      PaperProps={ paperProps}
       sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
       variant="temporary"
     >
