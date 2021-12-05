@@ -6,7 +6,7 @@ import ObservationsIcon from '@mui/icons-material/Visibility';
 import SelfAssessmentsIcon from '@mui/icons-material/LocalCafe';
 import SummativeEvalIcon from '@mui/icons-material/Summarize';
 import SettingsIcon from '@mui/icons-material/SettingsApplications';
-import { EvaluationWorkAreas } from '../../core/workAreas';
+import { EvaluationWorkAreas, EvaluatorWorkAreas } from '../../core/workAreas';
 
 const navSections = [
   {
@@ -52,36 +52,26 @@ const navSections = [
         title: 'Settings',
         icon: <SettingsIcon fontSize="small" />,
         path: '/app/evaluation/settings',
+        workAreaTags: EvaluatorWorkAreas,
         children: [
+          {
+            title: 'General',
+            path: '/app/evaluation/settings/general',
+          },
           {
             title: 'Prompt Bank',
             path: '/app/evaluation/settings/prompt-bank',
           },
+          {
+            title: 'Assignments',
+            path: '/app/evaluation/settings/assignments',
+          },
+          {
+            title: 'User Groups',
+            path: '/app/evaluation/settings/user-groups',
+          },
         ],
       },
-      // {
-      //   title: 'Setup',
-      //   icon: <SettingsIcon fontSize="small" />,
-      //   path: '/evaluation/setup',
-      //   children: [
-      //     {
-      //       title: 'Prompt Bank',
-      //       path: '/evaluation/setup/prompt-bank',
-      //     },
-      //     {
-      //       title: 'Settings',
-      //       path: '/evaluation/setup/settings',
-      //     },
-      //     {
-      //       title: 'Assignments',
-      //       path: '/evaluation/setup/assignments',
-      //     },
-      //     {
-      //       title: 'User Groups',
-      //       path: '/evaluation/setup/user-groups',
-      //     },
-      //   ],
-      // },
       // {
       //   title: 'Report Archives',
       //   icon: <HomeIcon fontSize="small" />,

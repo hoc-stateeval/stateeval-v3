@@ -14,7 +14,7 @@ import {
   FormControl,
   Link,
   MenuItem,
-  Select,
+  TextField,
 } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
@@ -127,59 +127,65 @@ const ChangeWorkAreaDialog = () => {
             District
           </DialogContentText>
           <FormControl variant="filled">
-            <Select
+            <TextField
+              size="small"
+              sx={{ 
+                width: 200, 
+              }}
+              select
               value={selectedDistrictCode}
               onChange={(e) => {
                 setSelectedDistrictCode(e.target.value);
               }}
-              displayEmpty
-              name="district"
-              classes={{ select: 'py-8' }}
             >
               {districts.map((x) => (
                 <MenuItem key={x.districtCode} value={x.districtCode}>
                   {x.districtName}
                 </MenuItem>
               ))}
-            </Select>
+            </TextField>
           </FormControl>
           <DialogContentText>
             School
           </DialogContentText>
           <FormControl variant="filled">
-            <Select
-              value={selectedSchoolCode}
-              onChange={(e) => {
-                setSelectedSchoolCode(e.target.value);
-              }}
-              displayEmpty
-              name="school"
-              classes={{ select: 'py-8' }}
-            >
-              {schools.map((x) => (
-                <MenuItem key={x.schoolCode} value={x.schoolCode}>
-                  {x.schoolName}
-                </MenuItem>
-              ))}
-            </Select>
+            <TextField
+                size="small"
+                sx={{ 
+                  width: 200, 
+                }}
+                select
+                value={selectedSchoolCode}
+                onChange={(e) => {
+                  setSelectedSchoolCode(e.target.value);
+                }}
+              >
+                {schools.map((x) => (
+                  <MenuItem key={x.schoolCode} value={x.schoolCode}>
+                    {x.schoolName}
+                  </MenuItem>
+                ))}
+              </TextField>
           </FormControl>
           <DialogContentText>Work Area</DialogContentText>
           <FormControl variant="filled">
-            <Select
-              value={selectedWorkAreaContextId}
-              displayEmpty
-              name="workArea"
-              onChange={(e) => {
-                setSelectedWorkAreaContextId(parseInt(e.target.value, 10));
-              }}
-              classes={{ select: 'py-8' }}
-            >
-              {filteredWorkAreaContexts.map((x) => (
+            <TextField
+                size="small"
+                sx={{ 
+                  width: 200, 
+                }}
+                select
+                value={selectedWorkAreaContextId}
+                onChange={(e) => {
+                  setSelectedWorkAreaContextId(parseInt(e.target.value, 10));
+                }}
+              >
+                {filteredWorkAreaContexts.map((x) => (
                 <MenuItem key={x.id} value={x.id}>
                   {x.title}
                 </MenuItem>
               ))}
-            </Select>
+              </TextField>
           </FormControl>
         </DialogContent>
         <DialogActions>

@@ -20,7 +20,7 @@ let theme = createTheme(
     palette: {
       type: 'light',
       primary: {
-        main: '#1ab394',
+        main: '#c2c2c2',
       },
       secondary: {
         main: '#1ab394',

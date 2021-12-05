@@ -26,12 +26,12 @@ const Sidebar = ({ onClose, open, sidebarWidth }) => {
   const buildContent = () => (
     <>
       <Scrollbar
-        // sx={{
-        //   height: '100%',
-        //   '& .simplebar-content': {
-        //     height: '100%'
-        //   }
-        // }}
+        sx={{
+          height: '100%',
+          '& .simplebar-content': {
+            height: '100%'
+          }
+        }}
       >
         <Stack sx={{pt:2}} spacing={2}>
           <SidebarLogo/>

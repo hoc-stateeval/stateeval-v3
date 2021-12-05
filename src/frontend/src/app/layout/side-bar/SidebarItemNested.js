@@ -31,7 +31,7 @@ const SidebarItemNested = (props) => {
     >
       <ListItemButton component={RouterLink} to={path}
         sx={listItemButtonStyles}>
-        <ListItemText  primaryTypographyProps={{...listItemTextStyles, paddingLeft: '20px'}}  primary={title} />
+        <ListItemText  primaryTypographyProps={{...listItemTextStyles, paddingLeft: '25px'}}  primary={title} />
       </ListItemButton>
     </ListItem>
   );

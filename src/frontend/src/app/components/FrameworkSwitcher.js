@@ -2,7 +2,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import {
   MenuItem,
-  Select,
+  TextField,
 } from '@mui/material';
 
 import {
@@ -25,12 +25,14 @@ function FrameworkSwitcher() {
 
   return (
     <>
-      <Select
+    <TextField
+        size="small"
+        sx={{ 
+          width: 200, 
+        }}
+        select
         value={activeFrameworkId}
         onChange={changeSelectedFramework}
-        displayEmpty
-        name="framework"
-        classes={{ select: 'py-8' }}
       >
         {stateFramework && (
           <MenuItem key={stateFramework.id} value={stateFramework.id}>
@@ -42,7 +44,7 @@ function FrameworkSwitcher() {
             {instructionalFramework.name}
           </MenuItem>
         )}
-      </Select>
+      </TextField>
     </>
   );
 }

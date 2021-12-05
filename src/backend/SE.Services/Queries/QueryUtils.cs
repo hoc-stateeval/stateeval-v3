@@ -39,8 +39,10 @@ namespace SE.Core.Queries
                                         (SchoolYear)System.Convert.ToInt16(e.ComprehensiveCarryForwardSchoolYear) : null,
                 FocusedFrameworkNodeId = e.FocusedFrameworkNodeId,
                 FocusedSGFrameworkNodeId = e.FocusedSGFrameworkNodeId,
+                ModifiedCompFocusedFrameworkNode2Id = e.ModifiedCompFocusedFrameworkNode2Id,
                 FocusedFrameworkNodeDisplayName = (e.FocusedFrameworkNode != null) ? e.FocusedFrameworkNode.ShortName : "",
                 FocusedSGFrameworkNodeDisplayName = (e.FocusedSGFrameworkNode != null) ? e.FocusedSGFrameworkNode.ShortName : "",
+                ModifiedCompFocusedFrameworkNode2DisplayName = (e.ModifiedCompFocusedFrameworkNode2 != null) ? e.ModifiedCompFocusedFrameworkNode2.ShortName : "",
 
                 LastYearEvaluateePlanType = e.LastYearEvaluateePlanType,
                 NextYearEvaluateePlanType = e.NextYearEvaluateePlanType,

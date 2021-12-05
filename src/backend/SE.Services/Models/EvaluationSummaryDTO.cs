@@ -41,6 +41,9 @@ namespace SE.Core.Models
         public long? FocusedSGFrameworkNodeId { get; set; }
         public string FocusedSGFrameworkNodeDisplayName { get; set; }
 
+        public long? ModifiedCompFocusedFrameworkNode2Id { get; set; }
+        public string ModifiedCompFocusedFrameworkNode2DisplayName { get; set; }
+
 
         public EvaluateePlanType? LastYearEvaluateePlanType { get; set; }
         public EvaluateePlanType? NextYearEvaluateePlanType { get; set; }

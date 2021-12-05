@@ -12,11 +12,9 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { logout } from '../store/stateEval/userContextSlice';
+import { logout } from '../../store/stateEval/userContextSlice';
 
-import FrameworkSwitcher from '../components/FrameworkSwitcher';
-import EvaluationSwitcher from '../components/EvaluationSwitcher';
-
+import FrameworkSwitcher from '../../components/FrameworkSwitcher';
 
 const NavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -68,8 +66,7 @@ const Navbar = (props) => {
             <MenuIcon fontSize="small" />
           </IconButton>
           <Box sx={{ flexGrow: 1 }} />
-          <Stack direction="row" spacing={2}>
-            <EvaluationSwitcher />
+          <Stack direction="row" sx={{alignItems: 'center'}} spacing={2}>
             <FrameworkSwitcher />
             <Button variant="outlined" 
               startIcon={<LogoutIcon />}

@@ -1,6 +1,6 @@
 export const getListItemButtonStyles = (active, theme) => {
   return {
-    borderLeft: active ? `4px solid ${theme.palette.primary.main}`: '',
+    borderLeft: active ? `4px solid ${theme.palette.secondary.main}`: '',
     backgroundColor: active ? `${theme.palette.neutral[1000]}`: `${theme.palette.neutral[900]}`,
     color: active ? '#FFF': `${theme.palette.neutral[400]}`,
     '&:hover': {

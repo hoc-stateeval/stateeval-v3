@@ -2,8 +2,9 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { Box, Container, Typography } from "@mui/material";
-import Sidebar from './SideBar/Sidebar';
-import Navbar from './Navbar';
+import Sidebar from './side-bar/Sidebar';
+import Navbar from './nav-bar/Navbar';
+import ActiveEvaluationProfile from './nav-bar/ActiveEvaluationProfile';
 
 const sidebarWidth = 220;
 
@@ -39,8 +40,10 @@ const Layout = (props) => {
             justifyContent:'center',
             backgroundColor:'#FFF'}}>
 
-            <Container maxWidth="md">
+            <Container maxWidth="md" sx={{display:'flex', alignItems: 'center'}}>
               <Typography variant="h2">Page Title</Typography>
+              <Box sx={{ flexGrow: 1 }} />
+              <ActiveEvaluationProfile  />
             </Container>
           </Box>
 

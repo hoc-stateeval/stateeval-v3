@@ -8,6 +8,9 @@ const ObservationsDashboard = lazy(() => import('../features/evaluation/observat
 const SelfAssessmentsDashboard = lazy(() => import('../features/evaluation/self-assessments/Dashboard'));
 const SummativeEvalDashboard = lazy(() => import('../features/evaluation/summative-eval/Dashboard'));
 const PromptBank = lazy(() => import('../features/evaluation/settings/prompt-bank/PromptBank'));
+const GeneralSettings = lazy(() => import('../features/evaluation/settings/general/GeneralSettings'));
+const Assignments = lazy(() => import('../features/evaluation/settings/assignments/Assignments'));
+const UserGroups = lazy(() => import('../features/evaluation/settings/user-groups/UserGroups'));
 
 const EvaluationRoutes =   {
   workAreaTags: EvaluationWorkAreas,
@@ -41,8 +44,20 @@ const EvaluationRoutes =   {
     element: <SummativeEvalDashboard />,
   },
   {
+    path: "/app/evaluation/settings/general",
+    element: <GeneralSettings />,
+  },
+  {
+    path: "/app/evaluation/settings/assignments",
+    element: <Assignments />,
+  },
+  {
     path: "/app/evaluation/settings/prompt-bank",
     element: <PromptBank />,
+  },
+  {
+    path: "/app/evaluation/settings/user-groups",
+    element: <UserGroups />,
   },
 ], 
 };
