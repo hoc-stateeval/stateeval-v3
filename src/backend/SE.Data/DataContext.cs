@@ -15,6 +15,7 @@ namespace SE.Data
         public DbSet<DistrictConfiguration> DistrictConfigurations { get; set; }
         public DbSet<Evaluation> Evaluations { get; set; }
         public DbSet<Framework> Frameworks { get; set; }
+        public DbSet<FrameworkContext> FrameworkContexts { get; set; }
         public DbSet<Observation> Observations { get; set; }
         public DbSet<SchoolConfiguration> SchoolConfigurations { get; set;}
         public DbSet<User> Users { get; set; }

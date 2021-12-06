@@ -56,7 +56,8 @@ namespace SE.Domain.Entities
         SY_2018,
         SY_2019,
         SY_2020,
-        SY_2021
+        SY_2021,
+        SY_2022,
     }
 
     public enum StudentGrowthImpactRating

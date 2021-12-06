@@ -13,7 +13,7 @@ namespace SE.Domain.Entities
     {
         [MaxLength(20)]
         [Required]
-        public string SchoolCode { get; set; }
+        public string SchoolCode { get; set; } = String.Empty;
         public bool IsPrincipalAssignmentDelegated { get; set; }
 
         [ForeignKey("FrameworkContext")]

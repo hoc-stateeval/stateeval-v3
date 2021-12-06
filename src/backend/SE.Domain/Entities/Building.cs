@@ -20,10 +20,10 @@ namespace SE.Domain.Entities
         public string DistrictCode { get; set; }
 
         [MaxLength(60)]
-        public string SchoolName { get; set; }
+        public string SchoolName { get; set; } = String.Empty;
 
         [MaxLength(20)]
-        public string SchoolCode { get; set; }
+        public string SchoolCode { get; set; } = String.Empty;
         public bool IsSchool { get; set; }
     }
 }
