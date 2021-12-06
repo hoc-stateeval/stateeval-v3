@@ -16,7 +16,7 @@ const EvaluationRoutes =   {
   workAreaTags: EvaluationWorkAreas,
   items: [
   {
-    path: "/app/evaluation/dashboards",
+    path: "/app/dashboard",
     element: <EvaluationDashboard />,
   },
   {

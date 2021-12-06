@@ -30,7 +30,7 @@ namespace SE.Core.Queries
                 EvaluationTypeDisplayName = EnumUtils.EvaluationTypeDisplayName(e.EvaluationType),
 
                 PlanType = (EvaluateePlanType)e.EvaluateePlanType,
-                EvaluateePlanTypeDisplayName = EnumUtils.MapEvaluateePlanTypeToDisplayName(e.EvaluateePlanType),
+                PlanTypeDisplayName = EnumUtils.MapEvaluateePlanTypeToDisplayName(e.EvaluateePlanType),
 
                 ComprehensiveCarryForward = System.Convert.ToBoolean(e.ComprehensiveCarryForward),
                 ComprehensiveCarryForwardPerformanceLevel = e.ComprehensiveCarryForwardPerformanceLevel != null ?
@@ -52,7 +52,7 @@ namespace SE.Core.Queries
                 SuggestedFocusedFrameworkNodeShortName = e.SuggestedFocusedFrameworkNodeShortName,
                 SuggestedFocusedSgframeworkNodeShortName = e.SuggestedFocusedSgframeworkNodeShortName,
 
-    }).OrderBy(x => x.EvaluateeDisplayName).ToList();
+            }).OrderBy(x => x.EvaluateeDisplayName).ToList();
         }
     }
 }

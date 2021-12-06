@@ -27,7 +27,7 @@ namespace SE.Core.Models
         public DateTime? LockDateTime { get; set; }
 
         public EvaluateePlanType? PlanType { get; set; }
-        public string EvaluateePlanTypeDisplayName { get; set; }
+        public string PlanTypeDisplayName { get; set; }
 
         public RubricPerformanceLevel? PerformanceLevel { get; set; }
         public StudentGrowthImpactRating? StudentGrowthImpactRating { get; set; }

@@ -6,7 +6,11 @@ import ObservationsIcon from '@mui/icons-material/Visibility';
 import SelfAssessmentsIcon from '@mui/icons-material/LocalCafe';
 import SummativeEvalIcon from '@mui/icons-material/Summarize';
 import SettingsIcon from '@mui/icons-material/SettingsApplications';
-import { EvaluationWorkAreas, EvaluatorWorkAreas } from '../../core/workAreas';
+import { 
+  AdminWorkAreas,
+  EvaluationWorkAreas, 
+  EvaluatorWorkAreas,
+ } from '../../core/workAreas';
 
 const navSections = [
   {
@@ -16,7 +20,7 @@ const navSections = [
       {
         title: 'Dashboard',
         icon: <GridViewIcon fontSize="small" />,
-        path: '/app/evaluation/dashboards',
+        path: '/app/dashboard',
       },
       {
         title: 'Artifacts',
@@ -83,6 +87,22 @@ const navSections = [
       //   path: '/evaluation/resources',
       // },
     ],
+  },
+  {
+    title: 'Admin',
+    workAreaTags: AdminWorkAreas,
+    items: [
+      {
+        title: 'Dashboard',
+        icon: <GridViewIcon fontSize="small" />,
+        path: '/app/dashboard',
+      },
+      {
+        title: 'Assignments',
+        icon: <ArtifactsIcon fontSize="small" />,
+        path: '/app/admin/assignments',
+      },
+    ]
   },
   // {
   //   title: 'Training',

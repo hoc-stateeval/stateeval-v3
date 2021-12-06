@@ -13,6 +13,7 @@ const WorkAreas = {
 const EvaluatorWorkAreas = [WorkAreas.PR_PR, WorkAreas.PR_TR, WorkAreas.DTE, WorkAreas.DE_PR];
 const EvaluateeWorkAreas = [WorkAreas.PR_ME, WorkAreas.TR_ME];
 const EvaluationWorkAreas = [...EvaluatorWorkAreas, ...EvaluateeWorkAreas];
+const AdminWorkAreas = [WorkAreas.DA, WorkAreas.SA];
 
 const isEvaluator = (workArea) => EvaluatorWorkAreas.includes(workArea.tagName);
 const isEvaluatee = (workArea) => EvaluateeWorkAreas.includes(workArea.tagName);
@@ -26,4 +27,5 @@ export {
   isEvaluator, 
   isEvaluatee,
   isEvaluationWorkArea,
+  AdminWorkAreas,
 };

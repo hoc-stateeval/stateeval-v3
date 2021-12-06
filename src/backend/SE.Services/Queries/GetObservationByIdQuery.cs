@@ -60,7 +60,7 @@ namespace SE.Core.Queries
                     CreationDateTime = observation.CreationDateTime
                 };
 
-                return await Task.FromResult(observationDTO);
+                return observationDTO;
             }
         }
     }

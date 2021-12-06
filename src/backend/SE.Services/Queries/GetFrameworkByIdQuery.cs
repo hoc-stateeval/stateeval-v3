@@ -81,7 +81,7 @@ namespace SE.Core.Queries
                     }).ToList()
                 };
 
-                return await Task.FromResult(frameworkDTO);
+                return frameworkDTO;
             }
         }
     }

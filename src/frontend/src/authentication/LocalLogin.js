@@ -24,6 +24,7 @@ const LocalLogin = () => {
   const [districtCode, setDistrictCode] = useState('');
   const [users, setUsers] = useState([]);
   const [userId, setUserId] = useState('');
+  const [allowNavigate, setAllowNavigate] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -45,6 +46,13 @@ const LocalLogin = () => {
     })();
   }, [districtCode]);
 
+  useEffect(() => {
+    if (allowNavigate) {
+      navigate("/app/dashboard");
+    }
+  }, [allowNavigate, navigate]); 
+
+
   const onChangeDistrict = (e) => {
     setDistrictCode(e.target.value);
   };
@@ -55,9 +63,11 @@ const LocalLogin = () => {
 
   const onClickLogin = async (e) => {
     const user = users.find((x) => x.id === userId);
-    await dispatch(submitLocalLogin(user));
-    navigate("/app/dashboard");
+    dispatch(submitLocalLogin(user)).then(()=> {
+      setAllowNavigate(true);
+    });
   };
+
   return (
     <>
       <Box
@@ -100,7 +110,7 @@ const LocalLogin = () => {
                 mt: 3
               }}
             >
-  <div className="mb-28">
+            <div className="mb-28">
               <FormControl className="" variant="filled">
                 <Select
                   value={districtCode}
@@ -129,7 +139,7 @@ const LocalLogin = () => {
                 >
                   {users.map((x) => (
                     <MenuItem key={x.id} value={x.id}>
-                      {x.displayName}
+                      {x.displayName} ({x.roleName})
                     </MenuItem>
                   ))}
                 </Select>

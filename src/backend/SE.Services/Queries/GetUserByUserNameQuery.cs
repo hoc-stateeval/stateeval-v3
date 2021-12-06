@@ -43,7 +43,7 @@ namespace SE.Core.Queries
             public async Task<UserDTO> Handle(GetUserByUserNameQuery request, CancellationToken cancellationToken)
             {
                 User User = await _dataContext.Users.Where(x => x.UserName == request.UserName).FirstOrDefaultAsync();
-                UserDTO UserDTO = new UserDTO()
+                UserDTO userDTO = new UserDTO()
                 {
                     Id = User.Id,
                     FirstName = User.FirstName,
@@ -54,7 +54,7 @@ namespace SE.Core.Queries
                     UserName = User.UserName,
                 };
 
-                return await Task.FromResult(UserDTO);
+                return userDTO;
             }
         }
     }
