@@ -5,15 +5,17 @@ const WorkAreas = {
   PR_PR: 'PR_PR',
   DE_PR: 'DE_PR',
   DTE: 'DTE',
-  DA: 'DA',
-  SA: 'SA',
+  DA_TR: 'DA_TR',
+  DA_PR: 'DA_PR',
+  SA_TR: 'SA_TR',
+  SA_PR: 'SA_PR',
   DV: 'DV',
 };
 
 const EvaluatorWorkAreas = [WorkAreas.PR_PR, WorkAreas.PR_TR, WorkAreas.DTE, WorkAreas.DE_PR];
 const EvaluateeWorkAreas = [WorkAreas.PR_ME, WorkAreas.TR_ME];
 const EvaluationWorkAreas = [...EvaluatorWorkAreas, ...EvaluateeWorkAreas];
-const AdminWorkAreas = [WorkAreas.DA, WorkAreas.SA];
+const AdminWorkAreas = [WorkAreas.DA_TR, WorkAreas.DA_PR, WorkAreas.SA_TR, WorkAreas.SA_PR];
 
 const isEvaluator = (workArea) => EvaluatorWorkAreas.includes(workArea.tagName);
 const isEvaluatee = (workArea) => EvaluateeWorkAreas.includes(workArea.tagName);

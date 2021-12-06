@@ -9,7 +9,7 @@ const AdminRoutes =   {
   {
     path: "/app/dashboard",
     element: <DADashboard />,
-    workAreaTags: [ WorkAreas.DA]
+    workAreaTags: [ WorkAreas.DA_TR, WorkAreas.DA_PR]
   },
   {
     path: "/app/admin/assignments",

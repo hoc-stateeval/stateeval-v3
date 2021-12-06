@@ -3,6 +3,7 @@ import axios from 'axios';
 import ThunkState from '../../core/thunkState';
 import { convertArrayToHashMap } from '../../core/utils';
 import { clearState } from '../../core/persist';
+import { EvaluatorWorkAreas } from '../../core/workAreas';
 
 const getEvaluationsForWorkAreaContext = async (workAreaContext) => {
   const response = await axios.get(
@@ -41,8 +42,12 @@ const createWorkAreaContextState = async (state, workAreaContext) => {
     return map;
   }, frameworksHashMap);
 
-  const evaluations = await getEvaluationsForWorkAreaContext(workAreaContext);
-  const activeEvaluationId = workAreaContext.isEvaluatee ? evaluations[0].id : null;
+  let evaluations = [];
+  let activeEvaluationId = null;
+  if (EvaluatorWorkAreas.includes(workAreaContext.tagName)) {
+    evaluations = await getEvaluationsForWorkAreaContext(workAreaContext);
+    activeEvaluationId = workAreaContext.isEvaluatee ? evaluations[0].id : null;
+  }
 
   const newState = {
     currentUser: state.currentUser,

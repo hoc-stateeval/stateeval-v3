@@ -1,9 +1,11 @@
 import { useSelector } from 'react-redux';
+import { lazy } from 'react'
 import { Navigate, Routes, Route, useRoutes } from 'react-router-dom';
 import LocalLogin from '../../authentication/LocalLogin';
 import Layout from './Layout';
 import buildRoutes from '../routing/buildRoutes';
 import { selectActiveWorkAreaContext } from '../store/stateEval/userContextSlice';
+const DADashboard = lazy(() => import('../features/admin/dashboards/district-admin/DADashboard'));
 
 
 const MainLayout = () => {

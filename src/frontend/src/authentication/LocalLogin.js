@@ -24,7 +24,6 @@ const LocalLogin = () => {
   const [districtCode, setDistrictCode] = useState('');
   const [users, setUsers] = useState([]);
   const [userId, setUserId] = useState('');
-  const [allowNavigate, setAllowNavigate] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -46,13 +45,6 @@ const LocalLogin = () => {
     })();
   }, [districtCode]);
 
-  useEffect(() => {
-    if (allowNavigate) {
-      navigate("/app/dashboard");
-    }
-  }, [allowNavigate, navigate]); 
-
-
   const onChangeDistrict = (e) => {
     setDistrictCode(e.target.value);
   };
@@ -64,7 +56,7 @@ const LocalLogin = () => {
   const onClickLogin = async (e) => {
     const user = users.find((x) => x.id === userId);
     dispatch(submitLocalLogin(user)).then(()=> {
-      setAllowNavigate(true);
+      navigate("/app/dashboard", { replace: true });
     });
   };
 
