@@ -1,12 +1,131 @@
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import {
+  selectActiveWorkAreaContext,
+} from '../../../store/stateEval/userContextSlice';
 
 import {
+  Alert,
+  Button,
+  Checkbox,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography,
 } from '@mui/material';
 
+import CheckIcon from '@mui/icons-material/Check';
+
 const Assignments = () => {
+
+  const getAssignmentsDelegatedToAllSchools = (summaries) => {
+    summaries.reduce((acc, next) => {
+      if (!next.delegated) return false;
+      return true;
+    }, true);
+  }
+
+  const [summaries, setSummaries] = useState([]);
+  const [assignmentsDelegatedToAllSchools, setAssignmentsDelegatedToAllSchools] = 
+            useState(getAssignmentsDelegatedToAllSchools(summaries));
+
+  const workAreaContext = useSelector(selectActiveWorkAreaContext);
+
+  useEffect(()=> {
+
+    (async () => {
+      const frameworkContextId = workAreaContext.frameworkContextId;
+      const response = await axios.get(`/api/assignments/${frameworkContextId}`);
+      const data = await response.data;
+      setSummaries(data);
+    })();
+
+  }, [workAreaContext]);
+
+
+  const toggleDelegation = (row, event) => {
+    let summary = summaries.find(x=>x.schoolCode===row.schoolCode);
+    summary.delegated=!summary.delegated;
+    setSummaries([...summaries]);
+    setAssignmentsDelegatedToAllSchools(getAssignmentsDelegatedToAllSchools(summaries));
+  };
+
+  const handleClickDelegateToAllSchools = () => {
+    const result = summaries.map(x=>({...x, delegated:true}));
+    axios.put(`/api/assignments/${workAreaContext.frameworkContextId}/delegate`).then(()=> {
+      setSummaries(result);
+      setAssignmentsDelegatedToAllSchools(true);
+    })
+  }
+
   return (
     <>
-      <Typography variant="h2">Assignments</Typography>
+    <Typography sx={{display:'block', mb:2}} variant="p">
+      By default, the district is responsible for assigning evaluators and choosing the evaluation plan type for {workAreaContext.evaluateeTermLC} evaluations. 
+      Districts can choose to allow school admins and principals to perform these tasks.
+      To do so, click the <strong>Delegate to all Schools</strong> button, or check the <strong>Delegate to School</strong> checkbox for each school individually.
+    </Typography>
+    {assignmentsDelegatedToAllSchools?
+      (<Alert severity="info" sx={{mb:2}}>Assignments have been delegated to all schools</Alert>):
+      (
+        <Button 
+        sx={{mb:2}} 
+        color="secondary" 
+        size="small" 
+        variant="contained"
+        onClick={handleClickDelegateToAllSchools}
+        >
+          Delegate to All Schools
+        </Button>
+      )}
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">
+        <TableHead>
+          <TableRow>
+          <TableCell align="center">Delegate to School</TableCell>
+            <TableCell align="center">School</TableCell>
+            <TableCell align="center">Principals</TableCell>
+            <TableCell align="center">Teachers</TableCell>
+            <TableCell align="center">Assigned</TableCell>
+            <TableCell align="center">Teachers Awaiting Assignment</TableCell>
+            <TableCell align="center">Action</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {summaries.map((row) => (
+            <TableRow key={row.schoolName}>
+               <TableCell align="center">
+                <Checkbox 
+                  color="secondary"
+                  checked={row.delegated} 
+                  onChange={(event)=>{
+                    toggleDelegation(row, event);
+                  }}
+                  />
+              </TableCell>
+              <TableCell align="center" component="th" scope="row">
+                {row.schoolName}
+              </TableCell>
+              <TableCell align="center">{row.principalNames.map(x=>(<Typography>{x}</Typography>))}</TableCell>
+              <TableCell align="center">{row.totalCount}</TableCell>
+              <TableCell align="center">{row.assignedCount}</TableCell>
+              <TableCell align="center">
+                {row.unassignedCount===0 && <CheckIcon color="secondary" fontSize="small"/>}
+                {row.unassignedCount>0 && row.unassignedCount}
+              </TableCell>
+              <TableCell align="center">
+                <Button color="secondary" size="small" variant="contained">View</Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
     </>
   );
 };

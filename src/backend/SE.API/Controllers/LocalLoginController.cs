@@ -18,7 +18,7 @@ namespace SE.API.Controllers
 
         [HttpGet]
         [Route("districts")]
-        public async Task<IActionResult> Districts()
+        public async Task<IActionResult> GetDistricts()
         {
             var districts = await _mediator.Send(new GetLocalLoginDistrictsQuery());
             return Ok(districts);

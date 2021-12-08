@@ -60,7 +60,6 @@ namespace SE.Core.Commands
             observation.Title = request.Title;
             observation.EvaluateePlanType = request.EvaluateePlanType;
 
-            _dataContext.Observations.Add(observation);
             _dataContext.SaveChanges();
 
             return Unit.Value;

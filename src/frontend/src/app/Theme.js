@@ -36,13 +36,7 @@ let theme = createTheme(
       neutral,
     },
     typography: {
-      fontFamily: [
-        'open sans', 
-        'Helvetica Neue', 
-        'Helvetica', 
-        'Arial', 
-        'sans-serif',
-      ].join(','),
+      fontSize: 13,
       h2: {
         fontSize:'1.5rem',
         fontWeight: 100,
@@ -69,7 +63,7 @@ let theme = createTheme(
           }
         }
       },
-    }
+    },
   }
  );
 

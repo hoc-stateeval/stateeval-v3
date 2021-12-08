@@ -103,6 +103,7 @@ namespace SE.Services.Queries
                         }
                     });
 
+                    summary.AssignedCount = summary.TotalCount - summary.UnassignedCount;
 
                     summary.Delegated = _dataContext.SchoolConfigurations
                         .FirstOrDefault(x => x.SchoolCode == school.SchoolCode &&
