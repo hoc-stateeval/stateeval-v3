@@ -57,12 +57,19 @@ let theme = createTheme(
       MuiOutlinedInput: {
         styleOverrides: {
           input: {
-            padding: '0 0 0 5px',
-            fontSize: navBarFontSize,
-            backgroundColor: '#FFF',
+            fontWeight: 500
           }
         }
       },
+      // MuiOutlinedInput: {
+      //   styleOverrides: {
+      //     input: {
+      //       padding: '0 0 0 5px',
+      //       fontSize: navBarFontSize,
+      //       backgroundColor: '#FFF',
+      //     }
+      //   }
+      // },
     },
   }
  );

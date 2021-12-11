@@ -67,8 +67,7 @@ const Assignments = () => {
     <>
     <Typography sx={{display:'block', mb:2}} variant="p">
       By default, the district is responsible for assigning evaluators and choosing the evaluation plan type for {workAreaContext.evaluateeTermLC} evaluations. 
-      Districts can choose to allow school admins and principals to perform these tasks.
-      To do so, click the <strong>Delegate to all Schools</strong> button, or check the <strong>Delegate to School</strong> checkbox for each school individually.
+      Districts can choose to allow school admins and principals to perform these tasks. Check the delegate to schools button to give schools the ability to perform these tasks.
     </Typography>
     {assignmentsDelegatedToAllSchools?
       (<Alert severity="info" sx={{mb:2}}>Assignments have been delegated to all schools</Alert>):

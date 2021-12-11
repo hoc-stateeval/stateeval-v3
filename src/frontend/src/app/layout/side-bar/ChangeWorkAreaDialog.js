@@ -3,30 +3,27 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   selectWorkAreaContextsAll,
   setActiveWorkAreaContext,
+  selectActiveWorkAreaContext,
 } from '../../store/stateEval/userContextSlice';
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
-  FormControl,
   Link,
   MenuItem,
   TextField,
 } from '@mui/material';
 
-import { styled } from '@mui/material/styles';
-import { useTheme } from '@mui/material/styles';
-
 const ChangeWorkAreaDialog = () => {
-  const theme = useTheme();
 
   const [dlgOpen, setDlgOpen] = useState(false);
 
   const dispatch = useDispatch();
   const workAreaContexts = useSelector(selectWorkAreaContextsAll);
+  const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
   const [districts, setDistricts] = useState([]);
   const [schools, setSchools] = useState([]);
   const [selectedDistrictCode, setSelectedDistrictCode] = useState('');
@@ -40,11 +37,11 @@ const ChangeWorkAreaDialog = () => {
         (x) => x.districtCode === selectedDistrictCode && x.schoolCode === selectedSchoolCode
       );
       setFilteredWorkAreaContexts(finalWorkAreas);
-      setSelectedWorkAreaContextId(finalWorkAreas[0].id);
+      setSelectedWorkAreaContextId(activeWorkAreaContext.id);
     };
 
-    if (selectedSchoolCode !== '') changeSchool();
-  }, [workAreaContexts, selectedDistrictCode, selectedSchoolCode]);
+    changeSchool();
+  }, [workAreaContexts, selectedDistrictCode, selectedSchoolCode, activeWorkAreaContext.id]);
 
   useEffect(() => {
     const changeDistrict = () => {
@@ -63,10 +60,10 @@ const ChangeWorkAreaDialog = () => {
         }
       }
       setSchools(distinctSchools);
-      setSelectedSchoolCode(distinctSchools[0].schoolCode);
+      setSelectedSchoolCode(activeWorkAreaContext.schoolCode);
     };
     if (selectedDistrictCode !== '') changeDistrict();
-  }, [workAreaContexts, selectedDistrictCode]);
+  }, [workAreaContexts, selectedDistrictCode, activeWorkAreaContext.schoolCode]);
 
   useEffect(() => {
     const initDistricts = () => {
@@ -82,11 +79,10 @@ const ChangeWorkAreaDialog = () => {
       }
 
       setDistricts(distinctDistricts);
-      const { districtCode } = distinctDistricts[0];
-      setSelectedDistrictCode(districtCode);
+      setSelectedDistrictCode(activeWorkAreaContext.districtCode);
     };
     if (workAreaContexts.length > 0) initDistricts();
-  }, [workAreaContexts]);
+  }, [workAreaContexts, activeWorkAreaContext.districtCode]);
 
   const handleClickDlgOpen = () => {
     setDlgOpen(true);
@@ -112,26 +108,15 @@ const ChangeWorkAreaDialog = () => {
 
     }
   }
-  const StyledDialog = styled(Dialog)`
-  // .MuiDialog-paper {
-  //   background-color: ${theme.palette.primary.main};
-  // }
-`;
+
   return (
     <>
       <Link component="button" sx={{...styles.optionsLink, mt:1}} onClick={handleClickDlgOpen}>Options</Link>
-      <StyledDialog open={dlgOpen} onClose={handleClickDlgCancel}>
+      <Dialog open={dlgOpen} onClose={handleClickDlgCancel}>
         <DialogTitle>Select a Work Area</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            District
-          </DialogContentText>
-          <FormControl variant="filled">
-            <TextField
-              size="small"
-              sx={{ 
-                width: 200, 
-              }}
+          <Box sx={{mt: 3, mb:3}}>
+            <TextField label="District" sx={{minWidth:'200px'}}
               select
               value={selectedDistrictCode}
               onChange={(e) => {
@@ -144,16 +129,9 @@ const ChangeWorkAreaDialog = () => {
                 </MenuItem>
               ))}
             </TextField>
-          </FormControl>
-          <DialogContentText>
-            School
-          </DialogContentText>
-          <FormControl variant="filled">
-            <TextField
-                size="small"
-                sx={{ 
-                  width: 200, 
-                }}
+          </Box>
+          {selectedSchoolCode && <Box sx={{mb:3}}>
+            <TextField label="School"  sx={{minWidth:'200px'}}
                 select
                 value={selectedSchoolCode}
                 onChange={(e) => {
@@ -166,14 +144,9 @@ const ChangeWorkAreaDialog = () => {
                   </MenuItem>
                 ))}
               </TextField>
-          </FormControl>
-          <DialogContentText>Work Area</DialogContentText>
-          <FormControl variant="filled">
-            <TextField
-                size="small"
-                sx={{ 
-                  width: 200, 
-                }}
+          </Box>}
+          <Box sx={{mb:3}}>
+            <TextField label="Work Area"  sx={{minWidth:'200px'}}
                 select
                 value={selectedWorkAreaContextId}
                 onChange={(e) => {
@@ -186,13 +159,13 @@ const ChangeWorkAreaDialog = () => {
                 </MenuItem>
               ))}
               </TextField>
-          </FormControl>
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClickDlgCancel}>Cancel</Button>
           <Button onClick={handleClickChangeWorkArea}>OK</Button>
         </DialogActions>
-      </StyledDialog>
+      </Dialog>
       </>
   );
 };
