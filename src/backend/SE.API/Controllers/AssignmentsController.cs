@@ -16,11 +16,19 @@ namespace SE.API.Controllers
         {
         }
 
-        [HttpGet("{frameworkContextId}")]
-        public async Task<IActionResult> GetAssignmentsSummaryForFrameworkContext(long frameworkContextId)
+        [HttpGet("tr-assignments-summary/{frameworkContextId}")]
+        public async Task<IActionResult> GetTeacherAssignmentsSummaryForDistrict(long frameworkContextId)
         {
-            var summaries = await _mediator.Send(new GetAssignmentsSummaryForDistrictQuery(frameworkContextId));
+            var summaries = await _mediator.Send(new GetTeacherAssignmentsSummaryForDistrictQuery(frameworkContextId));
             return Ok(summaries);
+        }
+
+
+        [HttpGet("tr-assignments-detail/{frameworkContextId}/{schoolCode}")]
+        public async Task<IActionResult> GetTeacherAssignmentsSummaryForSchool(long frameworkContextId, string schoolCode)
+        {
+            var result = await _mediator.Send(new GetTeacherAssignmentDataForSchoolQuery(frameworkContextId, schoolCode));
+            return Ok(result);
         }
 
         [HttpPut("{frameworkContextId}/delegate")]

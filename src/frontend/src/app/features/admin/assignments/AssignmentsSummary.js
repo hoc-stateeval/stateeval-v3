@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import axios from 'axios';
 import {
   selectActiveWorkAreaContext,
@@ -21,7 +22,7 @@ import {
 
 import CheckIcon from '@mui/icons-material/Check';
 
-const Assignments = () => {
+const AssignmentsSummary = () => {
 
   const getAssignmentsDelegatedToAllSchools = (summaries) => {
     summaries.reduce((acc, next) => {
@@ -40,7 +41,7 @@ const Assignments = () => {
 
     (async () => {
       const frameworkContextId = workAreaContext.frameworkContextId;
-      const response = await axios.get(`/api/assignments/${frameworkContextId}`);
+      const response = await axios.get(`/api/assignments/tr-assignments-summary/${frameworkContextId}`);
       const data = await response.data;
       setSummaries(data);
     })();
@@ -110,7 +111,7 @@ const Assignments = () => {
               <TableCell align="center" component="th" scope="row">
                 {row.schoolName}
               </TableCell>
-              <TableCell align="center">{row.principalNames.map(x=>(<Typography>{x}</Typography>))}</TableCell>
+              <TableCell align="center">{row.principalNames.map(x=>(<Typography key={x}>{x}</Typography>))}</TableCell>
               <TableCell align="center">{row.totalCount}</TableCell>
               <TableCell align="center">{row.assignedCount}</TableCell>
               <TableCell align="center">
@@ -118,7 +119,7 @@ const Assignments = () => {
                 {row.unassignedCount>0 && row.unassignedCount}
               </TableCell>
               <TableCell align="center">
-                <Button color="secondary" size="small" variant="contained">View</Button>
+                <Button component={RouterLink} to={`/app/admin/assignments/assignments-summary/assignments-detail/${row.schoolCode}`} color="secondary" size="small" variant="contained">View</Button>
               </TableCell>
             </TableRow>
           ))}
@@ -129,4 +130,4 @@ const Assignments = () => {
   );
 };
 
-export default Assignments;
+export default AssignmentsSummary;

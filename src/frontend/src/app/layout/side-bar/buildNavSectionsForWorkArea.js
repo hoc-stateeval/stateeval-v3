@@ -7,7 +7,7 @@ import SelfAssessmentsIcon from '@mui/icons-material/LocalCafe';
 import SummativeEvalIcon from '@mui/icons-material/Summarize';
 import SettingsIcon from '@mui/icons-material/SettingsApplications';
 import { 
-  AdminWorkAreas,
+  WorkAreas,
   EvaluationWorkAreas, 
   EvaluatorWorkAreas,
  } from '../../core/workAreas';
@@ -89,8 +89,8 @@ const navSections = [
     ],
   },
   {
-    title: 'Admin',
-    workAreaTags: AdminWorkAreas,
+    title: 'Evaluations',
+    workAreaTags: WorkAreas.DA_TR,
     items: [
       {
         title: 'Dashboard',
@@ -100,7 +100,23 @@ const navSections = [
       {
         title: 'Assignments',
         icon: <ArtifactsIcon fontSize="small" />,
-        path: '/app/admin/assignments',
+        path: '/app/admin/assignments/assignments-summary',
+      }
+    ]
+  },
+  {
+    title: 'DA_PR',
+    workAreaTags: WorkAreas.DA_PR,
+    items: [
+      {
+        title: 'Dashboard',
+        icon: <GridViewIcon fontSize="small" />,
+        path: '/app/dashboard',
+      },
+      {
+        title: 'Assignments',
+        icon: <ArtifactsIcon fontSize="small" />,
+        path: '/app/admin/assignments/assignments-summary/assignments-detail',
       },
     ]
   },

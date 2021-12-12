@@ -33,8 +33,7 @@ namespace SE.API.Tests
             workAreaContext.Should().NotBeNull();
 
             var url = $"/assignments/{workAreaContext.FrameworkContextId}";
-            var summaries = await _client.GetAndDeserialize<List<SchoolAssignmentsSummaryDTO>>(url);
-
+            var summaries = await _client.GetAndDeserialize<List<SchoolTeacherAssignmentsSummaryDTO>>(url);
 
             var command = new DelegateAssignmentsCommand(workAreaContext.FrameworkContextId);
 

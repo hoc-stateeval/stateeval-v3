@@ -40,7 +40,7 @@ const reduceChildRoutes = ({ acc, item, depth, path }) => {
   else if (depth===0) {
     acc.push(
       <SidebarItem
-        active={activeItem}
+        active={activeItem||activeChild}
         icon={item.icon}
         key={key}
         path={item.path}

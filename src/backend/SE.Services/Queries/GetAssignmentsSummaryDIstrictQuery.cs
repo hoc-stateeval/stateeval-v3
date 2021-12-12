@@ -13,34 +13,34 @@ using SE.Core.Queries;
 
 namespace SE.Services.Queries
 {
-    public class GetAssignmentsSummaryForDistrictQueryValidator
-    : AbstractValidator<GetAssignmentsSummaryForDistrictQuery>
+    public class GetTeacherAssignmentsSummaryForDistrictQueryValidator
+    : AbstractValidator<GetTeacherAssignmentsSummaryForDistrictQuery>
     {
-        public GetAssignmentsSummaryForDistrictQueryValidator()
+        public GetTeacherAssignmentsSummaryForDistrictQueryValidator()
         {
             RuleFor(x => x.FrameworkContextId).NotEmpty();
         }
     }
-    public sealed class GetAssignmentsSummaryForDistrictQuery :
-        IRequest<List<SchoolAssignmentsSummaryDTO>>
+    public sealed class GetTeacherAssignmentsSummaryForDistrictQuery :
+        IRequest<List<DistrictTeacherAssignmentsSummaryDTO>>
     {
         public long FrameworkContextId { get; }
 
-        public GetAssignmentsSummaryForDistrictQuery(long frameworkContextId)
+        public GetTeacherAssignmentsSummaryForDistrictQuery(long frameworkContextId)
         {
             FrameworkContextId = frameworkContextId;
         }
 
-        internal sealed class GetAssignmentsSummaryForDistrictQueryHandler : 
-            IRequestHandler<GetAssignmentsSummaryForDistrictQuery, List<SchoolAssignmentsSummaryDTO>>
+        internal sealed class GetTeacherAssignmentsSummaryForDistrictQueryHandler : 
+            IRequestHandler<GetTeacherAssignmentsSummaryForDistrictQuery, List<DistrictTeacherAssignmentsSummaryDTO>>
         {
             private readonly DataContext _dataContext;
-            public GetAssignmentsSummaryForDistrictQueryHandler(DataContext dataContext)
+            public GetTeacherAssignmentsSummaryForDistrictQueryHandler(DataContext dataContext)
             {
                 _dataContext = dataContext;
             }
 
-            public async Task<List<SchoolAssignmentsSummaryDTO>> Handle(GetAssignmentsSummaryForDistrictQuery request, CancellationToken cancellationToken)
+            public async Task<List<DistrictTeacherAssignmentsSummaryDTO>> Handle(GetTeacherAssignmentsSummaryForDistrictQuery request, CancellationToken cancellationToken)
             {
                 var frameworkContext = await _dataContext.FrameworkContexts
                     .Where(x => x.Id == request.FrameworkContextId)
@@ -50,7 +50,7 @@ namespace SE.Services.Queries
                     .Where(x => !x.IsSchool && x.DistrictCode == frameworkContext.DistrictCode)
                     .FirstOrDefaultAsync();
 
-                var summaries = new List<SchoolAssignmentsSummaryDTO>();
+                var summaries = new List<DistrictTeacherAssignmentsSummaryDTO>();
 
                 var schools = await _dataContext.Buildings
                     .Where(x => x.IsSchool && x.DistrictCode == frameworkContext.DistrictCode)
@@ -58,7 +58,7 @@ namespace SE.Services.Queries
 
                 schools.ForEach(async school =>
                 {
-                    SchoolAssignmentsSummaryDTO summary = new SchoolAssignmentsSummaryDTO();
+                    DistrictTeacherAssignmentsSummaryDTO summary = new DistrictTeacherAssignmentsSummaryDTO();
                     summaries.Add(summary);
                     summary.SchoolCode = school.SchoolCode;
                     summary.SchoolName = school.SchoolName;

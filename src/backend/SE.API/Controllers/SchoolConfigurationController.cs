@@ -26,7 +26,7 @@ namespace SE.API.Controllers
         [HttpPut("{id:long}")]
         public async Task<IActionResult> UpdateSchoolConfiguration(long id, [FromBody] UpdateSchoolConfigurationCommand command)
         {
-            if (id != command.SchoolConfigurationId || workAreaContextId != command.WorkAreaContextId || evaluationId != command.EvaluationId)
+            if (id != command.Id)
             {
                 return BadRequest();
             }

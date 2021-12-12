@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SE.Core.Models
 {
-    public class SchoolAssignmentsSummaryDTO
+    public class DistrictTeacherAssignmentsSummaryDTO
     {
         public string SchoolName { get; set; }
         public string SchoolCode { get; set; }
