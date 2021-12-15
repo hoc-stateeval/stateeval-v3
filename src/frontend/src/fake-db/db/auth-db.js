@@ -155,7 +155,7 @@ mock.onGet('/api/auth').reply((config) => {
   return [200, { error }];
 });
 
-mock.onGet('/api/auth/access-token').reply((config) => {
+mock.onGet('/auth/access-token').reply((config) => {
   const data = JSON.parse(config.data);
   const { access_token } = data;
 

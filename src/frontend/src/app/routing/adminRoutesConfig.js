@@ -2,23 +2,23 @@ import { lazy } from 'react'
 import { WorkAreas, AdminWorkAreas } from '../core/workAreas';
 const AssignmentsSummary = lazy(() => import('../features/admin/assignments/AssignmentsSummary'));
 const AssignmentsDetail = lazy(() => import('../features/admin/assignments/AssignmentsDetail'));
-const DADashboard = lazy(() => import('../features/admin/dashboards/district-admin/DADashboard'));
+const DistrictAdminDashboard = lazy(() => import('../features/admin/dashboards/district-admin/DistrictAdminDashboard'));
 
 const AdminRoutes =   {
   workAreaTags: AdminWorkAreas,
   items: [
   {
     path: "/app/dashboard",
-    element: <DADashboard />,
+    element: <DistrictAdminDashboard />,
     workAreaTags: [ WorkAreas.DA_TR, WorkAreas.DA_PR]
   },
   {
-    path: "/app/admin/assignments/assignments-summary",
+    path: "/app/admin/assignments/tr-assignments-summary",
     element: <AssignmentsSummary />,
     workAreaTags: [WorkAreas.DA_TR]
   },
   {
-    path: "/app/admin/assignments/assignments-summary/assignments-detail/:schoolCode",
+    path: "/app/admin/assignments/tr-assignments-summary/assignments-detail/:schoolCode",
     element: <AssignmentsDetail />,
   },
 ], 

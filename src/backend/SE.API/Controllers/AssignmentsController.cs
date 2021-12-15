@@ -24,7 +24,7 @@ namespace SE.API.Controllers
         }
 
 
-        [HttpGet("tr-assignments-detail/{frameworkContextId}/{schoolCode}")]
+        [HttpGet("tr-assignments-summary/assignments-detail/{frameworkContextId}/{schoolCode}")]
         public async Task<IActionResult> GetTeacherAssignmentsSummaryForSchool(long frameworkContextId, string schoolCode)
         {
             var result = await _mediator.Send(new GetTeacherAssignmentDataForSchoolQuery(frameworkContextId, schoolCode));

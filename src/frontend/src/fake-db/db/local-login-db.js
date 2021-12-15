@@ -305,12 +305,12 @@ const localLoginDB = {
   ],
 };
 
-mock.onGet('/api/local-login/districts').reply((config) => {
+mock.onGet('local-login/districts').reply((config) => {
   const response = localLoginDB.districts;
   return [200, response];
 });
 
-mock.onGet('/api/local-login/users').reply((config) => {
+mock.onGet('local-login/users').reply((config) => {
   const { districtCode } = config;
   const response = localLoginDB.users.filter((x) => x.districtCode === districtCode);
   return [200, response];

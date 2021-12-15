@@ -235,7 +235,7 @@ const assignmentsDB = {
   ]
 };
 
-mock.onGet(/\/api\/assignments\/tr-assignments-summary\/\d+/).reply((config) => {
+mock.onGet(/\/assignments\/tr-assignments-summary\/\d+/).reply((config) => {
   const frameworkContextId = parseInt(config.url.split('/')[4], 10);
   const result = assignmentsDB.teacherAssignmentsSummaryForDistrict.find(
     (x) => x.frameworkContextId === frameworkContextId
@@ -243,7 +243,7 @@ mock.onGet(/\/api\/assignments\/tr-assignments-summary\/\d+/).reply((config) => 
   return [200, result.summaries];
 });
 
-mock.onPut(/\/api\/assignments\/\d+\/delegate/).reply((config) => {
+mock.onPut(/\/assignments\/\d+\/delegate/).reply((config) => {
   const frameworkContextId = parseInt(config.url.split('/')[3], 10);
   const result = assignmentsDB.teacherAssignmentsSummaryForDistrict.find(
     (x) => x.frameworkContextId === frameworkContextId
@@ -254,7 +254,7 @@ mock.onPut(/\/api\/assignments\/\d+\/delegate/).reply((config) => {
   return [200];
 });
 
-mock.onGet(/\/api\/assignments\/tr-assignments-summary\/assignments-detail\/\d+/).reply((config) => {
+mock.onGet(/\/assignments\/tr-assignments-summary\/assignments-detail\/\d+/).reply((config) => {
   const parts = config.url.split('/');
   const frameworkContextId = parseInt(parts[5], 10);
   const schoolCode = parts[6];

@@ -1,9 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
-import { get, post } from '../../../core/api';
-
-import { PlanType } from '../../../core/evalPlanType';
+import { get } from '../../../core/api';
 import {
   selectActiveWorkAreaContext,
 } from '../../../store/stateEval/userContextSlice';
@@ -23,7 +21,6 @@ import {
   TableRow,
   TextField,
   MenuItem,
-  Typography,
 } from '@mui/material';
 
 const AssignmentsDetail = () => {
@@ -38,19 +35,19 @@ const AssignmentsDetail = () => {
     (async () => {
       const frameworkContextId = workAreaContext.frameworkContextId;
       const schoolCodeParam = schoolCode? schoolCode: workAreaContext.schoolCode;
-      const url = `/api/assignments/tr-assignments-summary/assignments-detail/${frameworkContextId}/${schoolCodeParam}`;
+      const url = `assignments/tr-assignments-summary/assignments-detail/${frameworkContextId}/${schoolCodeParam}`;
       const response = await get(url);
       const data = await response.data;
       setAssignmentData(data);
     })();
 
-  }, [workAreaContext]);
+  }, [workAreaContext, schoolCode]);
 
   const setEvaluateePlanType =  async (id, planType) => {
 
-    const evalData = assignmentData.find(x=>x.id==id);
+    // const evalData = assignmentData.find(x=>x.id==id);
     
-    const url = `/api/evaluations/${id}/updateplantype/`;
+    // const url = `/api/evaluations/${id}/updateplantype/`;
       // const response = await put(url, {
       //   evaluationId: id,
       //   evaluateePlanType: planType,
@@ -77,7 +74,7 @@ const AssignmentsDetail = () => {
           </TableRow>
         </TableHead>
         <TableBody  >
-          {assignmentData && assignmentData.evaluationSummaries.map((row) => (
+          {assignmentData && assignmentData.teacherEvaluationSummaries.map((row) => (
             <TableRow key={row.id}>
               <TableCell align="center" component="th" scope="row">
                 {row.evaluateeDisplayName}

@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import axios from 'axios';
+import { get, put } from '../../../core/api';
 import {
   selectActiveWorkAreaContext,
 } from '../../../store/stateEval/userContextSlice';
@@ -41,7 +41,7 @@ const AssignmentsSummary = () => {
 
     (async () => {
       const frameworkContextId = workAreaContext.frameworkContextId;
-      const response = await axios.get(`/api/assignments/tr-assignments-summary/${frameworkContextId}`);
+      const response = await get(`assignments/tr-assignments-summary/${frameworkContextId}`);
       const data = await response.data;
       setSummaries(data);
     })();
@@ -58,7 +58,7 @@ const AssignmentsSummary = () => {
 
   const handleClickDelegateToAllSchools = () => {
     const result = summaries.map(x=>({...x, delegated:true}));
-    axios.put(`/api/assignments/${workAreaContext.frameworkContextId}/delegate`).then(()=> {
+    put(`assignments/${workAreaContext.frameworkContextId}/delegate`).then(()=> {
       setSummaries(result);
       setAssignmentsDelegatedToAllSchools(true);
     })
@@ -119,7 +119,7 @@ const AssignmentsSummary = () => {
                 {row.unassignedCount>0 && row.unassignedCount}
               </TableCell>
               <TableCell align="center">
-                <Button component={RouterLink} to={`/app/admin/assignments/assignments-summary/assignments-detail/${row.schoolCode}`} color="secondary" size="small" variant="contained">View</Button>
+                <Button component={RouterLink} to={`/app/admin/assignments/tr-assignments-summary/assignments-detail/${row.schoolCode}`} color="secondary" size="small" variant="contained">View</Button>
               </TableCell>
             </TableRow>
           ))}

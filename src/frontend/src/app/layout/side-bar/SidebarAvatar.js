@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Stack,
   Typography,
 } from '@mui/material';
 import backgroundImg from '../../../images/header-profile.png';

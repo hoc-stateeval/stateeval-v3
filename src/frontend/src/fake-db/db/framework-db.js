@@ -2021,7 +2021,7 @@ const frameworksDB = {
   ],
 };
 
-mock.onGet(/\/api\/frameworks\/\d+/).reply((config) => {
+mock.onGet(/\/frameworks\/\d+/).reply((config) => {
   const id = parseInt(config.url.split('/').pop());
   const response = frameworksDB.frameworks.find((x) => x.id === id);
   return [200, response];

@@ -3,7 +3,7 @@ import {
   Typography,
 } from '@mui/material';
 
-const DADashboard = () => {
+const DistrictAdminDashboard = () => {
   return (
     <>
       <Typography variant="h2">DA Dashboard</Typography>
@@ -11,4 +11,4 @@ const DADashboard = () => {
   );
 };
 
-export default DADashboard;
+export default DistrictAdminDashboard;

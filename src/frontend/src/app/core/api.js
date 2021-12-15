@@ -11,7 +11,15 @@ const post = (url, data) => {
   return axios.post(`${config.API_URL}/${url}`, data);
 }
 
+const put = (url, data) => {
+  if (data) {
+    return axios.put(`${config.API_URL}/${url}`, data);
+  }
+  return axios.put(`${config.API_URL}/${url}`);
+}
+
 export {
   get,
   post,
+  put,
 }
