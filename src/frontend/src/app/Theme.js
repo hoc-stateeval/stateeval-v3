@@ -61,6 +61,27 @@ let theme = createTheme(
           }
         }
       },
+      MuiTableHead: {
+        styleOverrides: {
+          root: {
+            borderBottom: 'none',
+            '& .MuiTableCell-root': {
+              borderBottom: 'none',
+              fontSize: '12px',
+              backgroundColor: neutral[900],
+              color:'#FFF',
+              fontWeight: 600,
+              lineHeight: 1,
+              letterSpacing: 0.5,
+              textTransform: 'uppercase'
+            },
+            '& .MuiTableCell-paddingCheckbox': {
+              paddingTop: 4,
+              paddingBottom: 4
+            }
+          }
+        },
+      },
       // MuiOutlinedInput: {
       //   styleOverrides: {
       //     input: {

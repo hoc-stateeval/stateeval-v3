@@ -45,7 +45,7 @@ namespace SE.Domain.Entities
         public string SuggestedFocusedFrameworkNodeShortName { get; set; }
 
         [MaxLength(20)]
-        public string SuggestedFocusedSgframeworkNodeShortName { get; set; }
+        public string SuggestedFocusedSGframeworkNodeShortName { get; set; }
         public bool? Complete { get; set; }
         public bool? ByPassSGScores { get; set; }
         public string SGScoreOverrideComment { get; set; }

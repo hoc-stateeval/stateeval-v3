@@ -46,12 +46,14 @@ namespace SE.Core.Models
 
 
         public EvaluateePlanType? LastYearEvaluateePlanType { get; set; }
+        public string LastYearEvaluateePlanTypeDisplayName { get; set; }
         public EvaluateePlanType? NextYearEvaluateePlanType { get; set; }
+        public string NextYearEvaluateePlanTypeDisplayName { get; set; }
         public string LastYearFocusedFrameworkNodeShortName { get; set; }
         public string LastYearFocusedSGframeworkNodeShortName { get; set; }
         public EvaluateePlanType? SuggestedEvaluateePlanType { get; set; }
         public string SuggestedFocusedFrameworkNodeShortName { get; set; }
-        public string SuggestedFocusedSgframeworkNodeShortName { get; set; }
+        public string SuggestedFocusedSGframeworkNodeShortName { get; set; }
 
     }
 }

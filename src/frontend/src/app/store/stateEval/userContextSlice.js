@@ -1,26 +1,26 @@
 import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { get } from '../../core/api';
 import ThunkState from '../../core/thunkState';
 import { convertArrayToHashMap } from '../../core/utils';
 import { clearState } from '../../core/persist';
 import { EvaluatorWorkAreas } from '../../core/workAreas';
 
 const getEvaluationsForWorkAreaContext = async (workAreaContext) => {
-  const response = await axios.get(
-    `/api/users/${workAreaContext.userId}/work-area-contexts/${workAreaContext.id}/evaluations`
+  const response = await get(
+    `users/${workAreaContext.userId}/work-area-contexts/${workAreaContext.id}/evaluations`
   );
   const data = await response.data;
   return data;
 };
 
 const getFramework = async (frameworkId) => {
-  const response = await axios.get(`/api/frameworks/${frameworkId}`);
+  const response = await get(`frameworks/${frameworkId}`);
   const data = await response.data;
   return data;
 };
 
 const getWorkAreaContextsForUser = async (userId) => {
-  const response = await axios.get(`/api/users/${userId}/work-area-contexts/`);
+  const response = await get(`users/${userId}/work-area-contexts/`);
   const workAreaContexts = await response.data;
   return workAreaContexts;
 };
@@ -87,7 +87,7 @@ export const setActiveWorkAreaContext = createAsyncThunk(
 export const submitLocalLogin =
   ({ userName, password = 'password' }) =>
   async (dispatch) => {
-    const response = await axios.get('/api/auth', {
+    const response = await get('/api/auth', {
       data: {
         grant_type: 'password',
         userName,

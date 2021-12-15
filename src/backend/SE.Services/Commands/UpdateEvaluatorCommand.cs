@@ -19,27 +19,19 @@ namespace SE.Core.Commands
     {
         public UpdateEvaluatorCommandValidator()
         {
-            RuleFor(x=>x.UserId).NotEmpty();
-            RuleFor(x => x.WorkAreaContextId).NotEmpty();
             RuleFor(x => x.EvaluationId).NotEmpty();
         }
     }
     public sealed class UpdateEvaluatorCommand :
         IRequest<Unit>
     {
-        public long UserId { get; }
-        public long WorkAreaContextId { get; }
         public long EvaluationId { get; }
         public long? EvaluatorId { get; }
 
         public UpdateEvaluatorCommand(
-            long userId,
-            long workAreaContextId,
             long evaluationId, 
             long? evaluatorId)
         {
-            UserId = userId;
-            WorkAreaContextId = workAreaContextId;
             EvaluationId = evaluationId;
             EvaluatorId = evaluatorId;
         }

@@ -1,20 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import axios from 'axios';
+import { get } from '../app/core/api';
 import { 
   Box, 
   Button,
   Card, 
   Container, 
-  FormControl,
   MenuItem,
-  Select,
+  TextField,
   Typography,
 } from '@mui/material';
 
 import { submitLocalLogin } from '../app/store/stateEval/userContextSlice';
-
 
 const LocalLogin = () => {
   const navigate = useNavigate();
@@ -27,7 +25,7 @@ const LocalLogin = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await axios.get('/api/local-login/districts');
+      const response = await get('local-login/districts');
       const data = await response.data;
       setDistricts(data);
       setDistrictCode(data[0].districtCode);
@@ -37,7 +35,7 @@ const LocalLogin = () => {
   useEffect(() => {
     (async () => {
       if (districtCode) {
-        const response = await axios.get('/api/local-login/users', { districtCode });
+        const response = await get(`local-login/users/${districtCode}`);
         const data = await response.data;
         setUsers(data);
         setUserId(data[0].id);
@@ -96,47 +94,39 @@ const LocalLogin = () => {
                 Log in
               </Typography>
             </Box>
+            <Box sx={{mt: 3, mb:3}}>
+              <TextField label="District" sx={{minWidth:'200px'}}
+                select
+                value={districtCode}
+                onChange={onChangeDistrict}
+              >
+                {districts.map((x) => (
+                      <MenuItem key={x.districtCode} value={x.districtCode}>
+                        {x.name}
+                      </MenuItem>
+                    ))}
+              </TextField>
+            </Box>
+            <Box sx={{mt: 3, mb:3}}>
+              <TextField label="User" sx={{minWidth:'200px'}}
+                select
+                value={userId}
+                onChange={onChangeUser}
+              >
+               {users.map((x) => (
+                    <MenuItem key={x.id} value={x.id}>
+                      {x.displayName} ({x.roleName})
+                    </MenuItem>
+                  ))}
+              </TextField>
+            </Box>
+
             <Box
               sx={{
                 flexGrow: 1,
                 mt: 3
               }}
             >
-            <div className="mb-28">
-              <FormControl className="" variant="filled">
-                <Select
-                  value={districtCode}
-                  onChange={onChangeDistrict}
-                  displayEmpty
-                  name="district"
-                  classes={{ select: 'py-8' }}
-                >
-                  {districts.map((x) => (
-                    <MenuItem key={x.districtCode} value={x.districtCode}>
-                      {x.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div>
-
-            <div className="mb-28">
-              <FormControl className="" variant="filled">
-                <Select
-                  value={userId}
-                  onChange={onChangeUser}
-                  displayEmpty
-                  name="user"
-                  classes={{ select: 'py-8' }}
-                >
-                  {users.map((x) => (
-                    <MenuItem key={x.id} value={x.id}>
-                      {x.displayName} ({x.roleName})
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div>
             <Button
               variant="contained"
               color="primary"

@@ -88,7 +88,7 @@ namespace SE.API.Tests
             var focusSGFrameworkNode = framework.FrameworkNodes.Find(x => x.ShortName == "C6");
             focusSGFrameworkNode.Should().NotBeNull();
 
-            var command = new UpdateEvaluateePlanTypeCommand(user.Id, workAreaContext.Id, evaluation.Id, EvaluateePlanType.FOCUSED, 
+            var command = new UpdateEvaluateePlanTypeCommand(evaluation.Id, EvaluateePlanType.FOCUSED, 
                                         focusFrameworkNode.Id, focusSGFrameworkNode.Id, SchoolYear.SY_2020, RubricPerformanceLevel.PL3);
 
 
@@ -107,7 +107,7 @@ namespace SE.API.Tests
             evaluation.ComprehensiveCarryForwardPerformanceLevel.Should().Be(RubricPerformanceLevel.PL3);
             evaluation.ComprehensiveCarryForwardSchoolYear.Should().Be(SchoolYear.SY_2020);
 
-            var command2 = new UpdateEvaluateePlanTypeCommand(user.Id, workAreaContext.Id, evaluation.Id, EvaluateePlanType.COMPREHENSIVE);
+            var command2 = new UpdateEvaluateePlanTypeCommand(evaluation.Id, EvaluateePlanType.COMPREHENSIVE);
 
             await TestHelpers.UpdateEvaluateePlanType(_client, user.Id, workAreaContext.Id, evaluation.Id, command2);
             evaluations = await TestHelpers.GetEvaluationsForWorkArea(_client, user.Id, workAreaContext.Id);
@@ -144,7 +144,7 @@ namespace SE.API.Tests
             var prB = await TestHelpers.GetUserByUserName(_client, DAN_District.School2.PrincipalB.UserName);
 
 
-            var command = new UpdateEvaluatorCommand(user.Id, workAreaContext.Id, evaluation.Id, prB.Id);
+            var command = new UpdateEvaluatorCommand(evaluation.Id, prB.Id);
 
             await TestHelpers.UpdateEvaluator(_client, user.Id, workAreaContext.Id, evaluation.Id, command);
 

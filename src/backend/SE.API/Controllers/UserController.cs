@@ -36,28 +36,6 @@ namespace SE.API.Controllers
             var evaluations = await _mediator.Send(new GetEvaluationsForWorkAreaContextQuery(userId, workAreaContextId));
             return Ok(evaluations);
         }
-
-        [HttpPut("{userId}/workarea-contexts/{workAreaContextId}/evaluations/{evaluationId}/updateplantype")]
-        public async Task<IActionResult> UpdateEvaluateePlanType(long userId, long workAreaContextId, long evaluationId,[FromBody] UpdateEvaluateePlanTypeCommand command)
-        {
-            if (userId != command.UserId || workAreaContextId != command.WorkAreaContextId || evaluationId != command.EvaluationId)
-            {
-                return BadRequest();
-            }
-            await _mediator.Send(command);
-            return NoContent();
-        }
-
-        [HttpPut("{userId}/workarea-contexts/{workAreaContextId}/evaluations/{evaluationId}/updateevaluator")]
-        public async Task<IActionResult> UpdateEvaluator(long userId, long workAreaContextId, long evaluationId, [FromBody] UpdateEvaluatorCommand command)
-        {
-            if (userId != command.UserId || workAreaContextId != command.WorkAreaContextId || evaluationId != command.EvaluationId)
-            {
-                return BadRequest();
-            }
-            await _mediator.Send(command);
-            return NoContent();
-        }
     }
 }
 

@@ -8,6 +8,45 @@ const PlanType = {
   'MODIFIED_COMP_2021': 3
 };
 
+const buildLastYearPlanTypeDisplayString = (evaluation) => {
+  const planType = evaluation.lastYearEvaluateePlanType;
+  if (planType === PlanType.FOCUSED) {
+    const focusFrameworkNodeShortName = evaluation.lastYearFocusedFrameworkNodeShortName;
+    const focusSGFrameworkNodeShortName = evaluation.LastYearFocusedSGframeworkNodeShortName;
+    if (focusSGFrameworkNodeShortName === focusFrameworkNodeShortName) {
+      return `Focused: ${focusFrameworkNodeShortName}, ${focusSGFrameworkNodeShortName} (SG)`;
+    }
+    else {
+      return `Focused: ${focusFrameworkNodeShortName}`;
+
+    }
+  }
+  else if (planType === PlanType.MODIFIED_COMP_2021) {
+    return "Modified Comprehensive";
+  }
+  else if (planType === PlanType.COMPREHENSIVE) {
+    return "Comprehensive: C1-C8";
+  }
+}
+
+const buildSuggestedPlanTypeDisplayString = (evaluation) => {
+  const planType = evaluation.nextYearEvaluateePlanType;
+  if (planType === PlanType.FOCUSED) {
+    const focusFrameworkNodeShortName = evaluation.suggestedFocusedFrameworkNodeShortName;
+    const focusSGFrameworkNodeShortName = evaluation.suggestedFocusedSGframeworkNodeShortName;
+    if (focusSGFrameworkNodeShortName === focusFrameworkNodeShortName) {
+      return `Focused: ${focusFrameworkNodeShortName}, ${focusSGFrameworkNodeShortName} (SG)`;
+    }
+    else {
+      return `Focused: ${focusFrameworkNodeShortName}`;
+
+    }
+  }
+  else if (planType === PlanType.COMPREHENSIVE) {
+    return "Comprehensive: C1-C8";
+  }
+}
+
 const buildCarryForwardDisplayString = (evaluation) => {
   const performanceLevel = PerformanceLevelShortNameMapper[evaluation.comprehensiveCarryOverPerformanceLevel];
   const schoolYear = SchoolYearMapper[evaluation.comprehensiveCarryOverSchoolYear];
@@ -55,4 +94,6 @@ const buildPlanTypeDisplayString = (evaluation) => {
 export {
   PlanType,
   buildPlanTypeDisplayString,
+  buildLastYearPlanTypeDisplayString,
+  buildSuggestedPlanTypeDisplayString
 };

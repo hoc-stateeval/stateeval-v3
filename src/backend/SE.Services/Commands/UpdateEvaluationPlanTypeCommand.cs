@@ -19,8 +19,6 @@ namespace SE.Core.Commands
     {
         public UpdateEvaluateePlanTypeCommandValidator()
         {
-            RuleFor(x=>x.UserId).NotEmpty();
-            RuleFor(x => x.WorkAreaContextId).NotEmpty();
             RuleFor(x => x.EvaluationId).NotEmpty();
 
             RuleFor(x => x.FocusedFrameworkNodeId).NotNull()
@@ -42,8 +40,6 @@ namespace SE.Core.Commands
     public sealed class UpdateEvaluateePlanTypeCommand :
         IRequest<Unit>
     {
-        public long UserId { get; }
-        public long WorkAreaContextId { get; }
         public long EvaluationId { get; }
         public EvaluateePlanType EvaluateePlanType { get; }
         public long? FocusedFrameworkNodeId { get; }
@@ -52,8 +48,6 @@ namespace SE.Core.Commands
         public RubricPerformanceLevel? CarryForwardPerformanceLevel { get;  }
 
         public UpdateEvaluateePlanTypeCommand(
-            long userId,
-            long workAreaContextId,
             long evaluationId, 
             EvaluateePlanType evaluateePlanType,
             long? focusedFrameworkNodeId = null,
@@ -61,8 +55,6 @@ namespace SE.Core.Commands
             SchoolYear? carryForwardSchoolYear = null,
             RubricPerformanceLevel? carryForwardPerformanceLevel =  null)
         {
-            UserId = userId;
-            WorkAreaContextId = workAreaContextId;
             EvaluationId = evaluationId;
             EvaluateePlanType = evaluateePlanType;
             FocusedFrameworkNodeId = focusedFrameworkNodeId;

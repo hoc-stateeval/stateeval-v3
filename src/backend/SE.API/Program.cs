@@ -18,7 +18,20 @@ using System.Reflection;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Newtonsoft.Json.Serialization;
 
+
 var builder = WebApplication.CreateBuilder(args);
+
+// https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-6.0
+// https://www.rahulpnath.com/blog/asp_net_core_cors_demystified/
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("http://localhost:3000")
+                             .AllowAnyHeader()
+                             .AllowAnyMethod();
+    });
+});
 
 // Add services to the container.
 
@@ -27,13 +40,11 @@ builder.Services.AddControllers()
     {
         s.RegisterValidatorsFromAssemblyContaining<GetFrameworkByIdQueryValidator>();
         s.DisableDataAnnotationsValidation = true;
+    })
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Include;
     });
-
-builder.Services.AddControllers()
-      .AddNewtonsoftJson(options =>
-      {
-          options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Include;
-      });
 
 builder.Services.AddMediatR(typeof(BaseService).GetTypeInfo().Assembly);
 
@@ -61,7 +72,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseRouting();
+app.UseCors();
 app.UseAuthorization();
 
 app.MapControllers();

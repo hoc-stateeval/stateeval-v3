@@ -1,4 +1,4 @@
-import '../fake-db';
+// import '../fake-db';
 import { Suspense } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import { Provider } from 'react-redux';

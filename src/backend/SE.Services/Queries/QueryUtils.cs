@@ -45,12 +45,16 @@ namespace SE.Core.Queries
                 ModifiedCompFocusedFrameworkNode2DisplayName = (e.ModifiedCompFocusedFrameworkNode2 != null) ? e.ModifiedCompFocusedFrameworkNode2.ShortName : "",
 
                 LastYearEvaluateePlanType = e.LastYearEvaluateePlanType,
+                LastYearEvaluateePlanTypeDisplayName = e.LastYearEvaluateePlanType != null ? 
+                    EnumUtils.MapEvaluateePlanTypeToDisplayName(e.LastYearEvaluateePlanType) : "N/A",
                 NextYearEvaluateePlanType = e.NextYearEvaluateePlanType,
+                NextYearEvaluateePlanTypeDisplayName = e.NextYearEvaluateePlanType != null ?
+                    EnumUtils.MapEvaluateePlanTypeToDisplayName(e.NextYearEvaluateePlanType) : "N/A",
                 LastYearFocusedFrameworkNodeShortName = e.LastYearFocusedFrameworkNodeShortName,
                 LastYearFocusedSGframeworkNodeShortName = e.LastYearFocusedSGframeworkNodeShortName,
                 SuggestedEvaluateePlanType = e.SuggestedEvaluateePlanType,
                 SuggestedFocusedFrameworkNodeShortName = e.SuggestedFocusedFrameworkNodeShortName,
-                SuggestedFocusedSgframeworkNodeShortName = e.SuggestedFocusedSgframeworkNodeShortName,
+                SuggestedFocusedSGframeworkNodeShortName = e.SuggestedFocusedSGframeworkNodeShortName,
 
             }).OrderBy(x => x.EvaluateeDisplayName).ToList();
         }
