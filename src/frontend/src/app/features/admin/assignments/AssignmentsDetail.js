@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
-import axios from 'axios';
+import { get, post } from '../../../core/api';
 
 import { PlanType } from '../../../core/evalPlanType';
 import {
@@ -39,7 +39,7 @@ const AssignmentsDetail = () => {
       const frameworkContextId = workAreaContext.frameworkContextId;
       const schoolCodeParam = schoolCode? schoolCode: workAreaContext.schoolCode;
       const url = `/api/assignments/tr-assignments-summary/assignments-detail/${frameworkContextId}/${schoolCodeParam}`;
-      const response = await axios.get(url);
+      const response = await get(url);
       const data = await response.data;
       setAssignmentData(data);
     })();
@@ -51,7 +51,7 @@ const AssignmentsDetail = () => {
     const evalData = assignmentData.find(x=>x.id==id);
     
     const url = `/api/evaluations/${id}/updateplantype/`;
-      // const response = await axios.put(url, {
+      // const response = await put(url, {
       //   evaluationId: id,
       //   evaluateePlanType: planType,
       //   focusedFrameworkNodeId: planType === PlanType.COMPREHENSIVE?null:

@@ -9,5 +9,11 @@ namespace SE.API.Controllers.Authentication
 
         [Required]
         public string Password { get; set; }
+
+        [Required]
+        public string Grant_type { get; set; }
+
+        [Required]
+        public string Client_id { get; set; }
     }
 }

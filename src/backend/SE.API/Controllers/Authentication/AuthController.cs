@@ -22,7 +22,7 @@ namespace SE.API.Controllers.Authentication
         }
 
         [AllowAnonymous]
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
         {
             if (loginDTO == null || string.IsNullOrEmpty(loginDTO.UserName) || string.IsNullOrEmpty(loginDTO.Password))
@@ -54,7 +54,12 @@ namespace SE.API.Controllers.Authentication
                 if (await CheckPasswordAsync(user.UserName, loginDTO.Password))
                 {
                     var token = GenerateJSONWebToken(loginDTO);
-                    return Ok(token);
+                    UserWithAccessTokenDTO dto = new UserWithAccessTokenDTO
+                    {
+                        AccessToken = token,
+                        User = user,
+                    };
+                    return Ok(dto);
                 }
             }
 

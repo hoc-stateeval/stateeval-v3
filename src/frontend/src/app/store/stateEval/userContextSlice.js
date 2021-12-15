@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit';
-import { get } from '../../core/api';
+import { get, post } from '../../core/api';
 import ThunkState from '../../core/thunkState';
 import { convertArrayToHashMap } from '../../core/utils';
 import { clearState } from '../../core/persist';
@@ -7,7 +7,7 @@ import { EvaluatorWorkAreas } from '../../core/workAreas';
 
 const getEvaluationsForWorkAreaContext = async (workAreaContext) => {
   const response = await get(
-    `users/${workAreaContext.userId}/work-area-contexts/${workAreaContext.id}/evaluations`
+    `users/${workAreaContext.userId}/workarea-contexts/${workAreaContext.id}/evaluations`
   );
   const data = await response.data;
   return data;
@@ -20,7 +20,7 @@ const getFramework = async (frameworkId) => {
 };
 
 const getWorkAreaContextsForUser = async (userId) => {
-  const response = await get(`users/${userId}/work-area-contexts/`);
+  const response = await get(`users/${userId}/workarea-contexts/`);
   const workAreaContexts = await response.data;
   return workAreaContexts;
 };
@@ -87,18 +87,16 @@ export const setActiveWorkAreaContext = createAsyncThunk(
 export const submitLocalLogin =
   ({ userName, password = 'password' }) =>
   async (dispatch) => {
-    const response = await get('/api/auth', {
-      data: {
+    const response = await post('auth', {
         grant_type: 'password',
         userName,
         password,
         client_id: 'ngSEAuthApp',
-      },
     });
 
-    const user = await response.data.user;
-    // const accessToken = await response.data.access_token;
-    return dispatch(setCurrentUser(user));
+    const data = await response.data;
+    // const accessToken = data.access_token;
+    return dispatch(setCurrentUser(data.user));
 
   };
 

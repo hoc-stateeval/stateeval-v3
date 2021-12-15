@@ -385,7 +385,7 @@ const workAreaContextsDB = {
   ],
 };
 
-mock.onGet(/\/api\/users\/\d+\/work-area-contexts\/\d+\/evaluations/).reply((config) => {
+mock.onGet(/\/api\/users\/\d+\/workarea-contexts\/\d+\/evaluations/).reply((config) => {
   const contextId = parseInt(config.url.split('/')[5], 10);
   const contextEvaluation = workAreaContextsDB.contextEvaluations.find(
     (x) => x.workAreaContextId === contextId
@@ -393,7 +393,7 @@ mock.onGet(/\/api\/users\/\d+\/work-area-contexts\/\d+\/evaluations/).reply((con
   return [200, contextEvaluation.evaluations];
 });
 
-mock.onGet(/\/api\/users\/\d+\/work-area-contexts/).reply((config) => {
+mock.onGet(/\/api\/users\/\d+\/workarea-contexts/).reply((config) => {
   const id = parseInt(config.url.split('/')[3], 10);
   const response = workAreaContextsDB.workAreaContexts.filter((x) => x.userId === id);
   return [200, response];
