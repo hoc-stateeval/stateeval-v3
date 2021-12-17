@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SE.Core.Queries;
 using SE.Core.Services;
+using SE.Core.Mappers;
 
 namespace SE.Services.Queries
 {
@@ -40,10 +41,13 @@ namespace SE.Services.Queries
         {
             private readonly DataContext _dataContext;
             private readonly IUserService _userService;
-            public GetTeacherAssignmentDataForSchoolQueryHandler(DataContext dataContext, IUserService userService)
+            private readonly IEvaluationService _evaluationService;
+
+            public GetTeacherAssignmentDataForSchoolQueryHandler(DataContext dataContext, IUserService userService, IEvaluationService evaluationService)
             {
                 _dataContext = dataContext;
                 _userService = userService;
+                _evaluationService = evaluationService;
             }
 
             public async Task<SchoolTeacherAssignmentsSummaryDTO> Handle(GetTeacherAssignmentDataForSchoolQuery request, CancellationToken cancellationToken)
@@ -59,18 +63,15 @@ namespace SE.Services.Queries
                     .Select(x => x.IsPrincipalAssignmentDelegated)
                     .FirstOrDefaultAsync();
 
-                var query = _dataContext.Evaluations
-                    .Include(x => x.Evaluatee)
-                    .Include(x => x.Evaluator)
-                    .Include(x => x.FocusedFrameworkNode)
-                    .Include(x => x.FocusedSGFrameworkNode)
-                    .Where(x => x.IsActive &&
+                result.TeacherEvaluationSummaries = await _evaluationService
+                    .ExecuteEvaluationSummaryDTOQuery(x => x.IsActive &&
                                 x.SchoolYear == EnumUtils.CurrentSchoolYear &&
                                 x.DistrictCode == frameworkContext.DistrictCode &&
                                 x.SchoolCode == request.SchoolCode &&
-                                x.EvaluationType == EvaluationType.TEACHER);
+                                x.EvaluationType == EvaluationType.TEACHER)
+                    .OrderBy(x => x.EvaluateeDisplayName)
+                    .ToListAsync();
 
-                result.TeacherEvaluationSummaries = QueryUtils.BuildEvaluationSummaryDTO(query);
                 result.Principals = await _userService.GetUsersInRoleAtDistrictBuildings(frameworkContext.DistrictCode, 
                                                             EnumUtils.MapRoleTypeToDisplayName(RoleType.PR));
                 result.DistrictWideTeacherEvaluators = await _userService.GetUsersInRoleAtDistrict(frameworkContext.DistrictCode, 

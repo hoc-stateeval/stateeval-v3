@@ -48,6 +48,7 @@ namespace SE.Domain.Entities
 
     public enum SchoolYear
     {
+        UNDEFINED = 0,
         SY_2013 = 2013,
         SY_2014,
         SY_2015,
@@ -219,10 +220,12 @@ namespace SE.Domain.Entities
 
         public static string GetCurrentSchoolYearDisplayName()
         {
-            var currentSchoolYear = Convert.ToInt32(EnumUtils.CurrentSchoolYear);
+            return GetSchoolYearDisplayName(EnumUtils.CurrentSchoolYear); 
+        }
 
-            return $"{Convert.ToString(currentSchoolYear - 1)} - {Convert.ToString(currentSchoolYear)}";
-
+        public static string GetSchoolYearDisplayName(SchoolYear schoolYear)
+        {
+            return $"{Convert.ToString(Convert.ToInt32(schoolYear) - 1)} - {Convert.ToString(Convert.ToInt32(schoolYear))}";
         }
 
         public static string MapEvaluationTypeToEvaluateeTerm(EvaluationType evaluationType)
@@ -358,8 +361,24 @@ namespace SE.Domain.Entities
                 EvaluateePlanType.COMPREHENSIVE => "Comprehensive",
                 EvaluateePlanType.FOCUSED => "Focused",
                 EvaluateePlanType.MODIFIED_COMP_2021 => "Modified Comprehensive",
-                EvaluateePlanType.UNDEFINED => "Unassigned",
+                EvaluateePlanType.UNDEFINED => "N/A",
+                null => "N/A",
                 _ => throw new Exception($"MapEvaluateePlanTypeToDisplayName: Unknown mapping: {planType}")
+            };
+            return displayName;
+        }
+
+        public static string MapPerformanceLeveltoDisplayName(RubricPerformanceLevel? performanceLevel)
+        {
+            var displayName = performanceLevel switch
+            {
+                RubricPerformanceLevel.PL4 => "DIS",
+                RubricPerformanceLevel.PL3 => "PRO",
+                RubricPerformanceLevel.PL2 => "BAS",
+                RubricPerformanceLevel.PL1 => "UNS",
+                RubricPerformanceLevel.UNDEFINED => "N/A",
+                null => "N/A",
+                _ => throw new Exception($"MapPerformanceLeveltoDIsplayName: Unknown mapping: {performanceLevel}")
             };
             return displayName;
         }

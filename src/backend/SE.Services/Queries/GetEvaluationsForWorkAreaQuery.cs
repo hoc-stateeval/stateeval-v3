@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SE.Core.Queries;
+using SE.Core.Mappers;
+using SE.Core.Services;
 
 namespace SE.Services.Queries
 {
@@ -38,9 +40,12 @@ namespace SE.Services.Queries
             IRequestHandler<GetEvaluationsForWorkAreaContextQuery, List<EvaluationSummaryDTO>>
         {
             private readonly DataContext _dataContext;
-            public GetEvaluationsForWorkAreaContextQueryHandler(DataContext dataContext)
+            private readonly IEvaluationService _evaluationService;
+
+            public GetEvaluationsForWorkAreaContextQueryHandler(DataContext dataContext, IEvaluationService evaluationService)
             {
                 _dataContext = dataContext;
+                _evaluationService = evaluationService;
             }
 
             public async Task<List<EvaluationSummaryDTO>> Handle(GetEvaluationsForWorkAreaContextQuery request, CancellationToken cancellationToken)
@@ -52,12 +57,8 @@ namespace SE.Services.Queries
                     .Include(x=>x.FrameworkContext)
                     .Where(x => x.Id == request.WorkAreaContextId).FirstOrDefaultAsync(cancellationToken: cancellationToken);
 
-                var query = _dataContext.Evaluations
-                    .Include(x => x.Evaluatee)
-                    .Include(x => x.Evaluator)
-                    .Include(x => x.FocusedFrameworkNode)
-                    .Include(x => x.FocusedSGFrameworkNode)
-                    .Where(x => x.IsActive &&
+                var evaluations = await _evaluationService
+                    .ExecuteEvaluationSummaryDTOQuery(x => x.IsActive &&
                                 x.SchoolYear == EnumUtils.CurrentSchoolYear &&
                                 x.DistrictCode == workAreaContext.Building.DistrictCode &&
                                 x.SchoolCode == workAreaContext.Building.SchoolCode &&
@@ -70,11 +71,10 @@ namespace SE.Services.Queries
                                  // Non-DTE - can see all evaluations at his building
                                  ((workAreaContext.WorkArea.TagName != EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DTE) ||
                                   // DTE - can only see evaluations assigned to him
-                                  x.EvaluatorId == workAreaContext.UserId)))));
+                                  x.EvaluatorId == workAreaContext.UserId)))))
+                    .OrderBy(x => x.EvaluateeDisplayName)
+                    .ToListAsync();
 
-
-
-                List<EvaluationSummaryDTO> evaluations = QueryUtils.BuildEvaluationSummaryDTO(query);
                 return evaluations;
             }
         }

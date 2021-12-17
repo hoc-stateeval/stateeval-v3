@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SE.Core.Queries;
+using SE.Core.Mappers;
 
 namespace SE.Services.Queries
 {
@@ -48,7 +49,7 @@ namespace SE.Services.Queries
 
             public async Task<List<EvaluationSummaryDTO>> Handle(GetEvaluationsForSchoolQuery request, CancellationToken cancellationToken)
             {
-                var query = _dataContext.Evaluations
+                var evaluations = await _dataContext.Evaluations
                     .Include(x => x.Evaluatee)
                     .Include(x => x.Evaluator)
                     .Include(x => x.FocusedFrameworkNode)
@@ -57,9 +58,11 @@ namespace SE.Services.Queries
                                 x.SchoolYear == EnumUtils.CurrentSchoolYear &&
                                 x.DistrictCode == request.DistrictCode &&
                                 x.SchoolCode == request.SchoolCode &&
-                                x.EvaluationType == request.EvaluationType);
+                                x.EvaluationType == request.EvaluationType)
+                    .Select(e => Mapper.MapToEvaluationSummaryDTO(e))
+                    .OrderBy(x => x.EvaluateeDisplayName)
+                    .ToListAsync();
 
-                List<EvaluationSummaryDTO> evaluations = QueryUtils.BuildEvaluationSummaryDTO(query);
                 return evaluations;
             }
         }

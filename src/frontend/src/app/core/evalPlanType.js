@@ -27,6 +27,9 @@ const buildLastYearPlanTypeDisplayString = (evaluation) => {
   else if (planType === PlanType.COMPREHENSIVE) {
     return "Comprehensive: C1-C8";
   }
+  else {
+    return "N/A";
+  }
 }
 
 const buildSuggestedPlanTypeDisplayString = (evaluation) => {
@@ -44,6 +47,9 @@ const buildSuggestedPlanTypeDisplayString = (evaluation) => {
   }
   else if (planType === PlanType.COMPREHENSIVE) {
     return "Comprehensive: C1-C8";
+  }
+  else {
+    return "N/A";
   }
 }
 

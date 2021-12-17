@@ -18,8 +18,14 @@ namespace SE.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEvaluationById(long id)
         {
-            throw new NotImplementedException();
             var evaluation = await _mediator.Send(new GetEvaluationByIdQuery(id));
+            return Ok(evaluation);
+        }
+
+        [HttpGet("historical/{userId}")]
+        public async Task<IActionResult> GetHistoricalEvaluationsForUser(long userId)
+        {
+            var evaluation = await _mediator.Send(new GetHistoricalEvaluationsForUserQuery(userId));
             return Ok(evaluation);
         }
 
@@ -31,7 +37,8 @@ namespace SE.API.Controllers
                 return BadRequest();
             }
             var result = await _mediator.Send(command);
-            return Ok(result);
+            var evaluation = await _mediator.Send(new GetEvaluationByIdQuery(id));
+            return Ok(evaluation);
         }
 
         [HttpPut("{id}/updateevaluator")]
@@ -42,7 +49,8 @@ namespace SE.API.Controllers
                 return BadRequest();
             }
             var result = await _mediator.Send(command);
-            return Ok(result);
+            var evaluation = await _mediator.Send(new GetEvaluationByIdQuery(id));
+            return Ok(evaluation);
         }
     }
 }

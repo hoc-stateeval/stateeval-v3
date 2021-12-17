@@ -1,15 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
-import { get } from '../../../core/api';
-import {
-  selectActiveWorkAreaContext,
-} from '../../../store/stateEval/userContextSlice';
-
-import {
-  buildLastYearPlanTypeDisplayString,
-  buildSuggestedPlanTypeDisplayString
-} from '../../../core/evalPlanType';
 
 import {
   Paper,
@@ -22,6 +13,18 @@ import {
   TextField,
   MenuItem,
 } from '@mui/material';
+
+import { get, put } from '../../../core/api';
+import {
+  selectActiveWorkAreaContext,
+} from '../../../store/stateEval/userContextSlice';
+
+import {
+  buildLastYearPlanTypeDisplayString,
+  buildSuggestedPlanTypeDisplayString
+} from '../../../core/evalPlanType';
+
+import PlanTypeField from './PlanTypeField';
 
 const AssignmentsDetail = () => {
 
@@ -43,27 +46,24 @@ const AssignmentsDetail = () => {
 
   }, [workAreaContext, schoolCode]);
 
-  const setEvaluateePlanType =  async (id, planType) => {
+  const setEvaluator = async (id, evaluatorId) => {
 
-    // const evalData = assignmentData.find(x=>x.id==id);
-    
-    // const url = `/api/evaluations/${id}/updateplantype/`;
-      // const response = await put(url, {
-      //   evaluationId: id,
-      //   evaluateePlanType: planType,
-      //   focusedFrameworkNodeId: planType === PlanType.COMPREHENSIVE?null:
-      //   focusedSGFrameworkNodeId { get; }
-      //   public SchoolYear? CarryForwardSchoolYear { get; }
-      //   public RubricPerformanceLevel? CarryForwardPerformanceLevel { get;  }
-      // });
-      // const data = await response.data;
-      // setAssignmentData(data);
-  }
+    const url = `evaluations/${id}/updateevaluator`;
+    const response = await put(url, {
+      evaluationId: id,
+      evaluatorId: evaluatorId===0?null:evaluatorId
+    });
+
+    const data = response.data;
+
+    assignmentData.teacherEvaluationSummaries = assignmentData.teacherEvaluationSummaries.map(x=>(x.id===id?data:x));
+    setAssignmentData({...assignmentData});
+  };
 
   return (
     <>
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">
+      <Table size="small" aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell align="center">Teacher</TableCell>
@@ -76,30 +76,43 @@ const AssignmentsDetail = () => {
         <TableBody  >
           {assignmentData && assignmentData.teacherEvaluationSummaries.map((row) => (
             <TableRow key={row.id}>
-              <TableCell align="center" component="th" scope="row">
+              <TableCell align="center">
                 {row.evaluateeDisplayName}
               </TableCell>
-              <TableCell align="center" component="th" scope="row">
+              <TableCell align="center">
                 {buildLastYearPlanTypeDisplayString(row)}
               </TableCell>
-              <TableCell align="center" component="th" scope="row">
+              <TableCell align="center">
               {buildSuggestedPlanTypeDisplayString(row)}
               </TableCell>
-              <TableCell align="center" component="th" scope="row">
-                <TextField sx={{minWidth:'100px'}}
-                select
-                value={row.evaluateePlanType}
-                onChange={(e) => {
-                  setEvaluateePlanType(row.id, parseInt(e.target.value));
-                }}
-              >
+              <TableCell align="center">
+                {/* <TextField sx={{minWidth:'120px'}} size="small"
+                  select
+                  value={row.planType?row.planType:"0"}
+                  onChange={(e) => {
+                    setEvaluateePlanType(row.id, parseInt(e.target.value));
+                  }}
+                >
                   <MenuItem value="0">Not Set</MenuItem>
                   <MenuItem value="1">Comprehensive</MenuItem>
                   <MenuItem value="2">Focused</MenuItem>
                   <MenuItem value="3">Modified Comprehensive</MenuItem>
-              </TextField>
+                </TextField> */}
+                <PlanTypeField row={row} />
               </TableCell>
-              <TableCell align="center" component="th" scope="row">
+              <TableCell align="center">
+              <TextField sx={{minWidth:'120px'}} size="small"
+                  select
+                  value={row.evaluatorId?row.evaluatorId:"0"}
+                  onChange={(e) => {
+                    setEvaluator(row.id, parseInt(e.target.value));
+                  }}
+                >
+                  <MenuItem value="0">Not Set</MenuItem>
+                  {assignmentData.principals.map(x=> (
+                    <MenuItem value={x.id}>{x.displayName}</MenuItem>
+                  ))}
+                </TextField>
               </TableCell>
             </TableRow>
           ))}

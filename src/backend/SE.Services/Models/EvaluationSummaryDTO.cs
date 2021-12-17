@@ -12,7 +12,10 @@ namespace SE.Core.Models
         public long Id { get; set; }
 
         public long EvaluateeId { get; set; }
-        public long EvaluatorId { get; set; }
+        public long? EvaluatorId { get; set; }
+
+        public SchoolYear SchoolYear { get; set; }
+        public string SchoolYearDisplayName { get; set; }
 
         public EvaluationType EvaluationType { get; set; }
         public string EvaluationTypeDisplayName { get; set; }
@@ -26,10 +29,11 @@ namespace SE.Core.Models
         public string WfStateDisplayName { get; set; }
         public DateTime? LockDateTime { get; set; }
 
-        public EvaluateePlanType? PlanType { get; set; }
+        public EvaluateePlanType PlanType { get; set; }
         public string PlanTypeDisplayName { get; set; }
 
         public RubricPerformanceLevel? PerformanceLevel { get; set; }
+        public string PerformanceLevelDisplayName { get; set; }
         public StudentGrowthImpactRating? StudentGrowthImpactRating { get; set; }
         public bool? ComprehensiveCarryForward { get; set; }
         public RubricPerformanceLevel? ComprehensiveCarryForwardPerformanceLevel { get; set; }

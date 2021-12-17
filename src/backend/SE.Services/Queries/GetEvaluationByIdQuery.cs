@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SE.Core.Queries;
+using SE.Core.Mappers;
+using SE.Core.Services;
 
 namespace SE.Services.Queries
 {
@@ -35,22 +37,20 @@ namespace SE.Services.Queries
             IRequestHandler<GetEvaluationByIdQuery, EvaluationSummaryDTO>
         {
             private readonly DataContext _dataContext;
-            public GetEvaluationByIdQueryHandler(DataContext dataContext)
+            private readonly IEvaluationService _evaluationService;
+            public GetEvaluationByIdQueryHandler(DataContext dataContext, IEvaluationService evaluationService)
             {
                 _dataContext = dataContext;
+                _evaluationService = evaluationService;
             }
 
             public async Task<EvaluationSummaryDTO> Handle(GetEvaluationByIdQuery request, CancellationToken cancellationToken)
             {
-                var query = _dataContext.Evaluations
-                    .Include(x => x.Evaluatee)
-                    .Include(x => x.Evaluator)
-                    .Include(x => x.FocusedFrameworkNode)
-                    .Include(x => x.FocusedSGFrameworkNode)
-                    .Where(x => x.Id == request.Id);
+                var evaluation = await _evaluationService
+                    .ExecuteEvaluationSummaryDTOQuery(x => x.Id == request.Id)
+                    .FirstOrDefaultAsync();
 
-                List<EvaluationSummaryDTO> evaluations = QueryUtils.BuildEvaluationSummaryDTO(query);
-                return evaluations[0];
+                return evaluation;
             }
         }
     }

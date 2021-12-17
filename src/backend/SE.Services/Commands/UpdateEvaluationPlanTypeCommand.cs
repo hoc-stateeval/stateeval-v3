@@ -85,15 +85,13 @@ namespace SE.Core.Commands
             }
 
             evaluation.EvaluateePlanType = request.EvaluateePlanType;
-            if (request.EvaluateePlanType == EvaluateePlanType.COMPREHENSIVE)
-            {
-                evaluation.ComprehensiveCarryForward = false;
-                evaluation.ComprehensiveCarryForwardPerformanceLevel = null;
-                evaluation.ComprehensiveCarryForwardSchoolYear = null;
-                evaluation.FocusedFrameworkNodeId = null;
-                evaluation.FocusedSGFrameworkNodeId = null;
-            }
-            else
+            evaluation.ComprehensiveCarryForward = false;
+            evaluation.ComprehensiveCarryForwardPerformanceLevel = null;
+            evaluation.ComprehensiveCarryForwardSchoolYear = null;
+            evaluation.FocusedFrameworkNodeId = null;
+            evaluation.FocusedSGFrameworkNodeId = null;
+
+            if (request.EvaluateePlanType == EvaluateePlanType.FOCUSED)
             {
                 evaluation.ComprehensiveCarryForward = true;
                 evaluation.ComprehensiveCarryForwardPerformanceLevel = request.CarryForwardPerformanceLevel;

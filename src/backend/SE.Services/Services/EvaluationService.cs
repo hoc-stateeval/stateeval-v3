@@ -11,6 +11,11 @@ using System.Threading.Tasks;
 
 namespace SE.Core.Services
 {
+    public interface IEvaluationService
+    {
+        public IQueryable<EvaluationSummaryDTO> ExecuteEvaluationSummaryDTOQuery(System.Linq.Expressions.Expression<System.Func<Evaluation, bool>> expr);
+    }
+
     public class EvaluationService : BaseService
     {
         private readonly DataContext _dataContext;
@@ -19,7 +24,16 @@ namespace SE.Core.Services
             _dataContext = dataContext;
         }
 
-
+        public IQueryable<EvaluationSummaryDTO> ExecuteEvaluationSummaryDTOQuery(System.Linq.Expressions.Expression<System.Func<Evaluation, bool>> expr)
+        {
+            return _dataContext.Evaluations
+                  .Include(x => x.Evaluatee)
+                  .Include(x => x.Evaluator)
+                  .Include(x => x.FocusedFrameworkNode)
+                  .Include(x => x.FocusedSGFrameworkNode)
+                  .Where(expr)
+                  .Select(e => Mapper.MapToEvaluationSummaryDTO(e));
+        }
     }
 
 }

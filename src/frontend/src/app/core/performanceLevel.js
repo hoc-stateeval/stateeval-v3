@@ -1,4 +1,12 @@
 
+const PerformanceLevel = {
+  'UNDEFINED': 0,
+  'UNS': 1,
+  'BAS': 2,
+  'PRO': 3,
+  'DIS': 4
+};
+
 const PerformanceLevelShortNameMapper = {
   '0': 'N/A',
   '1': 'UNS',
@@ -8,5 +16,6 @@ const PerformanceLevelShortNameMapper = {
 };
 
 export {
+  PerformanceLevel,
   PerformanceLevelShortNameMapper,
 }

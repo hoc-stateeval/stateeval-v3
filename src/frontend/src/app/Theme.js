@@ -36,7 +36,7 @@ let theme = createTheme(
       neutral,
     },
     typography: {
-      fontSize: 13,
+      fontSize: '13px',
       h2: {
         fontSize:'1.5rem',
         fontWeight: 100,
@@ -79,6 +79,13 @@ let theme = createTheme(
               paddingTop: 4,
               paddingBottom: 4
             }
+          }
+        },
+      },
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            fontSize: '12px',
           }
         },
       },
