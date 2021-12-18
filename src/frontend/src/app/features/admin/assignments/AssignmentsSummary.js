@@ -1,9 +1,13 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { get, put } from '../../../core/api';
 import {
   selectActiveWorkAreaContext,
+} from '../../../store/stateEval/userContextSlice';
+
+import {
+  setPageTitle,
 } from '../../../store/stateEval/userContextSlice';
 
 import {
@@ -23,6 +27,10 @@ import {
 import CheckIcon from '@mui/icons-material/Check';
 
 const AssignmentsSummary = () => {
+
+  const dispatch = useDispatch();
+  const pageTitle = "Assignments Summary";
+  dispatch(setPageTitle(pageTitle));
 
   const getAssignmentsDelegatedToAllSchools = (summaries) => {
     summaries.reduce((acc, next) => {
@@ -119,7 +127,7 @@ const AssignmentsSummary = () => {
                 {row.unassignedCount>0 && row.unassignedCount}
               </TableCell>
               <TableCell align="center">
-                <Button component={RouterLink} to={`/app/admin/assignments/tr-assignments-summary/assignments-detail/${row.schoolCode}`} color="secondary" size="small" variant="contained">View</Button>
+                <Button component={RouterLink} to={`/app/admin/assignments/tr-assignments-summary/assignments-detail/${row.schoolCode}/${row.schoolName}`} color="secondary" size="small" variant="contained">View</Button>
               </TableCell>
             </TableRow>
           ))}

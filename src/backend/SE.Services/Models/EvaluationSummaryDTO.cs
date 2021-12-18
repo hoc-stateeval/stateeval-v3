@@ -29,7 +29,7 @@ namespace SE.Core.Models
         public string WfStateDisplayName { get; set; }
         public DateTime? LockDateTime { get; set; }
 
-        public EvaluateePlanType PlanType { get; set; }
+        public EvaluateePlanType? PlanType { get; set; }
         public string PlanTypeDisplayName { get; set; }
 
         public RubricPerformanceLevel? PerformanceLevel { get; set; }

@@ -33,7 +33,7 @@ const PlanTypeField = ( props ) => {
 
   const stateFramework = useSelector(selectStateFramework);
 
-  const [row, setRow] = useState(props.row);
+  const [evalSummary, setEvalSummary] = useState(props.evalSummary);
   const [dlgOpen, setDlgOpen] = useState(false);
   const [selectedFocusFrameworkNodeId, setSelectedFocusFrameworkNodeId] = useState("0");
   const [selectedFocusSGFrameworkNodeId, setSelectedSGFrameworkNodeId] = useState("0");
@@ -45,11 +45,11 @@ const PlanTypeField = ( props ) => {
 
   useEffect(()=> {
     (async () => {
-      const url = `evaluations/historical/${row.evaluateeId}`;
+      const url = `evaluations/historical/${evalSummary.evaluateeId}`;
       const response = await get(url);
 
       const evaluations = response.data.filter((evaluation) => {
-        return evaluation.schoolYear < row.schoolYear &&
+        return evaluation.schoolYear < evalSummary.schoolYear &&
             (evaluation.planType === PlanType.COMPREHENSIVE ||
              evaluation.planType === PlanType.MODIFIED_COMP_2021) &&
                evaluation.performanceLevel >= PerformanceLevel.PL3;
@@ -66,7 +66,7 @@ const PlanTypeField = ( props ) => {
       setRecommendedCarryForwardEvaluation(maxEvaluation);
 
     })();
-  }, [row]);
+  }, [evalSummary]);
 
   const handleClickDlgCancel = () => {
     setDlgOpen(false);
@@ -96,8 +96,8 @@ const PlanTypeField = ( props ) => {
         focusedSGFrameworkNodeId: null
       });
   
-      const row = response.data;
-      setRow(row);
+      const evalSummary = response.data;
+      setEvalSummary(evalSummary);
     }
     else if (planType === PlanType.FOCUSED) {
       setDlgOpen(true);
@@ -108,9 +108,9 @@ const PlanTypeField = ( props ) => {
     <>
     <TextField sx={{minWidth:'120px'}} size="small"
       select
-      value={row.planType?row.planType:"0"}
+      value={evalSummary.planType?evalSummary.planType:"0"}
       onChange={(e) => {
-        setEvaluateePlanType(row.id, parseInt(e.target.value));
+        setEvaluateePlanType(evalSummary.id, parseInt(e.target.value));
       }}
     >
       <MenuItem value="0">Not Set</MenuItem>

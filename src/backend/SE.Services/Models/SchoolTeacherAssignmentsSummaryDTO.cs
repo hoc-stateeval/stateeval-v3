@@ -8,7 +8,9 @@ namespace SE.Core.Models
 {
     public class SchoolTeacherAssignmentsSummaryDTO
     {
-        public List<EvaluationSummaryDTO> TeacherEvaluationSummaries { get; set; }  
+        public List<EvaluationSummaryDTO> EvaluationSummaries { get; set; }  
+
+        public List<UserDTO> Evaluatees { get; set; } 
         public List<UserDTO> Principals { get; set; }
         public List<UserDTO> DistrictWideTeacherEvaluators { get; set; }
         public bool Delegated { get; set; }

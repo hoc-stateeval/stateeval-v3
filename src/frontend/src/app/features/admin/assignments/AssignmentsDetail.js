@@ -14,9 +14,10 @@ import {
   MenuItem,
 } from '@mui/material';
 
-import { get, put } from '../../../core/api';
+import { put } from '../../../core/api';
 import {
   selectActiveWorkAreaContext,
+  selectImpersonating,
 } from '../../../store/stateEval/userContextSlice';
 
 import {
@@ -25,26 +26,22 @@ import {
 } from '../../../core/evalPlanType';
 
 import PlanTypeField from './PlanTypeField';
+import buildAssignmentData from './buildAssignmentData';
 
 const AssignmentsDetail = () => {
 
-  const { schoolCode } = useParams();
-
-  const workAreaContext = useSelector(selectActiveWorkAreaContext);
+  const { schoolCode, schoolName } = useParams();
   const [assignmentData, setAssignmentData] = useState(null);
 
-  useEffect(()=> {
+  const workAreaContext = useSelector(selectActiveWorkAreaContext);
+  const impersonating = useSelector(selectImpersonating);
 
+  useEffect(()=> {
     (async () => {
-      const frameworkContextId = workAreaContext.frameworkContextId;
-      const schoolCodeParam = schoolCode? schoolCode: workAreaContext.schoolCode;
-      const url = `assignments/tr-assignments-summary/assignments-detail/${frameworkContextId}/${schoolCodeParam}`;
-      const response = await get(url);
-      const data = await response.data;
+      const data = await buildAssignmentData(impersonating, workAreaContext, schoolCode, schoolName);
       setAssignmentData(data);
     })();
-
-  }, [workAreaContext, schoolCode]);
+  }, [workAreaContext, schoolCode, schoolName, impersonating]);
 
   const setEvaluator = async (id, evaluatorId) => {
 
@@ -56,7 +53,7 @@ const AssignmentsDetail = () => {
 
     const data = response.data;
 
-    assignmentData.teacherEvaluationSummaries = assignmentData.teacherEvaluationSummaries.map(x=>(x.id===id?data:x));
+    assignmentData.evaluationSummaries = assignmentData.evaluationSummaries.map(x=>(x.id===id?data:x));
     setAssignmentData({...assignmentData});
   };
 
@@ -66,7 +63,7 @@ const AssignmentsDetail = () => {
       <Table size="small" aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell align="center">Teacher</TableCell>
+            <TableCell align="center">{workAreaContext.evaluateeTerm}</TableCell>
             <TableCell align="center">Last Year Evaluation Type</TableCell>
             <TableCell align="center">Suggested Evaluation Type</TableCell>
             <TableCell align="center">Evaluation Type</TableCell>
@@ -74,42 +71,30 @@ const AssignmentsDetail = () => {
           </TableRow>
         </TableHead>
         <TableBody  >
-          {assignmentData && assignmentData.teacherEvaluationSummaries.map((row) => (
-            <TableRow key={row.id}>
+          {assignmentData && assignmentData.evaluationSummaries.map((evalSummary) => (
+            <TableRow key={evalSummary.id}>
               <TableCell align="center">
-                {row.evaluateeDisplayName}
+                {evalSummary.evaluateeDisplayName}
               </TableCell>
               <TableCell align="center">
-                {buildLastYearPlanTypeDisplayString(row)}
+                {buildLastYearPlanTypeDisplayString(evalSummary)}
               </TableCell>
               <TableCell align="center">
-              {buildSuggestedPlanTypeDisplayString(row)}
+              {buildSuggestedPlanTypeDisplayString(evalSummary)}
               </TableCell>
               <TableCell align="center">
-                {/* <TextField sx={{minWidth:'120px'}} size="small"
-                  select
-                  value={row.planType?row.planType:"0"}
-                  onChange={(e) => {
-                    setEvaluateePlanType(row.id, parseInt(e.target.value));
-                  }}
-                >
-                  <MenuItem value="0">Not Set</MenuItem>
-                  <MenuItem value="1">Comprehensive</MenuItem>
-                  <MenuItem value="2">Focused</MenuItem>
-                  <MenuItem value="3">Modified Comprehensive</MenuItem>
-                </TextField> */}
-                <PlanTypeField row={row} />
+                <PlanTypeField evalSummary={evalSummary} />
               </TableCell>
               <TableCell align="center">
               <TextField sx={{minWidth:'120px'}} size="small"
                   select
-                  value={row.evaluatorId?row.evaluatorId:"0"}
+                  value={evalSummary.evaluatorId?evalSummary.evaluatorId:"0"}
                   onChange={(e) => {
-                    setEvaluator(row.id, parseInt(e.target.value));
+                    setEvaluator(evalSummary.id, parseInt(e.target.value));
                   }}
                 >
                   <MenuItem value="0">Not Set</MenuItem>
-                  {assignmentData.principals.map(x=> (
+                  {assignmentData.evaluators.map(x=> (
                     <MenuItem value={x.id}>{x.displayName}</MenuItem>
                   ))}
                 </TextField>

@@ -18,8 +18,14 @@ const AdminRoutes =   {
     workAreaTags: [WorkAreas.DA_TR]
   },
   {
-    path: "/app/admin/assignments/tr-assignments-summary/assignments-detail/:schoolCode",
+    path: "/app/admin/assignments/tr-assignments-summary/assignments-detail/:schoolCode/:schoolName",
     element: <AssignmentsDetail />,
+    workAreaTags: [WorkAreas.DA_TR]
+  },
+  {
+    path: "/app/admin/assignments/assignments-detail",
+    element: <AssignmentsSummary />,
+    workAreaTags: [WorkAreas.DA_PR]
   },
 ], 
 };

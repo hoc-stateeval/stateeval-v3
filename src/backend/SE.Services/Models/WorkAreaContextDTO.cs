@@ -35,6 +35,7 @@ namespace SE.Core.Models
         public bool IsEvaluatee { get; set; }
         public bool IsEvaluator { get; set; }
 
+
         public bool IsSchoolAdmin { get; set; }
         public bool IsDistrictAdmin { get; set; }
 

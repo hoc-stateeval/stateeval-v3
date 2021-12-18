@@ -129,10 +129,7 @@ const LocalLogin = () => {
             >
             <Button
               variant="contained"
-              color="primary"
-              className="w-full mx-auto mt-16"
-              aria-label="LOG IN"
-              value="legacy"
+              color="secondary"
               onClick={onClickLogin}
             >
               Login

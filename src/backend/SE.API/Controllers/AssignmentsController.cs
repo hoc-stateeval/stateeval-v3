@@ -23,11 +23,17 @@ namespace SE.API.Controllers
             return Ok(summaries);
         }
 
-
         [HttpGet("tr-assignments-summary/assignments-detail/{frameworkContextId}/{schoolCode}")]
-        public async Task<IActionResult> GetTeacherAssignmentsSummaryForSchool(long frameworkContextId, string schoolCode)
+        public async Task<IActionResult> GetTeacherAssignmentsDataForSchool(long frameworkContextId, string schoolCode)
         {
             var result = await _mediator.Send(new GetTeacherAssignmentDataForSchoolQuery(frameworkContextId, schoolCode));
+            return Ok(result);
+        }
+
+        [HttpGet("pr-assignments-detail/{frameworkContextId}")]
+        public async Task<IActionResult> GetPrincipalAssignmentsDataForDistrict(long frameworkContextId)
+        {
+            var result = await _mediator.Send(new GetPrincipalAssignmentDataForDistrictQuery(frameworkContextId));
             return Ok(result);
         }
 

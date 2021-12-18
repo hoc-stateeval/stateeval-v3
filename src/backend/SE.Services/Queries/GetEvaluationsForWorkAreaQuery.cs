@@ -72,7 +72,6 @@ namespace SE.Services.Queries
                                  ((workAreaContext.WorkArea.TagName != EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DTE) ||
                                   // DTE - can only see evaluations assigned to him
                                   x.EvaluatorId == workAreaContext.UserId)))))
-                    .OrderBy(x => x.EvaluateeDisplayName)
                     .ToListAsync();
 
                 return evaluations;

@@ -15,6 +15,7 @@ import { selectCurrentUser, selectActiveWorkAreaContext } from '../../store/stat
 import SidebarLogo from './SidebarLogo';
 import SidebarAvatar from './SidebarAvatar';
 import SidebarEvaluatingDropdown from './SidebarEvaluatingDropdown';
+import SidebarSwitchAdminWorkAreaDropdown from './SidebarSwitchAdminWorkAreaDropdown';
 
 const Sidebar = ({ onClose, open, sidebarWidth }) => {
   const location = useLocation();
@@ -38,7 +39,7 @@ const Sidebar = ({ onClose, open, sidebarWidth }) => {
           <SidebarAvatar currentUser={currentUser} />
           <SidebarProfile currentUser={currentUser} currentWorkAreaContext={currentWorkAreaContext} />
           <SidebarEvaluatingDropdown currentWorkAreaContext={currentWorkAreaContext} />
-
+          <SidebarSwitchAdminWorkAreaDropdown />
           <Box sx={{ flexGrow: 1 }}>
               {navSections.map((section) => (
                 <SidebarSection

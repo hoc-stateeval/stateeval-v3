@@ -49,7 +49,6 @@ namespace SE.Services.Queries
             {
                 var evaluations = await _evaluationService
                     .ExecuteEvaluationSummaryDTOQuery(x => x.IsActive && x.EvaluateeId == request.UserId)
-                    .OrderBy(x => x.EvaluateeDisplayName)
                     .ToListAsync();
 
                 return evaluations;

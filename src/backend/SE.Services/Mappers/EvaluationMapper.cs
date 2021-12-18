@@ -31,7 +31,7 @@ namespace SE.Core.Mappers
             target.EvaluationType = source.EvaluationType;
             target.EvaluationTypeDisplayName = EnumUtils.EvaluationTypeDisplayName(source.EvaluationType);
 
-            target.PlanType = source.EvaluateePlanType ?? EvaluateePlanType.UNDEFINED;
+            target.PlanType = source.EvaluateePlanType;
             target.PlanTypeDisplayName = EnumUtils.MapEvaluateePlanTypeToDisplayName(source.EvaluateePlanType);
 
             target.ComprehensiveCarryForward = source.ComprehensiveCarryForward ?? false;

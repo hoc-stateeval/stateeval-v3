@@ -36,7 +36,7 @@ let theme = createTheme(
       neutral,
     },
     typography: {
-      fontSize: '13px',
+      fontSize: 13,
       h2: {
         fontSize:'1.5rem',
         fontWeight: 100,

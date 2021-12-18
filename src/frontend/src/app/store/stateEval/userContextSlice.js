@@ -134,6 +134,8 @@ export const setCurrentUser = createAsyncThunk(
 
 const initialState = {
   currentUser: null,
+  pageTitle: '',
+  impersonating: false,
   ids: {
     activeWorkAreaContextId: null,
     activeFrameworkId: null,
@@ -154,6 +156,12 @@ const userContextSlice = createSlice({
   name: 'userContext',
   initialState,
   reducers: {
+    setPageTitle: (state, action) => {
+      return {
+        ...state,
+        pageTitle: action.payload,
+      }
+    },
     setActiveFrameworkId: (state, action) => {
       return {
         ...state,
@@ -323,6 +331,28 @@ export const selectInstructionalFramework = createSelector(
   }
 );
 
-export const { setActiveFrameworkId, setActiveEvaluationId } = userContextSlice.actions;
+const getImpersonating = (state) => {
+  const { impersonating } = state.stateEval.userContext;
+  return impersonating;
+};
+
+export const selectImpersonating = createSelector([getImpersonating], (impersonating) => {
+  return impersonating;
+});
+
+const getPageTitle = (state) => {
+  const { pageTitle } = state.stateEval.userContext;
+  return pageTitle;
+};
+
+export const selectPageTitle = createSelector([getPageTitle], (title) => {
+  return title;
+});
+
+export const { 
+  setActiveFrameworkId, 
+  setActiveEvaluationId,
+  setPageTitle,
+} = userContextSlice.actions;
 
 export default userContextSlice.reducer;

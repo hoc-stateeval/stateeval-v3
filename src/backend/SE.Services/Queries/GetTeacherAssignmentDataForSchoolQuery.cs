@@ -63,17 +63,20 @@ namespace SE.Services.Queries
                     .Select(x => x.IsPrincipalAssignmentDelegated)
                     .FirstOrDefaultAsync();
 
-                result.TeacherEvaluationSummaries = await _evaluationService
+                result.EvaluationSummaries = await _evaluationService
                     .ExecuteEvaluationSummaryDTOQuery(x => x.IsActive &&
                                 x.SchoolYear == EnumUtils.CurrentSchoolYear &&
                                 x.DistrictCode == frameworkContext.DistrictCode &&
                                 x.SchoolCode == request.SchoolCode &&
                                 x.EvaluationType == EvaluationType.TEACHER)
-                    .OrderBy(x => x.EvaluateeDisplayName)
                     .ToListAsync();
+
+                result.Evaluatees = await _userService.GetUsersInRoleAtSchool(request.SchoolCode,
+                                            EnumUtils.MapRoleTypeToDisplayName(RoleType.TR));
 
                 result.Principals = await _userService.GetUsersInRoleAtDistrictBuildings(frameworkContext.DistrictCode, 
                                                             EnumUtils.MapRoleTypeToDisplayName(RoleType.PR));
+
                 result.DistrictWideTeacherEvaluators = await _userService.GetUsersInRoleAtDistrict(frameworkContext.DistrictCode, 
                                                             EnumUtils.MapRoleTypeToDisplayName(RoleType.DTE));
                 return result;

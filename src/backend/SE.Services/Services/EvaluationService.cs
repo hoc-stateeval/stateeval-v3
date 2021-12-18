@@ -16,7 +16,7 @@ namespace SE.Core.Services
         public IQueryable<EvaluationSummaryDTO> ExecuteEvaluationSummaryDTOQuery(System.Linq.Expressions.Expression<System.Func<Evaluation, bool>> expr);
     }
 
-    public class EvaluationService : BaseService
+    public class EvaluationService : BaseService, IEvaluationService
     {
         private readonly DataContext _dataContext;
         public EvaluationService(DataContext dataContext)
@@ -31,9 +31,9 @@ namespace SE.Core.Services
                   .Include(x => x.Evaluator)
                   .Include(x => x.FocusedFrameworkNode)
                   .Include(x => x.FocusedSGFrameworkNode)
+                  .OrderBy(x => x.Evaluatee.FirstName).ThenBy(x => x.Evaluatee.LastName)
                   .Where(expr)
                   .Select(e => Mapper.MapToEvaluationSummaryDTO(e));
         }
     }
-
 }

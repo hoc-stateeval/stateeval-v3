@@ -1,10 +1,15 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { Box, Container, Typography } from "@mui/material";
 import Sidebar from './side-bar/Sidebar';
 import Navbar from './nav-bar/Navbar';
 import ActiveEvaluationProfile from './nav-bar/ActiveEvaluationProfile';
+
+import {
+  selectPageTitle,
+} from '../store/stateEval/userContextSlice';
 
 const sidebarWidth = 220;
 
@@ -20,6 +25,8 @@ const LayoutRoot = styled('div')(({ theme }) => ({
 }));
 
 const Layout = (props) => {
+
+  const pageTitle = useSelector(selectPageTitle);
   const { children } = props;
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   return (
@@ -41,7 +48,7 @@ const Layout = (props) => {
             backgroundColor:'#FFF'}}>
 
             <Container maxWidth="md" sx={{display:'flex', alignItems: 'center'}}>
-              <Typography variant="h2">Page Title</Typography>
+              <Typography variant="h2">{pageTitle}</Typography>
               <Box sx={{ flexGrow: 1 }} />
               <ActiveEvaluationProfile  />
             </Container>

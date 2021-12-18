@@ -1,4 +1,5 @@
 ﻿using SE.Core.Models;
+using SE.Core.Mappers;
 using SE.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,9 @@ namespace SE.Core.Mappers
             target.Email = source.EmailAddress;
             target.ProfileImageUrl = source.ProfileImageUrl;
 
+            target.BuildingRoles = source.UserBuildingRoles.Select(x => x.MapToBuildingRoleDTO()).ToList();
+
             return target;
         }
-
-
-        }
     }
+}
