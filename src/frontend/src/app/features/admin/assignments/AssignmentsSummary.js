@@ -95,7 +95,10 @@ const AssignmentsSummary = () => {
 
   const handleClickDelegateToAllSchools = () => {
     const result = summaries.map(x=>({...x, delegated:true}));
-    put(`assignments/${workAreaContext.frameworkContextId}/delegate`).then(()=> {
+    put(`assignments/${workAreaContext.frameworkContextId}/delegate`,
+      {
+        frameworkContextId: workAreaContext.frameworkContextId
+      }).then(()=> {
       setSummaries(result);
       setAssignmentsDelegatedToAllSchools(true);
     })
