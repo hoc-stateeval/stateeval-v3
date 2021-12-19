@@ -1,9 +1,10 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
-
+import { styled } from '@mui/material/styles';
 import {
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -18,7 +19,10 @@ import { put } from '../../../core/api';
 import {
   selectActiveWorkAreaContext,
   selectImpersonating,
+  setPageTitle,
 } from '../../../store/stateEval/userContextSlice';
+
+import PageHeader from '../../../components/PageHeader';
 
 import {
   buildLastYearPlanTypeDisplayString,
@@ -28,18 +32,46 @@ import {
 import PlanTypeField from './PlanTypeField';
 import buildAssignmentData from './buildAssignmentData';
 
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  backgroundColor: theme.palette.primary,
+  color: theme.palette.text.primary
+}));
+
 const AssignmentsDetail = () => {
 
+  const dispatch = useDispatch();
+ 
   const { schoolCode, schoolName } = useParams();
   const [assignmentData, setAssignmentData] = useState(null);
+  const [totalCount, setTotalCount] = useState(0);
+  const [assignedCount, setAssignedCount] = useState(0);
 
   const workAreaContext = useSelector(selectActiveWorkAreaContext);
   const impersonating = useSelector(selectImpersonating);
+
+  const pageTitle = `Assignments for ${workAreaContext.evaluateeTerm} Evaluations`;
+  const pageHeaderTitle = `Assignments for ${schoolName}`;
+
+  useEffect(()=> {
+    dispatch(setPageTitle(pageTitle));
+  }, [pageTitle, dispatch]);
 
   useEffect(()=> {
     (async () => {
       const data = await buildAssignmentData(impersonating, workAreaContext, schoolCode, schoolName);
       setAssignmentData(data);
+
+      const assignedCount = data.evaluationSummaries.reduce((assignedCount, next) => {
+        if (next.evaluatorId)
+          assignedCount++;
+        return assignedCount;
+      }, 0);
+
+      setTotalCount(data.evaluationSummaries.length);
+      setAssignedCount(assignedCount);
     })();
   }, [workAreaContext, schoolCode, schoolName, impersonating]);
 
@@ -59,6 +91,16 @@ const AssignmentsDetail = () => {
 
   return (
     <>
+    <PageHeader title={pageHeaderTitle}>
+      This page lets you select the Evaluation Cycle and the Evaluator for the {workAreaContext.evaluateeTermLC}s at your school.
+    </PageHeader>
+
+    <Stack direction="row" sx={{alignItems: 'center', mb:3}} spacing={3}>
+        <Item><strong>{workAreaContext.evaluateeTerm}s:&nbsp;</strong>{totalCount}</Item>
+        <Item><strong>Assigned:&nbsp;</strong>{assignedCount}</Item>
+        <Item><strong>Awaiting Assignment:&nbsp;</strong>{totalCount-assignedCount}</Item>
+      </Stack>
+
     <TableContainer component={Paper}>
       <Table size="small" aria-label="simple table">
         <TableHead>

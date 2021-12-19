@@ -6,7 +6,7 @@ import {
 
 const PageHeader = (props) => {
   return (
-    <Box sx={{marginBottom:'20px'}}>
+    <Box sx={{mb:5}}>
     <Typography variant="h2">{props.title}</Typography>
     <Typography variant="subtitle1">
       {props.children}
