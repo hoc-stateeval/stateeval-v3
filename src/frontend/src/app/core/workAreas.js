@@ -18,6 +18,7 @@ const EvaluationWorkAreas = [...EvaluatorWorkAreas, ...EvaluateeWorkAreas];
 const AdminWorkAreas = [WorkAreas.DA_TR, WorkAreas.DA_PR, WorkAreas.SA_TR, WorkAreas.SA_PR];
 const DistrictAdminWorkAreas = [WorkAreas.DA_TR, WorkAreas.DA_PR];
 const TeacherAssignmentWorkAreas = [WorkAreas.DA_TR, WorkAreas.SA_TR, WorkAreas.PR_TR];
+const PrincipalAssignmentWorkAreas = [WorkAreas.DA_PR, WorkAreas.SA_PR, WorkAreas.PR_PR];
 
 const isEvaluator = (workArea) => EvaluatorWorkAreas.includes(workArea.tagName);
 const isEvaluatee = (workArea) => EvaluateeWorkAreas.includes(workArea.tagName);
@@ -33,5 +34,6 @@ export {
   isEvaluationWorkArea,
   AdminWorkAreas,
   DistrictAdminWorkAreas,
-  TeacherAssignmentWorkAreas
+  TeacherAssignmentWorkAreas,
+  PrincipalAssignmentWorkAreas
 };

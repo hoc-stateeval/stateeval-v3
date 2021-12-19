@@ -42,6 +42,9 @@ let theme = createTheme(
         fontWeight: 100,
         lineHeight: 3
       },
+      body1: {
+        fontSize:13,
+      },
       sideBar: {
         fontSize:navBarFontSize,
         fontWeight:600,
@@ -54,20 +57,12 @@ let theme = createTheme(
       }
     },
     components: {
-      MuiOutlinedInput: {
-        styleOverrides: {
-          input: {
-            fontWeight: 500
-          }
-        }
-      },
       MuiTableHead: {
         styleOverrides: {
           root: {
             borderBottom: 'none',
             '& .MuiTableCell-root': {
               borderBottom: 'none',
-              fontSize: '12px',
               backgroundColor: neutral[900],
               color:'#FFF',
               fontWeight: 600,
@@ -85,9 +80,29 @@ let theme = createTheme(
       MuiTableCell: {
         styleOverrides: {
           root: {
-            fontSize: '12px',
+            fontSize:'13px'
           }
         },
+      },
+      MuiTextField: {
+        styleOverrides: {
+          root: {
+            "& .MuiSelect-select": { 
+              padding: "4px 8px",
+              fontSize:'13px'
+            },
+            "& .MuiMenuItem-root": { 
+              fontSize:'13px'
+            }
+          }
+        }
+      },
+      MuiMenuItem: {
+        styleOverrides: {
+          root: {
+            fontSize:'13px'
+          }
+        }
       },
       // MuiOutlinedInput: {
       //   styleOverrides: {

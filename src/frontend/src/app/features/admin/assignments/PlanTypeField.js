@@ -106,7 +106,7 @@ const PlanTypeField = ( props ) => {
 
   return (
     <>
-    <TextField sx={{minWidth:'120px'}} size="small"
+    <TextField sx={{ minWidth:'120px'}} size="small"
       select
       value={evalSummary.planType?evalSummary.planType:"0"}
       onChange={(e) => {
@@ -127,7 +127,8 @@ const PlanTypeField = ( props ) => {
           mt: 3, 
           mb:3, 
         }}>
-          <TextField label="Focus Criterion" sx={{minWidth:'200px', mr: 2}}
+          <TextField label="Focus Criterion" 
+            sx={{ minWidth:'200px', mr: 2}}
               select
               value={selectedFocusFrameworkNodeId}
               onChange={(e) => {
@@ -144,9 +145,10 @@ const PlanTypeField = ( props ) => {
         
         {showStudentGrowthSelect && 
 
-          <TextField label="Student Growth Criterion" sx={{minWidth:'200px'}}
+          <TextField label="Student Growth Criterion" 
+            sx={{ minWidth:'200px'}}
               select
-              value={selectedFocusSGFrameworkNodeId}
+              value={selectedFocusSGFrameworkNodeId} 
               onChange={(e) => {
                 setSelectedSGFrameworkNodeId(parseInt(e.target.value));
               }}
@@ -208,7 +210,11 @@ const PlanTypeField = ( props ) => {
         }
 
           <Box sx={{mb:3}}>
-            <TextField label="Carry-forward School Year" sx={{minWidth:'220px', mt: 2, mr: 2}}
+            <TextField label="Carry-forward School Year" 
+              sx={{
+                minWidth:'220px', 
+                mt: 2, mr: 2,
+              }}
                 select
                 value={selectedCarryForwardSchoolYear}
                 onChange={(e) => {

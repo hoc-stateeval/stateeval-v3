@@ -86,7 +86,10 @@ const AssignmentsDetail = () => {
                 <PlanTypeField evalSummary={evalSummary} />
               </TableCell>
               <TableCell align="center">
-              <TextField sx={{minWidth:'120px'}} size="small"
+              <TextField sx={{
+                  minWidth:'120px', 
+                  }} 
+                  size="small"
                   select
                   value={evalSummary.evaluatorId?evalSummary.evaluatorId:"0"}
                   onChange={(e) => {
@@ -94,8 +97,8 @@ const AssignmentsDetail = () => {
                   }}
                 >
                   <MenuItem value="0">Not Set</MenuItem>
-                  {assignmentData.evaluators.map(x=> (
-                    <MenuItem value={x.id}>{x.displayName}</MenuItem>
+                  {assignmentData.evaluators[evalSummary.evaluateeId].map((x, index)=> (
+                    <MenuItem key={index} value={x.id}>{x.displayName}</MenuItem>
                   ))}
                 </TextField>
               </TableCell>

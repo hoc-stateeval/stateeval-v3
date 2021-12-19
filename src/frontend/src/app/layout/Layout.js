@@ -47,7 +47,7 @@ const Layout = (props) => {
             justifyContent:'center',
             backgroundColor:'#FFF'}}>
 
-            <Container maxWidth="md" sx={{display:'flex', alignItems: 'center'}}>
+            <Container  sx={{display:'flex', alignItems: 'center'}}>
               <Typography variant="h2">{pageTitle}</Typography>
               <Box sx={{ flexGrow: 1 }} />
               <ActiveEvaluationProfile  />
@@ -55,7 +55,7 @@ const Layout = (props) => {
           </Box>
 
           <Box sx={{mt:3}}>
-            <Container maxWidth="md">
+            <Container sx={{ minHeight: '100vh', width: '95%', padding: '0px 10px 40px 10px', borderTop: 'solid 5px #e7eaec', margin: '0 20px 0 20px', backgroundColor:'#FFF'}}>
               {children}
             </Container>
           </Box>

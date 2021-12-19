@@ -2,6 +2,7 @@ import { get } from '../../../core/api';
 import { 
   WorkAreas,
   TeacherAssignmentWorkAreas,
+  PrincipalAssignmentWorkAreas,
  } from '../../../core/workAreas';
 
  import { 
@@ -34,7 +35,7 @@ import {
  }
 
  const findDTEForTeacher = (districtWideTeacherEvaluators, evaluation) => {
-  return districtWideTeacherEvaluators.find(x=>x.id == evaluation.evaluatorId);
+  return districtWideTeacherEvaluators.find(x=>x.id === evaluation.evaluatorId);
 }
 
 const findPrincipalsThatCanEvaluateTeacher = (teacher, principals, evaluation, assignmentData) => {
@@ -100,6 +101,10 @@ const buildAssignmentData = async (impersonating, workAreaContext, schoolCode, s
         assignmentData.evaluators[evaluatee.id] = [...principals];
       }
     }
+    else if (PrincipalAssignmentWorkAreas.includes(workAreaContext.tagName)) {
+
+    }
+
 
     assignmentData.evaluationLocked[evaluatee.id] = evaluation.wfState > WorkState.EVAL_DRAFT;
   }
