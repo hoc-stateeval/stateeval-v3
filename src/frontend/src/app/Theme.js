@@ -13,6 +13,8 @@ const neutral = {
   1000: '#293846'
 };
 
+const secondary = '#1ab394';
+
 const navBarFontSize = '.688rem';
 
 let theme = createTheme(
@@ -23,7 +25,7 @@ let theme = createTheme(
         main: '#c2c2c2',
       },
       secondary: {
-        main: '#1ab394',
+        main: secondary,
         contrastText: '#fff',
       },
       background: {
@@ -101,6 +103,15 @@ let theme = createTheme(
         styleOverrides: {
           root: {
             fontSize:'13px'
+          }
+        }
+      },
+      MuiCheckbox: {
+        styleOverrides: {
+          root: {
+            '&.Mui-checked': {
+              color: secondary,
+            },
           }
         }
       },

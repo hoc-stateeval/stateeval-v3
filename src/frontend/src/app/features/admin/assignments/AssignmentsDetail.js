@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
 import { styled } from '@mui/material/styles';
 import {
+  Checkbox,
+  FormControlLabel,
   Paper,
   Stack,
   Table,
@@ -48,6 +50,7 @@ const AssignmentsDetail = () => {
   const [assignmentData, setAssignmentData] = useState(null);
   const [totalCount, setTotalCount] = useState(0);
   const [assignedCount, setAssignedCount] = useState(0);
+  const [hideCompleted, setHideCompleted] = useState(false);
 
   const workAreaContext = useSelector(selectActiveWorkAreaContext);
   const impersonating = useSelector(selectImpersonating);
@@ -89,6 +92,14 @@ const AssignmentsDetail = () => {
     setAssignmentData({...assignmentData});
   };
 
+  const toggleHideCompleted = () => {
+    setHideCompleted(!hideCompleted);
+  }
+
+  const evalSetupComplete = (evalSummary) => {
+    return evalSummary.evaluatorId && evalSummary.planType;
+  }
+
   return (
     <>
     <PageHeader title={pageHeaderTitle}>
@@ -100,6 +111,8 @@ const AssignmentsDetail = () => {
         <Item><strong>Assigned:&nbsp;</strong>{assignedCount}</Item>
         <Item><strong>Awaiting Assignment:&nbsp;</strong>{totalCount-assignedCount}</Item>
       </Stack>
+
+     <FormControlLabel control={<Checkbox checked={hideCompleted} onChange={()=>{toggleHideCompleted()}} />} label="Hide Completed" />
 
     <TableContainer component={Paper}>
       <Table size="small" aria-label="simple table">
@@ -113,7 +126,8 @@ const AssignmentsDetail = () => {
           </TableRow>
         </TableHead>
         <TableBody  >
-          {assignmentData && assignmentData.evaluationSummaries.map((evalSummary) => (
+          {assignmentData && 
+          assignmentData.evaluationSummaries.filter(x=>hideCompleted?!evalSetupComplete(x):x).map((evalSummary) => (
             <TableRow key={evalSummary.id}>
               <TableCell align="center">
                 {evalSummary.evaluateeDisplayName}
