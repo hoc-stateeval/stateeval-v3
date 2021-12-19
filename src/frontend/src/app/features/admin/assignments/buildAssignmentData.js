@@ -38,6 +38,21 @@ import {
   return districtWideTeacherEvaluators.find(x=>x.id === evaluation.evaluatorId);
 }
 
+const findHeadPrincipalsThatCanEvaluatePrincipal = (principal, headPrincipals, evaluation, assignmentData) => {
+  var potentialEvaluators = [];
+  principal.buildingRoles.forEach( (principalBuildingRole) => {
+      headPrincipals.forEach( (headPrincipal) => {
+        if (headPrincipal.buildingRoles.find(x=>x.schoolCode === principalBuildingRole.schoolCode)) {
+          if (!potentialEvaluators.find(x=>x.id === headPrincipal.id)) {
+            potentialEvaluators.push(headPrincipal);
+          }
+        }
+      })
+  });
+
+  return potentialEvaluators;
+}
+
 const findPrincipalsThatCanEvaluateTeacher = (teacher, principals, evaluation, assignmentData) => {
   var potentialEvaluators = [];
   teacher.buildingRoles.forEach( (teacherBuildingRole) => {
@@ -58,12 +73,11 @@ const buildAssignmentData = async (impersonating, workAreaContext, schoolCode, s
   let assignmentData = initAssignmentData();
 
   assignmentData.dteGridIsReadOnly = !workAreaContext.isDistrictAdmin;
-
   // the user is either from a school and coming directly to this page,
   // or from a district and drilling down to this page
   if (workAreaContext.schoolCode) {
-      assignmentData.schoolCode = workAreaContext.schoolCode;
-      assignmentData.schoolName = workAreaContext.schoolName;
+    assignmentData.schoolCode = workAreaContext.schoolCode;
+    assignmentData.schoolName = workAreaContext.schoolName;
   }
   else {
       assignmentData.schoolCode = schoolCode;
@@ -73,10 +87,11 @@ const buildAssignmentData = async (impersonating, workAreaContext, schoolCode, s
   const frameworkContextId = workAreaContext.frameworkContextId;
   let url = '';
   if (workAreaContext.tagName === WorkAreas.DA_TR) {
+
     url = `assignments/tr-assignments-summary/assignments-detail/${frameworkContextId}/${schoolCode}`;
   }
   else if (workAreaContext.tagName === WorkAreas.DA_PR) {
-    url = `assignments/pr-assignments-detail/${frameworkContextId}`;
+    url = `assignments/pr-assignments-detail/${frameworkContextId}/${schoolCode}`;
   }
   const response = await get(url);
   const data = await response.data;
@@ -102,9 +117,9 @@ const buildAssignmentData = async (impersonating, workAreaContext, schoolCode, s
       }
     }
     else if (PrincipalAssignmentWorkAreas.includes(workAreaContext.tagName)) {
-
+      const headPrincipals = findHeadPrincipalsThatCanEvaluatePrincipal(evaluatee, data.headPrincipals, evaluation, assignmentData);
+      assignmentData.evaluators[evaluatee.id] = [...headPrincipals, ...data.districtEvaluators];
     }
-
 
     assignmentData.evaluationLocked[evaluatee.id] = evaluation.wfState > WorkState.EVAL_DRAFT;
   }

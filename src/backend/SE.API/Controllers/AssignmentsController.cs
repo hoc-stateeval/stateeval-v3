@@ -30,10 +30,10 @@ namespace SE.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("pr-assignments-detail/{frameworkContextId}")]
-        public async Task<IActionResult> GetPrincipalAssignmentsDataForDistrict(long frameworkContextId)
+        [HttpGet("pr-assignments-detail/{frameworkContextId}/{schoolCode?}")]
+        public async Task<IActionResult> GetPrincipalAssignmentsDataForDistrict(long frameworkContextId, string schoolCode)
         {
-            var result = await _mediator.Send(new GetPrincipalAssignmentDataForDistrictQuery(frameworkContextId));
+            var result = await _mediator.Send(new GetPrincipalAssignmentDataForDistrictQuery(frameworkContextId, schoolCode));
             return Ok(result);
         }
 

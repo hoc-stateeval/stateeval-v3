@@ -24,7 +24,7 @@ const AdminRoutes =   {
   },
   {
     path: "/app/admin/assignments/assignments-detail",
-    element: <AssignmentsSummary />,
+    element: <AssignmentsDetail />,
     workAreaTags: [WorkAreas.DA_PR]
   },
 ], 

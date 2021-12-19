@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 import {
   MenuItem,
   TextField,
@@ -19,6 +20,7 @@ import {
 const SidebarSwitchAdminWorkAreaDropdown = () => {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
  
   const workAreaContexts = useSelector(selectWorkAreaContextsAll);
   const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
@@ -34,6 +36,7 @@ const SidebarSwitchAdminWorkAreaDropdown = () => {
     setSelectedWorkAreaContextId(contextId);
     const workArea = workAreaContexts.find((x) => x.id === contextId);
     await dispatch(setActiveWorkAreaContext(workArea));
+    navigate("/app/dashboard");
   };
 
   return (

@@ -55,16 +55,15 @@ const AssignmentsDetail = () => {
   const workAreaContext = useSelector(selectActiveWorkAreaContext);
   const impersonating = useSelector(selectImpersonating);
 
-  const pageTitle = `Assignments for ${workAreaContext.evaluateeTerm} Evaluations`;
-  const pageHeaderTitle = `Assignments for ${schoolName}`;
+  const pageHeaderTitle = `Assignments for ${schoolName?schoolName:'Principals'}`;
 
   useEffect(()=> {
-    dispatch(setPageTitle(pageTitle));
-  }, [pageTitle, dispatch]);
+    dispatch(setPageTitle(`Assignments for ${workAreaContext.evaluateeTerm} Evaluations`));
+  }, [workAreaContext, dispatch]);
 
   useEffect(()=> {
     (async () => {
-      const data = await buildAssignmentData(impersonating, workAreaContext, schoolCode, schoolName);
+      const data = await buildAssignmentData(impersonating, workAreaContext, schoolCode||'', schoolName||'');
       setAssignmentData(data);
 
       const assignedCount = data.evaluationSummaries.reduce((assignedCount, next) => {
@@ -103,7 +102,7 @@ const AssignmentsDetail = () => {
   return (
     <>
     <PageHeader title={pageHeaderTitle}>
-      This page lets you select the Evaluation Cycle and the Evaluator for the {workAreaContext.evaluateeTermLC}s at your school.
+      This page lets you select the Evaluation Cycle and the Evaluator for {workAreaContext.evaluateeTermLC}s.
     </PageHeader>
 
     <Stack direction="row" sx={{alignItems: 'center', mb:3}} spacing={3}>
