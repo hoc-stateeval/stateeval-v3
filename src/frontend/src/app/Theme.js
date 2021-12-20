@@ -91,19 +91,19 @@ let theme = createTheme(
           }
         },
       },
-      MuiTextField: {
-        styleOverrides: {
-          root: {
-            "& .MuiSelect-select": { 
-              padding: "4px 8px",
-              fontSize:'13px'
-            },
-            "& .MuiMenuItem-root": { 
-              fontSize:'13px'
-            }
-          }
-        }
-      },
+      // MuiTextField: {
+      //   styleOverrides: {
+      //     root: {
+      //       "& .MuiSelect-select": { 
+      //         padding: "4px 8px",
+      //         fontSize:'13px'
+      //       },
+      //       "& .MuiMenuItem-root": { 
+      //         fontSize:'13px'
+      //       }
+      //     }
+      //   }
+      // },
       MuiMenuItem: {
         styleOverrides: {
           root: {
