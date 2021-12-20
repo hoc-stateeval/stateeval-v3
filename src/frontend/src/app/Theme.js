@@ -13,6 +13,11 @@ const neutral = {
   1000: '#293846'
 };
 
+// const primary = '#c2c2c2';
+// const secondary = '#1ab394';
+
+
+const primary = neutral[900];
 const secondary = '#1ab394';
 
 const navBarFontSize = '.688rem';
@@ -22,7 +27,7 @@ let theme = createTheme(
     palette: {
       type: 'light',
       primary: {
-        main: '#c2c2c2',
+        main: primary,
       },
       secondary: {
         main: secondary,
@@ -50,7 +55,7 @@ let theme = createTheme(
       sideBar: {
         fontSize:navBarFontSize,
         fontWeight:600,
-        backgroundColor: neutral[900]
+        backgroundColor: primary
       },
       sideBarProfile: {
         color: '#8095a8',
@@ -65,7 +70,7 @@ let theme = createTheme(
             borderBottom: 'none',
             '& .MuiTableCell-root': {
               borderBottom: 'none',
-              backgroundColor: neutral[900],
+              backgroundColor: primary,
               color:'#FFF',
               fontWeight: 600,
               lineHeight: 1,
@@ -82,7 +87,7 @@ let theme = createTheme(
       MuiTableCell: {
         styleOverrides: {
           root: {
-            fontSize:'13px'
+            fontSize:'13px',
           }
         },
       },
@@ -105,16 +110,27 @@ let theme = createTheme(
             fontSize:'13px'
           }
         }
-      },
-      MuiCheckbox: {
-        styleOverrides: {
-          root: {
-            '&.Mui-checked': {
-              color: secondary,
-            },
-          }
-        }
-      },
+      }
+
+      // MuiCheckbox: {
+      //   styleOverrides: {
+      //     root: {
+      //       '&.Mui-checked': {
+      //         color: secondary,
+      //       },
+      //     }
+      //   }
+      // },
+
+      // MuiStepIcon: {
+      //   styleOverrides: {
+      //     root: {
+      //       "& .active": { color: "#1ab394" },
+      //       "& .completed": { color: "green" },
+      //       "& .Mui-disabled .MuiStepIcon-root": { color: "cyan" }
+      //     }
+      //   }
+      // },
       // MuiOutlinedInput: {
       //   styleOverrides: {
       //     input: {

@@ -109,7 +109,7 @@ const AssignmentsDetail = () => {
         <Item><strong>{workAreaContext.evaluateeTerm}s:&nbsp;</strong>{totalCount}</Item>
         <Item><strong>Assigned:&nbsp;</strong>{assignedCount}</Item>
         <Item><strong>Awaiting Assignment:&nbsp;</strong>{totalCount-assignedCount}</Item>
-      </Stack>
+    </Stack>
 
      <FormControlLabel control={<Checkbox checked={hideCompleted} onChange={()=>{toggleHideCompleted()}} />} label="Hide Completed" />
 
