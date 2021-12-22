@@ -36,17 +36,17 @@ namespace SE.Core.Models
         public string PerformanceLevelDisplayName { get; set; }
         public StudentGrowthImpactRating? StudentGrowthImpactRating { get; set; }
         public bool? ComprehensiveCarryForward { get; set; }
-        public RubricPerformanceLevel? ComprehensiveCarryForwardPerformanceLevel { get; set; }
-        public SchoolYear? ComprehensiveCarryForwardSchoolYear { get; set; }
+        public RubricPerformanceLevel? CarryForwardPerformanceLevel { get; set; }
+        public SchoolYear? CarryForwardSchoolYear { get; set; }
 
         public long? FocusedFrameworkNodeId { get; set; }
-        public string FocusedFrameworkNodeDisplayName { get; set; }
+        public string FocusedFrameworkNodeShortName { get; set; }
 
         public long? FocusedSGFrameworkNodeId { get; set; }
-        public string FocusedSGFrameworkNodeDisplayName { get; set; }
+        public string FocusedSGFrameworkNodeShortName { get; set; }
 
         public long? ModifiedCompFocusedFrameworkNode2Id { get; set; }
-        public string ModifiedCompFocusedFrameworkNode2DisplayName { get; set; }
+        public string ModifiedCompFocusedFrameworkNode2ShortName { get; set; }
 
 
         public EvaluateePlanType? LastYearEvaluateePlanType { get; set; }

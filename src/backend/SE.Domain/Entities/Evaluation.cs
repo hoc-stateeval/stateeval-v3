@@ -28,8 +28,8 @@ namespace SE.Domain.Entities
         public RubricPerformanceLevel? PerformanceLevel { get; set; }
         public StudentGrowthImpactRating? StudentGrowthImpactRating { get; set; }
         public bool? ComprehensiveCarryForward { get; set; }
-        public RubricPerformanceLevel? ComprehensiveCarryForwardPerformanceLevel { get; set; }
-        public SchoolYear? ComprehensiveCarryForwardSchoolYear { get; set; }
+        public RubricPerformanceLevel? CarryForwardPerformanceLevel { get; set; }
+        public SchoolYear? CarryForwardSchoolYear { get; set; }
         public EvaluateePlanType? EvaluateePlanType { get; set; }
         public EvaluateePlanType? LastYearEvaluateePlanType { get; set; }
         public EvaluateePlanType? NextYearEvaluateePlanType { get; set; }

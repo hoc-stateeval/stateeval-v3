@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useTheme } from '@mui/material/styles';
 import {
   Alert,
   Box,
@@ -28,11 +27,15 @@ import { get, put } from '../../../core/api';
 import {
   selectStateFramework,
 } from '../../../store/stateEval/userContextSlice';
-import { PlanType } from '../../../core/evalPlanType';
+import { 
+  PlanType 
+} from '../../../core/evalPlanType';
+
+import PlanTypeDisplay from '../../../components/PlanTypeDisplay';
+
 import { PerformanceLevel } from '../../../core/performanceLevel';
 
 const PlanTypeField = ( props ) => {
-  const theme = useTheme();
 
   const stateFramework = useSelector(selectStateFramework);
 
@@ -46,28 +49,30 @@ const PlanTypeField = ( props ) => {
   const [selectedCarryForwardSchoolYear, setSelectedCarryForwardSchoolYear] = useState("0");
   const [selectedCarryForwardPerformanceLevel, setSelectedCarryForwardPerformanceLevel] = useState("0");
   const [showOkBtn, setShowOkBtn] = useState(false);
-
-  const allFieldsComplete = () => {
-    const focusNode = stateFramework.frameworkNodes.find(x=>x.id===selectedFocusFrameworkNodeId);
-    if (!focusNode) return false;
-
-    if (!focusNode.isStudentGrowthAligned) {
-      const sgFocusNode = stateFramework.frameworkNodes.find(x=>x.id===selectedFocusSGFrameworkNodeId);
-      if (!sgFocusNode) return false;
-    }
-
-    if (selectedCarryForwardSchoolYear===0 || selectedCarryForwardPerformanceLevel===0) return false;
-
-    return true;
-  }
+  const [selectedEvaluationId, setSelectedEvaluationId] = useState(null);
 
   useEffect(()=> {
+
+    const allFieldsComplete = () => {
+      const focusNode = stateFramework.frameworkNodes.find(x=>x.id===selectedFocusFrameworkNodeId);
+      if (!focusNode) return false;
+  
+      if (!focusNode.isStudentGrowthAligned) {
+        const sgFocusNode = stateFramework.frameworkNodes.find(x=>x.id===selectedFocusSGFrameworkNodeId);
+        if (!sgFocusNode) return false;
+      }
+  
+      if (selectedCarryForwardSchoolYear===0 || selectedCarryForwardPerformanceLevel===0) return false;
+  
+      return true;
+    }
+  
     setShowOkBtn(allFieldsComplete());
   }, [
     selectedCarryForwardPerformanceLevel, 
     selectedCarryForwardSchoolYear, 
     selectedFocusFrameworkNodeId, 
-    selectedFocusSGFrameworkNodeId]);
+    selectedFocusSGFrameworkNodeId, stateFramework.frameworkNodes]);
 
   useEffect(()=> {
     (async () => {
@@ -98,14 +103,27 @@ const PlanTypeField = ( props ) => {
     setDlgOpen(false);
   };
 
-  const handleClickDlgOk = () => {
+  const handleClickDlgOk = async () => {
 
+    const url = `evaluations/${selectedEvaluationId}/updateplantype`;
+    const response = await put(url, {
+      evaluationId: selectedEvaluationId,
+      evaluateePlanType: PlanType.FOCUSED,
+      comprehensiveCarryForward: true,
+      carryForwardPerformanceLevel: selectedCarryForwardPerformanceLevel,
+      carryForwardSchoolYear: selectedCarryForwardSchoolYear,
+      focusedFrameworkNodeId: selectedFocusFrameworkNodeId,
+      focusedSGFrameworkNodeId: selectedFocusSGFrameworkNodeId
+    });
+
+    const evalSummary = response.data;
+    setEvalSummary(evalSummary);
     setDlgOpen(false);
   };
-
   
   const handleSelectFocusFrameworkNode = (id) => {
     const node = stateFramework.frameworkNodes.find(x=>x.id === id);
+    if (node.isStudentGrowthAligned) setSelectedSGFrameworkNodeId(null);
     setShowStudentGrowthSelect(!node || !node.isStudentGrowthAligned);
     setSelectedFocusFrameworkNodeId(id);
   }
@@ -121,8 +139,8 @@ const PlanTypeField = ( props ) => {
         evaluationId: id,
         evaluateePlanType: planType,
         comprehensiveCarryForward: false,
-        comprehensiveCarryForwardPerformanceLevel: null,
-        comprehensiveCarryForwardSchoolYear: null,
+        carryForwardPerformanceLevel: null,
+        carryForwardSchoolYear: null,
         focusedFrameworkNodeId: null,
         focusedSGFrameworkNodeId: null
       });
@@ -131,6 +149,7 @@ const PlanTypeField = ( props ) => {
       setEvalSummary(evalSummary);
     }
     else if (planType === PlanType.FOCUSED) {
+      setSelectedEvaluationId(id);
       setDlgOpen(true);
     }
   }
@@ -149,6 +168,8 @@ const PlanTypeField = ( props ) => {
       <MenuItem value="2">Focused</MenuItem>
       <MenuItem value="3">Modified Comprehensive</MenuItem>
     </TextField>
+    {(evalSummary.planType === PlanType.FOCUSED || evalSummary.planType === PlanType.MODIFIED_COMP_2021) &&
+     (<PlanTypeDisplay evaluation={evalSummary}/>)}
     <Dialog open={dlgOpen} onClose={handleClickDlgCancel}
       maxWidth={"md"}>
       <DialogTitle>Focused Evaluation Configuration</DialogTitle>
@@ -174,7 +195,7 @@ const PlanTypeField = ( props ) => {
               {showStudentGrowthSelect && 
               <>
               <Alert severity="info">
-                  When the focus criterion is not a student growth criterion, you need to select an student growth criterion in addition to the focus criterion.
+                  When the focus criterion is not a student growth criterion, a student growth criterion must be selected in addition to the focus criterion.
               </Alert>
               <TextField label="Student Growth Criterion" sx={{ minWidth:'200px'}}
                   select
@@ -239,7 +260,7 @@ const PlanTypeField = ( props ) => {
               (
                 <Alert severity="warning" sx={{mt: 2, mb:2}}>There are no previous comprehensive evaluations with a
                 carry-forward score of PRO/DIS recorded in eVAL. To manually enter a comprehensive
-                year and performance level please select from the drop-downs below</Alert>
+                year and performance level please select from the drop-downs below.</Alert>
               )
             }
               <TextField label="Carry-forward School Year" 

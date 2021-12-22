@@ -35,15 +35,15 @@ namespace SE.Core.Mappers
             target.PlanTypeDisplayName = EnumUtils.MapEvaluateePlanTypeToDisplayName(source.EvaluateePlanType);
 
             target.ComprehensiveCarryForward = source.ComprehensiveCarryForward ?? false;
-            target.ComprehensiveCarryForwardPerformanceLevel = source.ComprehensiveCarryForwardPerformanceLevel ?? RubricPerformanceLevel.UNDEFINED;
-            target.ComprehensiveCarryForwardSchoolYear = source.ComprehensiveCarryForwardSchoolYear ?? SchoolYear.UNDEFINED;
+            target.CarryForwardPerformanceLevel = source.CarryForwardPerformanceLevel ?? RubricPerformanceLevel.UNDEFINED;
+            target.CarryForwardSchoolYear = source.CarryForwardSchoolYear ?? SchoolYear.UNDEFINED;
 
             target.FocusedFrameworkNodeId = source.FocusedFrameworkNodeId;
             target.FocusedSGFrameworkNodeId = source.FocusedSGFrameworkNodeId;
             target.ModifiedCompFocusedFrameworkNode2Id = source.ModifiedCompFocusedFrameworkNode2Id;
-            target.FocusedFrameworkNodeDisplayName = source.FocusedFrameworkNode?.ShortName ?? "";
-            target.FocusedSGFrameworkNodeDisplayName = source.FocusedSGFrameworkNode?.ShortName ?? "";
-            target.ModifiedCompFocusedFrameworkNode2DisplayName = source.ModifiedCompFocusedFrameworkNode2?.ShortName ?? "";
+            target.FocusedFrameworkNodeShortName = source.FocusedFrameworkNode?.ShortName ?? "";
+            target.FocusedSGFrameworkNodeShortName = source.FocusedSGFrameworkNode?.ShortName ?? "";
+            target.ModifiedCompFocusedFrameworkNode2ShortName = source.ModifiedCompFocusedFrameworkNode2?.ShortName ?? "";
 
             target.LastYearEvaluateePlanType = source.LastYearEvaluateePlanType;
             target.LastYearEvaluateePlanTypeDisplayName = EnumUtils.MapEvaluateePlanTypeToDisplayName(source.LastYearEvaluateePlanType);

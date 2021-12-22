@@ -11,7 +11,7 @@ import {
 
 import blankProfile from '../../../images/blank-profile-48x48.png';
 
-import { buildPlanTypeDisplayString } from '../../core/evalPlanType';
+import PlanTypeDisplay from '../../components/PlanTypeDisplay';
 
 const ActiveEvaluationProfile = () => {
 
@@ -25,7 +25,7 @@ const ActiveEvaluationProfile = () => {
     <>
       <Box sx={{display:'flex'}}>
         <Box sx={{pr:1}}>
-          <Typography>{buildPlanTypeDisplayString(activeEvaluation)}</Typography>
+          <PlanTypeDisplay evaluation={activeEvaluation}/>
           <Typography>{activeEvaluation.evaluateeDisplayName}</Typography>
         </Box>
         <Box sx={{display:'flex', flexDirection:'column', justifyContent: 'center'}}>

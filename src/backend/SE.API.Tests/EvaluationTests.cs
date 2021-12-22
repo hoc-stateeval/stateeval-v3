@@ -102,10 +102,10 @@ namespace SE.API.Tests
             evaluation.ComprehensiveCarryForward.Should().Be(true);
             evaluation.FocusedFrameworkNodeId.Should().Be(focusFrameworkNode.Id);
             evaluation.FocusedSGFrameworkNodeId.Should().Be(focusSGFrameworkNode.Id);
-            evaluation.FocusedFrameworkNodeDisplayName.Should().Be("C3");
-            evaluation.FocusedSGFrameworkNodeDisplayName.Should().Be("C6");
-            evaluation.ComprehensiveCarryForwardPerformanceLevel.Should().Be(RubricPerformanceLevel.PL3);
-            evaluation.ComprehensiveCarryForwardSchoolYear.Should().Be(SchoolYear.SY_2020);
+            evaluation.FocusedFrameworkNodeShortName.Should().Be("C3");
+            evaluation.FocusedSGFrameworkNodeShortName.Should().Be("C6");
+            evaluation.CarryForwardPerformanceLevel.Should().Be(RubricPerformanceLevel.PL3);
+            evaluation.CarryForwardSchoolYear.Should().Be(SchoolYear.SY_2020);
 
             var command2 = new UpdateEvaluateePlanTypeCommand(evaluation.Id, EvaluateePlanType.COMPREHENSIVE);
 
@@ -118,10 +118,10 @@ namespace SE.API.Tests
             evaluation.ComprehensiveCarryForward.Should().Be(false);
             evaluation.FocusedFrameworkNodeId.Should().BeNull();
             evaluation.FocusedSGFrameworkNodeId.Should().BeNull();
-            evaluation.FocusedFrameworkNodeDisplayName.Should().BeEmpty();
-            evaluation.FocusedSGFrameworkNodeDisplayName.Should().BeEmpty();
-            evaluation.ComprehensiveCarryForwardPerformanceLevel.Should().BeNull();
-            evaluation.ComprehensiveCarryForwardSchoolYear.Should().BeNull();
+            evaluation.FocusedFrameworkNodeShortName.Should().BeEmpty();
+            evaluation.FocusedSGFrameworkNodeShortName.Should().BeEmpty();
+            evaluation.CarryForwardPerformanceLevel.Should().BeNull();
+            evaluation.CarryForwardSchoolYear.Should().BeNull();
         }
 
         [Fact]

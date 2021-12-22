@@ -12,7 +12,7 @@ using SE.Data;
 namespace SE.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211119010553_init")]
+    [Migration("20211222000904_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -199,17 +199,17 @@ namespace SE.Data.Migrations
                     b.Property<bool?>("ByPassSGScores")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("CarryForwardPerformanceLevel")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CarryForwardSchoolYear")
+                        .HasColumnType("int");
+
                     b.Property<bool?>("Complete")
                         .HasColumnType("bit");
 
                     b.Property<bool?>("ComprehensiveCarryForward")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("ComprehensiveCarryForwardPerformanceLevel")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ComprehensiveCarryForwardSchoolYear")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDateTime")
                         .HasColumnType("datetime2");
@@ -349,7 +349,7 @@ namespace SE.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<string>("SuggestedFocusedSgframeworkNodeShortName")
+                    b.Property<string>("SuggestedFocusedSGframeworkNodeShortName")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 

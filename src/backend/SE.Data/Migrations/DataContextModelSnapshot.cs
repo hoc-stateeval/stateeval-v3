@@ -197,17 +197,17 @@ namespace SE.Data.Migrations
                     b.Property<bool?>("ByPassSGScores")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("CarryForwardPerformanceLevel")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CarryForwardSchoolYear")
+                        .HasColumnType("int");
+
                     b.Property<bool?>("Complete")
                         .HasColumnType("bit");
 
                     b.Property<bool?>("ComprehensiveCarryForward")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("ComprehensiveCarryForwardPerformanceLevel")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ComprehensiveCarryForwardSchoolYear")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDateTime")
                         .HasColumnType("datetime2");
@@ -347,7 +347,7 @@ namespace SE.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<string>("SuggestedFocusedSgframeworkNodeShortName")
+                    b.Property<string>("SuggestedFocusedSGframeworkNodeShortName")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 

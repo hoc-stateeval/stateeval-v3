@@ -24,9 +24,6 @@ namespace SE.Core.Commands
             RuleFor(x => x.FocusedFrameworkNodeId).NotNull()
                 .When(x => x.EvaluateePlanType == EvaluateePlanType.FOCUSED)
                 .WithMessage("Focus Framework Node Id is missing.");
-            RuleFor(x => x.FocusedSGFrameworkNodeId).NotNull()
-                .When(x => x.EvaluateePlanType == EvaluateePlanType.FOCUSED)
-                .WithMessage("Focus SG Framework Node Id is missing.");
 
             RuleFor(x => x.CarryForwardPerformanceLevel).NotNull()
                 .When(x => x.EvaluateePlanType == EvaluateePlanType.FOCUSED)
@@ -86,16 +83,16 @@ namespace SE.Core.Commands
 
             evaluation.EvaluateePlanType = request.EvaluateePlanType;
             evaluation.ComprehensiveCarryForward = false;
-            evaluation.ComprehensiveCarryForwardPerformanceLevel = null;
-            evaluation.ComprehensiveCarryForwardSchoolYear = null;
+            evaluation.CarryForwardPerformanceLevel = null;
+            evaluation.CarryForwardSchoolYear = null;
             evaluation.FocusedFrameworkNodeId = null;
             evaluation.FocusedSGFrameworkNodeId = null;
 
             if (request.EvaluateePlanType == EvaluateePlanType.FOCUSED)
             {
                 evaluation.ComprehensiveCarryForward = true;
-                evaluation.ComprehensiveCarryForwardPerformanceLevel = request.CarryForwardPerformanceLevel;
-                evaluation.ComprehensiveCarryForwardSchoolYear = request.CarryForwardSchoolYear;
+                evaluation.CarryForwardPerformanceLevel = request.CarryForwardPerformanceLevel;
+                evaluation.CarryForwardSchoolYear = request.CarryForwardSchoolYear;
                 evaluation.FocusedFrameworkNodeId = request.FocusedFrameworkNodeId;
                 evaluation.FocusedSGFrameworkNodeId = request.FocusedSGFrameworkNodeId;
             }
