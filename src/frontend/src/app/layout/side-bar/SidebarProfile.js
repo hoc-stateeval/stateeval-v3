@@ -181,7 +181,7 @@ const SidebarProfile = ({ currentWorkAreaContext}) => {
           </TextField>
 
           {activeWorkAreaContext.isEvaluator && 
-          <TextField label="Evaluating" sx={{...getSelectStyles(theme, !activeEvaluationId?'red':null)}}
+          <TextField label="Evaluating" sx={{...getSelectStyles(theme, !activeEvaluationId?'red':'white')}}
             select
             value={activeEvaluationId || "0"}
             onChange={changeSelectedEvaluation}
