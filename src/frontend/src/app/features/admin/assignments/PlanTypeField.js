@@ -22,6 +22,7 @@ import {
 } from '@mui/material';
 
 import CheckIcon from '@mui/icons-material/Check';
+import EditIcon from '@mui/icons-material/Edit';
 
 import { get, put } from '../../../core/api';
 import {
@@ -41,13 +42,13 @@ const PlanTypeField = ( props ) => {
 
   const [evalSummary, setEvalSummary] = useState(props.evalSummary);
   const [dlgOpen, setDlgOpen] = useState(false);
-  const [selectedFocusFrameworkNodeId, setSelectedFocusFrameworkNodeId] = useState("0");
-  const [selectedFocusSGFrameworkNodeId, setSelectedSGFrameworkNodeId] = useState("0");
+  const [selectedFocusFrameworkNodeId, setSelectedFocusFrameworkNodeId] = useState(evalSummary.focusedFrameworkNodeId || "0");
+  const [selectedFocusSGFrameworkNodeId, setSelectedSGFrameworkNodeId] = useState(evalSummary.focusedSGFrameworkNodeId || "0");
   const [showStudentGrowthSelect, setShowStudentGrowthSelect] = useState(false);
   const [evaluations, setEvaluations] = useState([]);
   const [recommendedCarryForwardEvaluation, setRecommendedCarryForwardEvaluation] = useState(null);
-  const [selectedCarryForwardSchoolYear, setSelectedCarryForwardSchoolYear] = useState("0");
-  const [selectedCarryForwardPerformanceLevel, setSelectedCarryForwardPerformanceLevel] = useState("0");
+  const [selectedCarryForwardSchoolYear, setSelectedCarryForwardSchoolYear] = useState(evalSummary.carryForwardSchoolYear || "0");
+  const [selectedCarryForwardPerformanceLevel, setSelectedCarryForwardPerformanceLevel] = useState(evalSummary.carryForwardPerformanceLevel || "0");
   const [showOkBtn, setShowOkBtn] = useState(false);
   const [selectedEvaluationId, setSelectedEvaluationId] = useState(null);
 
@@ -113,7 +114,7 @@ const PlanTypeField = ( props ) => {
       carryForwardPerformanceLevel: selectedCarryForwardPerformanceLevel,
       carryForwardSchoolYear: selectedCarryForwardSchoolYear,
       focusedFrameworkNodeId: selectedFocusFrameworkNodeId,
-      focusedSGFrameworkNodeId: selectedFocusSGFrameworkNodeId
+      focusedSGFrameworkNodeId: selectedFocusSGFrameworkNodeId === "0"?null:selectedFocusSGFrameworkNodeId
     });
 
     const evalSummary = response.data;
@@ -169,7 +170,15 @@ const PlanTypeField = ( props ) => {
       <MenuItem value="3">Modified Comprehensive</MenuItem>
     </TextField>
     {(evalSummary.planType === PlanType.FOCUSED || evalSummary.planType === PlanType.MODIFIED_COMP_2021) &&
-     (<PlanTypeDisplay evaluation={evalSummary}/>)}
+     (
+       <>
+        <PlanTypeDisplay evaluation={evalSummary}/>
+        {/* <EditIcon fontSize="small" onClick={() => {
+          setSelectedEvaluationId(evalSummary.id);
+          setDlgOpen(true);
+        }}/> */}
+     </>
+     )}
     <Dialog open={dlgOpen} onClose={handleClickDlgCancel}
       maxWidth={"md"}>
       <DialogTitle>Focused Evaluation Configuration</DialogTitle>

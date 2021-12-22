@@ -34,13 +34,13 @@ function EvaluationSwitcher() {
           width: 200, 
         }}
         select
-        value={activeEvaluationId}
+        value={activeEvaluationId || "0"}
         onChange={changeSelectedEvaluation}
       >
          {activeEvaluationId?(<></>):(
           <MenuItem key="default" value="0">
-          Select a Teacher
-        </MenuItem>
+            Select a {workAreaContext.evaluateeTerm}
+          </MenuItem>
         )}
         {evaluations.map((x) => (
           <MenuItem key={x.id} value={x.id}>

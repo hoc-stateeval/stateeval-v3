@@ -14,15 +14,10 @@ const styles = {
 
 const SidebarEvaluatingDropdown = ({ currentWorkAreaContext }) => {
   return (
-    <>
-      {currentWorkAreaContext.isEvaluator?(
-            <Box sx={{...styles.evaluating, pl:2, pb:2}}>
-              <Typography variant="sideBar" sx={{mt: 1}} >Evaluating:</Typography>
-              <EvaluationSwitcher />
-            </Box>
-          ):
-          (<></>)}
-    </>
+    <Box sx={{...styles.evaluating, pl:2, pb:2}}>
+      <Typography variant="sideBar" sx={{mt: 1}} >Evaluating:</Typography>
+      <EvaluationSwitcher />
+    </Box>
   );
 };
 

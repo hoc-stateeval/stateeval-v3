@@ -23,10 +23,10 @@ const PlanTypeDisplay = ({evaluation}) => {
     return <>
           <Typography variant="body1">
             <strong>{focusedFrameworkNodeShortName}{focusedSGFrameworkNodeShortName && `, ${focusedSGFrameworkNodeShortName} (SG)`}</strong>
-          </Typography>
-          <Typography variant="body1">
+          {/* </Typography>
+          <Typography variant="body1"> */}
             {/* Carry-forward: <strong>{performanceLevel} {schoolYear}</strong> */}
-            <strong>{performanceLevel} - {schoolYear}</strong>
+            &nbsp;&nbsp;<strong>{performanceLevel} - {schoolYear}</strong>
           </Typography>
           </>
   }
