@@ -3,15 +3,13 @@ import {
   Box,
   Typography,
 } from '@mui/material';
-import backgroundImg from '../../../images/header-profile.png';
-
 
 const SidebarAvatar = ({ currentUser }) => {
   return (
     <>
      <Box sx={{
        color: '#dfe4ed', 
-       background: `url(${backgroundImg})`, 
+       backgroundColor: theme => theme.palette.neutral[1000],
        pt:2, 
        pb:2
        }}>

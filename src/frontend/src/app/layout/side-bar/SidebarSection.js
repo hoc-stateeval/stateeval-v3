@@ -70,11 +70,11 @@ const SidebarSection = (props) => {
   return (
     <List
       subheader={(
-        <ListSubheader
+        <ListSubheader variant="sideBar"
           disableGutters
           disableSticky
           sx={{
-            color: 'neutral.500',
+            color: 'secondary.main',
             fontSize: '0.75rem',
             fontWeight: 700,
             lineHeight: 2.5,

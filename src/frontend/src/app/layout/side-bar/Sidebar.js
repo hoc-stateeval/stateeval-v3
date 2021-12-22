@@ -40,7 +40,7 @@ const Sidebar = ({ onClose, open, sidebarWidth }) => {
       >
         <Stack sx={{pt:2}} spacing={2}>
           <SidebarLogo/>
-          <SidebarAvatar currentUser={currentUser} />
+          {/* <SidebarAvatar currentUser={currentUser} /> */}
           <SidebarProfile currentUser={currentUser} currentWorkAreaContext={currentWorkAreaContext} />
           {currentWorkAreaContext.isEvaluator && <SidebarEvaluatingDropdown currentWorkAreaContext={currentWorkAreaContext} />}
           {AdminWorkAreas.includes(currentWorkAreaContext.tagName) && <SidebarSwitchAdminWorkAreaDropdown />} 

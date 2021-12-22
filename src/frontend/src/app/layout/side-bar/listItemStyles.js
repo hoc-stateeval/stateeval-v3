@@ -9,11 +9,21 @@ export const getListItemButtonStyles = (active, theme) => {
   };
 };
 
+const fontSize = '.813rem';
+
 export const getListItemTextStyles = (active, theme) => {
   return { 
     marginLeft: active? '-4px': '0px', 
-    fontSize: '.813rem',
-    fontWeight: 600,
+    // fontSize: fontSize,
     color: active ? '#FFF' : `${theme.palette.neutral[400]}`,
+  };
+}
+
+export const getListSubheaderStyles = () => {
+  return {
+    color: 'secondary.main',
+    // fontSize: fontSize,
+    fontWeight: 700,
+    textTransform: 'uppercase'
   };
 }

@@ -98,20 +98,19 @@ const ChangeWorkAreaDialog = () => {
     setDlgOpen(false);
   };
 
-  const styles = {
-    optionsLink: {
-      color: '#dfe4ed',
-      textAlign: 'right',
-      textDecoration: 'underline',
-      paddingRight:'5px',
-      fontSize: '.813rem'
-
-    }
-  }
-
   return (
     <>
-      <Link component="button" sx={{...styles.optionsLink, mt:1}} onClick={handleClickDlgOpen}>Options</Link>
+      <Link component="button" 
+        sx={{
+          color: theme => theme.palette.neutral[400],
+          textAlign: 'right',
+          textDecoration: 'none',
+          paddingRight:'5px',
+          fontSize: '.813rem', 
+          textTransform: 'uppercase',
+          mt:1
+        }} 
+        onClick={handleClickDlgOpen}>Change</Link>
       <Dialog open={dlgOpen} onClose={handleClickDlgCancel}>
         <DialogTitle>Select a Work Area</DialogTitle>
         <DialogContent>

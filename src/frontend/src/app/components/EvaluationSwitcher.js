@@ -29,19 +29,20 @@ function EvaluationSwitcher() {
 
   return (
     <TextField
-        size="small"
-        sx={{ 
-          width: 200, 
-        }}
-        select
-        value={activeEvaluationId || "0"}
-        onChange={changeSelectedEvaluation}
+      size="small"
+      sx={{ 
+        width: 200, 
+        "& .MuiSelect-select": {color: 'white', fontSize:'12px'}
+      }}
+      select
+      value={activeEvaluationId || "0"}
+      onChange={changeSelectedEvaluation}
       >
-         {activeEvaluationId?(<></>):(
+         {activeEvaluationId &&
           <MenuItem key="default" value="0">
             Select a {workAreaContext.evaluateeTerm}
           </MenuItem>
-        )}
+        }
         {evaluations.map((x) => (
           <MenuItem key={x.id} value={x.id}>
             {x.evaluateeDisplayName}
