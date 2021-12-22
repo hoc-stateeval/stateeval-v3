@@ -42,8 +42,8 @@ const Sidebar = ({ onClose, open, sidebarWidth }) => {
           <SidebarLogo/>
           {/* <SidebarAvatar currentUser={currentUser} /> */}
           <SidebarProfile currentUser={currentUser} currentWorkAreaContext={currentWorkAreaContext} />
-          {currentWorkAreaContext.isEvaluator && <SidebarEvaluatingDropdown currentWorkAreaContext={currentWorkAreaContext} />}
-          {AdminWorkAreas.includes(currentWorkAreaContext.tagName) && <SidebarSwitchAdminWorkAreaDropdown />} 
+          {/* {currentWorkAreaContext.isEvaluator && <SidebarEvaluatingDropdown currentWorkAreaContext={currentWorkAreaContext} />}
+          {AdminWorkAreas.includes(currentWorkAreaContext.tagName) && <SidebarSwitchAdminWorkAreaDropdown />}  */}
           <Box sx={{ flexGrow: 1 }}>
               {navSections.map((section) => (
                 <SidebarSection
