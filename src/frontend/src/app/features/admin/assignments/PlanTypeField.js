@@ -22,7 +22,6 @@ import {
 } from '@mui/material';
 
 import CheckIcon from '@mui/icons-material/Check';
-import EditIcon from '@mui/icons-material/Edit';
 
 import { get, put } from '../../../core/api';
 import {

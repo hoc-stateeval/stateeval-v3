@@ -13,13 +13,6 @@ import SidebarProfile from './SidebarProfile';
 import buildNavSectionsForWorkArea from './buildNavSectionsForWorkArea';
 import { selectCurrentUser, selectActiveWorkAreaContext } from '../../store/stateEval/userContextSlice';
 import SidebarLogo from './SidebarLogo';
-import SidebarAvatar from './SidebarAvatar';
-import SidebarEvaluatingDropdown from './SidebarEvaluatingDropdown';
-import SidebarSwitchAdminWorkAreaDropdown from './SidebarSwitchAdminWorkAreaDropdown';
-
-import { 
-  AdminWorkAreas,
- } from '../../core/workAreas';
 
 const Sidebar = ({ onClose, open, sidebarWidth }) => {
   const location = useLocation();
@@ -40,10 +33,7 @@ const Sidebar = ({ onClose, open, sidebarWidth }) => {
       >
         <Stack sx={{pt:2}} spacing={2}>
           <SidebarLogo/>
-          {/* <SidebarAvatar currentUser={currentUser} /> */}
-          <SidebarProfile currentUser={currentUser} currentWorkAreaContext={currentWorkAreaContext} />
-          {/* {currentWorkAreaContext.isEvaluator && <SidebarEvaluatingDropdown currentWorkAreaContext={currentWorkAreaContext} />}
-          {AdminWorkAreas.includes(currentWorkAreaContext.tagName) && <SidebarSwitchAdminWorkAreaDropdown />}  */}
+          <SidebarProfile />
           <Box sx={{ flexGrow: 1 }}>
               {navSections.map((section) => (
                 <SidebarSection

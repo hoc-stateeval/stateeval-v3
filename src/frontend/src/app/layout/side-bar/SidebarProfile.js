@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 import {
   selectWorkAreaContextsAll,
   setActiveWorkAreaContext,
@@ -44,84 +45,106 @@ const getSelectStyles = (theme, highlight) => {
   };
 };
 
-const SidebarProfile = ({ currentWorkAreaContext}) => {
+const initDistricts = (workAreaContexts) => {
+  return workAreaContexts.reduce((acc, next) => {
+    if (!acc.find((x) => x.districtCode === next.districtCode)) {
+      acc.push({
+        districtCode: next.districtCode,
+        districtName: next.districtName,
+      });
+    }
+    return acc;
+  }, []);
+};
 
+const getSchoolsForDistrict = (workAreaContexts, districtCode) => {
+  return workAreaContexts.reduce((acc, next) => {
+    if (next.districtCode === districtCode && !acc.find((x) => x.schoolCode === next.schoolCode)) {
+      acc.push({
+        districtCode: next.districtCode,
+        schoolCode: next.schoolCode,
+        schoolName: next.schoolName  || 'District Wide',
+      });
+    }
+    return acc;
+  }, []);
+}
+
+const getFilteredWorkAreaContexts = (workAreaContexts, schoolCode) => {
+  return  workAreaContexts.filter(
+    (x) => x.schoolCode === schoolCode
+  );
+}
+
+const SidebarProfile = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+ 
   const workAreaContexts = useSelector(selectWorkAreaContextsAll);
   const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
-  const [districts, setDistricts] = useState([]);
-  const [schools, setSchools] = useState([]);
-  const [selectedDistrictCode, setSelectedDistrictCode] = useState('');
-  const [selectedSchoolCode, setSelectedSchoolCode] = useState('');
-  const [filteredWorkAreaContexts, setFilteredWorkAreaContexts] = useState([]);
-  const [selectedWorkAreaContextId, setSelectedWorkAreaContextId] = useState('');
   const evaluations = useSelector(selectEvaluationsAll);
   const activeEvaluationId = useSelector(selectActiveEvaluationId);
 
-  useEffect(() => {
-    const changeSchool = () => {
-      const finalWorkAreas = workAreaContexts.filter(
-        (x) => x.districtCode === selectedDistrictCode && x.schoolCode === selectedSchoolCode
-      );
-      setFilteredWorkAreaContexts(finalWorkAreas);
-      setSelectedWorkAreaContextId(activeWorkAreaContext.id);
-    };
+  const districts = initDistricts(workAreaContexts);
+  const [selectedDistrictCode, setSelectedDistrictCode] = useState(activeWorkAreaContext.districtCode);
+  const [schools, setSchools] = useState(getSchoolsForDistrict(workAreaContexts, selectedDistrictCode));
+  const [selectedSchoolCode, setSelectedSchoolCode] = useState(activeWorkAreaContext.schoolCode);
 
-    changeSchool();
-  }, [workAreaContexts, selectedDistrictCode, selectedSchoolCode, activeWorkAreaContext.id]);
+  const [filteredWorkAreaContexts, setFilteredWorkAreaContexts] = useState(getFilteredWorkAreaContexts(workAreaContexts, selectedSchoolCode));
+  const [selectedWorkAreaContextId, setSelectedWorkAreaContextId] = useState(activeWorkAreaContext.id);
+  const [selectedEvaluationId, setSelectedEvaluationId] = useState("0");
 
-  useEffect(() => {
-    const changeDistrict = () => {
-      const distinctSchools = [];
-      for (let i = 0; i < workAreaContexts.length; ++i) {
-        const workAreaContext = workAreaContexts[i];
-        if (
-          workAreaContext.districtCode === selectedDistrictCode &&
-          !distinctSchools.find((x) => x.schoolCode === workAreaContext.schoolCode)
-        ) {
-          distinctSchools.push({
-            districtCode: workAreaContext.districtCode,
-            schoolCode: workAreaContext.schoolCode,
-            schoolName: workAreaContext.schoolName ? workAreaContext.schoolName : 'District Wide',
-          });
-        }
-      }
-      setSchools(distinctSchools);
-      setSelectedSchoolCode(activeWorkAreaContext.schoolCode);
-    };
-    if (selectedDistrictCode !== '') changeDistrict();
-  }, [workAreaContexts, selectedDistrictCode, activeWorkAreaContext.schoolCode]);
+  // useEffect(() => {
+  //   const schools = getSchoolsForDistrict(workAreaContexts, selectedDistrictCode);
+  //   setSchools(schools);
+  //   setSelectedSchoolCode(schools[0].schoolCode);
+  // }, [workAreaContexts, selectedDistrictCode]);
 
-  useEffect(() => {
-    const initDistricts = () => {
-      const distinctDistricts = [];
-      for (let i = 0; i < workAreaContexts.length; ++i) {
-        const workAreaContext = workAreaContexts[i];
-        if (!distinctDistricts.find((x) => x.districtCode === workAreaContext.districtCode)) {
-          distinctDistricts.push({
-            districtCode: workAreaContext.districtCode,
-            districtName: workAreaContext.districtName,
-          });
-        }
-      }
+  // useEffect(() => {
+  //   const filteredContexts = getFilteredWorkAreaContexts(workAreaContexts, selectedSchoolCode);
+  //   setFilteredWorkAreaContexts(filteredContexts);
+  //   setSelectedWorkAreaContextId(filteredContexts[0].id);
+  // }, [workAreaContexts, selectedSchoolCode]);
 
-      setDistricts(distinctDistricts);
-      setSelectedDistrictCode(activeWorkAreaContext.districtCode);
-    };
-    if (workAreaContexts.length > 0) initDistricts();
-  }, [workAreaContexts, activeWorkAreaContext.districtCode]);
+  // useEffect(()=> {
+  //   (async () => {
+  //     const workArea = workAreaContexts.find((x) => x.id === selectedWorkAreaContextId);
+  //     await dispatch(setActiveWorkAreaContext(workArea));
+  //     navigate("/app/dashboard");
+  //   })();
+  // }, [workAreaContexts, selectedWorkAreaContextId, navigate, dispatch])
 
-  const handleClickChangeWorkArea = async () => {
-    const workArea = workAreaContexts.find((x) => x.id === selectedWorkAreaContextId);
-    await dispatch(setActiveWorkAreaContext(workArea));
-  };
+  // useEffect(()=> {
+  //   (async () => {
+  //     await dispatch(setActiveEvaluationId(selectedEvaluationId));
+  //     navigate("/app/dashboard");
+  //   })();
+  // }, [selectedEvaluationId, navigate, dispatch]);
 
-  const changeSelectedEvaluation = (e) => {
-    const evaluationId = parseInt(e.target.value, 10);
-    dispatch(setActiveEvaluationId(evaluationId));
-  };
+  const changeDistrict = (districtCode) => {
+    setSelectedDistrictCode(districtCode);
 
+    const schools = getSchoolsForDistrict(workAreaContexts, districtCode);
+    setSchools(schools);
+    changeSchool(schools[0].schoolCode);
+  }
+
+  const changeSchool = (schoolCode) => {
+    setSelectedSchoolCode(schoolCode);
+
+    const filteredContexts = getFilteredWorkAreaContexts(workAreaContexts, schoolCode);
+    setFilteredWorkAreaContexts(filteredContexts);
+    changeWorkAreaContext(filteredContexts[0].id);
+  }
+
+  const changeWorkAreaContext = async (id) => {
+      const workArea = workAreaContexts.find((x) => x.id === id);
+      setSelectedWorkAreaContextId(workArea.id);
+      await dispatch(setActiveWorkAreaContext(workArea));
+      navigate("/app/dashboard");
+  }
+  
   return (
     <>
     <List sx={{pl:2}}
@@ -141,7 +164,7 @@ const SidebarProfile = ({ currentWorkAreaContext}) => {
           select
           value={selectedDistrictCode}
           onChange={(e) => {
-            setSelectedDistrictCode(e.target.value);
+            changeDistrict(e.target.value);
           }}
         >
           {districts.map((x) => (
@@ -156,7 +179,7 @@ const SidebarProfile = ({ currentWorkAreaContext}) => {
               select
               value={selectedSchoolCode}
               onChange={(e) => {
-                setSelectedSchoolCode(e.target.value);
+                changeSchool(e.target.value);
               }}
             >
               {schools.map((x) => (
@@ -169,8 +192,8 @@ const SidebarProfile = ({ currentWorkAreaContext}) => {
         <TextField label="Work Area"  sx={{...getSelectStyles(theme)}}
             select
             value={selectedWorkAreaContextId}
-            onChange={(e) => {
-              setSelectedWorkAreaContextId(parseInt(e.target.value, 10));
+            onChange={(e)=> {
+              changeWorkAreaContext(parseInt(e.target.value, 10));
             }}
           >
             {filteredWorkAreaContexts.map((x) => (
@@ -181,10 +204,12 @@ const SidebarProfile = ({ currentWorkAreaContext}) => {
           </TextField>
 
           {activeWorkAreaContext.isEvaluator && 
-          <TextField label="Evaluating" sx={{...getSelectStyles(theme, !activeEvaluationId?'red':'white')}}
+          <TextField label="Evaluating" sx={{...getSelectStyles(theme, !selectedEvaluationId?'red':'white')}}
             select
-            value={activeEvaluationId || "0"}
-            onChange={changeSelectedEvaluation}
+            value={selectedEvaluationId || "0"}
+            onChange={(e)=> {
+              setSelectedEvaluationId(parseInt(e.target.value, 10));
+            }}
             >
               <MenuItem key="default" value="0">
                 Select a {activeWorkAreaContext.evaluateeTerm}

@@ -20,8 +20,6 @@ const neutral = {
 const primary = neutral[900];
 const secondary = '#1ab394';
 
-const navBarFontSize = '.688rem';
-
 let theme = createTheme(
   {
     palette: {
