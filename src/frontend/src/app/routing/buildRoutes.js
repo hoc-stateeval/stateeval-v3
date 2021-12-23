@@ -22,6 +22,7 @@ const buildRoutes = (activeWorkAreaContext) => {
   const routeConfigs = [evaluationRoutesConfigs, adminRoutesConfigs];
   const appRoutes = activeWorkAreaContext?
           generateRoutesFromConfigs(routeConfigs, activeWorkAreaContext.tagName): [];
+  console.log(appRoutes);
    const routes = [
     ...appRoutes,
     { path: "404", element: <NotFound /> },

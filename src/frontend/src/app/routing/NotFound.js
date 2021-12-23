@@ -1,4 +1,4 @@
-import { Box, Button, Container, Typography, useMediaQuery } from '@mui/material';
+import { Box, Container, Link, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 const NotFound = () => {
@@ -59,13 +59,13 @@ const NotFound = () => {
               mt: 6
             }}
           >
-            <Button
-              component="Link"
+            <Link
+              component="button"
               variant="outlined"
               to="/app/dashboard"
             >
               Back to Dashboard
-            </Button>
+            </Link>
           </Box>
         </Container>
       </Box>

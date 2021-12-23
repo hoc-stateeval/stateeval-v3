@@ -16,7 +16,6 @@ import SidebarLogo from './SidebarLogo';
 
 const Sidebar = ({ onClose, open, sidebarWidth }) => {
   const location = useLocation();
-  const currentUser = useSelector(selectCurrentUser);
   const currentWorkAreaContext = useSelector(selectActiveWorkAreaContext);
   const navSections = buildNavSectionsForWorkArea(currentWorkAreaContext.tagName);
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));

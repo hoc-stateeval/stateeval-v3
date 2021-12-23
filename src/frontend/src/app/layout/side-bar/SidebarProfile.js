@@ -142,8 +142,11 @@ const SidebarProfile = () => {
       const workArea = workAreaContexts.find((x) => x.id === id);
       setSelectedWorkAreaContextId(workArea.id);
       await dispatch(setActiveWorkAreaContext(workArea));
-      navigate("/app/dashboard");
   }
+
+  useEffect(()=> {
+    navigate("/app/dashboard");
+  }, [selectedWorkAreaContextId])
   
   return (
     <>
