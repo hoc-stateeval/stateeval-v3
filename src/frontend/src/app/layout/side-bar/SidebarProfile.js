@@ -95,33 +95,6 @@ const SidebarProfile = () => {
   const [selectedWorkAreaContextId, setSelectedWorkAreaContextId] = useState(activeWorkAreaContext.id);
   const [selectedEvaluationId, setSelectedEvaluationId] = useState("0");
 
-  // useEffect(() => {
-  //   const schools = getSchoolsForDistrict(workAreaContexts, selectedDistrictCode);
-  //   setSchools(schools);
-  //   setSelectedSchoolCode(schools[0].schoolCode);
-  // }, [workAreaContexts, selectedDistrictCode]);
-
-  // useEffect(() => {
-  //   const filteredContexts = getFilteredWorkAreaContexts(workAreaContexts, selectedSchoolCode);
-  //   setFilteredWorkAreaContexts(filteredContexts);
-  //   setSelectedWorkAreaContextId(filteredContexts[0].id);
-  // }, [workAreaContexts, selectedSchoolCode]);
-
-  // useEffect(()=> {
-  //   (async () => {
-  //     const workArea = workAreaContexts.find((x) => x.id === selectedWorkAreaContextId);
-  //     await dispatch(setActiveWorkAreaContext(workArea));
-  //     navigate("/app/dashboard");
-  //   })();
-  // }, [workAreaContexts, selectedWorkAreaContextId, navigate, dispatch])
-
-  // useEffect(()=> {
-  //   (async () => {
-  //     await dispatch(setActiveEvaluationId(selectedEvaluationId));
-  //     navigate("/app/dashboard");
-  //   })();
-  // }, [selectedEvaluationId, navigate, dispatch]);
-
   const changeDistrict = (districtCode) => {
     setSelectedDistrictCode(districtCode);
 
@@ -146,8 +119,13 @@ const SidebarProfile = () => {
 
   useEffect(()=> {
     navigate("/app/dashboard");
-  }, [selectedWorkAreaContextId])
+  }, [selectedWorkAreaContextId, selectedEvaluationId])
   
+  const changeEvaluation = async (id) => {
+    setSelectedEvaluationId(id);
+    await dispatch(setActiveEvaluationId(id));
+  }
+
   return (
     <>
     <List sx={{pl:2}}
@@ -211,7 +189,7 @@ const SidebarProfile = () => {
             select
             value={selectedEvaluationId || "0"}
             onChange={(e)=> {
-              setSelectedEvaluationId(parseInt(e.target.value, 10));
+              changeEvaluation(parseInt(e.target.value, 10))
             }}
             >
               <MenuItem key="default" value="0">
