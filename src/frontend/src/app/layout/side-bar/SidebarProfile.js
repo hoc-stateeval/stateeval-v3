@@ -84,7 +84,6 @@ const SidebarProfile = () => {
   const workAreaContexts = useSelector(selectWorkAreaContextsAll);
   const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
   const evaluations = useSelector(selectEvaluationsAll);
-  const activeEvaluationId = useSelector(selectActiveEvaluationId);
 
   const districts = initDistricts(workAreaContexts);
   const [selectedDistrictCode, setSelectedDistrictCode] = useState(activeWorkAreaContext.districtCode);
@@ -114,6 +113,7 @@ const SidebarProfile = () => {
   const changeWorkAreaContext = async (id) => {
       const workArea = workAreaContexts.find((x) => x.id === id);
       setSelectedWorkAreaContextId(workArea.id);
+      setSelectedEvaluationId("0");
       await dispatch(setActiveWorkAreaContext(workArea));
   }
 
@@ -185,9 +185,9 @@ const SidebarProfile = () => {
           </TextField>
 
           {activeWorkAreaContext.isEvaluator && 
-          <TextField label="Evaluating" sx={{...getSelectStyles(theme, !selectedEvaluationId?'red':'white')}}
+          <TextField label="Evaluating" sx={{...getSelectStyles(theme, selectedEvaluationId==="0"?'red':'white')}}
             select
-            value={selectedEvaluationId || "0"}
+            value={selectedEvaluationId}
             onChange={(e)=> {
               changeEvaluation(parseInt(e.target.value, 10))
             }}

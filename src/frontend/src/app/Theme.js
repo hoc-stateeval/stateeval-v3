@@ -13,10 +13,6 @@ const neutral = {
   1000: '#293846'
 };
 
-// const primary = '#c2c2c2';
-// const secondary = '#1ab394';
-
-
 const primary = neutral[900];
 const secondary = '#1ab394';
 
@@ -50,18 +46,6 @@ let theme = createTheme(
       body1: {
         fontSize:13,
       },
-      sideBar: {
-        color:  neutral[400],
-        fontSize: '.813rem',
-        fontWeight:600,
-        backgroundColor: primary,
-        lineHeight: 2.5,
-      },
-      // sideBarProfile: {
-      //   color: '#8095a8',
-      //   fontSize: navBarFontSize,
-      //   display: 'block',
-      // }
     },
     components: {
       MuiTableHead: {

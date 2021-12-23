@@ -89,7 +89,7 @@ const navSections = [
     ],
   },
   {
-    title: 'Evaluations',
+    title: 'Evaluation',
     workAreaTags: WorkAreas.DA_TR,
     items: [
       {
@@ -105,7 +105,7 @@ const navSections = [
     ]
   },
   {
-    title: 'DA_PR',
+    title: 'Evaluation',
     workAreaTags: WorkAreas.DA_PR,
     items: [
       {
