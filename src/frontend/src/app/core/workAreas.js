@@ -3,7 +3,7 @@ const WorkAreas = {
   PR_ME: 'PR_ME',
   TR_ME: 'TR_ME',
   PR_PR: 'PR_PR',
-  DE_PR: 'DE_PR',
+  DE: 'DE_PR',
   DTE: 'DTE',
   DA_TR: 'DA_TR',
   DA_PR: 'DA_PR',

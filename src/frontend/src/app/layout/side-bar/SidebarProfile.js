@@ -19,8 +19,9 @@ import {
 import { useTheme } from '@mui/material/styles';
 
 import { 
-  DistrictViewerSchoolWorkAreas
+  DistrictViewerSchoolWorkAreas, WorkAreas
 } from '../../core/workAreas';
+import { RoleType } from '../../core/roleType';
 import { get } from '../../core/api';
 import { getListSubheaderStyles } from './listItemStyles';
 
@@ -101,6 +102,8 @@ const SidebarProfile = () => {
 
   const [districtViewerSchools, setDistrictViewerSchools] = useState([]);
   const [selectedDistrictViewerSchoolCode, setSelectedDistrictViewerSchoolCode] = useState("0");
+  const [districtViewerEvaluators, setDistrictViewerEvaluators] = useState([]);
+  const [selectedDistrictViewerEvaluatorId, setSelectedDistrictViewerEvaluatorId] = useState("0");
 
   const changeDistrict = (districtCode) => {
     setSelectedDistrictCode(districtCode);
@@ -138,6 +141,10 @@ const SidebarProfile = () => {
     setSelectedDistrictViewerSchoolCode(schoolCode);
   }
 
+  const changeDistrictViewerEvaluator = (evaluatorId) => {
+    setSelectedDistrictViewerEvaluatorId(evaluatorId);
+  }
+
   useEffect(()=> {
     (async () => {
       if (DistrictViewerSchoolWorkAreas.includes(activeWorkAreaContext.tagName)) {
@@ -146,7 +153,40 @@ const SidebarProfile = () => {
         setDistrictViewerSchools(data);
       }
     })();
-  }, [activeWorkAreaContext.districtCode])
+  }, [activeWorkAreaContext.districtCode]);
+
+  const getEvaluatorsForDistrictViewer = async () => {
+    const urlRoot = `districts/${activeWorkAreaContext.districtCode}`;
+    let url = "";
+    if (activeWorkAreaContext.tagName === WorkAreas.DV_PR_TR) {
+      url = `${urlRoot}/usersinrole/${selectedDistrictViewerSchoolCode}/${RoleType.PR}`
+    }
+    else if (activeWorkAreaContext.tagName === WorkAreas.DV_PR_PR) {
+      url = `${urlRoot}/usersinrole/${selectedDistrictViewerSchoolCode}/${RoleType.HEAD_PR}`
+    }
+    else if (activeWorkAreaContext.tagName === WorkAreas.DV_DTE) {
+      url = `${urlRoot}/usersinrole/${RoleType.DTE}`
+    }
+    else if (activeWorkAreaContext.tagName === WorkAreas.DE_PR) {
+      url = `${urlRoot}/usersinrole/${RoleType.DE_PR}`
+    }
+
+    const response = await get(url);
+    return response.data;
+
+  }
+  useEffect(()=> {
+    (async () => {
+      if (selectedDistrictViewerSchoolCode==="0") {
+        setSelectedDistrictViewerEvaluatorId("0");
+      }
+      else {
+        const evaluators = await getEvaluatorsForDistrictViewer(activeWorkAreaContext);;
+        setDistrictViewerEvaluators(evaluators);
+      }
+    })();
+  }, [selectedDistrictViewerSchoolCode]);
+
 
   return (
     <>
@@ -207,6 +247,7 @@ const SidebarProfile = () => {
           </TextField>
          
           {(DistrictViewerSchoolWorkAreas.includes(activeWorkAreaContext.tagName)) && 
+          <>
           <TextField label="School" sx={{...getSelectStyles(theme)}}
             select
             value={selectedDistrictViewerSchoolCode}
@@ -222,7 +263,26 @@ const SidebarProfile = () => {
                   {x.schoolName}
                 </MenuItem>
               ))}
-          </TextField>}
+          </TextField>
+          
+          <TextField label="Evaluator" sx={{...getSelectStyles(theme)}}
+            select
+            value={selectedDistrictViewerEvaluatorId}
+            onChange={(e)=> {
+              changeDistrictViewerEvaluator(parseInt(e.target.value, 10));
+            }}
+            >
+              <MenuItem key="default" value="0">
+                Select an evaluator
+              </MenuItem>
+              {districtViewerEvaluators.map((x) => (
+                <MenuItem key={x.id} value={x.id}>
+                  {x.displayName}
+                </MenuItem>
+              ))}
+          </TextField>
+          </>
+          }
 
           {activeWorkAreaContext.isEvaluator && 
           <TextField label="Evaluating" sx={{...getSelectStyles(theme, selectedEvaluationId==="0"?'red':'white')}}

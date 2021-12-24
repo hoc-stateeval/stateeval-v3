@@ -36,5 +36,27 @@ namespace SE.API.Controllers
             var evaluations = await _mediator.Send(new GetEvaluationsForSchoolQuery(districtCode, schoolCode, (EvaluationType)evaluationType));
             return Ok(evaluations);
         }
+
+        [HttpGet("{districtCode}/usersinrole/{roleType}")]
+        public async Task<IActionResult> GetUsersInRoleAtDistrict(string districtCode, RoleType roleType)
+        {
+            var users = await _mediator.Send(new GetUsersInRoleAtDistrictQuery(districtCode, roleType));
+            return Ok(users);
+        }
+
+        [HttpGet("{districtCode}/usersinrole/{schoolCode}/{roleType}")]
+        public async Task<IActionResult> GetUsersInRoleInSchool(string districtCode, string schoolCode, RoleType roleType)
+        {
+            var users = await _mediator.Send(new GetUsersInRoleInSchoolQuery(districtCode, schoolCode, roleType));
+            return Ok(users);
+        }
+
+        [HttpGet("{districtCode}/usersinroleinschools/{roleType}")]
+        public async Task<IActionResult> GetUsersInRoleInSchools(string districtCode, RoleType roleType)
+        {
+            var users = await _mediator.Send(new GetUsersInRoleInSchoolsQuery(districtCode, roleType));
+            return Ok(users);
+        }
+
     }
 }
