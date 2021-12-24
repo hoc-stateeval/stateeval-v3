@@ -15,12 +15,18 @@
 	insert WorkArea(TagName, IsDistrictAdmin, IsSchoolAdmin, IsEvaluator, IsEvaluatee, Priority, Title, EvaluationType, EvaluateeRoleId, RoleId) 
 	select 'DE', 0, 0, 1, 0, 5, 'Evaluate Principals (District Evaluator)',1, @HEADPRRoleID, r.Id from dbo.Role r where EDSName='SEDistrictEvaluator'
 	insert WorkArea(TagName, IsDistrictAdmin, IsSchoolAdmin, IsEvaluator, IsEvaluatee, Priority, Title, EvaluationType, EvaluateeRoleId, RoleId) 
-	select 'DV', 0, 0, 0, 0, 6, 'District Viewer', 2, @TRRoleID, r.Id from dbo.Role r where EDSName='SEDistrictViewer'
+	select 'DV_PR_TR', 0, 0, 0, 0, 6, 'View Principal', 2, @TRRoleID, r.Id from dbo.Role r where EDSName='SEDistrictViewer'
+	insert WorkArea(TagName, IsDistrictAdmin, IsSchoolAdmin, IsEvaluator, IsEvaluatee, Priority, Title, EvaluationType, EvaluateeRoleId, RoleId) 
+	select 'DV_DTE', 0, 0, 0, 0, 6, 'View DTE', 2, @TRRoleID, r.Id from dbo.Role r where EDSName='SEDistrictViewer'
+	insert WorkArea(TagName, IsDistrictAdmin, IsSchoolAdmin, IsEvaluator, IsEvaluatee, Priority, Title, EvaluationType, EvaluateeRoleId, RoleId) 
+	select 'DV_PR_PR', 0, 0, 0, 0, 6, 'View Head Principal', 1, @PRRoleID, r.Id from dbo.Role r where EDSName='SEDistrictViewer'
+	insert WorkArea(TagName, IsDistrictAdmin, IsSchoolAdmin, IsEvaluator, IsEvaluatee, Priority, Title, EvaluationType, EvaluateeRoleId, RoleId) 
+	select 'DV_DE_PR', 0, 0, 0, 0, 6, 'View District Evaluator', 1, @PRRoleID, r.Id from dbo.Role r where EDSName='SEDistrictViewer'
+
 	insert WorkArea(TagName, IsDistrictAdmin, IsSchoolAdmin, IsEvaluator, IsEvaluatee, Priority, Title, EvaluationType, EvaluateeRoleId, RoleId) 
 	select 'DAM_TR', 0, 0, 0, 0, 7, 'District Assignment Manager (Teacher)', 2, @TRRoleID, r.Id from dbo.Role r where EDSName='SEDistrictAssignmentManager'
 	insert WorkArea(TagName, IsDistrictAdmin, IsSchoolAdmin, IsEvaluator, IsEvaluatee, Priority, Title, EvaluationType, EvaluateeRoleId, RoleId) 
 	select 'DAM_PR', 0, 0, 0, 0, 8, 'District Assignment Manager (Principal)', 1, @PRRoleID, r.Id from dbo.Role r where EDSName='SEDistrictAssignmentManager'
-
 	insert WorkArea(TagName, IsDistrictAdmin, IsSchoolAdmin, IsEvaluator, IsEvaluatee, Priority, Title, EvaluationType, EvaluateeRoleId, RoleId)
 	select 'PR_TR', 0, 0, 1, 0, 9, 'Evaluate Teachers',2, @TRRoleID, r.Id from dbo.Role r where EDSName='SESchoolPrincipal'
 	insert WorkArea(TagName, IsDistrictAdmin, IsSchoolAdmin, IsEvaluator, IsEvaluatee, Priority, Title, EvaluationType, EvaluateeRoleId, RoleId) 

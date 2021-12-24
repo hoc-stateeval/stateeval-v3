@@ -6,7 +6,6 @@ import {
   setActiveWorkAreaContext,
   selectActiveWorkAreaContext,
   selectEvaluationsAll,
-  selectActiveEvaluationId,
   setActiveEvaluationId,
 } from '../../store/stateEval/userContextSlice';
 import {
@@ -18,6 +17,11 @@ import {
 } from '@mui/material';
 
 import { useTheme } from '@mui/material/styles';
+
+import { 
+  DistrictViewerSchoolWorkAreas
+} from '../../core/workAreas';
+import { get } from '../../core/api';
 import { getListSubheaderStyles } from './listItemStyles';
 
 const getSelectStyles = (theme, highlight) => {
@@ -57,6 +61,7 @@ const initDistricts = (workAreaContexts) => {
   }, []);
 };
 
+
 const getSchoolsForDistrict = (workAreaContexts, districtCode) => {
   return workAreaContexts.reduce((acc, next) => {
     if (next.districtCode === districtCode && !acc.find((x) => x.schoolCode === next.schoolCode)) {
@@ -94,6 +99,9 @@ const SidebarProfile = () => {
   const [selectedWorkAreaContextId, setSelectedWorkAreaContextId] = useState(activeWorkAreaContext.id);
   const [selectedEvaluationId, setSelectedEvaluationId] = useState("0");
 
+  const [districtViewerSchools, setDistrictViewerSchools] = useState([]);
+  const [selectedDistrictViewerSchoolCode, setSelectedDistrictViewerSchoolCode] = useState("0");
+
   const changeDistrict = (districtCode) => {
     setSelectedDistrictCode(districtCode);
 
@@ -125,6 +133,20 @@ const SidebarProfile = () => {
     setSelectedEvaluationId(id);
     await dispatch(setActiveEvaluationId(id));
   }
+
+  const changeDistrictViewerSchool = (schoolCode) => {
+    setSelectedDistrictViewerSchoolCode(schoolCode);
+  }
+
+  useEffect(()=> {
+    (async () => {
+      if (DistrictViewerSchoolWorkAreas.includes(activeWorkAreaContext.tagName)) {
+        const response = await get(`districts/${activeWorkAreaContext.districtCode}/schools`);
+        const data = await response.data;
+        setDistrictViewerSchools(data);
+      }
+    })();
+  }, [activeWorkAreaContext.districtCode])
 
   return (
     <>
@@ -183,6 +205,24 @@ const SidebarProfile = () => {
             </MenuItem>
           ))}
           </TextField>
+         
+          {(DistrictViewerSchoolWorkAreas.includes(activeWorkAreaContext.tagName)) && 
+          <TextField label="School" sx={{...getSelectStyles(theme)}}
+            select
+            value={selectedDistrictViewerSchoolCode}
+            onChange={(e)=> {
+              changeDistrictViewerSchool(parseInt(e.target.value, 10));
+            }}
+            >
+              <MenuItem key="default" value="0">
+                Select a school
+              </MenuItem>
+              {districtViewerSchools.map((x) => (
+                <MenuItem key={x.id} value={x.id}>
+                  {x.schoolName}
+                </MenuItem>
+              ))}
+          </TextField>}
 
           {activeWorkAreaContext.isEvaluator && 
           <TextField label="Evaluating" sx={{...getSelectStyles(theme, selectedEvaluationId==="0"?'red':'white')}}

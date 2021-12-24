@@ -24,11 +24,10 @@ namespace SE.API.Controllers
         }
 
         [HttpGet("{districtcode}/schools")]
-        public async Task<IActionResult> GetSchoolsInDistrict(string districtcode)
+        public async Task<IActionResult> GetSchoolsInDistrict(string districtCode)
         {
-            throw new NotImplementedException();
-            //var evaluation = await _mediator.Send(new GetEvaluationByIdQuery(id));
-            //return Ok(evaluation);
+            var schools = await _mediator.Send(new GetSchoolsInDistrictQuery(districtCode));
+            return Ok(schools);
         }
 
         [HttpGet("{districtCode}/schools/{schoolCode}/evaluations/{evaluationType}")]

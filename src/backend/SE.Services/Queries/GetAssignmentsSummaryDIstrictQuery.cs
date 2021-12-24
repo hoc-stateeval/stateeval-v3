@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SE.Core.Queries;
+using SE.Core.Services;
 
 namespace SE.Services.Queries
 {
@@ -35,9 +36,11 @@ namespace SE.Services.Queries
             IRequestHandler<GetTeacherAssignmentsSummaryForDistrictQuery, List<DistrictTeacherAssignmentsSummaryDTO>>
         {
             private readonly DataContext _dataContext;
-            public GetTeacherAssignmentsSummaryForDistrictQueryHandler(DataContext dataContext)
+            private readonly IBuildingService _buildingService;
+            public GetTeacherAssignmentsSummaryForDistrictQueryHandler(DataContext dataContext, IBuildingService buildingService)
             {
                 _dataContext = dataContext;
+                _buildingService = buildingService;
             }
 
             public async Task<List<DistrictTeacherAssignmentsSummaryDTO>> Handle(GetTeacherAssignmentsSummaryForDistrictQuery request, CancellationToken cancellationToken)
@@ -52,9 +55,7 @@ namespace SE.Services.Queries
 
                 var summaries = new List<DistrictTeacherAssignmentsSummaryDTO>();
 
-                var schools = await _dataContext.Buildings
-                    .Where(x => x.IsSchool && x.DistrictCode == frameworkContext.DistrictCode)
-                    .ToListAsync();
+                var schools = await _buildingService.GetSchoolsInDistrict(frameworkContext.DistrictCode);
 
                 schools.ForEach(async school =>
                 {

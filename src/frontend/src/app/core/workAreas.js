@@ -9,12 +9,17 @@ const WorkAreas = {
   DA_PR: 'DA_PR',
   SA_TR: 'SA_TR',
   SA_PR: 'SA_PR',
-  DV: 'DV',
+  DV_PR_TR: 'DV_PR_TR',
+  DV_PR_PR: 'DV_PR_PR',
+  DV_DTE: 'DV_DTE',
+  DV_DE: 'DV_DE'
 };
 
 const EvaluatorWorkAreas = [WorkAreas.PR_PR, WorkAreas.PR_TR, WorkAreas.DTE, WorkAreas.DE_PR];
 const EvaluateeWorkAreas = [WorkAreas.PR_ME, WorkAreas.TR_ME];
-const EvaluationWorkAreas = [...EvaluatorWorkAreas, ...EvaluateeWorkAreas];
+const DistrictViewerSchoolWorkAreas = [WorkAreas.DV_PR_TR, WorkAreas.DV_PR_PR, WorkAreas.DV_DTE, WorkAreas.DE];
+
+const EvaluationWorkAreas = [...EvaluatorWorkAreas, ...EvaluateeWorkAreas, ...DistrictViewerSchoolWorkAreas];
 const AdminWorkAreas = [WorkAreas.DA_TR, WorkAreas.DA_PR, WorkAreas.SA_TR, WorkAreas.SA_PR];
 const DistrictAdminWorkAreas = [WorkAreas.DA_TR, WorkAreas.DA_PR];
 const TeacherAssignmentWorkAreas = [WorkAreas.DA_TR, WorkAreas.SA_TR, WorkAreas.PR_TR];
@@ -35,5 +40,6 @@ export {
   AdminWorkAreas,
   DistrictAdminWorkAreas,
   TeacherAssignmentWorkAreas,
-  PrincipalAssignmentWorkAreas
+  PrincipalAssignmentWorkAreas,
+  DistrictViewerSchoolWorkAreas
 };
