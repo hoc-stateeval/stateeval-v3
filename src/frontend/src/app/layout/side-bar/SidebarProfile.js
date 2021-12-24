@@ -259,7 +259,7 @@ const SidebarProfile = () => {
                 Select a school
               </MenuItem>
               {districtViewerSchools.map((x) => (
-                <MenuItem key={x.id} value={x.id}>
+                <MenuItem key={x.id} value={x.schoolCode}>
                   {x.schoolName}
                 </MenuItem>
               ))}
