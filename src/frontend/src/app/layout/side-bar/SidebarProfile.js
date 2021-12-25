@@ -5,6 +5,8 @@ import {
   selectWorkAreaContextsAll,
   setActiveWorkAreaContext,
   selectActiveWorkAreaContext,
+  selectActiveDistrictViewerSchool,
+  selectActiveDistrictViewerEvaluator,
   selectEvaluationsAll,
   setActiveEvaluationId,
   selectDistrictViewerSchoolsAll,
@@ -13,6 +15,7 @@ import {
   setActiveDistrictViewerSchool,
 } from '../../store/stateEval/userContextSlice';
 import {
+  Divider,
   List,
   ListSubheader,
   MenuItem,
@@ -91,6 +94,9 @@ const SidebarProfile = () => {
   const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
   const evaluations = useSelector(selectEvaluationsAll);
 
+  const activeDistrictViewerSchool = useSelector(selectActiveDistrictViewerSchool);
+  const activeDistrictViewerEvaluator = useSelector(selectActiveDistrictViewerEvaluator);
+
   const districts = initDistricts(workAreaContexts);
 
   const districtViewerSchools = useSelector(selectDistrictViewerSchoolsAll);
@@ -103,8 +109,8 @@ const SidebarProfile = () => {
   const [filteredWorkAreaContexts, setFilteredWorkAreaContexts] = useState(getFilteredWorkAreaContexts(workAreaContexts, selectedSchoolCode));
   const [selectedWorkAreaContextId, setSelectedWorkAreaContextId] = useState(activeWorkAreaContext.id);
 
-  const [selectedDistrictViewerSchoolCode, setSelectedDistrictViewerSchoolCode] = useState("0");
-  const [selectedDistrictViewerEvaluatorId, setSelectedDistrictViewerEvaluatorId] = useState("0");
+  const [selectedDistrictViewerSchoolCode, setSelectedDistrictViewerSchoolCode] = useState(activeDistrictViewerSchool?.schoolCode ?? "0");
+  const [selectedDistrictViewerEvaluatorId, setSelectedDistrictViewerEvaluatorId] = useState(activeDistrictViewerEvaluator?.id ?? "0");
 
   const [selectedEvaluationId, setSelectedEvaluationId] = useState("0");
 
@@ -207,8 +213,22 @@ const SidebarProfile = () => {
             </MenuItem>
           ))}
           </TextField>
-         
-          {(DistrictViewerSchoolWorkAreas.includes(activeWorkAreaContext.tagName)) && 
+      </Stack>
+    </List>
+    <List sx={{pl:2}}
+      subheader={(
+        <ListSubheader variant="sideBar"
+          disableGutters
+          disableSticky
+          sx={{ ...getListSubheaderStyles()
+          }}
+        >
+          Work Area Settings
+        </ListSubheader>
+      )}
+    >
+      <Stack spacing={3} sx={{color: theme => theme.palette.neutral[400]}}>
+      {(DistrictViewerSchoolWorkAreas.includes(activeWorkAreaContext.tagName)) && 
           <>
           <TextField label="School" sx={{...getSelectStyles(theme)}}
             select

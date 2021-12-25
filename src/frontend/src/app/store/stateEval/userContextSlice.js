@@ -459,7 +459,7 @@ export const selectDistrictViewerEvaluatorsAll = createSelector(
   return evaluators;
 });
 
-export const selectActiveDistrictViewerSchoolCode = createSelector(
+export const selectActiveDistrictViewerSchool = createSelector(
   [getActiveDistrictViewerSchool], (school) => {
   return school;
 });
