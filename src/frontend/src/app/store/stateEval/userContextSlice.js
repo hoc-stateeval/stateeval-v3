@@ -162,6 +162,15 @@ const userContextSlice = createSlice({
         pageTitle: action.payload,
       }
     },
+    setEvaluations: (state, action) => {
+      return {
+        ...state,
+        entities: {
+          ...state.entities,
+          evaluations: convertArrayToHashMap(action.payload),
+        },
+      };
+    },
     setActiveFrameworkId: (state, action) => {
       return {
         ...state,
@@ -352,6 +361,7 @@ export const selectPageTitle = createSelector([getPageTitle], (title) => {
 export const { 
   setActiveFrameworkId, 
   setActiveEvaluationId,
+  setEvaluations,
   setPageTitle,
 } = userContextSlice.actions;
 

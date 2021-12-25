@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SE.Core.Commands;
 using SE.Core.Queries;
+using SE.Domain.Entities;
 using SE.Services.Queries;
 
 namespace SE.API.Controllers

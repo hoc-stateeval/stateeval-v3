@@ -7,6 +7,7 @@ import {
   selectActiveWorkAreaContext,
   selectEvaluationsAll,
   setActiveEvaluationId,
+  setEvaluations,
 } from '../../store/stateEval/userContextSlice';
 import {
   List,
@@ -181,13 +182,42 @@ const SidebarProfile = () => {
         setSelectedDistrictViewerEvaluatorId("0");
       }
       else {
-        const evaluators = await getEvaluatorsForDistrictViewer(activeWorkAreaContext);;
+        const evaluators = await getEvaluatorsForDistrictViewer(activeWorkAreaContext);
         setDistrictViewerEvaluators(evaluators);
       }
     })();
   }, [selectedDistrictViewerSchoolCode]);
 
+  const getEvaluationsForEvaluator = async (districtCode, schoolCode, evalType, evaluatorId) => {
+    const url = `evaluations/${districtCode}/${schoolCode}/${evalType}/${evaluatorId}`;
+    const response = await get(url);
+    return response.data;
+  }
 
+  // const getEvaluationsForActiveWorkAreaContext = async() => {
+  //   return await getEvaluationsForEvaluator(activeWorkAreaContext.districtCode,
+  //                   activeWorkAreaContext.schoolCode,
+  //                   activeWorkAreaContext.evaluationType,
+  //                   activeWorkAreaContext.userId);
+  // }
+
+  const getEvaluationsForDistrictViewer = async() => {
+    return await getEvaluationsForEvaluator(activeWorkAreaContext.districtCode,
+                    selectedDistrictViewerSchoolCode,
+                    activeWorkAreaContext.evaluationType,
+                    selectedDistrictViewerEvaluatorId);
+  }
+
+  useEffect(()=> {
+    (async () => {
+      if (selectedDistrictViewerEvaluatorId!=="0") {
+        const evaluations = await getEvaluationsForDistrictViewer();
+        dispatch(setEvaluations(evaluations));
+      }
+    })();
+  }, [selectedDistrictViewerEvaluatorId]);
+
+  
   return (
     <>
     <List sx={{pl:2}}
@@ -284,7 +314,7 @@ const SidebarProfile = () => {
           </>
           }
 
-          {activeWorkAreaContext.isEvaluator && 
+          {(activeWorkAreaContext.isEvaluator || selectedDistrictViewerEvaluatorId!=="0") && 
           <TextField label="Evaluating" sx={{...getSelectStyles(theme, selectedEvaluationId==="0"?'red':'white')}}
             select
             value={selectedEvaluationId}
