@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   Typography,
@@ -10,7 +11,10 @@ import {
 const DistrictAdminDashboard = () => {
   const dispatch = useDispatch();
   const pageTitle = "DA Dashboard";
-  dispatch(setPageTitle(pageTitle));
+
+  useEffect(()=> {
+    dispatch(setPageTitle(pageTitle));
+  }, []);
 
   return (
     <>

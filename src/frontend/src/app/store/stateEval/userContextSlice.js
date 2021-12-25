@@ -3,7 +3,12 @@ import { get, post } from '../../core/api';
 import ThunkState from '../../core/thunkState';
 import { convertArrayToHashMap } from '../../core/utils';
 import { clearState } from '../../core/persist';
-import { EvaluatorWorkAreas } from '../../core/workAreas';
+import { 
+  WorkAreas,
+  EvaluatorWorkAreas,
+  DistrictViewerSchoolWorkAreas 
+} from '../../core/workAreas';
+import { RoleType } from '../../core/roleType';
 
 const getEvaluationsForWorkAreaContext = async (workAreaContext) => {
   const response = await get(
@@ -49,6 +54,12 @@ const createWorkAreaContextState = async (state, workAreaContext) => {
     activeEvaluationId = workAreaContext.isEvaluatee ? evaluations[0].id : null;
   }
 
+  let districtViewerSchools = [];
+  if (DistrictViewerSchoolWorkAreas.includes(workAreaContext.tagName)) {
+    const response = await get(`districts/${workAreaContext.districtCode}/schools`);
+    districtViewerSchools = await response.data;
+  }
+
   const newState = {
     currentUser: state.currentUser,
     ids: {
@@ -57,11 +68,14 @@ const createWorkAreaContextState = async (state, workAreaContext) => {
       stateFrameworkId: workAreaContext.stateFrameworkId,
       instructionalFrameworkId: workAreaContext.instructionalFrameworkId,
       activeEvaluationId,
+      activeDistrictViewerSchoolCode:null,
+      activeDistrictViewerEvaluatorId:null,
     },
     entities: {
       ...state.entities,
       evaluations: convertArrayToHashMap(evaluations),
       frameworks: frameworksHashMap,
+      districtViewerSchools: convertArrayToHashMap(districtViewerSchools, 'schoolCode'),
     },
     thunkState: ThunkState.INIT,
     errorMessage: '',
@@ -75,6 +89,80 @@ export const setActiveWorkAreaContext = createAsyncThunk(
   async (workAreaContext, { dispatch, getState }) => {
     const { userContext: state } = getState().stateEval;
     const newState = await createWorkAreaContextState(state, workAreaContext);
+    return newState;
+  }
+);
+
+// const getEvaluatorsForDistrictViewerWorkArea = async (state) => {
+//   else if (workAreaContext.tagName === WorkAreas.DV_DTE) {
+//     url = `${urlRoot}/usersinrole/${RoleType.DTE}`
+//   }
+//   else if (workAreaContext.tagName === WorkAreas.DV_DE) {
+//     url = `${urlRoot}/usersinrole/${RoleType.DE_PR}`
+//   }
+
+//   const response = await get(url);
+//   return response.data;
+// }
+
+export const setActiveDistrictViewerSchool = createAsyncThunk(
+  'userContext/setActiveDistrictViewerSchool',
+  async (schoolCode, { dispatch, getState }) => {
+    const workAreaContext = getActiveWorkAreaContext(getState());
+
+    const urlRoot = `districts/${workAreaContext.districtCode}/usersinrole/${schoolCode}`;
+    let url = "";
+    if (workAreaContext.tagName === WorkAreas.DV_PR_TR) {
+      url = `${urlRoot}/${RoleType.PR}`
+    }
+    else if (workAreaContext.tagName === WorkAreas.DV_PR_PR) {
+      url = `${urlRoot}/${RoleType.HEAD_PR}`
+    }
+  
+    const response = await get(url);
+    const evaluators = response.data;
+
+    const { userContext: state } = getState().stateEval;
+    let newState = {
+      ...state,
+      ids: {
+        ...state.ids,
+        activeDistrictViewerSchoolCode: schoolCode,
+        activeDistrictViewerEvaluatorId: null,
+      },
+      entities: {
+        ...state.entities,
+        districtViewerEvaluators: convertArrayToHashMap(evaluators),
+      },
+    };
+    return newState;
+  }
+);
+
+export const setActiveDistrictViewerEvaluator = createAsyncThunk(
+  'userContext/setActiveDistrictViewerEvaluator',
+  async (evaluatorId, { dispatch, getState }) => {
+    const workAreaContext = getActiveWorkAreaContext(getState());
+    const school = getActiveDistrictViewerSchool(getState());
+    const schoolCode = school.schoolCode;
+
+    const url = `evaluations/${workAreaContext.districtCode}/${schoolCode}/${workAreaContext.evaluationType}/${evaluatorId}`;
+    const response = await get(url);
+    const evaluations = response.data;
+
+    const { userContext: state } = getState().stateEval;
+
+    let newState = {
+      ...state,
+      ids: {
+        ...state.ids,
+        activeDistrictViewerEvaluatorId: evaluatorId,
+      },
+      entities: {
+        ...state.entities,
+        evaluations: convertArrayToHashMap(evaluations),
+      },
+    };
     return newState;
   }
 );
@@ -142,11 +230,15 @@ const initialState = {
     stateFrameworkId: null,
     instructionalFrameworkId: null,
     activeEvaluationId: null,
+    activeDistrictViewerSchoolCode: null,
+    activeDistrictViewerEvaluatorId: null
   },
   entities: {
     workAreaContexts: {},
     frameworks: {},
     evaluations: {},
+    districtViewerSchools: {},
+    districtViewerEvaluators: {}
   },
   thunkState: ThunkState.INIT,
   errorMessage: '',
@@ -161,15 +253,6 @@ const userContextSlice = createSlice({
         ...state,
         pageTitle: action.payload,
       }
-    },
-    setEvaluations: (state, action) => {
-      return {
-        ...state,
-        entities: {
-          ...state.entities,
-          evaluations: convertArrayToHashMap(action.payload),
-        },
-      };
     },
     setActiveFrameworkId: (state, action) => {
       return {
@@ -186,6 +269,24 @@ const userContextSlice = createSlice({
         ids: {
           ...state.ids,
           activeEvaluationId: action.payload,
+        },
+      };
+    },
+    setActiveDistrictViewerSchoolCode: (state, action) => {
+      return {
+        ...state,
+        ids: {
+          ...state.ids,
+          activeDistrictViewerSchoolCode: action.payload,
+        },
+      };
+    },
+    setActiveDistrictViewerEvaluatorId: (state, action) => {
+      return {
+        ...state,
+        ids: {
+          ...state.ids,
+          activeDistrictViewerEvaluatorId: action.payload,
         },
       };
     },
@@ -231,6 +332,32 @@ const userContextSlice = createSlice({
       thunkState: ThunkState.FAILED,
       errorMessage: action.payload,
     }),
+    [setActiveDistrictViewerSchool.pending]: (state, action) => ({
+      ...state,
+      thunkState: ThunkState.RUNNING,
+    }),
+    [setActiveDistrictViewerSchool.fulfilled]: (state, action) => ({
+      ...action.payload,
+      thunkState: ThunkState.COMPLETE,
+    }),
+    [setActiveDistrictViewerSchool.rejected]: (state, action) => ({
+      ...state,
+      thunkState: ThunkState.FAILED,
+      errorMessage: action.payload,
+    }),
+    [setActiveDistrictViewerEvaluator.pending]: (state, action) => ({
+      ...state,
+      thunkState: ThunkState.RUNNING,
+    }),
+    [setActiveDistrictViewerEvaluator.fulfilled]: (state, action) => ({
+      ...action.payload,
+      thunkState: ThunkState.COMPLETE,
+    }),
+    [setActiveDistrictViewerEvaluator.rejected]: (state, action) => ({
+      ...state,
+      thunkState: ThunkState.FAILED,
+      errorMessage: action.payload,
+    }),
   },
 });
 
@@ -246,6 +373,16 @@ export const selectCurrentUser = createSelector([getCurrentUser], (user) => {
 const getEvaluationsAll = (state) => {
   const { evaluations } = state.stateEval.userContext.entities;
   return Object.entries(evaluations).map((x) => x[1]);
+};
+
+const getDistrictViewerSchoolsAll = (state) => {
+  const { districtViewerSchools } = state.stateEval.userContext.entities;
+  return Object.entries(districtViewerSchools).map((x) => x[1]);
+};
+
+const getDistrictViewerEvaluatorsAll = (state) => {
+  const { districtViewerEvaluators } = state.stateEval.userContext.entities;
+  return Object.entries(districtViewerEvaluators).map((x) => x[1]);
 };
 
 const getWorkAreaContextsAll = (state) => {
@@ -276,6 +413,18 @@ const getActiveFramework = (state) => {
   return frameworks[activeFrameworkId];
 };
 
+const getActiveDistrictViewerSchool = (state) => {
+  const { activeDistrictViewerSchoolCode } = state.stateEval.userContext.ids;
+  const { districtViewerSchools } = state.stateEval.userContext.entities;
+  return districtViewerSchools[activeDistrictViewerSchoolCode];
+};
+
+const getActiveDistrictViewerEvaluator = (state) => {
+  const { activeDistrictViewerEvaluatorId } = state.stateEval.userContext.ids;
+  const { districtViewerEvaluators } = state.stateEval.userContext.entities;
+  return districtViewerEvaluators[activeDistrictViewerEvaluatorId];
+};
+
 const getStateFramework = (state) => {
   const { stateFrameworkId } = state.stateEval.userContext.ids;
   const { frameworks } = state.stateEval.userContext.entities;
@@ -288,7 +437,8 @@ const getInstructionalFramework = (state) => {
   return frameworks[instructionalFrameworkId];
 };
 
-export const selectEvaluationsAll = createSelector([getEvaluationsAll], (evaluations) => {
+export const selectEvaluationsAll = createSelector(
+  [getEvaluationsAll], (evaluations) => {
   return evaluations;
 });
 
@@ -299,11 +449,33 @@ export const selectWorkAreaContextsAll = createSelector(
   }
 );
 
-export const selectActiveEvaluation = createSelector([getActiveEvaluation], (evaluation) => {
+export const selectDistrictViewerSchoolsAll = createSelector(
+  [getDistrictViewerSchoolsAll], (schools) => {
+  return schools;
+});
+
+export const selectDistrictViewerEvaluatorsAll = createSelector(
+  [getDistrictViewerEvaluatorsAll], (evaluators) => {
+  return evaluators;
+});
+
+export const selectActiveDistrictViewerSchoolCode = createSelector(
+  [getActiveDistrictViewerSchool], (school) => {
+  return school;
+});
+
+export const selectActiveDistrictViewerEvaluator = createSelector(
+  [getActiveDistrictViewerEvaluator], (evaluator) => {
+  return evaluator;
+});
+
+export const selectActiveEvaluation = createSelector(
+  [getActiveEvaluation], (evaluation) => {
   return evaluation;
 });
 
-export const selectActiveEvaluationId = createSelector([getActiveEvaluation], (evaluation) => {
+export const selectActiveEvaluationId = createSelector(
+  [getActiveEvaluation], (evaluation) => {
   return evaluation?.id;
 });
 
@@ -321,15 +493,18 @@ export const selectActiveWorkAreaContextId = createSelector(
   }
 );
 
-export const selectActiveFrameworkId = createSelector([getActiveFramework], (framework) => {
+export const selectActiveFrameworkId = createSelector(
+  [getActiveFramework], (framework) => {
   return framework?.id;
 });
 
-export const selectActiveFramework = createSelector([getActiveFramework], (framework) => {
+export const selectActiveFramework = createSelector(
+  [getActiveFramework], (framework) => {
   return framework;
 });
 
-export const selectStateFramework = createSelector([getStateFramework], (framework) => {
+export const selectStateFramework = createSelector(
+  [getStateFramework], (framework) => {
   return framework;
 });
 
@@ -345,7 +520,8 @@ const getImpersonating = (state) => {
   return impersonating;
 };
 
-export const selectImpersonating = createSelector([getImpersonating], (impersonating) => {
+export const selectImpersonating = createSelector(
+  [getImpersonating], (impersonating) => {
   return impersonating;
 });
 
@@ -354,14 +530,16 @@ const getPageTitle = (state) => {
   return pageTitle;
 };
 
-export const selectPageTitle = createSelector([getPageTitle], (title) => {
+export const selectPageTitle = createSelector(
+  [getPageTitle], (title) => {
   return title;
 });
 
 export const { 
   setActiveFrameworkId, 
   setActiveEvaluationId,
-  setEvaluations,
+  setActiveDistrictViewerSchoolCode,
+  setActiveDistrictViewerEvaluatorId,
   setPageTitle,
 } = userContextSlice.actions;
 

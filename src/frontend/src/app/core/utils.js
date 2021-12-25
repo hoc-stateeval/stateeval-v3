@@ -1,6 +1,6 @@
-const convertArrayToHashMap = (arr) => {
+const convertArrayToHashMap = (arr, key = 'id') => {
   return arr.reduce((map, obj) => {
-    map[obj.id] = obj;
+    map[obj[key]] = obj;
     return map;
   }, {});
 };

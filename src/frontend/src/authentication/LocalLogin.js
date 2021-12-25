@@ -114,7 +114,7 @@ const LocalLogin = () => {
                 onChange={onChangeUser}
               >
                {users.map((x) => (
-                    <MenuItem key={x.id} value={x.id}>
+                    <MenuItem key={`${x.displayName} ${x.roleName}`} value={x.id}>
                       {x.displayName} ({x.roleName})
                     </MenuItem>
                   ))}
