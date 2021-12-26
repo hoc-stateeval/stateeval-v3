@@ -23,20 +23,6 @@ namespace SE.API.Controllers
             var user = await _mediator.Send(new GetUserByUserNameQuery(username));
             return Ok(user);
         }
-
-        [HttpGet("{userId}/workarea-contexts")]
-        public async Task<IActionResult> GetWorkAreaContextsForUser(long userId)
-        {
-            var workAreaContexts = await _mediator.Send(new GetWorkAreaContextsForUserQuery(userId));
-            return Ok(workAreaContexts);
-        }
-
-        [HttpGet("{userId}/workarea-contexts/{workAreaContextId}/evaluations")]
-        public async Task<IActionResult> GetEvaluationsForWorkAreaContext(long userId, long workAreaContextId)
-        {
-            var evaluations = await _mediator.Send(new GetEvaluationsForWorkAreaContextQuery(userId, workAreaContextId));
-            return Ok(evaluations);
-        }
     }
 }
 

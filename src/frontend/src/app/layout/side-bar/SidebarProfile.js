@@ -25,7 +25,7 @@ import {
 
 import { useTheme } from '@mui/material/styles';
 
-import { DistrictViewerSchoolWorkAreas} from '../../core/workAreas';
+import { DistrictViewerSchoolWorkAreas, WorkAreas} from '../../core/workAreas';
 import { getListSubheaderStyles } from './listItemStyles';
 
 const getSelectStyles = (theme, highlight) => {
@@ -156,6 +156,22 @@ const SidebarProfile = () => {
     await dispatch(setActiveDistrictViewerEvaluator(evaluatorId));
   }
 
+  const buildEvaluatorLabel = () => {
+    if (activeWorkAreaContext.tagName === WorkAreas.DV_PR_PR) {
+      return "Head Principal";
+    }
+    else if (activeWorkAreaContext.tagName === WorkAreas.DV_PR_TR) {
+      return "Principal";
+    }
+    else if (activeWorkAreaContext.tagName === WorkAreas.DV_DTE) {
+      return "DTE";
+    }
+    else if (activeWorkAreaContext.tagName === WorkAreas.DV_DE) {
+      return "District Evaluator";
+    }
+    return "Evaluator";
+  }
+
   return (
     <>
     <List sx={{pl:2}}
@@ -247,7 +263,7 @@ const SidebarProfile = () => {
               ))}
           </TextField>
           
-          <TextField label="Evaluator" sx={{...getSelectStyles(theme)}}
+          <TextField label={buildEvaluatorLabel()} sx={{...getSelectStyles(theme)}}
             select
             value={selectedDistrictViewerEvaluatorId}
             onChange={(e)=> {

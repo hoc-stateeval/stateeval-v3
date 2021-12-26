@@ -13,6 +13,13 @@ namespace SE.API.Controllers
         public WorkAreaContextController(IMediator mediator) : base(mediator)
         {
         }
+
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetWorkAreaContextsForUser(long userId)
+        {
+            var workAreaContexts = await _mediator.Send(new GetWorkAreaContextsForUserQuery(userId));
+            return Ok(workAreaContexts);
+        }
     }
 }
 

@@ -20,19 +20,16 @@ namespace SE.Services.Queries
     {
         public GetEvaluationsForWorkAreaContextQueryValidator()
         {
-            RuleFor(x => x.UserId).NotEmpty();
             RuleFor(x => x.WorkAreaContextId).NotEmpty();
         }
     }
     public sealed class GetEvaluationsForWorkAreaContextQuery : 
         IRequest<List<EvaluationSummaryDTO>>
     {
-        public long UserId { get; }
         public long WorkAreaContextId { get; }
 
-        public GetEvaluationsForWorkAreaContextQuery(long userId, long workAreaContextId)
+        public GetEvaluationsForWorkAreaContextQuery(long workAreaContextId)
         {
-            UserId = userId;
             WorkAreaContextId = workAreaContextId;
         }
 

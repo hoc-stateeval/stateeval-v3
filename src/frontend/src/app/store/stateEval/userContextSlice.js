@@ -10,22 +10,20 @@ import {
 } from '../../core/workAreas';
 import { RoleType } from '../../core/roleType';
 
-const getEvaluationsForWorkAreaContext = async (workAreaContext) => {
-  const response = await get(
-    `users/${workAreaContext.userId}/workarea-contexts/${workAreaContext.id}/evaluations`
-  );
-  const data = await response.data;
-  return data;
-};
-
 const getFramework = async (frameworkId) => {
   const response = await get(`frameworks/${frameworkId}`);
   const data = await response.data;
   return data;
 };
 
+const getEvaluationsForWorkAreaContext = async (workAreaContext) => {
+  const response = await get(`evaluations/workarea-context/${workAreaContext.id}`);
+  const data = await response.data;
+  return data;
+};
+
 const getWorkAreaContextsForUser = async (userId) => {
-  const response = await get(`users/${userId}/workarea-contexts/`);
+  const response = await get(`workarea-contexts/user/${userId}`);
   const workAreaContexts = await response.data;
   return workAreaContexts;
 };

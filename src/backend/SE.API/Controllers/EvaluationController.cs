@@ -54,12 +54,12 @@ namespace SE.API.Controllers
             return Ok(evaluation);
         }
 
-        //[HttpGet("{userId}/workarea-contexts/{workAreaContextId}/evaluations")]
-        //public async Task<IActionResult> GetEvaluationsForWorkAreaContext(long userId, long workAreaContextId)
-        //{
-        //    var evaluations = await _mediator.Send(new GetEvaluationsForWorkAreaContextQuery(userId, workAreaContextId));
-        //    return Ok(evaluations);
-        //}
+        [HttpGet("workarea-context/{workAreaContextId}")]
+        public async Task<IActionResult> GetEvaluationsForWorkAreaContext(long workAreaContextId)
+        {
+            var evaluations = await _mediator.Send(new GetEvaluationsForWorkAreaContextQuery(workAreaContextId));
+            return Ok(evaluations);
+        }
 
         [HttpGet("{districtCode}/{schoolCode?}/{evalType}/{evaluatorId}")]
         public async Task<IActionResult> GetEvaluationsForEvaluator(string districtCode, string schoolCode, EvaluationType evalType, long evaluatorId)
