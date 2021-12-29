@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import { get } from '../app/core/api';
 import { 
   Box, 
   Button,
@@ -14,34 +13,42 @@ import {
 
 import { submitLocalLogin } from '../app/store/stateEval/userContextSlice';
 
-const LocalLogin = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+import { 
+  useGetLocalLoginUsersForDistrictQuery,
+  useGetLocalLoginDistrictsQuery,
+ } from '../app/core/apiSlice';
 
-  const [districts, setDistricts] = useState([]);
+const LocalLogin = () => {
+
   const [districtCode, setDistrictCode] = useState('');
-  const [users, setUsers] = useState([]);
   const [userId, setUserId] = useState('');
 
-  useEffect(() => {
-    (async () => {
-      const response = await get('local-login/districts');
-      const data = await response.data;
-      setDistricts(data);
-      setDistrictCode(data[0].districtCode);
-    })();
-  }, []);
+  const { 
+    data: districts,
+    isSuccess,
+    isLoading,
+    isError,
+    error
+  } = useGetLocalLoginDistrictsQuery();
 
   useEffect(() => {
-    (async () => {
-      if (districtCode) {
-        const response = await get(`local-login/users/${districtCode}`);
-        const data = await response.data;
-        setUsers(data);
-        setUserId(data[0].id);
-      }
-    })();
-  }, [districtCode]);
+    if (districts) {
+      setDistrictCode(districts[0].districtCode);
+    }
+  }, [districts]);
+
+  const { 
+    data: users 
+  } = useGetLocalLoginUsersForDistrictQuery(districtCode, {skip: districtCode===''});
+
+  useEffect(() => {
+    if (users) {
+      setUserId(users[0].id);
+    }
+  }, [users]);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onChangeDistrict = (e) => {
     setDistrictCode(e.target.value);
@@ -100,7 +107,7 @@ const LocalLogin = () => {
                 value={districtCode}
                 onChange={onChangeDistrict}
               >
-                {districts.map((x) => (
+                {districts && districts.map((x) => (
                       <MenuItem key={x.districtCode} value={x.districtCode}>
                         {x.name}
                       </MenuItem>
@@ -113,7 +120,7 @@ const LocalLogin = () => {
                 value={userId}
                 onChange={onChangeUser}
               >
-               {users.map((x) => (
+               {users && users.map((x) => (
                     <MenuItem key={`${x.displayName} ${x.roleName}`} value={x.id}>
                       {x.displayName} ({x.roleName})
                     </MenuItem>

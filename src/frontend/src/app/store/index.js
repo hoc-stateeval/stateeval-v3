@@ -3,26 +3,32 @@ import { combineReducers } from '@reduxjs/toolkit';
 import { debounce } from 'debounce';
 import { saveState, loadState } from '../core/persist';
 import stateEval from './stateEval';
+import { apiSlice } from '../core/apiSlice';
 
-const middlewares = [];
+const middleware = [];
 
 if (process.env.NODE_ENV === 'development') {
   const { createLogger } = require(`redux-logger`);
   const logger = createLogger({ collapsed: (getState, action, logEntry) => !logEntry.error });
-  middlewares.push(logger);
+  middleware.push(logger);
 }
+
+middleware.push(apiSlice.middleware);
 
 const store = configureStore({
   reducer: combineReducers({
     stateEval,
+    [apiSlice.reducerPath]: apiSlice.reducer
   }),
-  preloadedState: loadState(),
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      immutableCheck: false,
-      serializableCheck: false,
-    }).concat(middlewares),
-  devTools: process.env.NODE_ENV === 'development',
+  middleware: getDefaultMiddleware =>
+  getDefaultMiddleware().concat(apiSlice.middleware)
+  // preloadedState: loadState(),
+  // middleware: (getDefaultMiddleware) =>
+  //   getDefaultMiddleware({
+  //     immutableCheck: false,
+  //     serializableCheck: false,
+  //   }).concat(middleware),
+  // devTools: process.env.NODE_ENV === 'development',
 });
 
 store.subscribe(
