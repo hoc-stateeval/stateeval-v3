@@ -1,35 +1,38 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import { 
-  Box, 
+import {
   Button,
-  Card, 
-  Container, 
+  Card,
+  Grid,
   MenuItem,
+  Stack,
   TextField,
   Typography,
 } from '@mui/material';
 
 import { submitLocalLogin } from '../app/store/stateEval/userContextSlice';
 
-import { 
+import {
   useGetLocalLoginUsersForDistrictQuery,
   useGetLocalLoginDistrictsQuery,
  } from '../app/core/apiSlice';
 
 const LocalLogin = () => {
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [districtCode, setDistrictCode] = useState('');
   const [userId, setUserId] = useState('');
 
-  const { 
+  const {
     data: districts,
-    isSuccess,
-    isLoading,
-    isError,
-    error
   } = useGetLocalLoginDistrictsQuery();
+
+  const {
+    data: users
+  } = useGetLocalLoginUsersForDistrictQuery(districtCode, {skip: districtCode===''});
 
   useEffect(() => {
     if (districts) {
@@ -37,26 +40,11 @@ const LocalLogin = () => {
     }
   }, [districts]);
 
-  const { 
-    data: users 
-  } = useGetLocalLoginUsersForDistrictQuery(districtCode, {skip: districtCode===''});
-
   useEffect(() => {
     if (users) {
       setUserId(users[0].id);
     }
   }, [users]);
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const onChangeDistrict = (e) => {
-    setDistrictCode(e.target.value);
-  };
-
-  const onChangeUser = (e) => {
-    setUserId(parseInt(e.target.value, 10));
-  };
 
   const onClickLogin = async (e) => {
     const user = users.find((x) => x.id === userId);
@@ -67,45 +55,33 @@ const LocalLogin = () => {
 
   return (
     <>
-      <Box
-        component="main"
-        sx={{
-          backgroundColor: 'background.default',
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: '100vh'
-        }}
-      >
-        <Container
-          maxWidth="sm"
-          sx={{
-            py: {
-              xs: '60px',
-              md: '120px'
-            }
-          }}
-        >
-          <Card
+    <Grid
+      container
+      spacing={0}
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+      style={{ minHeight: '100vh' }}
+    >
+      <Grid item xs={3}>
+      <Card
             elevation={16}
-            sx={{ p: 4 }}
+            sx={{ p: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              alignContent: 'center',
+           }}
           >
-            <Box
-              sx={{
-                alignItems: 'center',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center'
-              }}
+            <Stack spacing={3}
             >
               <Typography variant="h4">
                 Log in
               </Typography>
-            </Box>
-            <Box sx={{mt: 3, mb:3}}>
               <TextField label="District" sx={{minWidth:'200px'}}
                 select
                 value={districtCode}
-                onChange={onChangeDistrict}
+                onChange={(e) => { setDistrictCode(e.target.value); }}
               >
                 {districts && districts.map((x) => (
                       <MenuItem key={x.districtCode} value={x.districtCode}>
@@ -113,12 +89,10 @@ const LocalLogin = () => {
                       </MenuItem>
                     ))}
               </TextField>
-            </Box>
-            <Box sx={{mt: 3, mb:3}}>
               <TextField label="User" sx={{minWidth:'200px'}}
                 select
                 value={userId}
-                onChange={onChangeUser}
+                onChange={(e) => { setUserId(parseInt(e.target.value, 10)); }}
               >
                {users && users.map((x) => (
                     <MenuItem key={`${x.displayName} ${x.roleName}`} value={x.id}>
@@ -126,14 +100,6 @@ const LocalLogin = () => {
                     </MenuItem>
                   ))}
               </TextField>
-            </Box>
-
-            <Box
-              sx={{
-                flexGrow: 1,
-                mt: 3
-              }}
-            >
             <Button
               variant="contained"
               color="secondary"
@@ -141,10 +107,10 @@ const LocalLogin = () => {
             >
               Login
             </Button>
-            </Box>
+            </Stack>
           </Card>
-        </Container>
-      </Box>
+      </Grid>
+    </Grid>
     </>
   );
 };
