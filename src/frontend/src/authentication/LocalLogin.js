@@ -75,7 +75,7 @@ const LocalLogin = () => {
           >
             <Stack spacing={3}
             >
-              <Typography variant="h4">
+              <Typography variant="h4" sx={{textAlign:'center'}}>
                 Log in
               </Typography>
               <TextField label="District" sx={{minWidth:'200px'}}
