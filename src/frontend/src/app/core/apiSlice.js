@@ -8,8 +8,7 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: baseUrl }),
   endpoints: builder => ({
     getLocalLoginDistricts: builder.query({
-      query: () => ({ url: 'local-login/districts' }),
-      // query: () => 'local-login/districts'
+      query: () => 'local-login/districts'
     }),
     getLocalLoginUsersForDistrict: builder.query({
       query: (districtCode) => `local-login/users/${districtCode}`
