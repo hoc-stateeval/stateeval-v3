@@ -101,12 +101,11 @@ const AssignmentsSummary = () => {
   };
 
   const handleClickDelegateToAllSchools = () => {
-    const delegateSetup = !setupDelegatedToAllSchools;
     batchUpdateEvaluationSetupDelegation({
       frameworkContextId: workAreaContext.frameworkContextId,
-      delegateEvaluationSetup: delegateSetup,
+      delegateEvalSetup: true,
     }).then(()=> {
-      setSetupDelegatedToAllSchools(delegateSetup);
+      setSetupDelegatedToAllSchools(true);
     });
   }
 

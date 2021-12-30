@@ -6,6 +6,7 @@ const baseUrl = `${config.API_URL}/`;
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: baseUrl }),
+  tagTypes: ['SchoolConfiguration'],
   endpoints: builder => ({
 
     // assignments
@@ -24,14 +25,11 @@ export const apiSlice = createApi({
     // school configurations
     getSchoolConfigurationsForFrameworkContext: builder.query({
       query: (frameworkContextId) => `school-configurations/framework-context/${frameworkContextId}`,
-      provides: (result) => [
-        ...result.map(({ id }) => ({ type: 'SchoolConfigurations', id })),
-        { type: 'SchoolConfigurations', id: 'LIST' },
-      ],
+      providesTags: ['SchoolConfiguration'],
     }),
     getSchoolConfigurationById: builder.query({
       query: (id) => `school-configurations/${id}`,
-      provides: (_, id) => [{ type: 'SchoolConfigurations', id }],
+      providesTags: ['SchoolConfiguration'],
     }),
     updateSchoolConfiguration: builder.mutation({
       query(data) {
@@ -41,7 +39,7 @@ export const apiSlice = createApi({
           body: data,
         };
       },
-      invalidates: (_, { id }) => [{ type: 'SchoolConfigurations', id }],
+      invalidatesTags: ['SchoolConfiguration'],
     }),
     updateSchoolConfigurationBatchEvaluationSetupDelegation: builder.mutation({
       query(data) {
@@ -51,6 +49,7 @@ export const apiSlice = createApi({
           body: data,
         };
       },
+      invalidatesTags: ['SchoolConfiguration'],
     }),
   })
 })
