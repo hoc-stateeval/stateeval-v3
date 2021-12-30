@@ -13,9 +13,11 @@ namespace SE.Core.Services
 {
     public interface IUserService
     {
-        public Task<List<UserDTO>> GetUsersInRoleAtDistrictBuildings(string districtCode, string roleName);
-        public Task<List<UserDTO>> GetUsersInRoleAtSchool(string schoolCode, string roleName);
-        public Task<List<UserDTO>> GetUsersInRoleAtDistrict(string districtCode, string roleName);
+        public Task<List<UserDTO>> GetUsersInRoleAtSchools(string districtCode, RoleType roleType);
+        public Task<List<UserDTO>> GetUsersInRoleAtSchool(string schoolCode, RoleType roleType);
+        public Task<List<UserDTO>> GetUsersInRoleAtDistrict(string districtCode, RoleType roleType);
+        public IQueryable<UserDTO> ExecuteUserDTOQuery(System.Linq.Expressions.Expression<System.Func<User, bool>> expr);
+
     }
 
     public class UserService : BaseService, IUserService
@@ -26,48 +28,45 @@ namespace SE.Core.Services
             _dataContext = dataContext;
         }
 
-        private IQueryable<User> GetUsersWithBuildingRoleNavigationIncluded()
+        public IQueryable<UserDTO> ExecuteUserDTOQuery(System.Linq.Expressions.Expression<System.Func<User, bool>> expr)
         {
             return _dataContext.Users
-                    .Include(x => x.UserBuildingRoles).ThenInclude(x => x.Role)
-                    .Include(x => x.UserBuildingRoles).ThenInclude(x => x.Building);
+                    .Include(x => x.UserBuildingRoles).ThenInclude(x=>x.Role)
+                    .Include(x => x.UserBuildingRoles).ThenInclude(x => x.Building)
+                    .Where(expr)
+                    .Select(x => x.MapToUserDTO());
         }
 
-        public async Task<List<UserDTO>> GetUsersInRoleAtDistrictBuildings(string districtCode, string roleName)
+        public async Task<List<UserDTO>> GetUsersInRoleAtSchools(string districtCode, RoleType roleType)
         {
-            var query = GetUsersWithBuildingRoleNavigationIncluded();
-            var users = await query
-                    .Where(u => u.UserBuildingRoles.Any(r => r.Role.DisplayName == roleName
-                                                            && r.Building.SchoolCode != ""
-                                                            && r.Building.DistrictCode == districtCode))
-                    //.OrderBy(u => new { u.LastName, u.FirstName })
+            var userDTOs = await ExecuteUserDTOQuery(x => 
+                    x.UserBuildingRoles.Any(y => y.Building.DistrictCode == districtCode &&
+                                                 !String.IsNullOrEmpty(y.Building.SchoolCode) &&
+                                                 y.Role.DisplayName == EnumUtils.MapRoleTypeToDisplayName(roleType)))
                     .ToListAsync();
 
-            return users.ToList().Select(x => x.MapToUserDTO(null)).ToList();
+            return userDTOs;
         }
 
-        public async Task<List<UserDTO>> GetUsersInRoleAtSchool(string schoolCode, string roleName)
+        public async Task<List<UserDTO>> GetUsersInRoleAtSchool(string schoolCode, RoleType roleType)
         {
-            var query = GetUsersWithBuildingRoleNavigationIncluded();
-            var users = await query
-                    .Where(u => u.UserBuildingRoles.Any(r => r.Role.DisplayName == roleName
-                                                            && r.Building.SchoolCode == schoolCode))
-                   // .OrderBy(u => new { u.LastName, u.FirstName })
-                    .ToListAsync();
+            var userDTOs = await ExecuteUserDTOQuery(x =>
+                                x.UserBuildingRoles.Any(y => y.Building.SchoolCode == schoolCode &&
+                                                             y.Role.DisplayName == EnumUtils.MapRoleTypeToDisplayName(roleType)))
+                  .ToListAsync();
 
-            return users.ToList().Select(x => x.MapToUserDTO(null)).ToList();
+            return userDTOs;
         }
 
-        public async Task<List<UserDTO>> GetUsersInRoleAtDistrict(string districtCode, string roleName)
+        public async Task<List<UserDTO>> GetUsersInRoleAtDistrict(string districtCode, RoleType roleType)
         {
-            var query = GetUsersWithBuildingRoleNavigationIncluded();
-            var users = await query
-                    .Where(u => u.UserBuildingRoles.Any(r => r.Role.DisplayName == roleName
-                                                            && r.Building.DistrictCode == districtCode))
-                   // .OrderBy(u => new { u.LastName, u.FirstName })
-                    .ToListAsync();
+            var userDTOs = await ExecuteUserDTOQuery(x =>
+                 x.UserBuildingRoles.Any(y => y.Building.DistrictCode == districtCode &&
+                                              String.IsNullOrEmpty(y.Building.SchoolCode) &&
+                                              y.Role.DisplayName == EnumUtils.MapRoleTypeToDisplayName(roleType)))
+                .ToListAsync();
 
-            return users.ToList().Select(x => x.MapToUserDTO(null)).ToList();
+            return userDTOs;
         }
     }
 

@@ -111,38 +111,6 @@ namespace SE.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FrameworkContextPrototype",
-                schema: "dbo",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    SchoolYear = table.Column<int>(type: "int", nullable: false),
-                    EvaluationType = table.Column<int>(type: "int", nullable: false),
-                    FrameworkTagName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    StateFrameworkId = table.Column<long>(type: "bigint", nullable: false),
-                    InstructionalFrameworkId = table.Column<long>(type: "bigint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FrameworkContextPrototype", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FrameworkContextPrototype_Framework_InstructionalFrameworkId",
-                        column: x => x.InstructionalFrameworkId,
-                        principalSchema: "dbo",
-                        principalTable: "Framework",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_FrameworkContextPrototype_Framework_StateFrameworkId",
-                        column: x => x.StateFrameworkId,
-                        principalSchema: "dbo",
-                        principalTable: "Framework",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "FrameworkNode",
                 schema: "dbo",
                 columns: table => new
@@ -165,6 +133,46 @@ namespace SE.Data.Migrations
                         column: x => x.FrameworkId,
                         principalSchema: "dbo",
                         principalTable: "Framework",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FrameworkContextPrototype",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    SchoolYear = table.Column<int>(type: "int", nullable: false),
+                    EvaluationType = table.Column<int>(type: "int", nullable: false),
+                    FrameworkTagName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    StateFrameworkId = table.Column<long>(type: "bigint", nullable: false),
+                    InstructionalFrameworkId = table.Column<long>(type: "bigint", nullable: true),
+                    EvaluateeRoleId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FrameworkContextPrototype", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FrameworkContextPrototype_Framework_InstructionalFrameworkId",
+                        column: x => x.InstructionalFrameworkId,
+                        principalSchema: "dbo",
+                        principalTable: "Framework",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FrameworkContextPrototype_Framework_StateFrameworkId",
+                        column: x => x.StateFrameworkId,
+                        principalSchema: "dbo",
+                        principalTable: "Framework",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FrameworkContextPrototype_Role_EvaluateeRoleId",
+                        column: x => x.EvaluateeRoleId,
+                        principalSchema: "dbo",
+                        principalTable: "Role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -242,6 +250,34 @@ namespace SE.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FrameworkNodeRubricRow",
+                schema: "dbo",
+                columns: table => new
+                {
+                    FrameworkNodeId = table.Column<long>(type: "bigint", nullable: false),
+                    RubricRowId = table.Column<long>(type: "bigint", nullable: false),
+                    Sequence = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FrameworkNodeRubricRow", x => new { x.FrameworkNodeId, x.RubricRowId });
+                    table.ForeignKey(
+                        name: "FK_FrameworkNodeRubricRow_FrameworkNode_FrameworkNodeId",
+                        column: x => x.FrameworkNodeId,
+                        principalSchema: "dbo",
+                        principalTable: "FrameworkNode",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FrameworkNodeRubricRow_RubricRow_RubricRowId",
+                        column: x => x.RubricRowId,
+                        principalSchema: "dbo",
+                        principalTable: "RubricRow",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FrameworkContext",
                 schema: "dbo",
                 columns: table => new
@@ -258,7 +294,8 @@ namespace SE.Data.Migrations
                     StateFrameworkId = table.Column<long>(type: "bigint", nullable: false),
                     InstructionalFrameworkId = table.Column<long>(type: "bigint", nullable: true),
                     DefaultFrameworkId = table.Column<long>(type: "bigint", nullable: false),
-                    PrototypeFrameworkContextId = table.Column<long>(type: "bigint", nullable: false)
+                    PrototypeFrameworkContextId = table.Column<long>(type: "bigint", nullable: false),
+                    EvaluateeRoleId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -288,145 +325,12 @@ namespace SE.Data.Migrations
                         principalTable: "FrameworkContextPrototype",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Evaluation",
-                schema: "dbo",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    DeactivateMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EvaluationType = table.Column<int>(type: "int", nullable: false),
-                    SchoolYear = table.Column<int>(type: "int", nullable: false),
-                    WfState = table.Column<int>(type: "int", nullable: false),
-                    DistrictCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    SchoolCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    PerformanceLevel = table.Column<int>(type: "int", nullable: true),
-                    StudentGrowthImpactRating = table.Column<int>(type: "int", nullable: true),
-                    ComprehensiveCarryForward = table.Column<bool>(type: "bit", nullable: true),
-                    CarryForwardPerformanceLevel = table.Column<int>(type: "int", nullable: true),
-                    CarryForwardSchoolYear = table.Column<int>(type: "int", nullable: true),
-                    EvaluateePlanType = table.Column<int>(type: "int", nullable: true),
-                    LastYearEvaluateePlanType = table.Column<int>(type: "int", nullable: true),
-                    NextYearEvaluateePlanType = table.Column<int>(type: "int", nullable: true),
-                    LastYearFocusedFrameworkNodeShortName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    LastYearFocusedSGframeworkNodeShortName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    SuggestedEvaluateePlanType = table.Column<int>(type: "int", nullable: true),
-                    SuggestedFocusedFrameworkNodeShortName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    SuggestedFocusedSGframeworkNodeShortName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    Complete = table.Column<bool>(type: "bit", nullable: true),
-                    ByPassSGScores = table.Column<bool>(type: "bit", nullable: true),
-                    SGScoreOverrideComment = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ByPassReceipt = table.Column<bool>(type: "bit", nullable: true),
-                    ByPassReceiptOverrideComment = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DropToPaper = table.Column<bool>(type: "bit", nullable: true),
-                    DropToPaperOverrideComment = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MarkedFinalDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    SendFinalDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    FinalAcknowledgementSentDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LockDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EvaluateeFinalReportViewDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EOYConfDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    SelfEvalSentDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    SelfEvalCompleteDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    PromptsTorSentDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    PromptsTeeSentDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    AutoSubmitAfterReceipt = table.Column<bool>(type: "bit", nullable: true),
-                    EvaluateeReflections = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EvaluatorRecommendations = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EvaluateeReflectionsIsPublic = table.Column<bool>(type: "bit", nullable: true),
-                    MidYearReportsShared = table.Column<bool>(type: "bit", nullable: true),
-                    EvaluatorScoresShared = table.Column<bool>(type: "bit", nullable: true),
-                    FinalReportShared = table.Column<bool>(type: "bit", nullable: true),
-                    SelfEvalComplete = table.Column<bool>(type: "bit", nullable: true),
-                    SelfEvalShared = table.Column<bool>(type: "bit", nullable: true),
-                    VisibleToEvaluatee = table.Column<bool>(type: "bit", nullable: true),
-                    EvaluateeId = table.Column<long>(type: "bigint", nullable: false),
-                    EvaluatorId = table.Column<long>(type: "bigint", nullable: true),
-                    FocusedFrameworkNodeId = table.Column<long>(type: "bigint", nullable: true),
-                    FocusedSGFrameworkNodeId = table.Column<long>(type: "bigint", nullable: true),
-                    ModifiedCompFocusedFrameworkNode2Id = table.Column<long>(type: "bigint", nullable: true),
-                    NextYearFocusedFrameworkNodeId = table.Column<long>(type: "bigint", nullable: true),
-                    NextYearFocusedSGframeworkNodeId = table.Column<long>(type: "bigint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Evaluation", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Evaluation_FrameworkNode_FocusedFrameworkNodeId",
-                        column: x => x.FocusedFrameworkNodeId,
+                        name: "FK_FrameworkContext_Role_EvaluateeRoleId",
+                        column: x => x.EvaluateeRoleId,
                         principalSchema: "dbo",
-                        principalTable: "FrameworkNode",
+                        principalTable: "Role",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Evaluation_FrameworkNode_FocusedSGFrameworkNodeId",
-                        column: x => x.FocusedSGFrameworkNodeId,
-                        principalSchema: "dbo",
-                        principalTable: "FrameworkNode",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Evaluation_FrameworkNode_ModifiedCompFocusedFrameworkNode2Id",
-                        column: x => x.ModifiedCompFocusedFrameworkNode2Id,
-                        principalSchema: "dbo",
-                        principalTable: "FrameworkNode",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Evaluation_FrameworkNode_NextYearFocusedFrameworkNodeId",
-                        column: x => x.NextYearFocusedFrameworkNodeId,
-                        principalSchema: "dbo",
-                        principalTable: "FrameworkNode",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Evaluation_FrameworkNode_NextYearFocusedSGframeworkNodeId",
-                        column: x => x.NextYearFocusedSGframeworkNodeId,
-                        principalSchema: "dbo",
-                        principalTable: "FrameworkNode",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Evaluation_User_EvaluateeId",
-                        column: x => x.EvaluateeId,
-                        principalSchema: "dbo",
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Evaluation_User_EvaluatorId",
-                        column: x => x.EvaluatorId,
-                        principalSchema: "dbo",
-                        principalTable: "User",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FrameworkNodeRubricRow",
-                schema: "dbo",
-                columns: table => new
-                {
-                    FrameworkNodeId = table.Column<long>(type: "bigint", nullable: false),
-                    RubricRowId = table.Column<long>(type: "bigint", nullable: false),
-                    Sequence = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FrameworkNodeRubricRow", x => new { x.FrameworkNodeId, x.RubricRowId });
-                    table.ForeignKey(
-                        name: "FK_FrameworkNodeRubricRow_FrameworkNode_FrameworkNodeId",
-                        column: x => x.FrameworkNodeId,
-                        principalSchema: "dbo",
-                        principalTable: "FrameworkNode",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_FrameworkNodeRubricRow_RubricRow_RubricRowId",
-                        column: x => x.RubricRowId,
-                        principalSchema: "dbo",
-                        principalTable: "RubricRow",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -482,6 +386,122 @@ namespace SE.Data.Migrations
                         principalTable: "FrameworkContext",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Evaluation",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    DeactivateMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WfState = table.Column<int>(type: "int", nullable: false),
+                    SchoolCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    PerformanceLevel = table.Column<int>(type: "int", nullable: true),
+                    StudentGrowthImpactRating = table.Column<int>(type: "int", nullable: true),
+                    ComprehensiveCarryForward = table.Column<bool>(type: "bit", nullable: true),
+                    CarryForwardPerformanceLevel = table.Column<int>(type: "int", nullable: true),
+                    CarryForwardSchoolYear = table.Column<int>(type: "int", nullable: true),
+                    EvaluateePlanType = table.Column<int>(type: "int", nullable: true),
+                    LastYearEvaluateePlanType = table.Column<int>(type: "int", nullable: true),
+                    NextYearEvaluateePlanType = table.Column<int>(type: "int", nullable: true),
+                    LastYearFocusedFrameworkNodeShortName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    LastYearFocusedSGframeworkNodeShortName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    SuggestedEvaluateePlanType = table.Column<int>(type: "int", nullable: true),
+                    SuggestedFocusedFrameworkNodeShortName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    SuggestedFocusedSGframeworkNodeShortName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    Complete = table.Column<bool>(type: "bit", nullable: true),
+                    ByPassSGScores = table.Column<bool>(type: "bit", nullable: true),
+                    SGScoreOverrideComment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ByPassReceipt = table.Column<bool>(type: "bit", nullable: true),
+                    ByPassReceiptOverrideComment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DropToPaper = table.Column<bool>(type: "bit", nullable: true),
+                    DropToPaperOverrideComment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MarkedFinalDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    SendFinalDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    FinalAcknowledgementSentDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LockDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EvaluateeFinalReportViewDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EOYConfDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    SelfEvalSentDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    SelfEvalCompleteDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PromptsTorSentDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PromptsTeeSentDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    AutoSubmitAfterReceipt = table.Column<bool>(type: "bit", nullable: true),
+                    EvaluateeReflections = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EvaluatorRecommendations = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EvaluateeReflectionsIsPublic = table.Column<bool>(type: "bit", nullable: true),
+                    MidYearReportsShared = table.Column<bool>(type: "bit", nullable: true),
+                    EvaluatorScoresShared = table.Column<bool>(type: "bit", nullable: true),
+                    FinalReportShared = table.Column<bool>(type: "bit", nullable: true),
+                    SelfEvalComplete = table.Column<bool>(type: "bit", nullable: true),
+                    SelfEvalShared = table.Column<bool>(type: "bit", nullable: true),
+                    VisibleToEvaluatee = table.Column<bool>(type: "bit", nullable: true),
+                    FrameworkContextId = table.Column<long>(type: "bigint", nullable: false),
+                    EvaluateeId = table.Column<long>(type: "bigint", nullable: false),
+                    EvaluatorId = table.Column<long>(type: "bigint", nullable: true),
+                    FocusedFrameworkNodeId = table.Column<long>(type: "bigint", nullable: true),
+                    FocusedSGFrameworkNodeId = table.Column<long>(type: "bigint", nullable: true),
+                    ModifiedCompFocusedFrameworkNode2Id = table.Column<long>(type: "bigint", nullable: true),
+                    NextYearFocusedFrameworkNodeId = table.Column<long>(type: "bigint", nullable: true),
+                    NextYearFocusedSGframeworkNodeId = table.Column<long>(type: "bigint", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Evaluation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Evaluation_FrameworkContext_FrameworkContextId",
+                        column: x => x.FrameworkContextId,
+                        principalSchema: "dbo",
+                        principalTable: "FrameworkContext",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Evaluation_FrameworkNode_FocusedFrameworkNodeId",
+                        column: x => x.FocusedFrameworkNodeId,
+                        principalSchema: "dbo",
+                        principalTable: "FrameworkNode",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Evaluation_FrameworkNode_FocusedSGFrameworkNodeId",
+                        column: x => x.FocusedSGFrameworkNodeId,
+                        principalSchema: "dbo",
+                        principalTable: "FrameworkNode",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Evaluation_FrameworkNode_ModifiedCompFocusedFrameworkNode2Id",
+                        column: x => x.ModifiedCompFocusedFrameworkNode2Id,
+                        principalSchema: "dbo",
+                        principalTable: "FrameworkNode",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Evaluation_FrameworkNode_NextYearFocusedFrameworkNodeId",
+                        column: x => x.NextYearFocusedFrameworkNodeId,
+                        principalSchema: "dbo",
+                        principalTable: "FrameworkNode",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Evaluation_FrameworkNode_NextYearFocusedSGframeworkNodeId",
+                        column: x => x.NextYearFocusedSGframeworkNodeId,
+                        principalSchema: "dbo",
+                        principalTable: "FrameworkNode",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Evaluation_User_EvaluateeId",
+                        column: x => x.EvaluateeId,
+                        principalSchema: "dbo",
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Evaluation_User_EvaluatorId",
+                        column: x => x.EvaluatorId,
+                        principalSchema: "dbo",
+                        principalTable: "User",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -645,8 +665,7 @@ namespace SE.Data.Migrations
                         column: x => x.EvaluationId,
                         principalSchema: "dbo",
                         principalTable: "Evaluation",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_StudentGrowthGoal_FrameworkNode_FrameworkNodeId",
                         column: x => x.FrameworkNodeId,
@@ -711,6 +730,12 @@ namespace SE.Data.Migrations
                 column: "FocusedSGFrameworkNodeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Evaluation_FrameworkContextId",
+                schema: "dbo",
+                table: "Evaluation",
+                column: "FrameworkContextId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Evaluation_ModifiedCompFocusedFrameworkNode2Id",
                 schema: "dbo",
                 table: "Evaluation",
@@ -735,6 +760,12 @@ namespace SE.Data.Migrations
                 column: "DefaultFrameworkId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FrameworkContext_EvaluateeRoleId",
+                schema: "dbo",
+                table: "FrameworkContext",
+                column: "EvaluateeRoleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FrameworkContext_InstructionalFrameworkId",
                 schema: "dbo",
                 table: "FrameworkContext",
@@ -751,6 +782,12 @@ namespace SE.Data.Migrations
                 schema: "dbo",
                 table: "FrameworkContext",
                 column: "StateFrameworkId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FrameworkContextPrototype_EvaluateeRoleId",
+                schema: "dbo",
+                table: "FrameworkContextPrototype",
+                column: "EvaluateeRoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FrameworkContextPrototype_InstructionalFrameworkId",
@@ -934,10 +971,6 @@ namespace SE.Data.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "FrameworkContext",
-                schema: "dbo");
-
-            migrationBuilder.DropTable(
                 name: "WorkArea",
                 schema: "dbo");
 
@@ -946,11 +979,7 @@ namespace SE.Data.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "FrameworkContextPrototype",
-                schema: "dbo");
-
-            migrationBuilder.DropTable(
-                name: "Role",
+                name: "FrameworkContext",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
@@ -962,7 +991,15 @@ namespace SE.Data.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
+                name: "FrameworkContextPrototype",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
                 name: "Framework",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "Role",
                 schema: "dbo");
         }
     }

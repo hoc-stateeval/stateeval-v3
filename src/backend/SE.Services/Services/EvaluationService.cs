@@ -31,6 +31,7 @@ namespace SE.Core.Services
                   .Include(x => x.Evaluator)
                   .Include(x => x.FocusedFrameworkNode)
                   .Include(x => x.FocusedSGFrameworkNode)
+                  .Include(x => x.FrameworkContext)
                   .OrderBy(x => x.Evaluatee.FirstName).ThenBy(x => x.Evaluatee.LastName)
                   .Where(expr)
                   .Select(e => Mapper.MapToEvaluationSummaryDTO(e));

@@ -61,6 +61,7 @@ BEGIN
 		  ,SchoolYear
 		  ,DistrictCode
 		  ,EvaluationType
+		  ,EvaluateeRoleID
 		  ,LoadDateTime
 		  ,StateFrameworkID
 		  ,InstructionalFrameworkID
@@ -72,6 +73,7 @@ BEGIN
 		  ,proto.SchoolYear
 		  ,@pDistrictCode
 		  ,proto.EvaluationType
+		  ,proto.EvaluateeRoleID
 		  ,@theDate
 		  ,@StateFrameworkID
 		  ,@InstructionalFrameworkID
@@ -260,7 +262,7 @@ BEGIN
 	END
 
 	
-	EXEC @sql_error =  dbo.InsertEvaluation @pEvaluationType=@EvaluationType, @pSchoolYear=@SchoolYear, @pDistrictCode=@pDistrictCode, @pEvaluateeID=NULL, @sql_error_message=@sql_error_message OUTPUT
+	EXEC @sql_error =  dbo.InsertEvaluation @pFrameworkContextId=@FrameworkContextId, @pEvaluateeID=NULL, @sql_error_message=@sql_error_message OUTPUT
 	IF @sql_error <> 0
 	 BEGIN
 		SELECT @sql_error_message = 'EXEC InsertEvaluation failed. In: ' + @ProcName + '. ' + '>>>' + ISNULL(@sql_error_message, '')

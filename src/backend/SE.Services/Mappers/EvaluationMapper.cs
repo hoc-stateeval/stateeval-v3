@@ -23,13 +23,13 @@ namespace SE.Core.Mappers
             target.EvaluatorId = source.Evaluator != null ? source.Evaluator.Id : null;
 
             target.WfState = (WfState)source.WfState;
-            target.WfStateDisplayName = EnumUtils.MapWfStateToDisplayName((WfState)source.WfState, EnumUtils.MapEvaluationTypeToEvaluateeTerm(source.EvaluationType));
+            target.WfStateDisplayName = EnumUtils.MapWfStateToDisplayName((WfState)source.WfState, EnumUtils.MapEvaluationTypeToEvaluateeTerm(source.FrameworkContext.EvaluationType));
 
-            target.SchoolYear = source.SchoolYear;
-            target.SchoolYearDisplayName = EnumUtils.GetSchoolYearDisplayName(source.SchoolYear);
+            target.SchoolYear = source.FrameworkContext.SchoolYear;
+            target.SchoolYearDisplayName = EnumUtils.GetSchoolYearDisplayName(source.FrameworkContext.SchoolYear);
 
-            target.EvaluationType = source.EvaluationType;
-            target.EvaluationTypeDisplayName = EnumUtils.EvaluationTypeDisplayName(source.EvaluationType);
+            target.EvaluationType = source.FrameworkContext.EvaluationType;
+            target.EvaluationTypeDisplayName = EnumUtils.EvaluationTypeDisplayName(source.FrameworkContext.EvaluationType);
 
             target.PlanType = source.EvaluateePlanType;
             target.PlanTypeDisplayName = EnumUtils.MapEvaluateePlanTypeToDisplayName(source.EvaluateePlanType);

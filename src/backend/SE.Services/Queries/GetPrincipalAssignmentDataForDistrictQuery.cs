@@ -59,32 +59,26 @@ namespace SE.Services.Queries
 
                 result.EvaluationSummaries = await _evaluationService
                     .ExecuteEvaluationSummaryDTOQuery(x => x.IsActive &&
-                                x.SchoolYear == EnumUtils.CurrentSchoolYear &&
-                                x.DistrictCode == frameworkContext.DistrictCode &&
-                                x.EvaluationType == EvaluationType.PRINCIPAL)
+                                x.FrameworkContextId == frameworkContext.Id)
                     .ToListAsync();
 
                 if (String.IsNullOrEmpty(request.SchoolCode))
                 {
-                    result.Evaluatees = await _userService.GetUsersInRoleAtDistrictBuildings(frameworkContext.DistrictCode,
-                            EnumUtils.MapRoleTypeToDisplayName(RoleType.PR));
+                    result.Evaluatees = await _userService.GetUsersInRoleAtSchools(frameworkContext.DistrictCode,RoleType.PR);
                 }
                 else {
                     // only include principals and EvaluationSummaries for the principals at the school
-                    result.Evaluatees = await _userService.GetUsersInRoleAtSchool(request.SchoolCode,
-                            EnumUtils.MapRoleTypeToDisplayName(RoleType.PR));
+                    result.Evaluatees = await _userService.GetUsersInRoleAtSchool(request.SchoolCode,RoleType.PR);
                     result.EvaluationSummaries = result.EvaluationSummaries.Where(x => result.Evaluatees.Any(y => y.Id == x.EvaluateeId)).ToList();
                 }
 
-                result.HeadPrincipals = await _userService.GetUsersInRoleAtDistrictBuildings(frameworkContext.DistrictCode, 
-                                                            EnumUtils.MapRoleTypeToDisplayName(RoleType.HEAD_PR));
+                result.HeadPrincipals = await _userService.GetUsersInRoleAtSchools(frameworkContext.DistrictCode, RoleType.HEAD_PR);
 
                 // only include head principals that aren't also in the evaluatee list so that a head principal cannot
                 // assign themselves as their evaluator.
                 result.HeadPrincipals = result.HeadPrincipals.Where(x => result.Evaluatees.Any(y => y.Id != x.Id)).ToList();
 
-                result.DistrictEvaluators = await _userService.GetUsersInRoleAtDistrict(frameworkContext.DistrictCode, 
-                                                            EnumUtils.MapRoleTypeToDisplayName(RoleType.DE));
+                result.DistrictEvaluators = await _userService.GetUsersInRoleAtDistrict(frameworkContext.DistrictCode, RoleType.DE);
                 return result;
                 
             }

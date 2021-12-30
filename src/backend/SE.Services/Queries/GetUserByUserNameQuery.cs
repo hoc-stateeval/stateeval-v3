@@ -10,6 +10,8 @@ using SE.Data;
 using SE.Domain.Entities;
 using SE.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using SE.Core.Mappers;
+using SE.Core.Services;
 
 namespace SE.Core.Queries
 {
@@ -35,24 +37,18 @@ namespace SE.Core.Queries
             IRequestHandler<GetUserByUserNameQuery, UserDTO>
         {
             private readonly DataContext _dataContext;
-            public GetUserByUserNameQueryHandler(DataContext dataContext)
+            private readonly IUserService _userService;
+            public GetUserByUserNameQueryHandler(DataContext dataContext, IUserService userService)
             {
                 _dataContext = dataContext;
+                _userService = userService; 
             }
 
             public async Task<UserDTO> Handle(GetUserByUserNameQuery request, CancellationToken cancellationToken)
             {
-                User User = await _dataContext.Users.Where(x => x.UserName == request.UserName).FirstOrDefaultAsync();
-                UserDTO userDTO = new UserDTO()
-                {
-                    Id = User.Id,
-                    FirstName = User.FirstName,
-                    LastName = User.LastName,
-                    DisplayName = User.FirstName + " "  + User.LastName,
-                    Email = User.EmailAddress,
-                    ProfileImageUrl = User.ProfileImageUrl,
-                    UserName = User.UserName,
-                };
+                var userDTO = await _userService
+                    .ExecuteUserDTOQuery(x => x.UserName == request.UserName)
+                    .FirstOrDefaultAsync();
 
                 return userDTO;
             }

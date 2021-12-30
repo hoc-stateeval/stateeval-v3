@@ -11,9 +11,9 @@ namespace SE.Core.Mappers
 {
     public static partial class Mapper
     {
-        public static UserDTO MapToUserDTO(this User source, UserDTO? target = null)
+        public static UserDTO MapToUserDTO(this User source)
         {
-            target = target ?? new UserDTO();
+            UserDTO target =new UserDTO();
             target.Id = source.Id;
             target.UserName = source.UserName;
             target.FirstName = source.FirstName;

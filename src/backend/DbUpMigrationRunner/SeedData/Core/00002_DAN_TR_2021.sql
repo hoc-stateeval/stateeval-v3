@@ -2,7 +2,10 @@
 	DECLARE @StateFrameworkID BIGINT, @FrameworkNodeID BIGINT, @InstructionalFrameworkID BIGINT, @RubricRowID BIGINT
 	DECLARE @D1Node BIGINT, @D2Node BIGINT, @D3Node BIGINT, @D4Node BIGINT
 	DECLARE @C1Node Bigint, @C2Node BIGINT, @C3Node BIGINT, @C4Node BIGINT, @C5Node BIGINT, @C6Node BIGINT, @C7Node BIGINT, @C8Node BIGINT
-
+	DECLARE @EvaluateeRoleID BIGINT
+	
+	SELECT @EvaluateeRoleID = Id FROM [Role] WHERE EDSName='SESchoolTeacher'
+	
 	insert Framework(Name, SchoolYear, FrameworkTagName)
 	values('Danielson State', 2021, 'DAN')
 	SELECT @StateFrameworkID = SCOPE_IDENTITY()
@@ -11,11 +14,11 @@
 	values('Danielson Instructional', 2021, 'DAN')
 	SELECT @InstructionalFrameworkID = SCOPE_IDENTITY()
 
-	INSERT FrameworkContextPrototype(FrameworkTagName, Name, SchoolYear, EvaluationType, StateFrameworkID, InstructionalFrameworkID)
-	values('DAN', 'Charlotte Danielson''s Framework for Teaching (2011)', 2021, 2, @StateFrameworkID, @InstructionalFrameworkID)
+	INSERT FrameworkContextPrototype(FrameworkTagName, Name, EvaluateeRoleID, SchoolYear, EvaluationType, StateFrameworkID, InstructionalFrameworkID)
+	values('DAN', 'Charlotte Danielson''s Framework for Teaching (2011)', @EvaluateeRoleID, 2021, 2, @StateFrameworkID, @InstructionalFrameworkID)
 
-	INSERT FrameworkContextPrototype(FrameworkTagName, Name, SchoolYear, EvaluationType, StateFrameworkID, InstructionalFrameworkID)
-	values('DAN', 'Charlotte Danielson''s Framework for Teaching (2011)', 2021, 4, @StateFrameworkID, @InstructionalFrameworkID)
+	INSERT FrameworkContextPrototype(FrameworkTagName, Name, EvaluateeRoleID, SchoolYear, EvaluationType, StateFrameworkID, InstructionalFrameworkID)
+	values('DAN', 'Charlotte Danielson''s Framework for Teaching (2011)', @EvaluateeRoleID, 2021, 4, @StateFrameworkID, @InstructionalFrameworkID)
 
 	insert Frameworknode(FrameworkID, Title, ShortName, Sequence, IsStudentGrowthAligned, SchoolYear, FrameworkTagName)
 	values(@StateFrameworkID, 'Centering instruction on high expectations for student achievement.', 'C1', 1, 0, 2021, 'DAN')

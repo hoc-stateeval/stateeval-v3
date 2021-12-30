@@ -9,9 +9,7 @@ PRINT '.. Creating sproc InsertEvaluation.'
 GO
 
 CREATE PROCEDURE InsertEvaluation
-	@pEvaluationType SMALLINT
-	,@pSchoolYear SMALLINT = NULL
-	,@pDistrictCode VARCHAR(20)
+	@pFrameworkContextID BIGINT
 	,@pEvaluateeID BIGINT = NULL
 	,@pDebug BIT = 0
 	,@sql_error_message VARCHAR(500) OUTPUT
@@ -40,89 +38,49 @@ SELECT  @sql_error              = 0
 IF @tran_count = 0
    BEGIN TRANSACTION
 
-DECLARE @SchoolYear SMALLINT, @theDate DATETIME
+DECLARE @SchoolYear SMALLINT, @theDate DATETIME, @EvaluateeRoleID BIGINT, @DistrictCode VARCHAR(20), @EvaluationType SMALLINT
 SELECT @theDate = getdate()
-SELECT @SchoolYear = @pSchoolYear
-IF (@pSchoolYear IS NULL)
-BEGIN
-	SELECT @SchoolYear = MAX(SchoolYear) 
-	  FROM dbo.FrameworkContext 
-	 WHERE DistrictCode=@pDistrictCode
-	   AND EvaluationType=@pEvaluationType
-END
+SELECT @EvaluateeRoleID = EvaluateeRoleID,
+       @DistrictCode = DistrictCode,
+	   @EvaluationType = EvaluationType
+  FROM [FrameworkContext] WHERE Id=@pFrameworkContextID
 
-IF @schoolYear IS NULL
-	GOTO	PROCEND
 
-CREATE TABLE #User(Id BIGINT, DistrictCode VARCHAR(20), SchoolCode VARCHAR(20))
+-- there can be only one evaluation per district for a given role
+CREATE TABLE #User(Id BIGINT, DistrictCode VARCHAR(20))
 
-IF (@pEvaluateeID IS NOT NULL)
-BEGIN
-	INSERT INTO #User(Id, DistrictCode, SchoolCode)
-	SELECT DISTINCT u.Id
-	      ,b.DistrictCode
-		  ,b.SchoolCode
-	  FROM dbo.[User] u
-	  JOIN dbo.UserBuildingRole ubr ON ubr.UserId = u.Id
-	  JOIN dbo.[Building] b on ubr.BuildingId=b.Id
-	  JOIN dbo.[Role] r on ubr.RoleId=r.Id
-	 WHERE u.Id=@pEvaluateeID
-	   AND b.DistrictCode=@pDistrictCode
-	   AND u.Id NOT IN
-		   (SELECT EvaluateeID
-		      FROM dbo.Evaluation
-		     WHERE DistrictCode=@pDistrictCode
-		       AND EvaluationType=@pEvaluationType
-		       AND SchoolYear=@SchoolYear)
-			   
-	   AND r.EDSName IN ('SESchoolPrincipal', 'SESchoolHeadPrincipal', 'SESchoolTeacher', 'SESchoolLibrarian')
-END
-ELSE
-BEGIN
-	INSERT INTO #User(Id, DistrictCode, SchoolCode)
-	SELECT DISTINCT u.Id
-	      ,b.DistrictCode
-		  ,b.SchoolCode
-	  FROM dbo.[User] u
-	  JOIN dbo.UserBuildingRole ubr ON ubr.UserId = u.Id
-	  JOIN dbo.[Building] b on ubr.BuildingId=b.Id
-	  JOIN dbo.[Role] r on ubr.RoleId=r.Id
-	 WHERE b.DistrictCode=@pDistrictCode
-	   AND r.EDSName=
-	   CASE WHEN @pEvaluationType=1 THEN 'SESchoolPrincipal' 
-	   WHEN @pEvaluationType=2 THEN 'SESchoolTeacher' 
-	   WHEN @pEvaluationType=3 THEN 'SESchoolLibrarian'
-	   END
-	   AND u.Id NOT IN
-	       (SELECT EvaluateeID
-	          FROM dbo.Evaluation 
-	         WHERE DistrictCode=@pDistrictCode
-		       AND EvaluationType=@pEvaluationType
-	           AND SchoolYear=@SchoolYear) 
-END
-
+INSERT INTO #User(Id, DistrictCode)
+SELECT DISTINCT u.Id
+	    ,b.DistrictCode
+	FROM dbo.[User] u
+	JOIN dbo.UserBuildingRole ubr ON ubr.UserId = u.Id
+	JOIN dbo.[Building] b on ubr.BuildingId=b.Id
+	JOIN dbo.[Role] r on ubr.RoleId=r.Id
+	WHERE (@pEvaluateeID IS NULL OR u.Id=@pEvaluateeID)
+	AND b.DistrictCode=@DistrictCode
+	AND u.Id NOT IN
+		(SELECT EvaluateeID
+		    FROM dbo.Evaluation
+		    WHERE FrameworkContextID=@pFrameworkContextID)	   
+	AND r.Id=@EvaluateeRoleID
 
 IF @pDebug=1 SELECT '#User', * FROM #user
 
 DECLARE @EvalID BIGINT
 
-INSERT dbo.Evaluation(EvaluateeID, 
+INSERT dbo.Evaluation(
 	IsActive, 
+	EvaluateeID, 
 	EvaluatorID, 
-	EvaluationType, 
-	SchoolYear, 
-	DistrictCode, 
-	SchoolCode, 
+	FrameworkContextID,
 	WfState, 
 	ComprehensiveCarryForward, 
 	CreationDateTime)
-SELECT u.Id, 
+SELECT 
 	1,
+	u.Id, 
 	NULL, 
-	@pEvaluationType, 
-	@SchoolYear, 
-	@pDistrictCode, 
-	u.SchoolCode, 
+	@pFrameworkContextId, 
 	1, 
 	0, 
 	getdate()
@@ -149,15 +107,13 @@ INSERT dbo.StudentGrowthGoalBundle(
 	SharingDraft,
 	EvaluatorScoresShared) 
 SELECT e.Id,
-	   CASE e.EvaluationType WHEN 2 THEN @TR_WfStateID ELSE @PR_WfStateID END,
-	   e.EvaluationType,
+	   CASE @EvaluationType WHEN 2 THEN @TR_WfStateID ELSE @PR_WfStateID END,
+	   @EvaluationType,
 	   0,
 	   0,
 	   0
   FROM dbo.Evaluation e
- WHERE e.DistrictCode=@pDistrictCode
-   AND e.SchoolYear=@SchoolYear
-   AND e.EvaluationType=@pEvaluationType
+ WHERE e.FrameworkContextID=@pFrameworkContextID
 
   SELECT @EvalID=SCOPE_IDENTITY(), @sql_error = @@ERROR
 		IF @sql_error <> 0
@@ -172,9 +128,7 @@ SELECT e.Id,
 --  FROM dbo.SEEvaluation e
 --  JOIN dbo.SEStudentGrowthGoalBundle b ON e.EvaluationID=b.EvaluationID
 --  JOIN dbo.#User u ON e.EvaluateeID=u.UserID
--- WHERE e.DistrictCode=@pDistrictCode
---   AND e.SchoolYear=@SchoolYear
---   AND e.EvaluationTypeID=@pEvaluationTypeID
+-- WHERE e.FrameworkContextID=@pFrameworkContextID
  
 --  SELECT @sql_error = @@ERROR
 --		IF @sql_error <> 0
@@ -194,16 +148,15 @@ SELECT e.Id,
 --	  FROM dbo.SEEvaluation e
 --	  JOIN dbo.#User u ON e.EvaluateeID=u.UserID
 --	  JOIN dbo.SEEvaluation e_prev ON e.EvaluateeID=e_prev.EvaluateeID
+--    JOIN dbo.SEFrameworkContext fc_prev on e._prev.FrameworkContextID=fc_prev.Id
 --	  LEFT OUTER JOIN dbo.SEFrameworkNode fn_focus_prev on e_prev.FocusedFrameworkNodeID=fn_focus_prev.FrameworkNodeID
 --	  LEFT OUTER JOIN dbo.SEFrameworkNode fn_focus_sg_prev on e_prev.FocusedSGFrameworkNodeID=fn_focus_sg_prev.FrameworkNodeID
 --	  LEFT OUTER JOIN dbo.SEFrameworkNode fn_suggested_focus_prev on e_prev.NextYearFocusedFrameworkNodeID=fn_suggested_focus_prev.FrameworkNodeID
 --	  LEFT OUTER JOIN dbo.SEFrameworkNode fn_suggested_focus_sg_prev on e_prev.NextYearFocusedSGFrameworkNodeID=fn_suggested_focus_sg_prev.FrameworkNodeID
---	 WHERE e.EvaluationTypeID=e_prev.EvaluationTypeID
+--	 WHERE fc.EvaluationType=fc_prev.EvaluationType
 --	   AND e.DistrictCode=e_prev.DistrictCode
 --	   AND e.SchoolYear-1=e_prev.SchoolYear
---	   AND e.SchoolYear=@pSchoolYear
---	   AND e.DistrictCode=@pDistrictCode
---	   AND e.EvaluationTypeID=@pEvaluationTypeID
+--	   AND e.FrameworkContextID=@pFrameworkContextID
 
 -- SELECT @EvalID=SCOPE_IDENTITY(), @sql_error = @@ERROR
 --		IF @sql_error <> 0
@@ -236,12 +189,10 @@ SELECT e.Id,
 			fn.shortName
 	  FROM dbo.StudentGrowthGoalBundle gb
 	  JOIN dbo.Evaluation e ON e.Id=gb.EvaluationID
-	  JOIN dbo.FrameworkContext fc on fc.DistrictCode = e.DistrictCode AND fc.SchoolYear = e.SchoolYear AND fc.EvaluationType = e.EvaluationType
+	  JOIN dbo.FrameworkContext fc on fc.Id = e.FrameworkContextId
 	  JOIN dbo.Framework f on fc.StateFrameworkID=f.Id
 	  JOIN dbo.FrameworkNode fn on f.Id=fn.FrameworkID
-	 WHERE e.DistrictCode=@pDistrictCode
-	   AND e.SchoolYear=@SchoolYear
-	   AND e.EvaluationType=@pEvaluationType
+	 WHERE e.FrameworkContextID=@pFrameworkContextID
 	   AND fn.IsStudentGrowthAligned = 1
 	   AND f.Id = fc.StateFrameworkID
 	
@@ -274,9 +225,7 @@ SELECT e.Id,
 --SELECT e.EvaluationID
 --  FROM dbo.SEEvaluation e
 --  JOIN dbo.#User u ON e.EvaluateeID=u.UserID
--- WHERE e.DistrictCode=@pDistrictCode
---   AND e.SchoolYear=@SchoolYear
---   AND e.EvaluationTypeID=@pEvaluationTypeID
+-- WHERE e.FrameworkContextID=@pFrameworkContextID
  
 --  SELECT @sql_error = @@ERROR
 --		IF @sql_error <> 0
@@ -291,9 +240,7 @@ SELECT e.Id,
 --  FROM dbo.SEEvaluation e
 --  JOIN dbo.SEOtherEvidenceCollection oe ON e.EvaluationID=oe.EvaluationID
 --  JOIN dbo.#User u ON e.EvaluateeID=u.UserID
--- WHERE e.DistrictCode=@pDistrictCode
---   AND e.SchoolYear=@SchoolYear
---   AND e.EvaluationTypeID=@pEvaluationTypeID
+-- WHERE e.FrameworkContextID=@pFrameworkContextID
  
 --  SELECT @sql_error = @@ERROR
 --		IF @sql_error <> 0

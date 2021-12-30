@@ -14,14 +14,7 @@ namespace SE.Domain.Entities
         public DateTime CreationDateTime { get; set; }
         public bool IsActive { get; set; }
         public string DeactivateMessage { get; set; }
-
-        public EvaluationType EvaluationType { get; set; }
-        public SchoolYear SchoolYear { get; set; }
         public WfState WfState { get; set; }
-
-        [MaxLength(20)]
-        [Required]
-        public string DistrictCode { get; set; }
 
         [MaxLength(20)]
         public string SchoolCode { get; set; }
@@ -78,7 +71,10 @@ namespace SE.Domain.Entities
         public bool? SelfEvalShared { get; set; }
         public bool? VisibleToEvaluatee { get; set; }
 
-
+        [ForeignKey("FrameworkContext")]
+        public long FrameworkContextId { get; set; }
+        [Required]
+        public virtual FrameworkContext FrameworkContext { get; set; }
 
         [ForeignKey("Evaluatee")]
         public long EvaluateeId { get; set; }

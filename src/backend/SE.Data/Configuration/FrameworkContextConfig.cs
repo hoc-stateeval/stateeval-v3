@@ -34,6 +34,12 @@ namespace SE.Data.Configuration
                 .IsRequired()
                 .OnDelete(DeleteBehavior.NoAction);
 
+            builder
+            .HasOne(x => x.EvaluateeRole)
+            .WithMany()
+            .IsRequired()
+            .OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }

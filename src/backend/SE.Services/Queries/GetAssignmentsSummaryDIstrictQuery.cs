@@ -88,10 +88,8 @@ namespace SE.Services.Queries
 
                     var evaluations = _dataContext.Evaluations
                         .Where(x => x.IsActive &&
-                                x.SchoolYear == EnumUtils.CurrentSchoolYear &&
-                                x.DistrictCode == frameworkContext.DistrictCode &&
-                                x.SchoolCode == school.SchoolCode &&
-                                x.EvaluationType == frameworkContext.EvaluationType)
+                                x.FrameworkContextId == frameworkContext.Id &&
+                                x.SchoolCode == school.SchoolCode)
                         .ToList();
 
                     summary.UnassignedCount = 0;

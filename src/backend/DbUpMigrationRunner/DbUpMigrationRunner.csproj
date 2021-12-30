@@ -8,12 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="SeedData\Core\000001_initRoles.sql" />
     <None Remove="SeedData\Core\00001_LEADER_2021.sql" />
     <None Remove="SeedData\Core\00002_DAN_TR_2021.sql" />
     <None Remove="SeedData\Core\00003_MAR_TR_2021.sql" />
     <None Remove="SeedData\Core\00004_CEL_TR_2021.sql" />
     <None Remove="SeedData\Core\00005_MAR_PR_2021.sql" />
-    <None Remove="SeedData\Core\00006_initRoles.sql" />
     <None Remove="SeedData\Core\00007_initWorkAreas.sql" />
     <None Remove="SeedData\Development\00009_initBuildings.sql" />
     <None Remove="SeedData\Development\00010_initFrameworksToLoad.sql" />
@@ -28,7 +28,7 @@
     <EmbeddedResource Include="SeedData\Core\00003_MAR_TR_2021.sql" />
     <EmbeddedResource Include="SeedData\Core\00004_CEL_TR_2021.sql" />
     <EmbeddedResource Include="SeedData\Core\00005_MAR_PR_2021.sql" />
-    <EmbeddedResource Include="SeedData\Core\00006_initRoles.sql" />
+    <EmbeddedResource Include="SeedData\Core\000001_initRoles.sql" />
     <EmbeddedResource Include="SeedData\Core\00007_initWorkAreas.sql" />
     <EmbeddedResource Include="SeedData\Development\00009_initBuildings.sql" />
     <EmbeddedResource Include="SeedData\Development\00010_initFrameworksToLoad.sql" />

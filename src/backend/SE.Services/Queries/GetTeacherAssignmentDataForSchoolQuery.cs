@@ -60,20 +60,15 @@ namespace SE.Services.Queries
 
                 result.EvaluationSummaries = await _evaluationService
                     .ExecuteEvaluationSummaryDTOQuery(x => x.IsActive &&
-                                x.SchoolYear == EnumUtils.CurrentSchoolYear &&
-                                x.DistrictCode == frameworkContext.DistrictCode &&
-                                x.SchoolCode == request.SchoolCode &&
-                                x.EvaluationType == EvaluationType.TEACHER)
+                                x.FrameworkContextId == frameworkContext.Id &&
+                                x.SchoolCode == request.SchoolCode)
                     .ToListAsync();
 
-                result.Evaluatees = await _userService.GetUsersInRoleAtSchool(request.SchoolCode,
-                                            EnumUtils.MapRoleTypeToDisplayName(RoleType.TR));
+                result.Evaluatees = await _userService.GetUsersInRoleAtSchool(request.SchoolCode, RoleType.TR);
 
-                result.Principals = await _userService.GetUsersInRoleAtDistrictBuildings(frameworkContext.DistrictCode, 
-                                                            EnumUtils.MapRoleTypeToDisplayName(RoleType.PR));
+                result.Principals = await _userService.GetUsersInRoleAtSchools(frameworkContext.DistrictCode,RoleType.PR);
 
-                result.DistrictWideTeacherEvaluators = await _userService.GetUsersInRoleAtDistrict(frameworkContext.DistrictCode, 
-                                                            EnumUtils.MapRoleTypeToDisplayName(RoleType.DTE));
+                result.DistrictWideTeacherEvaluators = await _userService.GetUsersInRoleAtDistrict(frameworkContext.DistrictCode, RoleType.DTE);
                 return result;
                 
             }

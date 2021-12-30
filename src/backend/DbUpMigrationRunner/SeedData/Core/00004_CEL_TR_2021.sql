@@ -3,6 +3,9 @@
 	DECLARE @StateFrameworkID BIGINT, @FrameworkNodeID BIGINT, @InstructionalFrameworkID BIGINT, @RubricRowID BIGINT
 	DECLARE @PNode BIGINT, @SENode BIGINT, @CPNode BIGINT, @ANode BIGINT, @CECNode BIGINT, @PCCNode BIGINT
 	DECLARE @C1Node Bigint, @C2Node BIGINT, @C3Node BIGINT, @C4Node BIGINT, @C5Node BIGINT, @C6Node BIGINT, @C7Node BIGINT, @C8Node BIGINT
+	DECLARE @EvaluateeRoleID BIGINT
+	
+	SELECT @EvaluateeRoleID = Id FROM [Role] WHERE EDSName='SESchoolTeacher'
 
 	insert Framework(Name, SchoolYear, FrameworkTagName)
 	values('CEL State', 2021, 'CEL')
@@ -13,8 +16,8 @@
 	SELECT @InstructionalFrameworkID = SCOPE_IDENTITY()
 
 
-	INSERT FrameworkContextPrototype(FrameworkTagName, Name, SchoolYear, EvaluationType, StateFrameworkID, InstructionalFrameworkID)
-	values('CEL', 'CEL 5D+ Teacher Evaluation Rubric 3.0', 2021, 2, @StateFrameworkID, @InstructionalFrameworkID)
+	INSERT FrameworkContextPrototype(FrameworkTagName, Name, EvaluateeRoleID, SchoolYear, EvaluationType, StateFrameworkID, InstructionalFrameworkID)
+	values('CEL', 'CEL 5D+ Teacher Evaluation Rubric 3.0', @EvaluateeRoleID, 2021, 2, @StateFrameworkID, @InstructionalFrameworkID)
 
 
 	insert Frameworknode(FrameworkID, Title, ShortName, Sequence, IsStudentGrowthAligned, SchoolYear, FrameworkTagName)

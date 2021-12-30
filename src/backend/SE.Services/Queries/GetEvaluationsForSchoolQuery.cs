@@ -20,23 +20,19 @@ namespace SE.Services.Queries
     {
         public GetEvaluationsForSchoolQueryValidator()
         {
-            RuleFor(x => x.DistrictCode).NotEmpty();
             RuleFor(x => x.SchoolCode).NotEmpty();
-            RuleFor(x => x.EvaluationType).NotEmpty();
         }
     }
     public sealed class GetEvaluationsForSchoolQuery :
         IRequest<List<EvaluationSummaryDTO>>
     {
-        public string DistrictCode { get; }
+        public long FrameworkContextId { get; }
         public string SchoolCode { get; }
-        public EvaluationType EvaluationType { get; }
 
-        public GetEvaluationsForSchoolQuery(string districtCode, string schoolCode, EvaluationType evaluationType)
+        public GetEvaluationsForSchoolQuery(long frameworkContextId, string schoolCode)
         {
-            DistrictCode = districtCode;
+            FrameworkContextId = frameworkContextId;
             SchoolCode = schoolCode;
-            EvaluationType = evaluationType;
         }
 
         internal sealed class GetEvaluationsForSchoolQueryHandler : 
@@ -54,10 +50,8 @@ namespace SE.Services.Queries
             {
                 var evaluations = await _evaluationService
                 .ExecuteEvaluationSummaryDTOQuery(x => x.IsActive &&
-                                x.SchoolYear == EnumUtils.CurrentSchoolYear &&
-                                x.DistrictCode == request.DistrictCode &&
-                                x.SchoolCode == request.SchoolCode &&
-                                x.EvaluationType == request.EvaluationType)
+                                x.FrameworkContextId == request.FrameworkContextId &&
+                                x.SchoolCode == request.SchoolCode)
                 .ToListAsync();
 
                 return evaluations;

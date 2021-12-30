@@ -47,5 +47,11 @@ namespace SE.Domain.Entities
         public long PrototypeFrameworkContextId { get; set; }
         [Required]
         public virtual FrameworkContextPrototype PrototypeFrameworkContext { get; set; }
+
+        [ForeignKey("EvaluateeRole")]
+        public long EvaluateeRoleId { get; set; }
+
+        [Required]
+        public virtual Role EvaluateeRole { get; set; }
     }
 }

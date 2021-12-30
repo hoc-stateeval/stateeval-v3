@@ -20,26 +20,18 @@ namespace SE.Services.Queries
     {
         public GetEvaluationsForEvaluatorQueryValidator()
         {
-            RuleFor(x => x.EvaluatorId).NotEmpty();
-            RuleFor(x => x.DistrictCode).NotEmpty();
-            RuleFor(x => x.SchoolCode).NotEmpty();
-            RuleFor(x => x.EvaluationType).NotEmpty();
         }
     }
     public sealed class GetEvaluationsForEvaluatorQuery :
         IRequest<List<EvaluationSummaryDTO>>
     {
+        public long FrameworkContextId { get; }
         public long EvaluatorId { get; }
-        public string DistrictCode { get; }
-        public string SchoolCode { get; }
-        public EvaluationType EvaluationType { get; }
 
-        public GetEvaluationsForEvaluatorQuery(long evaluatorId, string districtCode, string schoolCode, EvaluationType evaluationType)
+        public GetEvaluationsForEvaluatorQuery(long frameworkContextId, long evaluatorId)
         {
+            FrameworkContextId = frameworkContextId;
             EvaluatorId = evaluatorId;
-            DistrictCode = districtCode;
-            SchoolCode = schoolCode;
-            EvaluationType = evaluationType;
         }
 
         internal sealed class GetEvaluationsForEvaluatorQueryHandler : 
@@ -56,12 +48,10 @@ namespace SE.Services.Queries
             public async Task<List<EvaluationSummaryDTO>> Handle(GetEvaluationsForEvaluatorQuery request, CancellationToken cancellationToken)
             {
                 var evaluations = await _evaluationService
-                    .ExecuteEvaluationSummaryDTOQuery(x => x.IsActive &&
-                              x.SchoolYear == EnumUtils.CurrentSchoolYear &&
-                              x.DistrictCode == request.DistrictCode &&
-                              (String.IsNullOrEmpty(x.SchoolCode) || x.SchoolCode == request.SchoolCode) &&
-                              x.EvaluatorId == request.EvaluatorId &&
-                              x.EvaluationType == request.EvaluationType)
+                    .ExecuteEvaluationSummaryDTOQuery(
+                            x => x.IsActive &&
+                            x.FrameworkContextId == request.FrameworkContextId &&
+                            x.EvaluatorId == request.EvaluatorId)
                     .ToListAsync();
 
                 return evaluations;

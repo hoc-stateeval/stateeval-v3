@@ -56,10 +56,8 @@ namespace SE.Services.Queries
 
                 var evaluations = await _evaluationService
                     .ExecuteEvaluationSummaryDTOQuery(x => x.IsActive &&
-                                x.SchoolYear == EnumUtils.CurrentSchoolYear &&
-                                x.DistrictCode == workAreaContext.Building.DistrictCode &&
+                                x.FrameworkContextId == workAreaContext.FrameworkContextId &&
                                 x.SchoolCode == workAreaContext.Building.SchoolCode &&
-                                x.EvaluationType == workAreaContext.FrameworkContext.EvaluationType &&
                                 (
                                  // Evaluatee - can only see their own evaluation
                                  workAreaContext.WorkArea.IsEvaluatee && x.EvaluateeId == workAreaContext.UserId ||

@@ -144,7 +144,7 @@ export const setActiveDistrictViewerEvaluator = createAsyncThunk(
     const school = getActiveDistrictViewerSchool(getState());
     const schoolCode = school.schoolCode;
 
-    const url = `evaluations/${workAreaContext.districtCode}/${schoolCode}/${workAreaContext.evaluationType}/${evaluatorId}`;
+    const url = `evaluations/${workAreaContext.frameworkContextId}/${evaluatorId}`;
     const response = await get(url);
     const evaluations = response.data;
 

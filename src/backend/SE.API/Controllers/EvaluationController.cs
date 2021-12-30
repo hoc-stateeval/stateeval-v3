@@ -62,9 +62,9 @@ namespace SE.API.Controllers
         }
 
         [HttpGet("{districtCode}/{schoolCode?}/{evalType}/{evaluatorId}")]
-        public async Task<IActionResult> GetEvaluationsForEvaluator(string districtCode, string schoolCode, EvaluationType evalType, long evaluatorId)
+        public async Task<IActionResult> GetEvaluationsForEvaluator(long frameworkContextId, long evaluatorId)
         {
-            var evaluations = await _mediator.Send(new GetEvaluationsForEvaluatorQuery(evaluatorId, districtCode, schoolCode, evalType));
+            var evaluations = await _mediator.Send(new GetEvaluationsForEvaluatorQuery(frameworkContextId, evaluatorId));
             return Ok(evaluations);
         }
     }

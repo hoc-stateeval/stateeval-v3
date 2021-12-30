@@ -14,6 +14,7 @@ namespace SE.Core.Models
         public long EvaluateeId { get; set; }
         public long? EvaluatorId { get; set; }
 
+        public long FrameworkContextId { get; set; }    
         public SchoolYear SchoolYear { get; set; }
         public string SchoolYearDisplayName { get; set; }
 

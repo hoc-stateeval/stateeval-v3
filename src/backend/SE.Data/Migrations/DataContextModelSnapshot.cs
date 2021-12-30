@@ -215,11 +215,6 @@ namespace SE.Data.Migrations
                     b.Property<string>("DeactivateMessage")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DistrictCode")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
                     b.Property<bool?>("DropToPaper")
                         .HasColumnType("bit");
 
@@ -244,9 +239,6 @@ namespace SE.Data.Migrations
                     b.Property<bool?>("EvaluateeReflectionsIsPublic")
                         .HasColumnType("bit");
 
-                    b.Property<int>("EvaluationType")
-                        .HasColumnType("int");
-
                     b.Property<long?>("EvaluatorId")
                         .HasColumnType("bigint");
 
@@ -266,6 +258,9 @@ namespace SE.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<long?>("FocusedSGFrameworkNodeId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("FrameworkContextId")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("IsActive")
@@ -319,9 +314,6 @@ namespace SE.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("SchoolYear")
-                        .HasColumnType("int");
-
                     b.Property<bool?>("SelfEvalComplete")
                         .HasColumnType("bit");
 
@@ -366,6 +358,8 @@ namespace SE.Data.Migrations
                     b.HasIndex("FocusedFrameworkNodeId");
 
                     b.HasIndex("FocusedSGFrameworkNodeId");
+
+                    b.HasIndex("FrameworkContextId");
 
                     b.HasIndex("ModifiedCompFocusedFrameworkNode2Id");
 
@@ -418,6 +412,9 @@ namespace SE.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<long>("EvaluateeRoleId")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("EvaluationType")
                         .HasColumnType("int");
 
@@ -453,6 +450,8 @@ namespace SE.Data.Migrations
 
                     b.HasIndex("DefaultFrameworkId");
 
+                    b.HasIndex("EvaluateeRoleId");
+
                     b.HasIndex("InstructionalFrameworkId");
 
                     b.HasIndex("PrototypeFrameworkContextId");
@@ -469,6 +468,9 @@ namespace SE.Data.Migrations
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<long>("EvaluateeRoleId")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("EvaluationType")
                         .HasColumnType("int");
@@ -493,6 +495,8 @@ namespace SE.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EvaluateeRoleId");
 
                     b.HasIndex("InstructionalFrameworkId");
 
@@ -1026,6 +1030,12 @@ namespace SE.Data.Migrations
                         .WithMany()
                         .HasForeignKey("FocusedSGFrameworkNodeId");
 
+                    b.HasOne("SE.Domain.Entities.FrameworkContext", "FrameworkContext")
+                        .WithMany()
+                        .HasForeignKey("FrameworkContextId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SE.Domain.Entities.FrameworkNode", "ModifiedCompFocusedFrameworkNode2")
                         .WithMany()
                         .HasForeignKey("ModifiedCompFocusedFrameworkNode2Id");
@@ -1046,6 +1056,8 @@ namespace SE.Data.Migrations
 
                     b.Navigation("FocusedSGFrameworkNode");
 
+                    b.Navigation("FrameworkContext");
+
                     b.Navigation("ModifiedCompFocusedFrameworkNode2");
 
                     b.Navigation("NextYearFocusedFrameworkNode");
@@ -1058,6 +1070,12 @@ namespace SE.Data.Migrations
                     b.HasOne("SE.Domain.Entities.Framework", "DefaultFramework")
                         .WithMany()
                         .HasForeignKey("DefaultFrameworkId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SE.Domain.Entities.Role", "EvaluateeRole")
+                        .WithMany()
+                        .HasForeignKey("EvaluateeRoleId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -1079,6 +1097,8 @@ namespace SE.Data.Migrations
 
                     b.Navigation("DefaultFramework");
 
+                    b.Navigation("EvaluateeRole");
+
                     b.Navigation("InstructionalFramework");
 
                     b.Navigation("PrototypeFrameworkContext");
@@ -1088,6 +1108,12 @@ namespace SE.Data.Migrations
 
             modelBuilder.Entity("SE.Domain.Entities.FrameworkContextPrototype", b =>
                 {
+                    b.HasOne("SE.Domain.Entities.Role", "EvaluateeRole")
+                        .WithMany()
+                        .HasForeignKey("EvaluateeRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SE.Domain.Entities.Framework", "InstructionalFramework")
                         .WithMany()
                         .HasForeignKey("InstructionalFrameworkId");
@@ -1097,6 +1123,8 @@ namespace SE.Data.Migrations
                         .HasForeignKey("StateFrameworkId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("EvaluateeRole");
 
                     b.Navigation("InstructionalFramework");
 
@@ -1174,7 +1202,7 @@ namespace SE.Data.Migrations
                     b.HasOne("SE.Domain.Entities.Evaluation", "Evaluation")
                         .WithMany()
                         .HasForeignKey("EvaluationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SE.Domain.Entities.FrameworkNode", "FrameworkNode")

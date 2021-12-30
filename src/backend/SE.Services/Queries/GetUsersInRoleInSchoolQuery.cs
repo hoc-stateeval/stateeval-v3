@@ -41,15 +41,15 @@ namespace SE.Core.Queries
         internal sealed class GetUsersInRoleInSchoolQueryHandler : 
             IRequestHandler<GetUsersInRoleInSchoolQuery, List<UserDTO>>
         {
-            private readonly IBuildingService _buildingService;
-            public GetUsersInRoleInSchoolQueryHandler(IBuildingService buildingService)
+            private readonly IUserService _userService;
+            public GetUsersInRoleInSchoolQueryHandler(IUserService userService)
             {
-                _buildingService = buildingService;
+                _userService = userService;
             }
 
             public async Task<List<UserDTO>> Handle(GetUsersInRoleInSchoolQuery request, CancellationToken cancellationToken)
             {
-                var user = await _buildingService.GetUsersInRoleInSchool(request.DistrictCode, request.SchoolCode, request.RoleType);
+                var user = await _userService.GetUsersInRoleAtSchool(request.SchoolCode, request.RoleType);
                 return user;
             }
         }
