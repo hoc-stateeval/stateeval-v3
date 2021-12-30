@@ -12,7 +12,7 @@ using SE.Data;
 namespace SE.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211223231203_init")]
+    [Migration("20211230022108_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -699,11 +699,11 @@ namespace SE.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
+                    b.Property<bool>("EvaluationSetupDelegated")
+                        .HasColumnType("bit");
+
                     b.Property<long>("FrameworkContextId")
                         .HasColumnType("bigint");
-
-                    b.Property<bool>("IsPrincipalAssignmentDelegated")
-                        .HasColumnType("bit");
 
                     b.Property<string>("SchoolCode")
                         .IsRequired()

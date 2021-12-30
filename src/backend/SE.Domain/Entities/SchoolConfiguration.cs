@@ -14,7 +14,8 @@ namespace SE.Domain.Entities
         [MaxLength(20)]
         [Required]
         public string SchoolCode { get; set; } = String.Empty;
-        public bool IsPrincipalAssignmentDelegated { get; set; }
+
+        public bool EvaluationSetupDelegated { get; set; }
 
         [ForeignKey("FrameworkContext")]
         public long FrameworkContextId { get; set; }

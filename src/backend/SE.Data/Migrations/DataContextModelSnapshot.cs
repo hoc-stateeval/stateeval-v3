@@ -697,11 +697,11 @@ namespace SE.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
+                    b.Property<bool>("EvaluationSetupDelegated")
+                        .HasColumnType("bit");
+
                     b.Property<long>("FrameworkContextId")
                         .HasColumnType("bigint");
-
-                    b.Property<bool>("IsPrincipalAssignmentDelegated")
-                        .HasColumnType("bit");
 
                     b.Property<string>("SchoolCode")
                         .IsRequired()

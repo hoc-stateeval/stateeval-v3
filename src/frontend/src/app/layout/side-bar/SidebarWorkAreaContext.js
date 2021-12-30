@@ -15,7 +15,6 @@ import {
   setActiveDistrictViewerSchool,
 } from '../../store/stateEval/userContextSlice';
 import {
-  Divider,
   List,
   ListSubheader,
   MenuItem,
@@ -85,7 +84,7 @@ const getFilteredWorkAreaContexts = (workAreaContexts, schoolCode) => {
   );
 }
 
-const SidebarProfile = () => {
+const SidebarWorkAreaContext = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -305,4 +304,4 @@ const SidebarProfile = () => {
   );
 };
 
-export default SidebarProfile;
+export default SidebarWorkAreaContext;

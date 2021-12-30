@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import {
   Box,
   Drawer,
@@ -9,9 +8,9 @@ import {
 } from '@mui/material';
 import { Scrollbar } from '../../components/Scrollbar';
 import SidebarSection from './SidebarSection';
-import SidebarProfile from './SidebarProfile';
+import SidebarWorkAreaContext from './SidebarWorkAreaContext';
 import buildNavSectionsForWorkArea from './buildNavSectionsForWorkArea';
-import { selectCurrentUser, selectActiveWorkAreaContext } from '../../store/stateEval/userContextSlice';
+import { selectActiveWorkAreaContext } from '../../store/stateEval/userContextSlice';
 import SidebarLogo from './SidebarLogo';
 
 const Sidebar = ({ onClose, open, sidebarWidth }) => {
@@ -32,7 +31,7 @@ const Sidebar = ({ onClose, open, sidebarWidth }) => {
       >
         <Stack sx={{pt:2}} spacing={2}>
           <SidebarLogo/>
-          <SidebarProfile />
+          <SidebarWorkAreaContext />
           <Box sx={{ flexGrow: 1 }}>
               {navSections.map((section) => (
                 <SidebarSection
@@ -79,10 +78,5 @@ const Sidebar = ({ onClose, open, sidebarWidth }) => {
     </Drawer>
   );
 }
-
-Sidebar.propTypes = {
-  onClose: PropTypes.func,
-  open: PropTypes.bool
-};
 
 export default Sidebar;

@@ -10,50 +10,41 @@ using Microsoft.EntityFrameworkCore;
 using SE.Data;
 using SE.Domain.Entities;
 using SE.Core.Models;
+using SE.Core.Services;
 
 namespace SE.Core.Queries
 {
-    public class GetSchoolConfigurationByIdQueryValidator
-    : AbstractValidator<GetSchoolConfigurationByIdQuery>
+    public class GetSchoolsInDistrictQueryValidator
+    : AbstractValidator<GetSchoolsInDistrictQuery>
     {
-        public GetSchoolConfigurationByIdQueryValidator()
+        public GetSchoolsInDistrictQueryValidator()
         {
-            RuleFor(x => x.Id).NotEmpty();
+            RuleFor(x => x.DistrictCode).NotEmpty();
         }
     }
-    public sealed class GetSchoolConfigurationByIdQuery : 
-        IRequest<SchoolConfigurationDTO>
+    public sealed class GetSchoolsInDistrictQuery :
+        IRequest<List<BuildingDTO>>
     {
-        public long Id { get; }
+        public string DistrictCode { get; }
 
-        public GetSchoolConfigurationByIdQuery(long id)
+        public GetSchoolsInDistrictQuery(string districtCode)
         {
-            Id = id;
+            DistrictCode = districtCode;
         }
 
-        internal sealed class GetSchoolConfigurationByIdQueryHandler : 
-            IRequestHandler<GetSchoolConfigurationByIdQuery, SchoolConfigurationDTO>
+        internal sealed class GetSchoolsInDistrictQueryHandler :
+            IRequestHandler<GetSchoolsInDistrictQuery, List<BuildingDTO>>
         {
-            private readonly DataContext _dataContext;
-            public GetSchoolConfigurationByIdQueryHandler(DataContext dataContext)
+            private readonly IBuildingService _buildingService;
+            public GetSchoolsInDistrictQueryHandler(IBuildingService buildingService)
             {
-                _dataContext = dataContext;
+                _buildingService = buildingService;
             }
 
-            public async Task<SchoolConfigurationDTO> Handle(GetSchoolConfigurationByIdQuery request, CancellationToken cancellationToken)
+            public async Task<List<BuildingDTO>> Handle(GetSchoolsInDistrictQuery request, CancellationToken cancellationToken)
             {
-                SchoolConfiguration? config = await _dataContext.SchoolConfigurations
-                    .Where(x => x.Id == request.Id).FirstOrDefaultAsync();
-
-                SchoolConfigurationDTO configDTO = new SchoolConfigurationDTO()
-                {
-                    Id = config.Id,
-                    SchoolCode = config.SchoolCode,
-                    FrameworkContextId = config.FrameworkContextId,
-                    IsPrincipalAssignmentDelegated = config.IsPrincipalAssignmentDelegated, 
-                };
-
-                return configDTO;
+                var schools = await _buildingService.GetSchoolsInDistrict(request.DistrictCode);
+                return schools;
             }
         }
     }

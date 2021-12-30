@@ -28,10 +28,12 @@ const LocalLogin = () => {
 
   const {
     data: districts,
+    isLoading: isLoadingDistricts,
   } = useGetLocalLoginDistrictsQuery();
 
   const {
-    data: users
+    data: users,
+    isLoading: isLoadingUsers,
   } = useGetLocalLoginUsersForDistrictQuery(districtCode, {skip: districtCode===''});
 
   useEffect(() => {
@@ -61,12 +63,13 @@ const LocalLogin = () => {
       direction="column"
       alignItems="center"
       justifyContent="center"
-      style={{ minHeight: '100vh' }}
+      style={{ minHeight: '100vh'}}
     >
       <Grid item xs={3}>
       <Card
             elevation={16}
             sx={{ p: 4,
+              minWidth: '400px',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
@@ -78,12 +81,15 @@ const LocalLogin = () => {
               <Typography variant="h4" sx={{textAlign:'center'}}>
                 Log in
               </Typography>
+              {(districts &&  users)?
+              (
+              <>
               <TextField label="District" sx={{minWidth:'200px'}}
                 select
                 value={districtCode}
                 onChange={(e) => { setDistrictCode(e.target.value); }}
               >
-                {districts && districts.map((x) => (
+                {districts.map((x) => (
                       <MenuItem key={x.districtCode} value={x.districtCode}>
                         {x.name}
                       </MenuItem>
@@ -94,12 +100,16 @@ const LocalLogin = () => {
                 value={userId}
                 onChange={(e) => { setUserId(parseInt(e.target.value, 10)); }}
               >
-               {users && users.map((x) => (
+               {users.map((x) => (
                     <MenuItem key={`${x.displayName} ${x.roleName}`} value={x.id}>
                       {x.displayName} ({x.roleName})
                     </MenuItem>
                   ))}
               </TextField>
+              </>)
+              : (
+                <div>Loading...</div>
+              )}
             <Button
               variant="contained"
               color="secondary"

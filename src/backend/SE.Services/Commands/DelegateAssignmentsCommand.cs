@@ -14,35 +14,37 @@ using SE.Core.Common.Exceptions;
 
 namespace SE.Core.Commands
 {
-    public class DelegateAssignmentsCommandValidator
-    : AbstractValidator<DelegateAssignmentsCommand>
+    public class DelegateEvaluationSetupCommandValidator
+    : AbstractValidator<DelegateEvaluationSetupCommand>
     {
-        public DelegateAssignmentsCommandValidator()
+        public DelegateEvaluationSetupCommandValidator()
         {
             RuleFor(x=>x.FrameworkContextId).NotEmpty();
         }
     }
-    public sealed class DelegateAssignmentsCommand :
+    public sealed class DelegateEvaluationSetupCommand :
         IRequest<Unit>
     {
         public long FrameworkContextId { get; }
+        public bool DelegateEvalSetup { get; }
 
-        public DelegateAssignmentsCommand(long frameworkContextId)
+        public DelegateEvaluationSetupCommand(long frameworkContextId, bool delegateEvalSetup)
         {
             FrameworkContextId = frameworkContextId;
+            DelegateEvalSetup = delegateEvalSetup;
         }
     }
 
-    public class DelegateAssignmentsCommandHandler :
-    IRequestHandler<DelegateAssignmentsCommand, Unit>
+    public class DelegateEvaluationSetupCommandHandler :
+    IRequestHandler<DelegateEvaluationSetupCommand, Unit>
     {
         private readonly DataContext _dataContext;
-        public DelegateAssignmentsCommandHandler(DataContext dataContext)
+        public DelegateEvaluationSetupCommandHandler(DataContext dataContext)
         {
             _dataContext = dataContext;
         }
 
-        public async Task<Unit> Handle(DelegateAssignmentsCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DelegateEvaluationSetupCommand request, CancellationToken cancellationToken)
         {
             FrameworkContext? frameworkContext = await _dataContext.FrameworkContexts
                    .Where(x => x.Id == request.FrameworkContextId)
@@ -58,7 +60,7 @@ namespace SE.Core.Commands
 
             configs.ForEach(x =>
             {
-                x.IsPrincipalAssignmentDelegated = true;
+                x.EvaluationSetupDelegated = request.DelegateEvalSetup;
             });
 
             _dataContext.SaveChanges();

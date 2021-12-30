@@ -2,17 +2,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import { get, put } from '../../../core/api';
-import {
-  selectActiveWorkAreaContext,
-} from '../../../store/stateEval/userContextSlice';
-
-import {
-  setPageTitle,
-} from '../../../store/stateEval/userContextSlice';
-
-import PageHeader from '../../../components/PageHeader';
-
 import {
   Alert,
   Button,
@@ -30,12 +19,22 @@ import {
 
 import CheckIcon from '@mui/icons-material/Check';
 
-const getAssignmentsDelegatedToAllSchools = (summaries) => {
-  summaries.reduce((acc, next) => {
-    if (!next.delegated) return false;
-    return true;
-  }, true);
-}
+import {
+  selectActiveWorkAreaContext,
+} from '../../../store/stateEval/userContextSlice';
+
+import {
+  setPageTitle,
+} from '../../../store/stateEval/userContextSlice';
+
+import PageHeader from '../../../components/PageHeader';
+
+import {
+  useGetSchoolConfigurationsForFrameworkContextQuery,
+  useGetTeacherAssignmentsSummaryForDistrictQuery,
+  useUpdateSchoolConfigurationMutation,
+  useUpdateSchoolConfigurationBatchEvaluationSetupDelegationMutation,
+ } from '../../../core/apiSlice';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -45,62 +44,70 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.primary
 }));
 
+
+const getEvaluationSetupDelegatedToAllSchools = (schoolConfigs) => {
+  schoolConfigs.reduce((acc, next) => {
+    if (!next.evaluationSetupDelegated) return false;
+    return true;
+  }, true);
+}
+
 const AssignmentsSummary = () => {
 
   const dispatch = useDispatch();
   const pageTitle = "Assignments for Teacher Evaluations";
-  const [summaries, setSummaries] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [assignedCount, setAssignedCount] = useState(0);
-  const [assignmentsDelegatedToAllSchools, setAssignmentsDelegatedToAllSchools] = 
-            useState(getAssignmentsDelegatedToAllSchools(summaries));
+  const [setupDelegatedToAllSchools, setSetupDelegatedToAllSchools] = useState(false);
 
   const workAreaContext = useSelector(selectActiveWorkAreaContext);
 
-  useEffect(()=> {
-    dispatch(setPageTitle(pageTitle));
-  }, [dispatch]);
+  const { data: schoolConfigs } = useGetSchoolConfigurationsForFrameworkContextQuery(workAreaContext.frameworkContextId);
+  const { data: summaries } = useGetTeacherAssignmentsSummaryForDistrictQuery(workAreaContext.frameworkContextId);
+  const [ updateSchoolConfiguration] = useUpdateSchoolConfigurationMutation();
+  const [ batchUpdateEvaluationSetupDelegation] = useUpdateSchoolConfigurationBatchEvaluationSetupDelegationMutation();
 
   useEffect(()=> {
+    if (schoolConfigs?.length>0) {
+      setSetupDelegatedToAllSchools(getEvaluationSetupDelegatedToAllSchools(schoolConfigs));
+    }
+  }, [schoolConfigs]);
 
-    (async () => {
-      const frameworkContextId = workAreaContext.frameworkContextId;
-      const response = await get(`assignments/tr-assignments-summary/${frameworkContextId}`);
-      const data = await response.data;
-      setSummaries(data);
-      const totalCount = data.reduce((totalCount, next) => {
+  useEffect(() => {
+    if (summaries?.length>0) {
+       const totalCount = summaries.reduce((totalCount, next) => {
         totalCount+=next.totalCount;
         return totalCount;
       }, 0);
 
-      const assignedCount = data.reduce((assignedCount, next) => {
+      const assignedCount = summaries.reduce((assignedCount, next) => {
         assignedCount+=next.assignedCount;
         return assignedCount;
       }, 0);
 
       setTotalCount(totalCount);
       setAssignedCount(assignedCount);
-      
-    })();
+    }
+  }, [summaries]);
 
-  }, [workAreaContext]);
+  useEffect(()=> {
+    dispatch(setPageTitle(pageTitle));
+  }, [dispatch]);
 
-  const toggleDelegation = (row, event) => {
-    let summary = summaries.find(x=>x.schoolCode===row.schoolCode);
-    summary.delegated=!summary.delegated;
-    setSummaries([...summaries]);
-    setAssignmentsDelegatedToAllSchools(getAssignmentsDelegatedToAllSchools(summaries));
+
+  const toggleDelegationForSchool = (row, event) => {
+    let schoolConfig = schoolConfigs.find(x=>x.schoolCode===row.schoolCode);
+    updateSchoolConfiguration({...schoolConfig, evaluationSetupDelegated: !schoolConfig.evaluationSetupDelegated});
   };
 
   const handleClickDelegateToAllSchools = () => {
-    const result = summaries.map(x=>({...x, delegated:true}));
-    put(`assignments/${workAreaContext.frameworkContextId}/delegate`,
-      {
-        frameworkContextId: workAreaContext.frameworkContextId
-      }).then(()=> {
-      setSummaries(result);
-      setAssignmentsDelegatedToAllSchools(true);
-    })
+    const delegateSetup = !setupDelegatedToAllSchools;
+    batchUpdateEvaluationSetupDelegation({
+      frameworkContextId: workAreaContext.frameworkContextId,
+      delegateEvaluationSetup: delegateSetup,
+    }).then(()=> {
+      setSetupDelegatedToAllSchools(delegateSetup);
+    });
   }
 
   return (
@@ -114,8 +121,8 @@ const AssignmentsSummary = () => {
       Districts can choose to allow school admins and principals to perform these tasks. Click the delegate to all schools button, or check the column for individual schools,
        to allow schools to perform these tasks.
     </Typography>
-    {assignmentsDelegatedToAllSchools?
-      (<Alert severity="info" sx={{mb:2}}>Assignments have been delegated to all schools</Alert>):
+    {setupDelegatedToAllSchools?
+      (<Alert severity="info" sx={{mb:2}}>Evaluation setup has been delegated to all schools</Alert>):
       (
         <Button 
         sx={{mb:2}} 
@@ -129,7 +136,7 @@ const AssignmentsSummary = () => {
       )}
 
       <Stack direction="row" sx={{alignItems: 'center', mb:3}} spacing={3}>
-        <Item><strong>Schools:&nbsp;</strong>{summaries.length}</Item>
+        <Item><strong>Schools:&nbsp;</strong>{summaries?.length || '...loading'}</Item>
         <Item><strong>Teachers Assigned:&nbsp;</strong>{assignedCount}</Item>
         <Item><strong>Teachers Awaiting Assignment:&nbsp;</strong>{totalCount-assignedCount}</Item>
       </Stack>
@@ -148,14 +155,14 @@ const AssignmentsSummary = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {summaries.map((row) => (
+          {schoolConfigs && summaries && summaries.map((row) => (
             <TableRow key={row.schoolName}>
                <TableCell align="center">
                 <Checkbox 
                   color="secondary"
-                  checked={row.delegated} 
+                  checked={schoolConfigs.find(x=>x.schoolCode===row.schoolCode).evaluationSetupDelegated} 
                   onChange={(event)=>{
-                    toggleDelegation(row, event);
+                    toggleDelegationForSchool(row, event);
                   }}
                   />
               </TableCell>

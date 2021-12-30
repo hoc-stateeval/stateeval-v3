@@ -25,13 +25,13 @@ namespace SE.Core.Commands
     public sealed class UpdateSchoolConfigurationCommand : 
         IRequest<Unit>
     {
-        public long Id { get; }
-        public bool IsPrincipalAssignmentDelegated { get; }
+        public long Id{ get; }
+        public bool EvaluationSetupDelegated { get; }
 
-        public UpdateSchoolConfigurationCommand(long id, bool isPrincipalAssignmentDelegated)
+        public UpdateSchoolConfigurationCommand(long id, bool evaluationSetupDelegated)
         {
             Id = id;
-            IsPrincipalAssignmentDelegated = isPrincipalAssignmentDelegated;    
+            EvaluationSetupDelegated = evaluationSetupDelegated;    
         }
     }
 
@@ -55,7 +55,7 @@ namespace SE.Core.Commands
                 throw new NotFoundException(nameof(SchoolConfiguration), request.Id);
             }
 
-            config.IsPrincipalAssignmentDelegated = request.IsPrincipalAssignmentDelegated;
+            config.EvaluationSetupDelegated = request.EvaluationSetupDelegated;
             _dataContext.SaveChanges();
 
             return Unit.Value;

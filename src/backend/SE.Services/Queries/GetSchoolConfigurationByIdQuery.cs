@@ -14,37 +14,37 @@ using SE.Core.Services;
 
 namespace SE.Core.Queries
 {
-    public class GetSchoolsInDistrictQueryValidator
-    : AbstractValidator<GetSchoolsInDistrictQuery>
+    public class GetSchoolConfigurationByIdQueryValidator
+    : AbstractValidator<GetSchoolConfigurationByIdQuery>
     {
-        public GetSchoolsInDistrictQueryValidator()
+        public GetSchoolConfigurationByIdQueryValidator()
         {
-            RuleFor(x => x.DistrictCode).NotEmpty();
+            RuleFor(x => x.Id).NotEmpty();
         }
     }
-    public sealed class GetSchoolsInDistrictQuery : 
-        IRequest<List<BuildingDTO>>
+    public sealed class GetSchoolConfigurationByIdQuery : 
+        IRequest<SchoolConfigurationDTO>
     {
-        public string DistrictCode { get; }
+        public long Id { get; }
 
-        public GetSchoolsInDistrictQuery(string districtCode)
+        public GetSchoolConfigurationByIdQuery(long id)
         {
-            DistrictCode = districtCode;
+            Id = id;
         }
 
-        internal sealed class GetSchoolsInDistrictQueryHandler : 
-            IRequestHandler<GetSchoolsInDistrictQuery, List<BuildingDTO>>
+        internal sealed class GetSchoolConfigurationByIdQueryHandler : 
+            IRequestHandler<GetSchoolConfigurationByIdQuery, SchoolConfigurationDTO>
         {
-            private readonly IBuildingService _buildingService;
-            public GetSchoolsInDistrictQueryHandler(IBuildingService buildingService)
+            private readonly ISchoolConfigurationService _schoolConfigurationService;
+            public GetSchoolConfigurationByIdQueryHandler(ISchoolConfigurationService schoolConfigurationService)
             {
-                _buildingService = buildingService;
+                _schoolConfigurationService = schoolConfigurationService;
             }
 
-            public async Task<List<BuildingDTO>> Handle(GetSchoolsInDistrictQuery request, CancellationToken cancellationToken)
+            public async Task<SchoolConfigurationDTO> Handle(GetSchoolConfigurationByIdQuery request, CancellationToken cancellationToken)
             {
-                var schools = await _buildingService.GetSchoolsInDistrict(request.DistrictCode);
-                return schools;
+                var configs = await _schoolConfigurationService.GetSchoolConfigurationById(request.Id);
+                return configs;
             }
         }
     }

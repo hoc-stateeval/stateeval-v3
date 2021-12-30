@@ -492,7 +492,7 @@ namespace SE.Data.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SchoolCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    IsPrincipalAssignmentDelegated = table.Column<bool>(type: "bit", nullable: false),
+                    EvaluationSetupDelegated = table.Column<bool>(type: "bit", nullable: false),
                     FrameworkContextId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>

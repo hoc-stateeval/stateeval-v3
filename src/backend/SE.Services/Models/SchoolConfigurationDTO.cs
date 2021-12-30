@@ -11,7 +11,6 @@ namespace SE.Core.Models
         public long Id { get; set; }
         public long FrameworkContextId { get; set; }
         public string SchoolCode { get; set; } = string.Empty;
-
-        public bool IsPrincipalAssignmentDelegated { get; set; }
+        public bool EvaluationSetupDelegated { get; set; }
     }
 }

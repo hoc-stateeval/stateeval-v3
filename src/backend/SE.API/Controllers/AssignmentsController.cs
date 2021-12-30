@@ -36,17 +36,5 @@ namespace SE.API.Controllers
             var result = await _mediator.Send(new GetPrincipalAssignmentDataForDistrictQuery(frameworkContextId, schoolCode));
             return Ok(result);
         }
-
-        [HttpPut("{frameworkContextId}/delegate")]
-        public async Task<IActionResult> DelegateAssignments(long frameworkContextId, DelegateAssignmentsCommand command)
-        {
-            if (frameworkContextId != command.FrameworkContextId)
-            {
-                return BadRequest();
-            }
-
-            await _mediator.Send(command);
-            return NoContent();
-        }
     }
 }

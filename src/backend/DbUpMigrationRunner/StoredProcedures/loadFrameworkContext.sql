@@ -215,7 +215,7 @@ BEGIN
 		INSERT dbo.SchoolConfiguration (
 			FrameworkContextID, 
 			SchoolCode, 
-			IsPrincipalAssignmentDelegated)  --
+			EvaluationSetupDelegated)
 		SELECT @FrameworkContextID, 
 			   schoolCode, 
 			   0

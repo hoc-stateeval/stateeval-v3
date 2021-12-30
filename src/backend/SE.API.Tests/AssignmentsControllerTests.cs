@@ -21,25 +21,26 @@ namespace SE.API.Tests
         public AssignmentsControllerTests(ApiWebApplicationFactory fixture)
             : base(fixture) { }
 
-        [Fact]
-        public async Task DelegateAssignments()
-        {
-            var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.DistrictAdmin.UserName;
+        // move to SchoolConfiguration
+        //[Fact]
+        //public async Task DelegateAssignments()
+        //{
+        //    var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
+        //    var userName = DAN_District.DistrictAdmin.UserName;
 
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DA_TR);
-            workAreaContext.Should().NotBeNull();
+        //    var user = await TestHelpers.GetUserByUserName(_client, userName);
+        //    var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
+        //    var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DA_TR);
+        //    workAreaContext.Should().NotBeNull();
 
-            var url = $"/assignments/{workAreaContext.FrameworkContextId}";
-            var summaries = await _client.GetAndDeserialize<List<SchoolTeacherAssignmentsSummaryDTO>>(url);
+        //    var url = $"/assignments/{workAreaContext.FrameworkContextId}";
+        //    var summaries = await _client.GetAndDeserialize<List<SchoolTeacherAssignmentsSummaryDTO>>(url);
 
-            var command = new DelegateAssignmentsCommand(workAreaContext.FrameworkContextId);
+        //    var command = new DelegateAssignmentsCommand(workAreaContext.FrameworkContextId);
 
-            var response = await _client.PostAsJsonAsync($"/assignments/{workAreaContext.FrameworkContextId}/delegate", command);
+        //    var response = await _client.PostAsJsonAsync($"/assignments/{workAreaContext.FrameworkContextId}/delegate", command);
 
-        }
+        //}
 
     }
 }

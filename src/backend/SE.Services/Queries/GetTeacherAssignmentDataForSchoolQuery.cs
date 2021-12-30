@@ -58,11 +58,6 @@ namespace SE.Services.Queries
                     .Where(x => x.Id == request.FrameworkContextId)
                     .FirstOrDefaultAsync();
 
-                result.Delegated = await _dataContext.SchoolConfigurations
-                    .Where(x => x.SchoolCode == request.SchoolCode)
-                    .Select(x => x.IsPrincipalAssignmentDelegated)
-                    .FirstOrDefaultAsync();
-
                 result.EvaluationSummaries = await _evaluationService
                     .ExecuteEvaluationSummaryDTOQuery(x => x.IsActive &&
                                 x.SchoolYear == EnumUtils.CurrentSchoolYear &&
