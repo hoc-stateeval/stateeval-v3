@@ -28,12 +28,10 @@ const LocalLogin = () => {
 
   const {
     data: districts,
-    isLoading: isLoadingDistricts,
   } = useGetLocalLoginDistrictsQuery();
 
   const {
     data: users,
-    isLoading: isLoadingUsers,
   } = useGetLocalLoginUsersForDistrictQuery(districtCode, {skip: districtCode===''});
 
   useEffect(() => {

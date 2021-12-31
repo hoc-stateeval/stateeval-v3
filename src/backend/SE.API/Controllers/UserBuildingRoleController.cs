@@ -16,7 +16,7 @@ namespace SE.API.Controllers
         {
         }
 
-        [HttpPut("update-dte-role-in-schools")]
+        [HttpPut("update-dte-role-in-schools/{userId}")]
         public async Task<IActionResult> UpdateDTERoleInSchools(long userId, [FromBody] UpdateDTERoleInSchoolsCommand command)
         {
             await _mediator.Send(command);

@@ -40,7 +40,7 @@ const DTESchoolConfigModal = ( { districtCode, user, setDlgOpen, dlgOpen } ) => 
 
   const [buildingRoles, setBuildingRoles] = useState(getDTEBuildingRolesInSchools(user, districtCode));
   const { data : schools } = useGetSchoolsInDistrictQuery(districtCode);
-  const { updateRoles } = useUpdateDTERoleInSchoolsMutation();
+  const [updateRoles] = useUpdateDTERoleInSchoolsMutation();
 
   const handleClickDlgCancel = () => {
     setDlgOpen(false);
@@ -74,10 +74,8 @@ const DTESchoolConfigModal = ( { districtCode, user, setDlgOpen, dlgOpen } ) => 
       <DialogContent>
       <Box>
           <Stack spacing={3}>
-              <Typography variant="h4">{user.displayName}</Typography>
-              
               <Typography variant="body1">
-              Check the schools where the {user.displayName} can evaluate teachers.
+              Check the schools where the <strong>{user.displayName}</strong> can evaluate teachers.
               </Typography>
               <TableContainer component={Paper}>
                 <Table size="small" aria-label="simple table">

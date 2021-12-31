@@ -22,7 +22,6 @@ import {
 
 import {
   useGetUsersInRoleAtDistrictQuery,
-  useGetSchoolsInDistrictQuery,
 } from '../../../core/apiSlice';
 
 import {
@@ -44,6 +43,7 @@ const DTESetup = () => {
 
   useEffect(()=> {
     dispatch(setPageTitle(pageTitle));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

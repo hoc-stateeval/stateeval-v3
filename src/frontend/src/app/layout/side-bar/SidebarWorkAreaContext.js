@@ -138,6 +138,7 @@ const SidebarWorkAreaContext = () => {
 
   useEffect(()=> {
     navigate("/app/dashboard");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWorkAreaContextId, selectedEvaluationId])
   
   const changeEvaluation = async (id) => {

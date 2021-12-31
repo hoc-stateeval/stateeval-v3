@@ -141,8 +141,6 @@ export const setActiveDistrictViewerEvaluator = createAsyncThunk(
   'userContext/setActiveDistrictViewerEvaluator',
   async (evaluatorId, { dispatch, getState }) => {
     const workAreaContext = getActiveWorkAreaContext(getState());
-    const school = getActiveDistrictViewerSchool(getState());
-    const schoolCode = school.schoolCode;
 
     const url = `evaluations/${workAreaContext.frameworkContextId}/${evaluatorId}`;
     const response = await get(url);

@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from '@reduxjs/toolkit';
 import { debounce } from 'debounce';
-import { saveState, loadState } from '../core/persist';
+import { saveState } from '../core/persist';
 import stateEval from './stateEval';
 import { apiSlice } from '../core/apiSlice';
 

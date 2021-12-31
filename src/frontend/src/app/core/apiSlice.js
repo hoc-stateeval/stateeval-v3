@@ -29,11 +29,10 @@ export const apiSlice = createApi({
 
     updateDTERoleInSchools: builder.mutation({
       query(data) {
-        const { userId, ...body} = data;
         return {
-          url: `update-dte-role-in-schools/${userId}`,
+          url: `user-building-roles/update-dte-role-in-schools/${data.userId}`,
           method: 'PUT',
-          body,
+          body: data,
         };
       },
     }),
