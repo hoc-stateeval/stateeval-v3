@@ -23,6 +23,27 @@ namespace SE.API.Controllers
             var user = await _mediator.Send(new GetUserByUserNameQuery(username));
             return Ok(user);
         }
+
+        [HttpGet("district/{districtCode}/usersinrole/{roleType}")]
+        public async Task<IActionResult> GetUsersInRoleAtDistrict(string districtCode, RoleType roleType)
+        {
+            var users = await _mediator.Send(new GetUsersInRoleAtDistrictQuery(districtCode, roleType));
+            return Ok(users);
+        }
+
+        [HttpGet("school/{schoolCode}/usersinrole/{roleType}")]
+        public async Task<IActionResult> GetUsersInRoleInSchool(string schoolCode, RoleType roleType)
+        {
+            var users = await _mediator.Send(new GetUsersInRoleInSchoolQuery(schoolCode, roleType));
+            return Ok(users);
+        }
+
+        [HttpGet("{districtCode}/usersinroleinschools/{roleType}")]
+        public async Task<IActionResult> GetUsersInRoleInSchools(string districtCode, RoleType roleType)
+        {
+            var users = await _mediator.Send(new GetUsersInRoleInSchoolsQuery(districtCode, roleType));
+            return Ok(users);
+        }
     }
 }
 

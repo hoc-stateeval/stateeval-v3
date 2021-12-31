@@ -8,8 +8,8 @@ const RoleType = {
   SA: 7,
   HEAD_PR: 8,
   PR: 9,
-  TR: 10
-}
+  TR: 10,
+};
 
 export {
   RoleType

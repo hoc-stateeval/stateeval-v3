@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace SE.Core.Models
 {
-    public class BuildingRoleDTO
+    public class UserBuildingRoleDTO
     {
+        public long Id { get; set; }
+        public long UserId { get; set; }
+        public long BuildingId { get; set; }
+        public long RoleId { get; set; }
         public string SchoolName { get; set; } = string.Empty;
         public string SchoolCode { get; set; } = string.Empty;
         public string DistrictName { get; set; } = string.Empty;

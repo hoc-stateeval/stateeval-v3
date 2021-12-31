@@ -53,14 +53,15 @@ const getEvaluationSetupDelegatedToAllSchools = (schoolConfigs) => {
 }
 
 const AssignmentsSummary = () => {
-
-  const dispatch = useDispatch();
   const pageTitle = "Assignments for Teacher Evaluations";
+ 
+  const dispatch = useDispatch();
+
+  const workAreaContext = useSelector(selectActiveWorkAreaContext);
+
   const [totalCount, setTotalCount] = useState(0);
   const [assignedCount, setAssignedCount] = useState(0);
   const [setupDelegatedToAllSchools, setSetupDelegatedToAllSchools] = useState(false);
-
-  const workAreaContext = useSelector(selectActiveWorkAreaContext);
 
   const { data: schoolConfigs } = useGetSchoolConfigurationsForFrameworkContextQuery(workAreaContext.frameworkContextId);
   const { data: summaries } = useGetTeacherAssignmentsSummaryForDistrictQuery(workAreaContext.frameworkContextId);

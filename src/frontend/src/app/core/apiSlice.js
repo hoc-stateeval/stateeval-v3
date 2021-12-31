@@ -9,6 +9,35 @@ export const apiSlice = createApi({
   tagTypes: ['SchoolConfiguration'],
   endpoints: builder => ({
 
+    // buildings
+    getSchoolsInDistrict: builder.query({
+      query: (districtCode) => `buildings/${districtCode}/schools/`
+    }),
+
+    // users
+    getUsersInRoleAtDistrict: builder.query({
+      query: (data) => `users/district/${data.districtCode}/usersinrole/${data.roleType}`
+    }),
+
+    getUsersInRoleAtSchool: builder.query({
+      query: (data) => `users/school/${data.schoolCode}/usersinrole/${data.roleType}`
+    }),
+
+    getUsersInRoleAtSchools: builder.query({
+      query: (data) => `users/${data.districtCode}/usersinroleinschools/${data.roleType}`
+    }),
+
+    updateDTERoleInSchools: builder.mutation({
+      query(data) {
+        const { userId, ...body} = data;
+        return {
+          url: `update-dte-role-in-schools/${userId}`,
+          method: 'PUT',
+          body,
+        };
+      },
+    }),
+
     // assignments
     getTeacherAssignmentsSummaryForDistrict: builder.query({
       query: (frameworkContextId) => `assignments/tr-assignments-summary/${frameworkContextId}`
@@ -61,5 +90,10 @@ export const {
   useGetSchoolConfigurationByIdQuery,
   useGetTeacherAssignmentsSummaryForDistrictQuery,
   useUpdateSchoolConfigurationMutation,
-  useUpdateSchoolConfigurationBatchEvaluationSetupDelegationMutation
+  useUpdateSchoolConfigurationBatchEvaluationSetupDelegationMutation,
+  useGetUsersInRoleAtDistrictQuery,
+  useGetUsersInRoleAtSchoolQuery,
+  useGetUsersInRoleAtSchoolsQuery,
+  useGetSchoolsInDistrictQuery,
+  useUpdateDTERoleInSchoolsMutation,
 } = apiSlice

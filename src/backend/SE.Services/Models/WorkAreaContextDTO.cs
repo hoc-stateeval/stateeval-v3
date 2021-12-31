@@ -18,7 +18,10 @@ namespace SE.Core.Models
         public string DistrictCode { get; set; }
         public string SchoolCode { get; set; }
         public Boolean IsSchool { get; set; }
+        public RoleType RoleType { get; set; }
         public string RoleName { get; set; }
+        public RoleType EvaluateeRoleType { get;set; }
+        public string EvaluateeRoleName { get; set; }
         public string EvaluatorTerm { get; set; }
         public string EvaluateeTerm { get; set; }
 

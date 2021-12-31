@@ -19,21 +19,17 @@ namespace SE.Core.Queries
     {
         public GetUsersInRoleInSchoolQueryValidator()
         {
-            RuleFor(x => x.DistrictCode).NotEmpty();
             RuleFor(x => x.SchoolCode).NotEmpty();
-            RuleFor(x => x.RoleType).NotEmpty();
         }
     }
     public sealed class GetUsersInRoleInSchoolQuery : 
         IRequest<List<UserDTO>>
     {
-        public string DistrictCode { get; }
         public string SchoolCode { get; }   
         public RoleType RoleType { get; }
 
-        public GetUsersInRoleInSchoolQuery(string districtCode, string schoolCode, RoleType roleType)
+        public GetUsersInRoleInSchoolQuery(string schoolCode, RoleType roleType)
         {
-            DistrictCode = districtCode;
             SchoolCode = schoolCode;
             RoleType = roleType;
         }

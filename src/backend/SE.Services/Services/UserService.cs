@@ -42,7 +42,7 @@ namespace SE.Core.Services
             var userDTOs = await ExecuteUserDTOQuery(x => 
                     x.UserBuildingRoles.Any(y => y.Building.DistrictCode == districtCode &&
                                                  !String.IsNullOrEmpty(y.Building.SchoolCode) &&
-                                                 y.Role.DisplayName == EnumUtils.MapRoleTypeToDisplayName(roleType)))
+                                                 y.Role.Id == Convert.ToInt64(roleType)))
                     .ToListAsync();
 
             return userDTOs;
@@ -52,7 +52,7 @@ namespace SE.Core.Services
         {
             var userDTOs = await ExecuteUserDTOQuery(x =>
                                 x.UserBuildingRoles.Any(y => y.Building.SchoolCode == schoolCode &&
-                                                             y.Role.DisplayName == EnumUtils.MapRoleTypeToDisplayName(roleType)))
+                                                             y.Role.Id == Convert.ToInt64(roleType)))
                   .ToListAsync();
 
             return userDTOs;
@@ -63,7 +63,7 @@ namespace SE.Core.Services
             var userDTOs = await ExecuteUserDTOQuery(x =>
                  x.UserBuildingRoles.Any(y => y.Building.DistrictCode == districtCode &&
                                               String.IsNullOrEmpty(y.Building.SchoolCode) &&
-                                              y.Role.DisplayName == EnumUtils.MapRoleTypeToDisplayName(roleType)))
+                                              y.Role.Id == Convert.ToInt64(roleType)))
                 .ToListAsync();
 
             return userDTOs;

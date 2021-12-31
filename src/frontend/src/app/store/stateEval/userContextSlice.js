@@ -54,7 +54,7 @@ const createWorkAreaContextState = async (state, workAreaContext) => {
 
   let districtViewerSchools = [];
   if (DistrictViewerSchoolWorkAreas.includes(workAreaContext.tagName)) {
-    const response = await get(`districts/${workAreaContext.districtCode}/schools`);
+    const response = await get(`buildings/${workAreaContext.districtCode}/schools`);
     districtViewerSchools = await response.data;
   }
 
@@ -108,7 +108,7 @@ export const setActiveDistrictViewerSchool = createAsyncThunk(
   async (schoolCode, { dispatch, getState }) => {
     const workAreaContext = getActiveWorkAreaContext(getState());
 
-    const urlRoot = `districts/${workAreaContext.districtCode}/usersinrole/${schoolCode}`;
+    const urlRoot = `users/${workAreaContext.districtCode}/usersinrole/${schoolCode}`;
     let url = "";
     if (workAreaContext.tagName === WorkAreas.DV_PR_TR) {
       url = `${urlRoot}/${RoleType.PR}`

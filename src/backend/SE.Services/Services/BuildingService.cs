@@ -19,11 +19,9 @@ namespace SE.Core.Services
     public class BuildingService : BaseService, IBuildingService
     {
         private readonly DataContext _dataContext;
-        private readonly IUserService _userService;
-        public BuildingService(DataContext dataContext, IUserService userService)
+        public BuildingService(DataContext dataContext)
         {
             _dataContext = dataContext;
-            _userService = userService;
         }
 
         public async Task<List<BuildingDTO>> GetSchoolsInDistrict(string districtCode)

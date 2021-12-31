@@ -16,6 +16,6 @@ namespace SE.Core.Models
         public string UserName { get; set; }
         public string ProfileImageUrl { get; set; }
 
-        public List<BuildingRoleDTO> BuildingRoles { get; set; }
+        public List<UserBuildingRoleDTO> BuildingRoles { get; set; }
     }
 }
