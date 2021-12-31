@@ -11,9 +11,10 @@ using System.Text;
 using System.Threading.Tasks;
 using SE.Core.Queries;
 using SE.Core.Mappers;
+using SE.Core.Utils;
 using SE.Core.Services;
 
-namespace SE.Services.Queries
+namespace SE.Core.Queries
 {
     public class GetEvaluationsForWorkAreaContextQueryValidator
     : AbstractValidator<GetEvaluationsForWorkAreaContextQuery>

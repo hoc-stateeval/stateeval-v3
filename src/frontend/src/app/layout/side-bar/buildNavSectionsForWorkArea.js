@@ -100,7 +100,7 @@ const navSections = [
       {
         title: 'Assignments',
         icon: <ArtifactsIcon fontSize="small" />,
-        path: '/app/admin/assignments/tr-assignments-summary',
+        path: '/app/admin/assignments/district-summary',
       },
       {
         title: 'DTE Setup',
@@ -121,7 +121,7 @@ const navSections = [
       {
         title: 'Assignments',
         icon: <ArtifactsIcon fontSize="small" />,
-        path: '/app/admin/assignments/assignments-detail',
+        path: '/app/admin/assignments/district-detail',
       },
     ]
   },

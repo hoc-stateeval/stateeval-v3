@@ -22,7 +22,7 @@ namespace SE.Core.Mappers
             target.Email = source.EmailAddress;
             target.ProfileImageUrl = source.ProfileImageUrl;
 
-            target.BuildingRoles = source.UserBuildingRoles.Select(x => x.MapToBuildingRoleDTO()).ToList();
+            target.UserBuildingRoles = source.UserBuildingRoles.Select(x => x.MapToBuildingRoleDTO()).ToList();
 
             return target;
         }

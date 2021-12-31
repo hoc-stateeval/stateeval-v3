@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SE.Services.Queries
+namespace SE.Core.Queries
 {
     public class GetWorkAreaContextsForUserQueryValidator
     : AbstractValidator<GetWorkAreaContextsForUserQuery>

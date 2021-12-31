@@ -25,7 +25,7 @@ import {
 import { RoleType } from '../../../core/roleType';
 
 const getDTEBuildingRolesInSchools = (user, districtCode) => {
-  return user.buildingRoles.reduce((acc, next) => {
+  return user.userBuildingRoles.reduce((acc, next) => {
     if (next.districtCode === districtCode &&
       next.schoolCode !== '' &&
       next.roleId === RoleType.DTE) {
@@ -91,7 +91,7 @@ const DTESchoolConfigModal = ( { districtCode, user, setDlgOpen, dlgOpen } ) => 
                         <TableCell align="center">
                           <Checkbox 
                             color="secondary"
-                            checked={user.buildingRoles.find(x=>x.buildingId===school.id)} 
+                            checked={user.userBuildingRoles.find(x=>x.buildingId===school.id)} 
                             onChange={(event)=>{
                               toggleConfigureUserInRoleAtSchool(school.id);
                             }}

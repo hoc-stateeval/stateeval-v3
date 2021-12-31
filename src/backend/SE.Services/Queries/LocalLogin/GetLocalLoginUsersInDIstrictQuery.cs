@@ -9,9 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SE.Core.Queries;
 
-namespace SE.Services.Queries
+namespace SE.Core.Queries.LocalLogin
 {
     public class GetLocalLoginUsersInDistrictQueryValidator
     : AbstractValidator<GetLocalLoginUsersInDistrictQuery>

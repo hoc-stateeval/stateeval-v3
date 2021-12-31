@@ -10,6 +10,7 @@ using Xunit;
 using FluentValidation;
 using FluentAssertions;
 using SE.Domain.Entities;
+using SE.Core.Utils;
 
 namespace SE.API.Tests
 {

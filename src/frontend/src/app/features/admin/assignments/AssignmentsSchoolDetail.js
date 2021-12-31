@@ -17,10 +17,8 @@ import {
   MenuItem,
 } from '@mui/material';
 
-import { put } from '../../../core/api';
 import {
   selectActiveWorkAreaContext,
-  selectImpersonating,
   setPageTitle,
 } from '../../../store/stateEval/userContextSlice';
 
@@ -32,7 +30,11 @@ import {
 } from '../../../core/evalPlanType';
 
 import PlanTypeField from './PlanTypeField';
-import buildAssignmentData from './buildAssignmentData';
+
+import {
+  useGetAssignmentsDetailQuery,
+  useUpdateEvaluationSetEvaluatorMutation,
+ } from '../../../core/apiSlice';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -42,53 +44,46 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.primary
 }));
 
-const AssignmentsDetail = () => {
+const AssignmentsSchoolDetail = () => {
+
+  const workAreaContext = useSelector(selectActiveWorkAreaContext);
 
   const dispatch = useDispatch();
  
   const { schoolCode, schoolName } = useParams();
-  const [assignmentData, setAssignmentData] = useState(null);
+
   const [totalCount, setTotalCount] = useState(0);
   const [assignedCount, setAssignedCount] = useState(0);
   const [hideCompleted, setHideCompleted] = useState(false);
 
-  const workAreaContext = useSelector(selectActiveWorkAreaContext);
-  const impersonating = useSelector(selectImpersonating);
+  const { data } = useGetAssignmentsDetailQuery({ frameworkContextId: workAreaContext.frameworkContextId, schoolCode});
+  const [updateEvaluator] = useUpdateEvaluationSetEvaluatorMutation();
 
-  const pageHeaderTitle = `Assignments for ${schoolName?schoolName:'Principals'}`;
-
-  useEffect(()=> {
-    dispatch(setPageTitle(`Assignments for ${workAreaContext.evaluateeTerm} Evaluations`));
-  }, [workAreaContext, dispatch]);
+  const atSchoolName = schoolName? ` at ${schoolName}` : '';
+  const pageTitle = `${workAreaContext.evaluateeTerm} Evaluations ${atSchoolName}`
 
   useEffect(()=> {
-    (async () => {
-      const data = await buildAssignmentData(impersonating, workAreaContext, schoolCode||'', schoolName||'');
-      setAssignmentData(data);
+    dispatch(setPageTitle(pageTitle));
+  }, [pageTitle]);
 
+  useEffect(()=> {
+    if (data) {
       const assignedCount = data.evaluationSummaries.reduce((assignedCount, next) => {
-        if (next.evaluatorId)
+        if (next.evaluatorId && next.evaluateePlanType)
           assignedCount++;
         return assignedCount;
       }, 0);
-
+  
       setTotalCount(data.evaluationSummaries.length);
       setAssignedCount(assignedCount);
-    })();
-  }, [workAreaContext, schoolCode, schoolName, impersonating]);
+    }
+  }, [data]);
 
   const setEvaluator = async (id, evaluatorId) => {
-
-    const url = `evaluations/${id}/updateevaluator`;
-    const response = await put(url, {
+    updateEvaluator({
       evaluationId: id,
       evaluatorId: evaluatorId===0?null:evaluatorId
     });
-
-    const data = response.data;
-
-    assignmentData.evaluationSummaries = assignmentData.evaluationSummaries.map(x=>(x.id===id?data:x));
-    setAssignmentData({...assignmentData});
   };
 
   const toggleHideCompleted = () => {
@@ -101,7 +96,7 @@ const AssignmentsDetail = () => {
 
   return (
     <>
-    <PageHeader title={pageHeaderTitle}>
+    <PageHeader title={pageTitle}>
       This page lets you select the Evaluation Cycle and the Evaluator for {workAreaContext.evaluateeTermLC}s.
     </PageHeader>
 
@@ -125,8 +120,8 @@ const AssignmentsDetail = () => {
           </TableRow>
         </TableHead>
         <TableBody  >
-          {assignmentData && 
-          assignmentData.evaluationSummaries.filter(x=>hideCompleted?!evalSetupComplete(x):x).map((evalSummary) => (
+          {data && 
+          data.evaluationSummaries.filter(x=>hideCompleted?!evalSetupComplete(x):x).map((evalSummary) => (
             <TableRow key={evalSummary.id}>
               <TableCell align="center">
                 {evalSummary.evaluateeDisplayName}
@@ -152,7 +147,7 @@ const AssignmentsDetail = () => {
                   }}
                 >
                   <MenuItem value="0">Not Set</MenuItem>
-                  {assignmentData.evaluators[evalSummary.evaluateeId].map((x, index)=> (
+                  {data.evaluators.map((x, index)=> (
                     <MenuItem key={index} value={x.id}>{x.displayName}</MenuItem>
                   ))}
                 </TextField>
@@ -166,5 +161,5 @@ const AssignmentsDetail = () => {
   );
 };
 
-export default AssignmentsDetail;
+export default AssignmentsSchoolDetail;
 

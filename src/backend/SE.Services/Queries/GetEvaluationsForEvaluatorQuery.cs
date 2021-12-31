@@ -13,7 +13,7 @@ using SE.Core.Queries;
 using SE.Core.Mappers;
 using SE.Core.Services;
 
-namespace SE.Services.Queries
+namespace SE.Core.Queries
 {
     public class GetEvaluationsForEvaluatorQueryValidator
     : AbstractValidator<GetEvaluationsForEvaluatorQuery>

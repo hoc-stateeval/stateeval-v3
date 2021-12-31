@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SE.Services.Queries;
+using SE.Core.Queries;
 
 namespace SE.API.Controllers
 {

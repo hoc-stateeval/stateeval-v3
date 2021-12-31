@@ -9,6 +9,18 @@ export const apiSlice = createApi({
   tagTypes: ['SchoolConfiguration'],
   endpoints: builder => ({
 
+    // evaluations
+    updateEvaluationSetEvaluator: builder.mutation({
+      query(data) {
+        return {
+          url: `evaluations/${data.id}/updateevaluator`,
+          method: 'PUT',
+          body: data,
+        };
+      },
+      invalidatesTags: ['SchoolConfiguration'],
+    }),
+
     // buildings
     getSchoolsInDistrict: builder.query({
       query: (districtCode) => `buildings/${districtCode}/schools/`
@@ -27,6 +39,7 @@ export const apiSlice = createApi({
       query: (data) => `users/${data.districtCode}/usersinroleinschools/${data.roleType}`
     }),
 
+    // roles
     updateDTERoleInSchools: builder.mutation({
       query(data) {
         return {
@@ -38,8 +51,12 @@ export const apiSlice = createApi({
     }),
 
     // assignments
-    getTeacherAssignmentsSummaryForDistrict: builder.query({
-      query: (frameworkContextId) => `assignments/tr-assignments-summary/${frameworkContextId}`
+    getAssignmentsSummaryForDistrict: builder.query({
+      query: (frameworkContextId) => `assignments/district-summary/${frameworkContextId}`
+    }),
+
+    getAssignmentsDetail: builder.query({
+      query: (data) => `assignments/detail/${data.frameworkContextId}/${data.schoolCode}`
     }),
 
     // local login
@@ -87,7 +104,8 @@ export const {
   useGetLocalLoginUsersForDistrictQuery,
   useGetSchoolConfigurationsForFrameworkContextQuery,
   useGetSchoolConfigurationByIdQuery,
-  useGetTeacherAssignmentsSummaryForDistrictQuery,
+  useGetAssignmentsSummaryForDistrictQuery,
+  useGetAssignmentsDetailQuery,
   useUpdateSchoolConfigurationMutation,
   useUpdateSchoolConfigurationBatchEvaluationSetupDelegationMutation,
   useGetUsersInRoleAtDistrictQuery,
@@ -95,4 +113,5 @@ export const {
   useGetUsersInRoleAtSchoolsQuery,
   useGetSchoolsInDistrictQuery,
   useUpdateDTERoleInSchoolsMutation,
+  useUpdateEvaluationSetEvaluatorMutation,
 } = apiSlice

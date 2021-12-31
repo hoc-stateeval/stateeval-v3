@@ -1,7 +1,8 @@
 import { lazy } from 'react'
 import { WorkAreas, AdminWorkAreas } from '../core/workAreas';
-const AssignmentsSummary = lazy(() => import('../features/admin/assignments/AssignmentsSummary'));
-const AssignmentsDetail = lazy(() => import('../features/admin/assignments/AssignmentsDetail'));
+const AssignmentsDistrictSummary = lazy(() => import('../features/admin/assignments/AssignmentsDistrictSummary'));
+const AssignmentsDistrictDetail = lazy(() => import('../features/admin/assignments/AssignmentsDistrictDetail'));
+const AssignmentsSchoolDetail = lazy(() => import('../features/admin/assignments/AssignmentsSchoolDetail'));
 const DistrictAdminDashboard = lazy(() => import('../features/admin/dashboards/district-admin/DistrictAdminDashboard'));
 const DTESetup = lazy(() => import('../features/admin/assignments/DTESetup'));
 
@@ -14,18 +15,18 @@ const AdminRoutes =   {
     workAreaTags: [ WorkAreas.DA_TR, WorkAreas.DA_PR]
   },
   {
-    path: "/app/admin/assignments/tr-assignments-summary",
-    element: <AssignmentsSummary />,
+    path: "/app/admin/assignments/district-summary",
+    element: <AssignmentsDistrictSummary />,
     workAreaTags: [WorkAreas.DA_TR]
   },
   {
-    path: "/app/admin/assignments/tr-assignments-summary/assignments-detail/:schoolCode/:schoolName",
-    element: <AssignmentsDetail />,
+    path: "/app/admin/assignments/school-detail/:schoolCode/:schoolName",
+    element: <AssignmentsSchoolDetail />,
     workAreaTags: [WorkAreas.DA_TR]
   },
   {
-    path: "/app/admin/assignments/assignments-detail",
-    element: <AssignmentsDetail />,
+    path: "/app/admin/assignments/district-detail",
+    element: <AssignmentsDistrictDetail />,
     workAreaTags: [WorkAreas.DA_PR]
   },
   {

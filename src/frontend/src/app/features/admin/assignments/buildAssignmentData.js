@@ -68,7 +68,7 @@ const findPrincipalsThatCanEvaluateTeacher = (teacher, principals, evaluation, a
   return potentialEvaluators;
 }
 
-const buildAssignmentData = async (impersonating, workAreaContext, schoolCode, schoolName) => {
+const buildAssignmentData = async (workAreaContext, schoolCode, schoolName, data) => {
 
   let assignmentData = initAssignmentData();
 
@@ -84,26 +84,19 @@ const buildAssignmentData = async (impersonating, workAreaContext, schoolCode, s
       assignmentData.schoolName = schoolName;
   }
 
-  const frameworkContextId = workAreaContext.frameworkContextId;
-  let url = '';
-  if (workAreaContext.tagName === WorkAreas.DA_TR) {
-
-    url = `assignments/tr-assignments-summary/assignments-detail/${frameworkContextId}/${schoolCode}`;
-  }
-  else if (workAreaContext.tagName === WorkAreas.DA_PR) {
-    url = `assignments/pr-assignments-detail/${frameworkContextId}/${schoolCode}`;
-  }
-  const response = await get(url);
-  const data = await response.data;
-
-  assignmentData.assignmentGridIsReadOnly = impersonating ||
-  (!data.delegated && !workAreaContext.isDistrictAdmin);
+  // TODO:
+  // assignmentData.assignmentGridIsReadOnly = impersonating ||
+  // (!data.delegated && !workAreaContext.isDistrictAdmin);
 
   assignmentData.evaluatees = data.evaluatees;
   assignmentData.evaluationSummaries = data.evaluationSummaries;
 
   for (const evaluatee of assignmentData.evaluatees) {
     const evaluation = assignmentData.evaluationSummaries.find(x=>x.evaluateeId===evaluatee.id);
+
+    data.evaluatorRoleTypes.reduce((acc, next)=> {
+      
+    })
 
     if (TeacherAssignmentWorkAreas.includes(workAreaContext.tagName)) { 
       const dte = findDTEForTeacher(data.districtWideTeacherEvaluators, evaluatee);

@@ -31,7 +31,7 @@ import PageHeader from '../../../components/PageHeader';
 
 import {
   useGetSchoolConfigurationsForFrameworkContextQuery,
-  useGetTeacherAssignmentsSummaryForDistrictQuery,
+  useGetAssignmentsSummaryForDistrictQuery,
   useUpdateSchoolConfigurationMutation,
   useUpdateSchoolConfigurationBatchEvaluationSetupDelegationMutation,
  } from '../../../core/apiSlice';
@@ -52,19 +52,18 @@ const getEvaluationSetupDelegatedToAllSchools = (schoolConfigs) => {
   }, true);
 }
 
-const AssignmentsSummary = () => {
-  const pageTitle = "Assignments for Teacher Evaluations";
- 
+const AssignmentsDistrictSummary = () => {
   const dispatch = useDispatch();
 
   const workAreaContext = useSelector(selectActiveWorkAreaContext);
-
+  const pageTitle = `Assignments for ${workAreaContext.evaluateeTerm} Evaluations`;
+ 
   const [totalCount, setTotalCount] = useState(0);
   const [assignedCount, setAssignedCount] = useState(0);
   const [setupDelegatedToAllSchools, setSetupDelegatedToAllSchools] = useState(false);
 
   const { data: schoolConfigs } = useGetSchoolConfigurationsForFrameworkContextQuery(workAreaContext.frameworkContextId);
-  const { data: summaries } = useGetTeacherAssignmentsSummaryForDistrictQuery(workAreaContext.frameworkContextId);
+  const { data: summaries } = useGetAssignmentsSummaryForDistrictQuery(workAreaContext.frameworkContextId);
   const [ updateSchoolConfiguration] = useUpdateSchoolConfigurationMutation();
   const [ batchUpdateEvaluationSetupDelegation] = useUpdateSchoolConfigurationBatchEvaluationSetupDelegationMutation();
 
@@ -93,7 +92,7 @@ const AssignmentsSummary = () => {
 
   useEffect(()=> {
     dispatch(setPageTitle(pageTitle));
-  }, [dispatch]);
+  }, [pageTitle]);
 
 
   const toggleDelegationForSchool = (row, event) => {
@@ -137,8 +136,8 @@ const AssignmentsSummary = () => {
 
       <Stack direction="row" sx={{alignItems: 'center', mb:3}} spacing={3}>
         <Item><strong>Schools:&nbsp;</strong>{summaries?.length || '...loading'}</Item>
-        <Item><strong>Teachers Assigned:&nbsp;</strong>{assignedCount}</Item>
-        <Item><strong>Teachers Awaiting Assignment:&nbsp;</strong>{totalCount-assignedCount}</Item>
+        <Item><strong>{workAreaContext.evaluateeTerm}s Assigned:&nbsp;</strong>{assignedCount}</Item>
+        <Item><strong>{workAreaContext.evaluateeTerm}s Awaiting Assignment:&nbsp;</strong>{totalCount-assignedCount}</Item>
       </Stack>
   
     <TableContainer component={Paper}>
@@ -147,10 +146,10 @@ const AssignmentsSummary = () => {
           <TableRow>
           <TableCell align="center">Delegate to School</TableCell>
             <TableCell align="center">School</TableCell>
-            <TableCell align="center">Principals</TableCell>
-            <TableCell align="center">Teachers</TableCell>
+            <TableCell align="center">Evaluators</TableCell>
+            <TableCell align="center">{workAreaContext.evaluateeTerm}s</TableCell>
             <TableCell align="center">Assigned</TableCell>
-            <TableCell align="center">Teachers Awaiting Assignment</TableCell>
+            <TableCell align="center">{workAreaContext.evaluateeTerm}s Awaiting Assignment</TableCell>
             <TableCell align="center">Action</TableCell>
           </TableRow>
         </TableHead>
@@ -169,7 +168,7 @@ const AssignmentsSummary = () => {
               <TableCell align="center">
                 {row.schoolName}
               </TableCell>
-              <TableCell align="center">{row.principalNames.map(x=>(<Typography variant="body1" key={x}>{x}</Typography>))}</TableCell>
+              <TableCell align="center">{row.evaluators.map(x=>(<Typography variant="body1" key={x.id}>{x.displayName}</Typography>))}</TableCell>
               <TableCell align="center">{row.totalCount}</TableCell>
               <TableCell align="center">{row.assignedCount}</TableCell>
               <TableCell align="center">
@@ -177,7 +176,7 @@ const AssignmentsSummary = () => {
                 {row.unassignedCount>0 && row.unassignedCount}
               </TableCell>
               <TableCell align="center">
-                <Button component={RouterLink} to={`/app/admin/assignments/tr-assignments-summary/assignments-detail/${row.schoolCode}/${row.schoolName}`} color="secondary" size="small" variant="contained">View</Button>
+                <Button component={RouterLink} to={`/app/admin/assignments/school-detail/${row.schoolCode}/${row.schoolName}`} color="secondary" size="small" variant="contained">View</Button>
               </TableCell>
             </TableRow>
           ))}
@@ -188,4 +187,4 @@ const AssignmentsSummary = () => {
   );
 };
 
-export default AssignmentsSummary;
+export default AssignmentsDistrictSummary;

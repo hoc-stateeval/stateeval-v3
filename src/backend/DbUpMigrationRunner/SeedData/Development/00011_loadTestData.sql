@@ -197,6 +197,7 @@ SET     EvaluateePlanType = 1;
 	-- all teachers get principals as evaluators
     UPDATE  Evaluation
     SET     EvaluatorID = torULR.UserId,
+			SchoolCode = teeL.SchoolCode,
 			LastYearEvaluateePlanType = 
 			CASE
 			WHEN (teeU.FirstName = 'Teacher A') THEN 1 
@@ -239,8 +240,8 @@ SET     EvaluateePlanType = 1;
 	-- note the hack here; even head principals get themselves as evaluators;
 	-- we rely on the last step to correct this
     UPDATE  Evaluation
-    SET     EvaluatorID = torULR.UserId
-
+    SET     EvaluatorID = torULR.UserId,
+			SchoolCode = teeL.SchoolCode
 	FROM    Evaluation se
         JOIN [User] teeU ON teeU.Id = se.EvaluateeID
         JOIN UserBuildingRole teeULR ON teeULR.UserId = se.EvaluateeID
@@ -259,8 +260,8 @@ SET     EvaluateePlanType = 1;
 
 	-- all head principals get evaluated by the district evaluator
     UPDATE  Evaluation
-    SET     EvaluatorID = torULR.UserId
-
+    SET     EvaluatorID = torULR.UserId,
+			SchoolCode = teeL.SchoolCode
 	FROM    Evaluation se
         JOIN [User] teeU ON teeU.Id = se.EvaluateeID
         JOIN UserBuildingRole teeULR ON teeULR.UserId = se.EvaluateeID

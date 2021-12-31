@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SE.Core.Commands;
-using SE.Core.Queries;
+using SE.Core.Queries.Assignments;
 using SE.Domain.Entities;
-using SE.Services.Queries;
+using SE.Core.Models;
 
 namespace SE.API.Controllers
 {
@@ -16,25 +16,27 @@ namespace SE.API.Controllers
         {
         }
 
-        [HttpGet("tr-assignments-summary/{frameworkContextId}")]
-        public async Task<IActionResult> GetTeacherAssignmentsSummaryForDistrict(long frameworkContextId)
+        [HttpGet("district-summary/{frameworkContextId}")]
+        public async Task<IActionResult> GetDistrictSummaryAssignmentData(long frameworkContextId)
         {
-            var summaries = await _mediator.Send(new GetTeacherAssignmentsSummaryForDistrictQuery(frameworkContextId));
+            var summaries = await _mediator.Send(new GetDistrictSummaryAssignmentDataQuery(frameworkContextId));
             return Ok(summaries);
         }
 
-        [HttpGet("tr-assignments-summary/assignments-detail/{frameworkContextId}/{schoolCode}")]
-        public async Task<IActionResult> GetTeacherAssignmentsDataForSchool(long frameworkContextId, string schoolCode)
+        [HttpGet("detail/{frameworkContextId}/{schoolCode?}")]
+        public async Task<IActionResult> GetDetailAssignmentDataQuery(long frameworkContextId, string schoolCode)
         {
-            var result = await _mediator.Send(new GetTeacherAssignmentDataForSchoolQuery(frameworkContextId, schoolCode));
-            return Ok(result);
-        }
+            if (!String.IsNullOrEmpty(schoolCode))
+            {
+                var result = await _mediator.Send(new GetSchoolDetailAssignmentDataQuery(frameworkContextId, schoolCode));
+                return Ok(result);
+            }
+            else
+            {
+                var result = await _mediator.Send(new GetDistrictDetailAssignmentDataQuery(frameworkContextId));
+                return Ok(result);
 
-        [HttpGet("pr-assignments-detail/{frameworkContextId}/{schoolCode?}")]
-        public async Task<IActionResult> GetPrincipalAssignmentsDataForDistrict(long frameworkContextId, string schoolCode)
-        {
-            var result = await _mediator.Send(new GetPrincipalAssignmentDataForDistrictQuery(frameworkContextId, schoolCode));
-            return Ok(result);
+            }
         }
     }
 }

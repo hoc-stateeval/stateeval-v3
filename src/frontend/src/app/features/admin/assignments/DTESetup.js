@@ -70,7 +70,7 @@ const DTESetup = () => {
                     {user.displayName}
                   </TableCell>
                   {/* TODO: memo */}
-                  <TableCell align="center">{user.buildingRoles.filter(x=>x.roleId===RoleType.DTE).map(x=>(<Typography variant="body1" key={x.buildingId}>{x.schoolName}</Typography>))}</TableCell>
+                  <TableCell align="center">{user.userBuildingRoles.filter(x=>x.roleId===RoleType.DTE).map(x=>(<Typography variant="body1" key={x.buildingId}>{x.schoolName}</Typography>))}</TableCell>
                   <TableCell align="center">
                     <Button onClick={()=> {
                       setDlgOpen(true);
