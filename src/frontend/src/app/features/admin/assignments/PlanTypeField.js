@@ -23,7 +23,13 @@ import {
 
 import CheckIcon from '@mui/icons-material/Check';
 
-import { get, put } from '../../../core/api';
+import { put } from '../../../core/api';
+
+import {
+  useGetHistoricalEvaluationsQuery,
+  useUpdateEvaluationSetPlanTypeMutation,
+ } from '../../../core/apiSlice';
+
 import {
   selectStateFramework,
 } from '../../../store/stateEval/userContextSlice';
@@ -44,12 +50,14 @@ const PlanTypeField = ( props ) => {
   const [selectedFocusFrameworkNodeId, setSelectedFocusFrameworkNodeId] = useState(evalSummary.focusedFrameworkNodeId || "0");
   const [selectedFocusSGFrameworkNodeId, setSelectedSGFrameworkNodeId] = useState(evalSummary.focusedSGFrameworkNodeId || "0");
   const [showStudentGrowthSelect, setShowStudentGrowthSelect] = useState(false);
-  const [evaluations, setEvaluations] = useState([]);
   const [recommendedCarryForwardEvaluation, setRecommendedCarryForwardEvaluation] = useState(null);
   const [selectedCarryForwardSchoolYear, setSelectedCarryForwardSchoolYear] = useState(evalSummary.carryForwardSchoolYear || "0");
   const [selectedCarryForwardPerformanceLevel, setSelectedCarryForwardPerformanceLevel] = useState(evalSummary.carryForwardPerformanceLevel || "0");
   const [showOkBtn, setShowOkBtn] = useState(false);
   const [selectedEvaluationId, setSelectedEvaluationId] = useState(null);
+
+  const { data : evaluations } = useGetHistoricalEvaluationsQuery(evalSummary.evaluateeId);
+  const [updatePlanType] = useUpdateEvaluationSetPlanTypeMutation();
 
   useEffect(()=> {
 
@@ -75,29 +83,26 @@ const PlanTypeField = ( props ) => {
     selectedFocusSGFrameworkNodeId, stateFramework.frameworkNodes]);
 
   useEffect(()=> {
-    (async () => {
-      const url = `evaluations/historical/${evalSummary.evaluateeId}`;
-      const response = await get(url);
-
-      const evaluations = response.data.filter((evaluation) => {
+    if (evaluations) {
+      const potentialCarryForwardEvaluations = evaluations.filter((evaluation) => {
         return evaluation.schoolYear < evalSummary.schoolYear &&
             (evaluation.planType === PlanType.COMPREHENSIVE ||
              evaluation.planType === PlanType.MODIFIED_COMP_2021) &&
                evaluation.performanceLevel >= PerformanceLevel.PL3;
       });
-
-      const maxEvaluation = evaluations.reduce((max, next)=> {
+  
+      const maxEvaluation = potentialCarryForwardEvaluations.reduce((max, next)=> {
         if (!max || next.schoolYear<max.schoolYear) {
           max = next;
         }
         return max;
       }, null);
-
-      setEvaluations(evaluations);
+  
       setRecommendedCarryForwardEvaluation(maxEvaluation);
 
-    })();
-  }, [evalSummary]);
+    }
+
+  }, [evaluations, evalSummary.schoolYear]);
 
   const handleClickDlgCancel = () => {
     setDlgOpen(false);
@@ -105,8 +110,7 @@ const PlanTypeField = ( props ) => {
 
   const handleClickDlgOk = async () => {
 
-    const url = `evaluations/${selectedEvaluationId}/updateplantype`;
-    const response = await put(url, {
+    updatePlanType({
       evaluationId: selectedEvaluationId,
       evaluateePlanType: PlanType.FOCUSED,
       comprehensiveCarryForward: true,
@@ -114,11 +118,10 @@ const PlanTypeField = ( props ) => {
       carryForwardSchoolYear: selectedCarryForwardSchoolYear,
       focusedFrameworkNodeId: selectedFocusFrameworkNodeId,
       focusedSGFrameworkNodeId: selectedFocusSGFrameworkNodeId === "0"?null:selectedFocusSGFrameworkNodeId
+    }).then((response)=> {
+      setEvalSummary(response.data);
+      setDlgOpen(false);
     });
-
-    const evalSummary = response.data;
-    setEvalSummary(evalSummary);
-    setDlgOpen(false);
   };
   
   const handleSelectFocusFrameworkNode = (id) => {

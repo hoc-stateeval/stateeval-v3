@@ -18,7 +18,20 @@ export const apiSlice = createApi({
           body: data,
         };
       },
-      invalidatesTags: ['SchoolConfiguration'],
+    }),
+
+    updateEvaluationSetPlanType: builder.mutation({
+      query(data) {
+        return {
+          url: `evaluations/${data.evaluationId}/updateplantype`,
+          method: 'PUT',
+          body: data,
+        };
+      },
+    }),
+
+    getHistoricalEvaluations: builder.query({
+      query: (evaluateeId) => `evaluations/historical/${evaluateeId}`
     }),
 
     // buildings
@@ -114,4 +127,6 @@ export const {
   useGetSchoolsInDistrictQuery,
   useUpdateDTERoleInSchoolsMutation,
   useUpdateEvaluationSetEvaluatorMutation,
+  useGetHistoricalEvaluationsQuery,
+  useUpdateEvaluationSetPlanTypeMutation
 } = apiSlice
