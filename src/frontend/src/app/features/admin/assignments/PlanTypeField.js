@@ -23,8 +23,6 @@ import {
 
 import CheckIcon from '@mui/icons-material/Check';
 
-import { put } from '../../../core/api';
-
 import {
   useGetHistoricalEvaluationsQuery,
   useUpdateEvaluationSetPlanTypeMutation,
@@ -137,8 +135,7 @@ const PlanTypeField = ( props ) => {
 
   const setEvaluateePlanType =  async (id, planType) => {
     if (planType === PlanType.COMPREHENSIVE || planType === PlanType.UNDEFINED) {
-      const url = `evaluations/${id}/updateplantype`;
-      const response = await put(url, {
+      updatePlanType({
         evaluationId: id,
         evaluateePlanType: planType,
         comprehensiveCarryForward: false,
@@ -146,10 +143,9 @@ const PlanTypeField = ( props ) => {
         carryForwardSchoolYear: null,
         focusedFrameworkNodeId: null,
         focusedSGFrameworkNodeId: null
+      }).then((response)=> {
+        setEvalSummary(response.data);
       });
-  
-      const evalSummary = response.data;
-      setEvalSummary(evalSummary);
     }
     else if (planType === PlanType.FOCUSED) {
       setSelectedEvaluationId(id);
@@ -175,10 +171,6 @@ const PlanTypeField = ( props ) => {
      (
        <>
         <PlanTypeDisplay evaluation={evalSummary}/>
-        {/* <EditIcon fontSize="small" onClick={() => {
-          setSelectedEvaluationId(evalSummary.id);
-          setDlgOpen(true);
-        }}/> */}
      </>
      )}
     <Dialog open={dlgOpen} onClose={handleClickDlgCancel}
