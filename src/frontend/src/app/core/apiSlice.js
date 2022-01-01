@@ -34,6 +34,10 @@ export const apiSlice = createApi({
       query: (evaluateeId) => `evaluations/historical/${evaluateeId}`
     }),
 
+    getEvaluationsForWorkAreaContext: builder.query({
+      query: (workAreaContextId) => `evaluations/workarea-context/${workAreaContextId}`
+    }),
+
     // buildings
     getSchoolsInDistrict: builder.query({
       query: (districtCode) => `buildings/${districtCode}/schools/`
@@ -128,5 +132,6 @@ export const {
   useUpdateDTERoleInSchoolsMutation,
   useUpdateEvaluationSetEvaluatorMutation,
   useGetHistoricalEvaluationsQuery,
-  useUpdateEvaluationSetPlanTypeMutation
+  useUpdateEvaluationSetPlanTypeMutation,
+  useGetEvaluationsForWorkAreaContextQuery
 } = apiSlice

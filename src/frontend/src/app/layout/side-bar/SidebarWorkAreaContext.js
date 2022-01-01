@@ -24,33 +24,11 @@ import {
 
 import { useTheme } from '@mui/material/styles';
 
+import SidebarEvaluatingDropdown from './SidebarEvaluatingDropdown';
+
 import { DistrictViewerSchoolWorkAreas, WorkAreas} from '../../core/workAreas';
 import { getListSubheaderStyles } from './listItemStyles';
-
-const getSelectStyles = (theme, highlight) => {
-  const defaultColor = theme.palette.neutral[400];
-  return {
-    width: '190px',
-    "& .MuiOutlinedInput-root": {
-      '& fieldset': {
-        color: defaultColor,
-        borderColor: defaultColor,
-      },
-    },
-    '& label': {
-      color: theme.palette.secondary.dark,
-      borderColor: defaultColor,
-    },
-    "& .MuiSelect-icon": { 
-      color: defaultColor,
-    },
-    "& .MuiSelect-select": { 
-      padding: "4px 8px",
-      fontSize:'11px',
-      color: highlight || 'defaultColor',
-    },
-  };
-};
+import { getSelectStyles } from './selectItemStyles';
 
 const initDistricts = (workAreaContexts) => {
   return workAreaContexts.reduce((acc, next) => {
@@ -91,8 +69,7 @@ const SidebarWorkAreaContext = () => {
  
   const workAreaContexts = useSelector(selectWorkAreaContextsAll);
   const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
-  const evaluations = useSelector(selectEvaluationsAll);
-
+ 
   const activeDistrictViewerSchool = useSelector(selectActiveDistrictViewerSchool);
   const activeDistrictViewerEvaluator = useSelector(selectActiveDistrictViewerEvaluator);
 
@@ -110,8 +87,6 @@ const SidebarWorkAreaContext = () => {
 
   const [selectedDistrictViewerSchoolCode, setSelectedDistrictViewerSchoolCode] = useState(activeDistrictViewerSchool?.schoolCode ?? "0");
   const [selectedDistrictViewerEvaluatorId, setSelectedDistrictViewerEvaluatorId] = useState(activeDistrictViewerEvaluator?.id ?? "0");
-
-  const [selectedEvaluationId, setSelectedEvaluationId] = useState("0");
 
   const changeDistrict = (districtCode) => {
     setSelectedDistrictCode(districtCode);
@@ -132,19 +107,13 @@ const SidebarWorkAreaContext = () => {
   const changeWorkAreaContext = async (id) => {
       const workArea = workAreaContexts.find((x) => x.id === id);
       setSelectedWorkAreaContextId(workArea.id);
-      setSelectedEvaluationId("0");
       await dispatch(setActiveWorkAreaContext(workArea));
   }
 
   useEffect(()=> {
     navigate("/app/dashboard");
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedWorkAreaContextId, selectedEvaluationId])
-  
-  const changeEvaluation = async (id) => {
-    setSelectedEvaluationId(id);
-    await dispatch(setActiveEvaluationId(id));
-  }
+  }, [selectedWorkAreaContextId])
 
   const changeDistrictViewerSchool = async (schoolCode) => {
     setSelectedDistrictViewerSchoolCode(schoolCode);
@@ -216,7 +185,7 @@ const SidebarWorkAreaContext = () => {
               ))}
             </TextField>
         }
-        <TextField label="Work Area"  sx={{...getSelectStyles(theme)}}
+        <TextField label="Work Area"  sx={{...getSelectStyles(theme, 'white')}}
             select
             value={selectedWorkAreaContextId}
             onChange={(e)=> {
@@ -244,7 +213,7 @@ const SidebarWorkAreaContext = () => {
       )}
     >
       <Stack spacing={3} sx={{color: theme => theme.palette.neutral[400]}}>
-      {(DistrictViewerSchoolWorkAreas.includes(activeWorkAreaContext.tagName)) && 
+        {(DistrictViewerSchoolWorkAreas.includes(activeWorkAreaContext.tagName)) && 
           <>
           <TextField label="School" sx={{...getSelectStyles(theme)}}
             select
@@ -283,22 +252,8 @@ const SidebarWorkAreaContext = () => {
           }
 
           {(activeWorkAreaContext.isEvaluator || selectedDistrictViewerEvaluatorId!=="0") && 
-          <TextField label="Evaluating" sx={{...getSelectStyles(theme, selectedEvaluationId==="0"?'red':'white')}}
-            select
-            value={selectedEvaluationId}
-            onChange={(e)=> {
-              changeEvaluation(parseInt(e.target.value, 10))
-            }}
-            >
-              <MenuItem key="default" value="0">
-                Select a {activeWorkAreaContext.evaluateeTerm}
-              </MenuItem>
-              {evaluations.map((x) => (
-                <MenuItem key={`evaluation-${x.id}`} value={x.id}>
-                  {x.evaluateeDisplayName}
-                </MenuItem>
-              ))}
-      </TextField>}
+          <SidebarEvaluatingDropdown workAreaContext={activeWorkAreaContext} />
+          }
       </Stack>
     </List>
     </>
