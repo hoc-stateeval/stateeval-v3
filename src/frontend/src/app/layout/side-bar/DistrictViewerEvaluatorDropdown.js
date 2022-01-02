@@ -22,7 +22,6 @@ import {
   selectActiveDistrictViewerSchoolCode,
 } from '../../store/stateEval/userContextSlice';
 
-
 const buildEvaluatorLabel = (tagName) => {
   if (tagName === WorkAreas.DV_PR_PR) {
     return "Head Principal";

@@ -41,10 +41,14 @@ const createWorkAreaContextState = async (state, workAreaContext) => {
       activeFrameworkId: workAreaContext.defaultFrameworkId,
       stateFrameworkId: workAreaContext.stateFrameworkId,
       instructionalFrameworkId: workAreaContext.instructionalFrameworkId,
+      activeEvaluationId: '0',
+      activeDistrictViewerSchoolCode: '0',
+      activeDistrictViewerEvaluatorId: '0',
     },
     entities: {
       ...state.entities,
       frameworks: frameworksHashMap,
+      activeEvaluation: null,
     },
     thunkState: ThunkState.INIT,
     errorMessage: '',
@@ -135,13 +139,15 @@ const initialState = {
     activeFrameworkId: null,
     stateFrameworkId: null,
     instructionalFrameworkId: null,
-    activeEvaluationId: null,
-    activeDistrictViewerSchoolCode: null,
-    activeDistrictViewerEvaluatorId: null
+    // these need to be zero for select element defaults
+    activeEvaluationId: '0',
+    activeDistrictViewerSchoolCode: '0',
+    activeDistrictViewerEvaluatorId: '0'
   },
   entities: {
     workAreaContexts: {},
     frameworks: {},
+    activeEvaluation: null,
   },
   thunkState: ThunkState.INIT,
   errorMessage: '',
@@ -166,13 +172,17 @@ const userContextSlice = createSlice({
         },
       };
     },
-    setActiveEvaluationId: (state, action) => {
+    setActiveEvaluation: (state, action) => {
       return {
         ...state,
         ids: {
           ...state.ids,
-          activeEvaluationId: action.payload,
+          activeEvaluationId: action.payload.id,
         },
+        entities: {
+          ...state.entities,
+          activeEvaluation: action.payload
+        }
       };
     },
     setActiveDistrictViewerSchoolCode: (state, action) => {
@@ -334,8 +344,17 @@ export const selectPageTitle = createSelector(
   return title;
 });
 
+const getActiveEvaluation = (state) => {
+  const { activeEvaluation } = state.stateEval.userContext.entities;
+  return activeEvaluation;
+};
+
+export const selectActiveEvaluation = createSelector(
+  [getActiveEvaluation], (evaluation) => {
+  return evaluation;
+});
 const getActiveEvaluationId = (state) => {
-  const { activeEvaluationId } = state.stateEval;
+  const { activeEvaluationId } = state.stateEval.userContext.ids;
   return activeEvaluationId;
 };
 
@@ -345,7 +364,7 @@ export const selectActiveEvaluationId = createSelector(
 });
 
 const getActiveDistrictViewerSchoolCode = (state) => {
-  const { activeDistrictViewerSchoolCode } = state.stateEval;
+  const { activeDistrictViewerSchoolCode } = state.stateEval.userContext.ids;
   return activeDistrictViewerSchoolCode;
 };
 
@@ -355,7 +374,7 @@ export const selectActiveDistrictViewerSchoolCode = createSelector(
 });
 
 const getActiveDistrictViewerEvaluatorId = (state) => {
-  const { activeDistrictViewerEvaluatorId } = state.stateEval;
+  const { activeDistrictViewerEvaluatorId } = state.stateEval.userContext.ids;
   return activeDistrictViewerEvaluatorId;
 };
 
@@ -366,7 +385,7 @@ export const selectActiveDistrictViewerEvaluatorId = createSelector(
 
 export const { 
   setActiveFrameworkId, 
-  setActiveEvaluationId,
+  setActiveEvaluation,
   setActiveDistrictViewerSchoolCode,
   setActiveDistrictViewerEvaluatorId,
   setPageTitle,

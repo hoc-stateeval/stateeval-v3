@@ -20,7 +20,8 @@ const DistrictViewerSchoolEvaluatorOptions = () => {
   const activeDistrictViewerEvaluatorId = useSelector(selectActiveDistrictViewerEvaluatorId);
  
   const { data: evaluations } = useGetEvaluationsForDistrictViewerQuery({
-    workAreaContextId: activeWorkAreaContext.id,
+    frameworkContextId: activeWorkAreaContext.frameworkContextId,
+    evaluatorId: activeDistrictViewerEvaluatorId,
     schoolCode: activeDistrictViewerSchoolCode,
   }, {skip: activeDistrictViewerEvaluatorId==="0"});
 

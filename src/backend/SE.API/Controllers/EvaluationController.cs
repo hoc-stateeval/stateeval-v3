@@ -74,10 +74,10 @@ namespace SE.API.Controllers
             return Ok(evaluations);
         }
 
-        [HttpGet("workarea-context/{workAreaContextId}/{evaluatorId}/{schoolCode?}")]
-        public async Task<IActionResult> GetEvaluationsForDistrictViewer(long workAreaContextId, long evaluatorId, string schoolCode)
+        [HttpGet("{frameworkContextId}/{evaluatorId}/{schoolCode?}")]
+        public async Task<IActionResult> GetEvaluationsForDistrictViewer(long frameworkContextId, long evaluatorId, string schoolCode)
         {
-            var users = await _mediator.Send(new GetEvaluationsForDistrictViewerQuery(workAreaContextId, evaluatorId, schoolCode));
+            var users = await _mediator.Send(new GetEvaluationsForDistrictViewerQuery(frameworkContextId, evaluatorId, schoolCode));
             return Ok(users);
         }
     }

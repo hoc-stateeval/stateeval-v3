@@ -10,7 +10,7 @@ import { useTheme } from '@mui/material/styles';
 import { getSelectStyles } from './selectItemStyles';
 
 import {
-  setActiveEvaluationId,
+  setActiveEvaluation,
   selectActiveEvaluationId,
 } from '../../store/stateEval/userContextSlice';
 
@@ -19,7 +19,7 @@ import {
 } from '../../store/stateEval/userContextSlice';
 
 
-const EvaluationDropDown = (evaluations) => {
+const EvaluationDropDown = ({evaluations}) => {
 
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -27,11 +27,12 @@ const EvaluationDropDown = (evaluations) => {
   const workAreaContext = useSelector(selectActiveWorkAreaContext);
   const activeEvaluationId = useSelector(selectActiveEvaluationId);
 
-  const [selectedEvaluationId, setSelectedEvaluationId] = useState(activeEvaluationId ?? "0");
+  const [selectedEvaluationId, setSelectedEvaluationId] = useState(activeEvaluationId);
 
   const changeEvaluation = async (id) => {
     setSelectedEvaluationId(id);
-    dispatch(setActiveEvaluationId(id));
+    const evaluation = evaluations.find(x=>x.id===id);
+    dispatch(setActiveEvaluation(evaluation));
   }
   return (
     <>

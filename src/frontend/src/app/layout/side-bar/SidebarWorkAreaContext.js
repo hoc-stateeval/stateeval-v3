@@ -103,7 +103,12 @@ const SidebarWorkAreaContext = () => {
   useEffect(()=> {
     navigate("/app/dashboard");
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedWorkAreaContextId])
+  }, [selectedWorkAreaContextId]);
+
+  const showWorkAreaSettings = 
+     DistrictViewerDistrictEvaluatorWorkAreas.includes(activeWorkAreaContext.tagName) || 
+     DistrictViewerSchoolEvaluatorWorkAreas.includes(activeWorkAreaContext.tagName) || 
+     EvaluatorWorkAreas.includes(activeWorkAreaContext.tagName);
 
   return (
     <>
@@ -164,6 +169,7 @@ const SidebarWorkAreaContext = () => {
           </TextField>
       </Stack>
     </List>
+    {showWorkAreaSettings &&
     <List sx={{pl:2}}
       subheader={(
         <ListSubheader variant="sideBar"
@@ -177,17 +183,18 @@ const SidebarWorkAreaContext = () => {
       )}
     >
       <Stack spacing={3} sx={{color: theme => theme.palette.neutral[400]}}>
-        { DistrictViewerDistrictEvaluatorWorkAreas &&
+        { DistrictViewerDistrictEvaluatorWorkAreas.includes(activeWorkAreaContext.tagName) &&
           <DistrictViewerDistrictEvaluatorOptions workAreaContext={activeWorkAreaContext} />
         }
-        { DistrictViewerSchoolEvaluatorWorkAreas &&
+        { DistrictViewerSchoolEvaluatorWorkAreas.includes(activeWorkAreaContext.tagName) &&
         <DistrictViewerSchoolEvaluatorOptions workAreaContext={activeWorkAreaContext} />
         } 
-        { EvaluatorWorkAreas && 
+        { EvaluatorWorkAreas.includes(activeWorkAreaContext.tagName) && 
           <EvaluatorOptions workAreaContext={activeWorkAreaContext} />
         }
       </Stack>
     </List>
+    }
     </>
   );
 };

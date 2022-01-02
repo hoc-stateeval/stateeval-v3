@@ -52,6 +52,7 @@ namespace SE.Core.Queries
             {
                 var workAreaContext = await _dataContext.WorkAreaContexts
                     .Include(x => x.Building)
+                    .Include(x => x.WorkArea)
                     .Where(x => x.FrameworkContextId == request.FrameworkContextId &&
                                 x.UserId == request.EvaluatorId &&
                                 x.Building.SchoolCode == request.SchoolCode)

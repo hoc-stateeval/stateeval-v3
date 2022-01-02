@@ -39,7 +39,7 @@ export const apiSlice = createApi({
     }),
 
     getEvaluationsForDistrictViewer: builder.query({
-      query: (data) => `evaluations/workarea-context/${data.workAreaContextId}/${data.evaluatorId}/${data.schoolCode}`
+      query: (data) => `evaluations/${data.frameworkContextId}/${data.evaluatorId}/${data.schoolCode}`
     }),
 
     // buildings

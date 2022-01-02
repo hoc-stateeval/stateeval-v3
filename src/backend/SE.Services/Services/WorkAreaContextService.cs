@@ -27,6 +27,7 @@ namespace SE.Core.Services
         public IQueryable<WorkAreaContextDTO> ExecuteWorkAreaContextDTOQuery(System.Linq.Expressions.Expression<System.Func<WorkAreaContext, bool>> expr)
         {
             return _dataContext.WorkAreaContexts
+                .Include(x => x.User)
                 .Include(x => x.FrameworkContext)
                 .Include(x => x.Building)
                 .Include(x => x.WorkArea).ThenInclude(x => x.Role)

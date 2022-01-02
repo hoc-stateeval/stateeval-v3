@@ -1,13 +1,20 @@
+import { useSelector } from 'react-redux';
 
 import {
   useGetEvaluationsForWorkAreaContextQuery,
  } from '../../core/apiSlice';
 
+ import {
+  selectActiveWorkAreaContext,
+} from '../../store/stateEval/userContextSlice';
+
  import EvaluatingDropDown from './EvaluatingDropDown';
 
-const EvaluatorOptions = (workAreaContext) => {
+const EvaluatorOptions = () => {
 
-  const { data: evaluations } = useGetEvaluationsForWorkAreaContextQuery(workAreaContext.id);
+  const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
+
+  const { data: evaluations } = useGetEvaluationsForWorkAreaContextQuery(activeWorkAreaContext.id);
 
   return (
     <>

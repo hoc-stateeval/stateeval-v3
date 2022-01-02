@@ -21,7 +21,7 @@ const EvaluateeWorkAreas = [WorkAreas.PR_ME, WorkAreas.TR_ME];
 const DistrictViewerSchoolEvaluatorWorkAreas = [WorkAreas.DV_PR_TR, WorkAreas.DV_PR_PR];
 const DistrictViewerDistrictEvaluatorWorkAreas = [WorkAreas.DV_DTE, WorkAreas.DE];
 
-const EvaluationWorkAreas = [...EvaluatorWorkAreas, ...EvaluateeWorkAreas, ...DistrictViewerSchoolWorkAreas];
+const EvaluationWorkAreas = [...EvaluatorWorkAreas, ...EvaluateeWorkAreas, ...DistrictViewerSchoolEvaluatorWorkAreas, DistrictViewerDistrictEvaluatorWorkAreas];
 const AdminWorkAreas = [WorkAreas.DA_TR, WorkAreas.DA_PR, WorkAreas.SA_TR, WorkAreas.SA_PR];
 const DistrictAdminWorkAreas = [WorkAreas.DA_TR, WorkAreas.DA_PR];
 const TeacherAssignmentWorkAreas = [WorkAreas.DA_TR, WorkAreas.SA_TR, WorkAreas.PR_TR];

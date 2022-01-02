@@ -50,6 +50,7 @@ namespace SE.Core.Queries
             {
                 WorkAreaContext? workAreaContext = await _dataContext.WorkAreaContexts
                     .Include(x=>x.Building)
+                    .Include(x => x.WorkArea)
                     .Where(x => x.Id == request.WorkAreaContextId).FirstOrDefaultAsync(cancellationToken: cancellationToken);
 
                var evaluations = await _evaluationService.GetEvaluationsForWorkAreaContext(workAreaContext);
