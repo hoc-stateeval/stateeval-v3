@@ -18,6 +18,8 @@ import {
   selectActiveWorkAreaContext,
   setActiveDistrictViewerSchoolCode,
   selectActiveDistrictViewerSchoolCode,
+  setActiveDistrictViewerEvaluatorId,
+  setActiveEvaluation,
 } from '../../store/stateEval/userContextSlice';
 
 
@@ -29,27 +31,29 @@ const DistrictViewerSchoolDropDown = () => {
   const workAreaContext = useSelector(selectActiveWorkAreaContext);
 
   const activeDistrictViewerSchoolCode = useSelector(selectActiveDistrictViewerSchoolCode);
-  const [selectedDistrictViewerSchoolCode, setSelectedDistrictViewerSchoolCode] = useState(activeDistrictViewerSchoolCode?.schoolCode ?? "0");
   
   const { data: schools } = useGetSchoolsInDistrictQuery(workAreaContext.districtCode);
   
   const changeDistrictViewerSchool = async (schoolCode) => {
-    setSelectedDistrictViewerSchoolCode(schoolCode);
     dispatch(setActiveDistrictViewerSchoolCode(schoolCode));
+    dispatch(setActiveDistrictViewerEvaluatorId("0"));
+    dispatch(setActiveEvaluation(null));
   }
 
   return (
     <>
      <TextField label="School" sx={{...getSelectStyles(theme)}}
         select
-        value={selectedDistrictViewerSchoolCode}
+        value={activeDistrictViewerSchoolCode}
         onChange={(e)=> {
           changeDistrictViewerSchool(parseInt(e.target.value, 10));
         }}
         >
-          <MenuItem key="default" value="0">
+          {activeDistrictViewerSchoolCode==="0" &&
+            <MenuItem key="default" value="0">
             Select a school
           </MenuItem>
+          }
           {schools && schools.map((x) => (
             <MenuItem key={`dv-school-${x.id}`} value={x.schoolCode}>
               {x.schoolName}

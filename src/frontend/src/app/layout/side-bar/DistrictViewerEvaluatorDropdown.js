@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -50,34 +49,31 @@ const DistrictViewerEvaluatorDropDown = () => {
   const activeDistrictViewerEvaluatorId = useSelector(selectActiveDistrictViewerEvaluatorId);
   const activeDistrictViewerSchoolCode = useSelector(selectActiveDistrictViewerSchoolCode);
 
-  const [selectedDistrictViewerEvaluatorId, setSelectedDistrictViewerEvaluatorId] = useState(activeDistrictViewerEvaluatorId?.id ?? "0");
- 
-  const waitOnSchoolSelection = 
-    DistrictViewerSchoolEvaluatorWorkAreas.includes(activeWorkAreaContext.tagName) &&
-    activeDistrictViewerSchoolCode==="0";
-
+  const waitOnDependencies = DistrictViewerSchoolEvaluatorWorkAreas.includes(activeWorkAreaContext.tagName) &&
+          activeDistrictViewerSchoolCode==="0";
   const { data: evaluators } = useGetEvaluatorsForDistrictViewerQuery({
     workAreaContextId: activeWorkAreaContext.id,
     schoolCode: activeDistrictViewerSchoolCode,
-  }, {skip: waitOnSchoolSelection});
+  }, {skip:waitOnDependencies});
 
   const changeDistrictViewerEvaluator = async (evaluatorId) => {
-    setSelectedDistrictViewerEvaluatorId(evaluatorId);
     dispatch(setActiveDistrictViewerEvaluatorId(evaluatorId));
   }
   return (
     <>
       <TextField label={buildEvaluatorLabel(activeWorkAreaContext.tagName)} sx={{...getSelectStyles(theme)}}
         select
-        value={selectedDistrictViewerEvaluatorId}
+        value={activeDistrictViewerEvaluatorId}
         onChange={(e)=> {
           changeDistrictViewerEvaluator(parseInt(e.target.value, 10));
         }}
         >
+          {activeDistrictViewerEvaluatorId==="0" &&
           <MenuItem key="default" value="0">
             Select an evaluator
           </MenuItem>
-          {evaluators && evaluators.map((x) => (
+          }
+          {!waitOnDependencies && evaluators && evaluators.map((x) => (
             <MenuItem key={`dv-evaluator-${x.id}`} value={x.id}>
               {x.displayName}
             </MenuItem>

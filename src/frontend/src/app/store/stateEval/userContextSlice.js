@@ -177,7 +177,7 @@ const userContextSlice = createSlice({
         ...state,
         ids: {
           ...state.ids,
-          activeEvaluationId: action.payload.id,
+          activeEvaluationId: action.payload?action.payload.id:"0",
         },
         entities: {
           ...state.entities,

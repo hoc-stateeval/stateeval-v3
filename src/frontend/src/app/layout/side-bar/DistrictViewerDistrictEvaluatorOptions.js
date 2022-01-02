@@ -16,16 +16,17 @@ const DistrictViewerDistrictEvaluatorOptions = () => {
   const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
   const activeDistrictViewerEvaluatorId = useSelector(selectActiveDistrictViewerEvaluatorId);
  
+  const waitOnDependencies = activeDistrictViewerEvaluatorId==="0" ;
   const { data: evaluations } = useGetEvaluationsForDistrictViewerQuery({
     frameworkContextId: activeWorkAreaContext.frameworkContextId,
     evaluatorId: activeDistrictViewerEvaluatorId,
     schoolCode: '',
-  }, {skip: activeDistrictViewerEvaluatorId==="0"});
+  }, {skip: waitOnDependencies});
 
   return (
     <>
       <DistrictViewerEvaluatorDropDown  />
-      <EvaluatingDropDown evaluations={evaluations} />
+      <EvaluatingDropDown evaluations={waitOnDependencies?[]:evaluations} />
     </>
   );
 };

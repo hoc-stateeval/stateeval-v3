@@ -27,26 +27,25 @@ const EvaluationDropDown = ({evaluations}) => {
   const workAreaContext = useSelector(selectActiveWorkAreaContext);
   const activeEvaluationId = useSelector(selectActiveEvaluationId);
 
-  const [selectedEvaluationId, setSelectedEvaluationId] = useState(activeEvaluationId);
-
   const changeEvaluation = async (id) => {
-    setSelectedEvaluationId(id);
     const evaluation = evaluations.find(x=>x.id===id);
     dispatch(setActiveEvaluation(evaluation));
   }
   return (
     <>
     {evaluations &&
-     <TextField label="Evaluating" sx={{...getSelectStyles(theme, selectedEvaluationId==="0"?'red':'white')}}
+     <TextField label="Evaluating" sx={{...getSelectStyles(theme, activeEvaluationId==="0"?'red':'white')}}
               select
-              value={selectedEvaluationId}
+              value={activeEvaluationId}
               onChange={(e)=> {
                 changeEvaluation(parseInt(e.target.value, 10))
               }}
               >
-                <MenuItem key="default" value="0">
+                {activeEvaluationId==="0" &&
+                  <MenuItem key="default" value="0">
                   Select a {workAreaContext.evaluateeTerm}
                 </MenuItem>
+                }
                 {evaluations.map((x) => (
                   <MenuItem key={`evaluation-${x.id}`} value={x.id}>
                     {x.evaluateeDisplayName}

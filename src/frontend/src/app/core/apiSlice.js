@@ -39,7 +39,9 @@ export const apiSlice = createApi({
     }),
 
     getEvaluationsForDistrictViewer: builder.query({
-      query: (data) => `evaluations/${data.frameworkContextId}/${data.evaluatorId}/${data.schoolCode}`
+      query: (data) => {
+        return `evaluations/${data.frameworkContextId}/${data.evaluatorId}/${data.schoolCode}`;
+      }
     }),
 
     // buildings
@@ -61,7 +63,9 @@ export const apiSlice = createApi({
     }),
 
     getEvaluatorsForDistrictViewer: builder.query({
-      query: (data) => `users/${data.workAreaContextId}/evaluators-for-district-viewer/${data.schoolCode}`
+      query: (data) => {
+        return `users/${data.workAreaContextId}/evaluators-for-district-viewer/${data.schoolCode}`
+      }
     }),
 
     // roles
