@@ -14,6 +14,7 @@ import {
 
 import { 
   DistrictAdminWorkAreas,
+  getDefaultPathForWorkAreaContext,
  } from '../../core/workAreas';
 
 
@@ -36,7 +37,7 @@ const SidebarSwitchAdminWorkAreaDropdown = () => {
     setSelectedWorkAreaContextId(contextId);
     const workArea = workAreaContexts.find((x) => x.id === contextId);
     await dispatch(setActiveWorkAreaContext(workArea));
-    navigate("/app/dashboard");
+    navigate(getDefaultPathForWorkAreaContext(activeWorkAreaContext));
   };
 
   return (

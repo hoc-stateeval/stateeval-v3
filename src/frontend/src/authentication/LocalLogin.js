@@ -11,12 +11,17 @@ import {
   Typography,
 } from '@mui/material';
 
-import { submitLocalLogin } from '../app/store/stateEval/userContextSlice';
+import { setCurrentUser } from '../app/store/stateEval/userContextSlice';
 
 import {
   useGetLocalLoginUsersForDistrictQuery,
   useGetLocalLoginDistrictsQuery,
+  useLoginUserMutation,
  } from '../app/core/apiSlice';
+
+import { 
+  getDefaultPathForWorkAreaContext
+ } from '../app/core/workAreas';
 
 const LocalLogin = () => {
 
@@ -25,6 +30,8 @@ const LocalLogin = () => {
 
   const [districtCode, setDistrictCode] = useState('');
   const [userId, setUserId] = useState('');
+
+  const [loginUser] = useLoginUserMutation()
 
   const {
     data: districts,
@@ -48,8 +55,23 @@ const LocalLogin = () => {
 
   const onClickLogin = async (e) => {
     const user = users.find((x) => x.id === userId);
-    dispatch(submitLocalLogin(user)).then(()=> {
-      navigate("/app/dashboard", { replace: true });
+    loginUser({
+        grant_type: 'password',
+        userName: user.userName,
+        password: 'password',
+        client_id: 'ngSEAuthApp',
+    }).then((response) => {
+      const authenticatedUser = response.data.user;
+      const workAreaContexts = response.data.workAreaContexts;
+      const defaultWorkAreaContextId = response.data.defaultWorkAreaContextId;
+      const defaultWorkArea = workAreaContexts.find(x => x.id === defaultWorkAreaContextId);
+      dispatch(setCurrentUser({
+        user: authenticatedUser,
+        workAreaContexts: workAreaContexts,
+      })).then(()=> {
+        const defaultPath = getDefaultPathForWorkAreaContext(defaultWorkArea);
+        navigate(defaultPath, { replace: true });
+      });
     });
   };
 

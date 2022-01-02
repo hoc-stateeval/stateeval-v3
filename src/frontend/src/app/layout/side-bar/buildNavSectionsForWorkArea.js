@@ -89,13 +89,13 @@ const navSections = [
     ],
   },
   {
-    title: 'Evaluation',
+    title: 'Evaluation Setup',
     workAreaTags: WorkAreas.DA_TR,
     items: [
       {
         title: 'Dashboard',
         icon: <GridViewIcon fontSize="small" />,
-        path: '/app/dashboard',
+        path: '/app/dashboards/da-tr',
       },
       {
         title: 'Assignments',
@@ -110,13 +110,13 @@ const navSections = [
     ]
   },
   {
-    title: 'Evaluation',
+    title: 'Evaluation Setup',
     workAreaTags: WorkAreas.DA_PR,
     items: [
       {
         title: 'Dashboard',
         icon: <GridViewIcon fontSize="small" />,
-        path: '/app/dashboard',
+        path: '/app/dashboards/da-pr',
       },
       {
         title: 'Assignments',

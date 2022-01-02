@@ -51,19 +51,23 @@ namespace SE.API.Controllers.Authentication
             var user = await _mediator.Send(new GetUserByUserNameQuery(loginDTO.UserName));
             if (user != null && user.Id > 0)
             {
-                if (await CheckPasswordAsync(user.UserName, loginDTO.Password))
+                var checkPassword = await CheckPasswordAsync(user.UserName, loginDTO.Password);
+                if (!checkPassword) return Unauthorized();
+
+                var workAreaContexts = await _mediator.Send(new GetWorkAreaContextsForUserQuery(user.Id));
+
+                var token = GenerateJSONWebToken(loginDTO);
+                AuthenticatedUserDTO dto = new AuthenticatedUserDTO
                 {
-                    var token = GenerateJSONWebToken(loginDTO);
-                    UserWithAccessTokenDTO dto = new UserWithAccessTokenDTO
-                    {
-                        AccessToken = token,
-                        User = user,
-                    };
-                    return Ok(dto);
-                }
+                    AccessToken = token,
+                    User = user,
+                    WorkAreaContexts = workAreaContexts,
+                    DefaultWorkAreaContextId = workAreaContexts[0].Id,
+                };
+                return Ok(dto);   
             }
 
-            return Unauthorized();
+            return BadRequest();
         }
 
         protected async Task<bool> CheckPasswordAsync(string username, string password)

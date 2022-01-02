@@ -50,6 +50,17 @@ export const apiSlice = createApi({
     }),
 
     // users
+
+    loginUser: builder.mutation({
+      query(data) {
+        return {
+          url: `auth`,
+          method: 'POST',
+          body: data,
+        };
+      },
+    }),
+    
     getUsersInRoleAtDistrict: builder.query({
       query: (data) => `users/district/${data.districtCode}/usersinrole/${data.roleType}`
     }),
@@ -147,5 +158,6 @@ export const {
   useUpdateEvaluationSetPlanTypeMutation,
   useGetEvaluationsForWorkAreaContextQuery,
   useGetEvaluationsForDistrictViewerQuery,
-  useGetEvaluatorsForDistrictViewerQuery
+  useGetEvaluatorsForDistrictViewerQuery,
+  useLoginUserMutation,
 } = apiSlice

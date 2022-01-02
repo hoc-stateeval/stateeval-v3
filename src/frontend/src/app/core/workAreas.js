@@ -16,10 +16,17 @@ const WorkAreas = {
   DV_CT: 'DV_CT'
 };
 
+const getDefaultPathForWorkAreaContext = (workAreaContext) => {
+
+  if (workAreaContext.tagName === WorkAreas.DA_TR) return '/app/dashboards/da-tr';
+  if (workAreaContext.tagName === WorkAreas.DA_PR) return '/app/dashboards/da-pr';
+}
+
 const EvaluatorWorkAreas = [WorkAreas.PR_PR, WorkAreas.PR_TR, WorkAreas.DTE, WorkAreas.DE_PR];
 const EvaluateeWorkAreas = [WorkAreas.PR_ME, WorkAreas.TR_ME];
 const DistrictViewerSchoolEvaluatorWorkAreas = [WorkAreas.DV_PR_TR, WorkAreas.DV_PR_PR];
 const DistrictViewerDistrictEvaluatorWorkAreas = [WorkAreas.DV_DTE, WorkAreas.DE];
+const DistrictViewerWorkAreas = [...DistrictViewerSchoolEvaluatorWorkAreas, ...DistrictViewerDistrictEvaluatorWorkAreas];
 
 const EvaluationWorkAreas = [...EvaluatorWorkAreas, ...EvaluateeWorkAreas, ...DistrictViewerSchoolEvaluatorWorkAreas, DistrictViewerDistrictEvaluatorWorkAreas];
 const AdminWorkAreas = [WorkAreas.DA_TR, WorkAreas.DA_PR, WorkAreas.SA_TR, WorkAreas.SA_PR];
@@ -44,5 +51,7 @@ export {
   TeacherAssignmentWorkAreas,
   PrincipalAssignmentWorkAreas,
   DistrictViewerSchoolEvaluatorWorkAreas,
-  DistrictViewerDistrictEvaluatorWorkAreas
+  DistrictViewerDistrictEvaluatorWorkAreas,
+  DistrictViewerWorkAreas,
+  getDefaultPathForWorkAreaContext
 };

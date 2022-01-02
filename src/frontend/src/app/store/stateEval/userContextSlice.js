@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit';
-import { get, post } from '../../core/api';
+import { get } from '../../core/api';
 import ThunkState from '../../core/thunkState';
 import { convertArrayToHashMap } from '../../core/utils';
 import { clearState } from '../../core/persist';
@@ -8,12 +8,6 @@ const getFramework = async (frameworkId) => {
   const response = await get(`frameworks/${frameworkId}`);
   const data = await response.data;
   return data;
-};
-
-const getWorkAreaContextsForUser = async (userId) => {
-  const response = await get(`workarea-contexts/user/${userId}`);
-  const workAreaContexts = await response.data;
-  return workAreaContexts;
 };
 
 const createWorkAreaContextState = async (state, workAreaContext) => {
@@ -66,58 +60,29 @@ export const setActiveWorkAreaContext = createAsyncThunk(
   }
 );
 
-// const getEvaluatorsForDistrictViewerWorkArea = async (state) => {
-//   else if (workAreaContext.tagName === WorkAreas.DV_DTE) {
-//     url = `${urlRoot}/usersinrole/${RoleType.DTE}`
-//   }
-//   else if (workAreaContext.tagName === WorkAreas.DV_DE) {
-//     url = `${urlRoot}/usersinrole/${RoleType.DE_PR}`
-//   }
-
-//   const response = await get(url);
-//   return response.data;
-// }
-
-// TODO: 
-// save out access token,
-// add to header 
-// expire, and check with each api call
-
-export const submitLocalLogin =
-  ({ userName, password = 'password' }) =>
-  async (dispatch) => {
-    const response = await post('auth', {
-        grant_type: 'password',
-        userName,
-        password,
-        client_id: 'ngSEAuthApp',
-    });
-
-    const data = await response.data;
-    // const accessToken = data.access_token;
-    return dispatch(setCurrentUser(data.user));
-
-  };
-
-  export const logout = createAsyncThunk(
-    'userContext/logout',
-    async (user, { dispatch, getState }) => {
-      clearState();
-      return initialState;
-    }
-  );
+export const logout = createAsyncThunk(
+  'userContext/logout',
+  async (user, { dispatch, getState }) => {
+    clearState();
+    return initialState;
+  }
+);
 
 export const setCurrentUser = createAsyncThunk(
   'userContext/setCurrentUser',
-  async (user, { dispatch, getState }) => {
-    const workAreaContexts = await getWorkAreaContextsForUser(user.id);
+  async (data, { dispatch, getState }) => {
+    const workAreaContexts = data.workAreaContexts;
     const defaultWorkAreaContext = workAreaContexts[0];
 
     const { userContext: state } = getState().stateEval;
 
     let newState = {
       ...state,
-      currentUser: user,
+      currentUser: data.user,
+      ids: {
+        ...state.ids,
+        activeWorkAreaContextId: defaultWorkAreaContext.id,
+      },
       entities: {
         ...state.entities,
         workAreaContexts: convertArrayToHashMap(workAreaContexts),

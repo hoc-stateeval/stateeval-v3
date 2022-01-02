@@ -2,6 +2,7 @@ import { Navigate } from 'react-router-dom';
 import { lazy } from 'react'
 import evaluationRoutesConfigs from './evaluationRoutesConfig';
 import adminRoutesConfigs from './adminRoutesConfig';
+//import districtViewerRoutesConfigs from './districtViewerRoutesConfig';
 
 const NotFound = lazy(() => import('./NotFound'));
 
@@ -19,7 +20,11 @@ const generateRoutesFromConfigs = (routeConfigs, workAreaTag) => {
 
 const buildRoutes = (activeWorkAreaContext) => {
 
-  const routeConfigs = [evaluationRoutesConfigs, adminRoutesConfigs];
+  const routeConfigs = [
+      evaluationRoutesConfigs, 
+      adminRoutesConfigs,
+     // districtViewerRoutesConfigs
+    ];
   const appRoutes = activeWorkAreaContext?
           generateRoutesFromConfigs(routeConfigs, activeWorkAreaContext.tagName): [];
    const routes = [

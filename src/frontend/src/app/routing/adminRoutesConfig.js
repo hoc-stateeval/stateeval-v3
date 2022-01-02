@@ -3,16 +3,22 @@ import { WorkAreas, AdminWorkAreas } from '../core/workAreas';
 const AssignmentsDistrictSummary = lazy(() => import('../features/admin/assignments/AssignmentsDistrictSummary'));
 const AssignmentsDistrictDetail = lazy(() => import('../features/admin/assignments/AssignmentsDistrictDetail'));
 const AssignmentsSchoolDetail = lazy(() => import('../features/admin/assignments/AssignmentsSchoolDetail'));
-const DistrictAdminDashboard = lazy(() => import('../features/admin/dashboards/district-admin/DistrictAdminDashboard'));
+const DistrictAdminTeacherDashboard = lazy(() => import('../dashboards/da-tr/Dashboard'));
+const DistrictAdminPrincipalDashboard = lazy(() => import('../dashboards/da-pr/Dashboard'));
 const DTESetup = lazy(() => import('../features/admin/assignments/DTESetup'));
 
 const AdminRoutes =   {
   workAreaTags: AdminWorkAreas,
   items: [
   {
-    path: "/app/dashboard",
-    element: <DistrictAdminDashboard />,
-    workAreaTags: [ WorkAreas.DA_TR, WorkAreas.DA_PR]
+    path: "/app/dashboards/da-tr",
+    element: <DistrictAdminTeacherDashboard />,
+    workAreaTags: [WorkAreas.DA_TR]
+  },
+  {
+    path: "/app/dashboards/da-pr",
+    element: <DistrictAdminPrincipalDashboard />,
+    workAreaTags: [WorkAreas.DA_PR]
   },
   {
     path: "/app/admin/assignments/district-summary",

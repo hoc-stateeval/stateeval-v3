@@ -20,6 +20,7 @@ import {
   DistrictViewerSchoolEvaluatorWorkAreas,
   DistrictViewerDistrictEvaluatorWorkAreas,
   EvaluatorWorkAreas,
+  getDefaultPathForWorkAreaContext
  } from '../../core/workAreas';
 
 import DistrictViewerDistrictEvaluatorOptions from './DistrictViewerDistrictEvaluatorOptions';
@@ -101,7 +102,7 @@ const SidebarWorkAreaContext = () => {
   }
 
   useEffect(()=> {
-    navigate("/app/dashboard");
+    navigate(getDefaultPathForWorkAreaContext(activeWorkAreaContext));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWorkAreaContextId]);
 

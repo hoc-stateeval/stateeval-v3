@@ -7,7 +7,8 @@ import { selectActiveWorkAreaContext } from '../store/stateEval/userContextSlice
 
 const MainLayout = () => {
   const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
-  const routes = useRoutes(buildRoutes(activeWorkAreaContext));
+  const routeConfig = buildRoutes(activeWorkAreaContext);
+  const routes = useRoutes(routeConfig);
 
   return (
     <>
