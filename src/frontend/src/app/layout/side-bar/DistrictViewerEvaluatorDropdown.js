@@ -61,7 +61,7 @@ const DistrictViewerEvaluatorDropDown = () => {
   }
   return (
     <>
-      <TextField label={buildEvaluatorLabel(activeWorkAreaContext.tagName)} sx={{...getSelectStyles(theme)}}
+      <TextField label={buildEvaluatorLabel(activeWorkAreaContext.tagName)} sx={{...getSelectStyles(theme, activeDistrictViewerEvaluatorId==="0"?'red':'white')}}
         select
         value={activeDistrictViewerEvaluatorId}
         onChange={(e)=> {
@@ -70,7 +70,7 @@ const DistrictViewerEvaluatorDropDown = () => {
         >
           {activeDistrictViewerEvaluatorId==="0" &&
           <MenuItem key="default" value="0">
-            Select an evaluator
+            Select an Evaluator
           </MenuItem>
           }
           {!waitOnDependencies && evaluators && evaluators.map((x) => (
