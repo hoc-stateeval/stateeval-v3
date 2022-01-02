@@ -38,6 +38,10 @@ export const apiSlice = createApi({
       query: (workAreaContextId) => `evaluations/workarea-context/${workAreaContextId}`
     }),
 
+    getEvaluationsForDistrictViewer: builder.query({
+      query: (data) => `evaluations/workarea-context/${data.workAreaContextId}/${data.evaluatorId}/${data.schoolCode}`
+    }),
+
     // buildings
     getSchoolsInDistrict: builder.query({
       query: (districtCode) => `buildings/${districtCode}/schools/`
@@ -54,6 +58,10 @@ export const apiSlice = createApi({
 
     getUsersInRoleAtSchools: builder.query({
       query: (data) => `users/${data.districtCode}/usersinroleinschools/${data.roleType}`
+    }),
+
+    getEvaluatorsForDistrictViewer: builder.query({
+      query: (data) => `users/${data.workAreaContextId}/evaluators-for-district-viewer/${data.schoolCode}`
     }),
 
     // roles
@@ -133,5 +141,7 @@ export const {
   useUpdateEvaluationSetEvaluatorMutation,
   useGetHistoricalEvaluationsQuery,
   useUpdateEvaluationSetPlanTypeMutation,
-  useGetEvaluationsForWorkAreaContextQuery
+  useGetEvaluationsForWorkAreaContextQuery,
+  useGetEvaluationsForDistrictViewerQuery,
+  useGetEvaluatorsForDistrictViewerQuery
 } = apiSlice

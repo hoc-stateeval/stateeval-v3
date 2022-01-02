@@ -43,6 +43,13 @@ namespace SE.API.Controllers
             var users = await _mediator.Send(new GetUsersInRoleInSchoolsQuery(districtCode, roleType));
             return Ok(users);
         }
+
+        [HttpGet("{workAreaContextId}/evaluators-for-district-viewer/{schoolCode?}")]
+        public async Task<IActionResult> GetEvaluatorsForDistrictViewer(long workAreaContextId, string schoolCode)
+        {
+            var users = await _mediator.Send(new GetEvaluatorsForDistrictViewerQuery(workAreaContextId, schoolCode));
+            return Ok(users);
+        }
     }
 }
 

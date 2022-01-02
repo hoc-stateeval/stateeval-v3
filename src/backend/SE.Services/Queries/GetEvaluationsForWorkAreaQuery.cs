@@ -50,25 +50,9 @@ namespace SE.Core.Queries
             {
                 WorkAreaContext? workAreaContext = await _dataContext.WorkAreaContexts
                     .Include(x=>x.Building)
-                    .Include(x=>x.WorkArea).ThenInclude(x=>x.Role)
-                    .Include(x=>x.WorkArea).ThenInclude(x=>x.EvaluateeRole)
-                    .Include(x=>x.FrameworkContext)
                     .Where(x => x.Id == request.WorkAreaContextId).FirstOrDefaultAsync(cancellationToken: cancellationToken);
 
-                var evaluations = await _evaluationService
-                    .ExecuteEvaluationSummaryDTOQuery(x => x.IsActive &&
-                                x.FrameworkContextId == workAreaContext.FrameworkContextId &&
-                                x.SchoolCode == workAreaContext.Building.SchoolCode &&
-                                (
-                                 // Evaluatee - can only see their own evaluation
-                                 workAreaContext.WorkArea.IsEvaluatee && x.EvaluateeId == workAreaContext.UserId ||
-                                 // Evaluator
-                                 (workAreaContext.WorkArea.IsEvaluator &&
-                                 // Non-DTE - can see all evaluations at his building
-                                 ((workAreaContext.WorkArea.TagName != EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DTE) ||
-                                  // DTE - can only see evaluations assigned to him
-                                  x.EvaluatorId == workAreaContext.UserId)))))
-                    .ToListAsync();
+               var evaluations = await _evaluationService.GetEvaluationsForWorkAreaContext(workAreaContext);
 
                 return evaluations;
             }

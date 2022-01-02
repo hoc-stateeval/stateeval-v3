@@ -93,6 +93,11 @@ namespace SE.Core.Utils
                 WorkAreaType.CT_SPS => "CT_SPS",
                 WorkAreaType.SA_TR => "SA_TR",
                 WorkAreaType.SA_PR => "SA_PR",
+                WorkAreaType.DV_PR_TR => "DV_PR_TR",
+                WorkAreaType.DV_PR_PR => "DV_PR_PR",
+                WorkAreaType.DV_DTE => "DV_DTE",
+                WorkAreaType.DV_DE => "DV_DE",
+                WorkAreaType.DV_CT => "DV_CT",
                 _ => throw new Exception($"MapWorkAreaTypeToTagName: Unknown mapping: {wa}")
             };
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
 import {
   MenuItem,
   TextField,
@@ -9,29 +10,33 @@ import { useTheme } from '@mui/material/styles';
 import { getSelectStyles } from './selectItemStyles';
 
 import {
-  useGetEvaluationsForWorkAreaContextQuery,
- } from '../../core/apiSlice';
-
- import {
   setActiveEvaluationId,
+  selectActiveEvaluationId,
 } from '../../store/stateEval/userContextSlice';
 
-const SidebarEvaluatingDropdown = ({ workAreaContext }) => {
+ import {
+  selectActiveWorkAreaContext,
+} from '../../store/stateEval/userContextSlice';
+
+
+const EvaluationDropDown = (evaluations) => {
+
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const [selectedEvaluationId, setSelectedEvaluationId] = useState("0");
+  const workAreaContext = useSelector(selectActiveWorkAreaContext);
+  const activeEvaluationId = useSelector(selectActiveEvaluationId);
 
-  const { data: evaluations } = useGetEvaluationsForWorkAreaContextQuery(workAreaContext.id);
+  const [selectedEvaluationId, setSelectedEvaluationId] = useState(activeEvaluationId ?? "0");
 
   const changeEvaluation = async (id) => {
     setSelectedEvaluationId(id);
     dispatch(setActiveEvaluationId(id));
   }
-
   return (
     <>
-      <TextField label="Evaluating" sx={{...getSelectStyles(theme, selectedEvaluationId==="0"?'red':'white')}}
+    {evaluations &&
+     <TextField label="Evaluating" sx={{...getSelectStyles(theme, selectedEvaluationId==="0"?'red':'white')}}
               select
               value={selectedEvaluationId}
               onChange={(e)=> {
@@ -41,14 +46,16 @@ const SidebarEvaluatingDropdown = ({ workAreaContext }) => {
                 <MenuItem key="default" value="0">
                   Select a {workAreaContext.evaluateeTerm}
                 </MenuItem>
-                {evaluations && evaluations.map((x) => (
+                {evaluations.map((x) => (
                   <MenuItem key={`evaluation-${x.id}`} value={x.id}>
                     {x.evaluateeDisplayName}
                   </MenuItem>
                 ))}
       </TextField>
+      }
     </>
   );
 };
 
-export default SidebarEvaluatingDropdown;
+export default EvaluationDropDown;
+

@@ -43,7 +43,12 @@ namespace SE.Domain.Entities
         PR_ME,
         CT_SPS,
         SA_TR,
-        SA_PR
+        SA_PR,
+        DV_PR_TR,
+        DV_PR_PR,
+        DV_DTE,
+        DV_DE,
+        DV_CT
     }
 
     public enum SchoolYear

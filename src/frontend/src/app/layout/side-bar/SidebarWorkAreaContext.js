@@ -5,14 +5,6 @@ import {
   selectWorkAreaContextsAll,
   setActiveWorkAreaContext,
   selectActiveWorkAreaContext,
-  selectActiveDistrictViewerSchool,
-  selectActiveDistrictViewerEvaluator,
-  selectEvaluationsAll,
-  setActiveEvaluationId,
-  selectDistrictViewerSchoolsAll,
-  selectDistrictViewerEvaluatorsAll,
-  setActiveDistrictViewerEvaluator,
-  setActiveDistrictViewerSchool,
 } from '../../store/stateEval/userContextSlice';
 import {
   List,
@@ -24,9 +16,17 @@ import {
 
 import { useTheme } from '@mui/material/styles';
 
-import SidebarEvaluatingDropdown from './SidebarEvaluatingDropdown';
+import { 
+  DistrictViewerSchoolEvaluatorWorkAreas,
+  DistrictViewerDistrictEvaluatorWorkAreas,
+  EvaluatorWorkAreas,
+ } from '../../core/workAreas';
 
-import { DistrictViewerSchoolWorkAreas, WorkAreas} from '../../core/workAreas';
+import DistrictViewerDistrictEvaluatorOptions from './DistrictViewerDistrictEvaluatorOptions';
+import DistrictViewerSchoolEvaluatorOptions from './DistrictViewerSchoolEvaluatorOptions';
+
+import EvaluatorOptions from './EvaluatorOptions';
+
 import { getListSubheaderStyles } from './listItemStyles';
 import { getSelectStyles } from './selectItemStyles';
 
@@ -41,7 +41,6 @@ const initDistricts = (workAreaContexts) => {
     return acc;
   }, []);
 };
-
 
 const getSchoolsForDistrict = (workAreaContexts, districtCode) => {
   return workAreaContexts.reduce((acc, next) => {
@@ -70,13 +69,7 @@ const SidebarWorkAreaContext = () => {
   const workAreaContexts = useSelector(selectWorkAreaContextsAll);
   const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
  
-  const activeDistrictViewerSchool = useSelector(selectActiveDistrictViewerSchool);
-  const activeDistrictViewerEvaluator = useSelector(selectActiveDistrictViewerEvaluator);
-
   const districts = initDistricts(workAreaContexts);
-
-  const districtViewerSchools = useSelector(selectDistrictViewerSchoolsAll);
-  const districtViewerEvaluators = useSelector(selectDistrictViewerEvaluatorsAll);
 
   const [selectedDistrictCode, setSelectedDistrictCode] = useState(activeWorkAreaContext.districtCode);
   const [schools, setSchools] = useState(getSchoolsForDistrict(workAreaContexts, selectedDistrictCode));
@@ -84,9 +77,6 @@ const SidebarWorkAreaContext = () => {
 
   const [filteredWorkAreaContexts, setFilteredWorkAreaContexts] = useState(getFilteredWorkAreaContexts(workAreaContexts, selectedSchoolCode));
   const [selectedWorkAreaContextId, setSelectedWorkAreaContextId] = useState(activeWorkAreaContext.id);
-
-  const [selectedDistrictViewerSchoolCode, setSelectedDistrictViewerSchoolCode] = useState(activeDistrictViewerSchool?.schoolCode ?? "0");
-  const [selectedDistrictViewerEvaluatorId, setSelectedDistrictViewerEvaluatorId] = useState(activeDistrictViewerEvaluator?.id ?? "0");
 
   const changeDistrict = (districtCode) => {
     setSelectedDistrictCode(districtCode);
@@ -114,32 +104,6 @@ const SidebarWorkAreaContext = () => {
     navigate("/app/dashboard");
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWorkAreaContextId])
-
-  const changeDistrictViewerSchool = async (schoolCode) => {
-    setSelectedDistrictViewerSchoolCode(schoolCode);
-    await dispatch(setActiveDistrictViewerSchool(schoolCode));
-  }
-
-  const changeDistrictViewerEvaluator = async (evaluatorId) => {
-    setSelectedDistrictViewerEvaluatorId(evaluatorId);
-    await dispatch(setActiveDistrictViewerEvaluator(evaluatorId));
-  }
-
-  const buildEvaluatorLabel = () => {
-    if (activeWorkAreaContext.tagName === WorkAreas.DV_PR_PR) {
-      return "Head Principal";
-    }
-    else if (activeWorkAreaContext.tagName === WorkAreas.DV_PR_TR) {
-      return "Principal";
-    }
-    else if (activeWorkAreaContext.tagName === WorkAreas.DV_DTE) {
-      return "DTE";
-    }
-    else if (activeWorkAreaContext.tagName === WorkAreas.DV_DE) {
-      return "District Evaluator";
-    }
-    return "Evaluator";
-  }
 
   return (
     <>
@@ -213,47 +177,15 @@ const SidebarWorkAreaContext = () => {
       )}
     >
       <Stack spacing={3} sx={{color: theme => theme.palette.neutral[400]}}>
-        {(DistrictViewerSchoolWorkAreas.includes(activeWorkAreaContext.tagName)) && 
-          <>
-          <TextField label="School" sx={{...getSelectStyles(theme)}}
-            select
-            value={selectedDistrictViewerSchoolCode}
-            onChange={(e)=> {
-              changeDistrictViewerSchool(parseInt(e.target.value, 10));
-            }}
-            >
-              <MenuItem key="default" value="0">
-                Select a school
-              </MenuItem>
-              {districtViewerSchools.map((x) => (
-                <MenuItem key={`dv-school-${x.id}`} value={x.schoolCode}>
-                  {x.schoolName}
-                </MenuItem>
-              ))}
-          </TextField>
-          
-          <TextField label={buildEvaluatorLabel()} sx={{...getSelectStyles(theme)}}
-            select
-            value={selectedDistrictViewerEvaluatorId}
-            onChange={(e)=> {
-              changeDistrictViewerEvaluator(parseInt(e.target.value, 10));
-            }}
-            >
-              <MenuItem key="default" value="0">
-                Select an evaluator
-              </MenuItem>
-              {districtViewerEvaluators.map((x) => (
-                <MenuItem key={`dv-evaluator-${x.id}`} value={x.id}>
-                  {x.displayName}
-                </MenuItem>
-              ))}
-          </TextField>
-          </>
-          }
-
-          {(activeWorkAreaContext.isEvaluator || selectedDistrictViewerEvaluatorId!=="0") && 
-          <SidebarEvaluatingDropdown workAreaContext={activeWorkAreaContext} />
-          }
+        { DistrictViewerDistrictEvaluatorWorkAreas &&
+          <DistrictViewerDistrictEvaluatorOptions workAreaContext={activeWorkAreaContext} />
+        }
+        { DistrictViewerSchoolEvaluatorWorkAreas &&
+        <DistrictViewerSchoolEvaluatorOptions workAreaContext={activeWorkAreaContext} />
+        } 
+        { EvaluatorWorkAreas && 
+          <EvaluatorOptions workAreaContext={activeWorkAreaContext} />
+        }
       </Stack>
     </List>
     </>
