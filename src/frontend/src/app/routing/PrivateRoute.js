@@ -1,6 +1,6 @@
 
 import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import {
   selectActiveWorkAreaContext,
 } from '../store/stateEval/userContextSlice';
@@ -21,7 +21,7 @@ const PrivateRoute = ({ element, workAreaTags }) => {
   const correctWorkArea = activeWorkAreaContext && workAreaTags.includes(activeWorkAreaContext.tagName);
 
   if (!correctWorkArea) {
-    return <Navigate to="/login" />; 
+    return <Navigate to="/localLogin" />; 
   }
 
   return element;

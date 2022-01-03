@@ -22,6 +22,7 @@ import {
 import { 
   getDefaultPathForWorkAreaContext
  } from '../app/core/workAreas';
+import { TrendingUp } from '@mui/icons-material';
 
 const LocalLogin = () => {
 
@@ -70,7 +71,7 @@ const LocalLogin = () => {
         workAreaContexts: workAreaContexts,
       })).then(()=> {
         const defaultPath = getDefaultPathForWorkAreaContext(defaultWorkArea);
-        navigate(defaultPath, true);
+        navigate(defaultPath);
       });
     });
   };

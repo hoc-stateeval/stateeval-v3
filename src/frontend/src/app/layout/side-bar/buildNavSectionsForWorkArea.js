@@ -16,7 +16,7 @@ import {
 const navSections = [
   {
     title: 'District Viewer',
-    workAreaTags: [DistrictViewerWorkAreas],
+    workAreaTags: DistrictViewerWorkAreas,
     items: [
       {
         title: 'Dashboard',

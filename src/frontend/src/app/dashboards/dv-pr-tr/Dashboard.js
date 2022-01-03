@@ -10,7 +10,7 @@ import {
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const pageTitle = "DV PR Dashboard";
+  const pageTitle = "DV PR TR Dashboard";
 
   useEffect(()=> {
     dispatch(setPageTitle(pageTitle));

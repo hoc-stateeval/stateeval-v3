@@ -17,9 +17,8 @@ const WorkAreas = {
 };
 
 const getDefaultPathForWorkAreaContext = (workAreaContext) => {
-
-  if (workAreaContext.tagName === WorkAreas.DA_TR) return '/app/dashboards/da-tr';
-  if (workAreaContext.tagName === WorkAreas.DA_PR) return '/app/dashboards/da-pr';
+  const dashboard = workAreaContext.tagName.toLowerCase().replaceAll('_','-');
+  return `/app/dashboards/${dashboard}`;
 }
 
 const EvaluatorWorkAreas = [WorkAreas.PR_PR, WorkAreas.PR_TR, WorkAreas.DTE, WorkAreas.DE];
