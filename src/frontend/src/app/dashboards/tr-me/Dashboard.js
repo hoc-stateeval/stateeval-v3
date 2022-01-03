@@ -8,9 +8,9 @@ import {
   setPageTitle,
 } from '../../store/stateEval/userContextSlice';
 
-const DistrictAdminDashboard = () => {
+const Dashboard = () => {
   const dispatch = useDispatch();
-  const pageTitle = "DA Dashboard";
+  const pageTitle = "TR ME Dashboard";
 
   useEffect(()=> {
     dispatch(setPageTitle(pageTitle));
@@ -24,4 +24,4 @@ const DistrictAdminDashboard = () => {
   );
 };
 
-export default DistrictAdminDashboard;
+export default Dashboard;

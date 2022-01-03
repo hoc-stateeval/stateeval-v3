@@ -8,11 +8,48 @@ import SummativeEvalIcon from '@mui/icons-material/Summarize';
 import SettingsIcon from '@mui/icons-material/SettingsApplications';
 import { 
   WorkAreas,
+  DistrictViewerWorkAreas,
   EvaluationWorkAreas, 
   EvaluatorWorkAreas,
  } from '../../core/workAreas';
 
 const navSections = [
+  {
+    title: 'District Viewer',
+    workAreaTags: [DistrictViewerWorkAreas],
+    items: [
+      {
+        title: 'Dashboard',
+        icon: <GridViewIcon fontSize="small" />,
+        path: '/app/dashboards/dv-pr-pr',
+        workAreaTags: [WorkAreas.DV_PR_PR],
+      },
+      {
+        title: 'Dashboard',
+        icon: <GridViewIcon fontSize="small" />,
+        path: '/app/dashboards/dv-pr-tr',
+        workAreaTags: [WorkAreas.DV_PR_TR],
+      },
+      {
+        title: 'Dashboard',
+        icon: <GridViewIcon fontSize="small" />,
+        path: '/app/dashboards/dv-dte',
+        workAreaTags: [WorkAreas.DV_DTE],
+      },
+      {
+        title: 'Dashboard',
+        icon: <GridViewIcon fontSize="small" />,
+        path: '/app/dashboards/dv-de',
+        workAreaTags: [WorkAreas.DV_DE],
+      },
+      {
+        title: 'Dashboard',
+        icon: <GridViewIcon fontSize="small" />,
+        path: '/app/dashboards/dv-ct',
+        workAreaTags: [WorkAreas.DV_CT],
+      }
+    ]
+  },
   {
     title: 'Evaluation',
     workAreaTags: EvaluationWorkAreas,

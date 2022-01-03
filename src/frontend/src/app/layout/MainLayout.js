@@ -26,7 +26,7 @@ const MainLayout = () => {
           <Route path="/" element={<Navigate to="/localLogin" />} />
           <Route path="/localLogin" element={<LocalLogin />} />
           <Route path="404" element={<NotFound/>} />
-          <Route path="*" element={<Navigate to="/404" />} />
+          <Route path="*" element={<Navigate to="/localLogin" />} />
       </Routes>
     )}
     </>

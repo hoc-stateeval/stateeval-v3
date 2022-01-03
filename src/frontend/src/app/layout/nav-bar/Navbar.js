@@ -1,4 +1,5 @@
-import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import MenuIcon from '@mui/icons-material/Menu';
 import PropTypes from 'prop-types';
@@ -12,7 +13,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { logout } from '../../store/stateEval/userContextSlice';
+import { logout, selectActiveWorkAreaContext } from '../../store/stateEval/userContextSlice';
 
 import FrameworkSwitcher from '../../components/FrameworkSwitcher';
 
@@ -27,12 +28,14 @@ const NavbarRoot = styled(AppBar)(({ theme }) => ({
 const Navbar = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
+
   const { onOpenSidebar, sidebarWidth, ...other } = props;
 
   const onClickLogout = async () => {
     await dispatch(logout());
-    navigate("/localLogin");
-  }
+    navigate("/localLogin", true);
+  };
 
   return (
     <>
