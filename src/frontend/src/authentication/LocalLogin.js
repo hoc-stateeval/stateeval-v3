@@ -70,7 +70,7 @@ const LocalLogin = () => {
         workAreaContexts: workAreaContexts,
       })).then(()=> {
         const defaultPath = getDefaultPathForWorkAreaContext(defaultWorkArea);
-        navigate(defaultPath, { replace: true });
+        navigate(defaultPath, true);
       });
     });
   };

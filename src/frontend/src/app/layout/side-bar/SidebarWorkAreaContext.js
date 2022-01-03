@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import {
@@ -96,15 +96,16 @@ const SidebarWorkAreaContext = () => {
   }
 
   const changeWorkAreaContext = async (id) => {
-      const workArea = workAreaContexts.find((x) => x.id === id);
-      setSelectedWorkAreaContextId(workArea.id);
-      await dispatch(setActiveWorkAreaContext(workArea));
+      const workAreaContext = workAreaContexts.find((x) => x.id === id);
+      setSelectedWorkAreaContextId(workAreaContext.id);
+      await dispatch(setActiveWorkAreaContext(workAreaContext));
   }
 
-  useEffect(()=> {
-    navigate(getDefaultPathForWorkAreaContext(activeWorkAreaContext));
+   useEffect(()=> {
+    const defaultPath = getDefaultPathForWorkAreaContext(activeWorkAreaContext);
+    navigate(defaultPath);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedWorkAreaContextId]);
+  }, [activeWorkAreaContext]);
 
   const showWorkAreaSettings = 
      DistrictViewerDistrictEvaluatorWorkAreas.includes(activeWorkAreaContext.tagName) || 

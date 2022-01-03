@@ -1,32 +1,19 @@
 import { Navigate } from 'react-router-dom';
 import { lazy } from 'react'
-import evaluationRoutesConfigs from './evaluationRoutesConfig';
+//import evaluationRoutesConfigs from './evaluationRoutesConfig';
 import adminRoutesConfigs from './adminRoutesConfig';
 //import districtViewerRoutesConfigs from './districtViewerRoutesConfig';
 
 const NotFound = lazy(() => import('./NotFound'));
 
-const generateRoutesFromConfigs = (routeConfigs, workAreaTag) => {
-  const result = routeConfigs.reduce( (acc, next) => {
-    if (next.workAreaTags.includes(workAreaTag)) {
-      let routes = next.items.filter(x=>(!x.workAreaTags?x:x.workAreaTags.includes(workAreaTag)));
-      acc.push(...routes);
-    }
-    return acc;
-  }, []);
-
-  return result;
-}
-
 const buildRoutes = (activeWorkAreaContext) => {
 
   const routeConfigs = [
-      evaluationRoutesConfigs, 
-      adminRoutesConfigs,
-     // districtViewerRoutesConfigs
+     // ...evaluationRoutesConfigs, 
+      ...adminRoutesConfigs,
+     // ...districtViewerRoutesConfigs
     ];
-  const appRoutes = activeWorkAreaContext?
-          generateRoutesFromConfigs(routeConfigs, activeWorkAreaContext.tagName): [];
+  const appRoutes = activeWorkAreaContext? routeConfigs : [];
    const routes = [
     ...appRoutes,
     { path: "404", element: <NotFound /> },

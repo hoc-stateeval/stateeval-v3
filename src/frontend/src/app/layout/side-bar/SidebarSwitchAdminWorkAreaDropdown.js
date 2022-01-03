@@ -37,7 +37,7 @@ const SidebarSwitchAdminWorkAreaDropdown = () => {
     setSelectedWorkAreaContextId(contextId);
     const workArea = workAreaContexts.find((x) => x.id === contextId);
     await dispatch(setActiveWorkAreaContext(workArea));
-    navigate(getDefaultPathForWorkAreaContext(activeWorkAreaContext));
+    navigate(getDefaultPathForWorkAreaContext(activeWorkAreaContext), true);
   };
 
   return (

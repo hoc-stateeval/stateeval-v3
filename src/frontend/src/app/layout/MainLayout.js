@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { Navigate, Routes, Route, useRoutes} from 'react-router-dom';
+import { Navigate, Routes, Route, useRoutes, useLocation } from 'react-router-dom';
 import LocalLogin from '../../authentication/LocalLogin';
 import Layout from './Layout';
 import buildRoutes from '../routing/buildRoutes';
@@ -10,6 +10,8 @@ const MainLayout = () => {
   const routeConfig = buildRoutes(activeWorkAreaContext);
   const routes = useRoutes(routeConfig);
 
+  const location = useLocation();
+  console.log(location);
   return (
     <>
     { activeWorkAreaContext ? (

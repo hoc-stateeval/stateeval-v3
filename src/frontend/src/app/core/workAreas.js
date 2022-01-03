@@ -22,7 +22,7 @@ const getDefaultPathForWorkAreaContext = (workAreaContext) => {
   if (workAreaContext.tagName === WorkAreas.DA_PR) return '/app/dashboards/da-pr';
 }
 
-const EvaluatorWorkAreas = [WorkAreas.PR_PR, WorkAreas.PR_TR, WorkAreas.DTE, WorkAreas.DE_PR];
+const EvaluatorWorkAreas = [WorkAreas.PR_PR, WorkAreas.PR_TR, WorkAreas.DTE, WorkAreas.DE];
 const EvaluateeWorkAreas = [WorkAreas.PR_ME, WorkAreas.TR_ME];
 const DistrictViewerSchoolEvaluatorWorkAreas = [WorkAreas.DV_PR_TR, WorkAreas.DV_PR_PR];
 const DistrictViewerDistrictEvaluatorWorkAreas = [WorkAreas.DV_DTE, WorkAreas.DE];
