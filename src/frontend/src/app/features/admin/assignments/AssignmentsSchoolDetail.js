@@ -67,16 +67,16 @@ const AssignmentsSchoolDetail = () => {
   }, [pageTitle]);
 
   useEffect(()=> {
-    if (data) {
-      const assignedCount = data.evaluationSummaries.reduce((assignedCount, next) => {
-        if (next.evaluatorId && next.evaluateePlanType)
-          assignedCount++;
-        return assignedCount;
-      }, 0);
-  
-      setTotalCount(data.evaluationSummaries.length);
-      setAssignedCount(assignedCount);
-    }
+    if (!data) return;
+    
+    const assignedCount = data.evaluationSummaries.reduce((assignedCount, next) => {
+      if (next.evaluatorId && next.evaluateePlanType)
+        assignedCount++;
+      return assignedCount;
+    }, 0);
+
+    setTotalCount(data.evaluationSummaries.length);
+    setAssignedCount(assignedCount);
   }, [data]);
 
   const setEvaluator = async (id, evaluatorId) => {

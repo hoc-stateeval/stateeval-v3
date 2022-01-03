@@ -50,23 +50,21 @@ const AssignmentsDetail = () => {
 
   const dispatch = useDispatch();
  
-  const { schoolCode, schoolName } = useParams();
-
   const [totalCount, setTotalCount] = useState(0);
   const [assignedCount, setAssignedCount] = useState(0);
   const [hideCompleted, setHideCompleted] = useState(false);
 
-  const { data } = useGetAssignmentsDetailQuery(workAreaContext.frameworkContextId, schoolCode);
+  const { data } = useGetAssignmentsDetailQuery({ frameworkContextId: workAreaContext.frameworkContextId, schoolCode: ""});
   const [updateEvaluator] = useUpdateEvaluationSetEvaluatorMutation();
 
-  const atSchoolName = schoolName? ` at ${schoolName}` : '';
-  const pageTitle = `${workAreaContext.evaluateeTerm} Evaluations ${atSchoolName}`
+  const pageTitle = `${workAreaContext.evaluateeTerm} Evaluations`
 
   useEffect(()=> {
     dispatch(setPageTitle(pageTitle));
   }, [pageTitle]);
 
   useEffect(()=> {
+    if (!data) return;
     const assignedCount = data.evaluationSummaries.reduce((assignedCount, next) => {
       if (next.evaluatorId && next.evaluateePlanType)
         assignedCount++;
