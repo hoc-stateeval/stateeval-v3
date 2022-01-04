@@ -5,7 +5,6 @@ import adminRoutesConfigs from './adminRoutesConfig';
 import districtViewerRoutesConfigs from './districtViewerRoutesConfig';
 
 const NotFound = lazy(() => import('./NotFound'));
-const LocalLogin = lazy(() => import('../../authentication/LocalLogin'));
 
 const buildRoutes = (activeWorkAreaContext) => {
 

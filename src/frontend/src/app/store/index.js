@@ -22,13 +22,6 @@ const store = configureStore({
   }),
   middleware: getDefaultMiddleware =>
   getDefaultMiddleware().concat(apiSlice.middleware)
-  // preloadedState: loadState(),
-  // middleware: (getDefaultMiddleware) =>
-  //   getDefaultMiddleware({
-  //     immutableCheck: false,
-  //     serializableCheck: false,
-  //   }).concat(middleware),
-  // devTools: process.env.NODE_ENV === 'development',
 });
 
 store.subscribe(

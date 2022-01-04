@@ -1,8 +1,15 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { ErrorBoundary } from 'react-error-boundary'
+
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import { Box, Container, Typography } from "@mui/material";
+import { 
+  Alert,
+  Box, 
+  Container, 
+  Typography 
+} from "@mui/material";
 import Sidebar from './side-bar/Sidebar';
 import Navbar from './nav-bar/Navbar';
 import ActiveEvaluationProfile from './nav-bar/ActiveEvaluationProfile';
@@ -24,6 +31,13 @@ const LayoutRoot = styled('div')(({ theme }) => ({
   }
 }));
 
+const ErrorFallback = ({error}) => {
+  return (
+    <Alert severity="error">
+      Something went wrong:{error.message}
+    </Alert>
+  );
+}
 const Layout = (props) => {
 
   const pageTitle = useSelector(selectPageTitle);
@@ -56,7 +70,9 @@ const Layout = (props) => {
 
           <Box sx={{mt:3}}>
             <Container sx={{ minHeight: '100vh', width: '95%', padding: '0px 10px 40px 10px', borderTop: 'solid 5px #e7eaec', margin: '0 20px 0 20px', backgroundColor:'#FFF'}}>
-              {children}
+              <ErrorBoundary FallbackComponent={ErrorFallback}>
+                {children}
+              </ErrorBoundary>
             </Container>
           </Box>
         </Box>

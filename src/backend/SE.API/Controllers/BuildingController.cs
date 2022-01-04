@@ -17,6 +17,7 @@ namespace SE.API.Controllers
         [HttpGet("{districtcode}/schools")]
         public async Task<IActionResult> GetSchoolsInDistrict(string districtCode)
         {
+            throw new Exception("There was an error in the server");
             var schools = await _mediator.Send(new GetSchoolsInDistrictQuery(districtCode));
             return Ok(schools);
         }

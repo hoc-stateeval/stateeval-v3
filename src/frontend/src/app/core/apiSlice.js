@@ -1,11 +1,28 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { config } from './config';
+import axios from 'axios'
+
+const axiosBaseQuery =
+  ({ baseUrl } = { baseUrl: '' }) =>
+  async ({ url, method, data }) => {
+    try {
+      const result = await axios({ url: baseUrl + url, method, data })
+      return { data: result.data }
+    } catch (axiosError) {
+     // throw new Error("There was an error");
+      throw new Error(`status: ${axiosError.response?.status}, data: ${axiosError.response?.data}`)
+      // let err = axiosError
+      // return {
+      //   error: { status: err.response?.status, data: err.response?.data },
+      // }
+    }
+  }
 
 const baseUrl = `${config.API_URL}/`;
 
 export const apiSlice = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({ baseUrl: baseUrl }),
+  baseQuery: axiosBaseQuery({ baseUrl: baseUrl }),
   tagTypes: ['SchoolConfiguration'],
   endpoints: builder => ({
 
@@ -46,19 +63,13 @@ export const apiSlice = createApi({
 
     // buildings
     getSchoolsInDistrict: builder.query({
-      query: (districtCode) => `buildings/${districtCode}/schools/`
+      query: (districtCode) => ({ url: `buildings/${districtCode}/schools/`, method: 'get' }),
     }),
 
     // users
 
     loginUser: builder.mutation({
-      query(data) {
-        return {
-          url: `auth`,
-          method: 'POST',
-          body: data,
-        };
-      },
+      query: (data) => ({ url: `auth`, method: 'post', data: data }),
     }),
     
     getUsersInRoleAtDistrict: builder.query({
@@ -101,10 +112,10 @@ export const apiSlice = createApi({
 
     // local login
     getLocalLoginDistricts: builder.query({
-      query: () => 'local-login/districts'
+      query: () => ({ url: `local-login/districts`, method: 'get' }),
     }),
     getLocalLoginUsersForDistrict: builder.query({
-      query: (districtCode) => `local-login/users/${districtCode}`
+      query: (districtCode) => ({ url: `local-login/users/${districtCode}`, method: 'get' }),
     }),
 
     // school configurations
