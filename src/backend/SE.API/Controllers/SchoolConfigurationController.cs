@@ -18,14 +18,16 @@ namespace SE.API.Controllers
         [HttpGet("framework-context/{frameworkContextId:long}")]
         public async Task<IActionResult> GetSchoolConfigurationsForFrameworkContext(long frameworkContextId)
         {
-            var config = await _mediator.Send(new GetSchoolConfigurationsForFrameworkContextQuery(frameworkContextId));
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            var config = await _mediator.Send(new GetSchoolConfigurationsForFrameworkContextQuery(frameworkContextId), cancelationToken);
             return Ok(config);
         }
 
         [HttpGet("{id:long}")]
         public async Task<IActionResult> GetSchoolConfigurationById(long id)
         {
-            var config = await _mediator.Send(new GetSchoolConfigurationByIdQuery(id));
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            var config = await _mediator.Send(new GetSchoolConfigurationByIdQuery(id), cancelationToken);
             return Ok(config);
         }
 
@@ -36,7 +38,8 @@ namespace SE.API.Controllers
             {
                 return BadRequest();
             }
-            await _mediator.Send(command);
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            await _mediator.Send(command, cancelationToken);
             return NoContent();
         }
 
@@ -47,7 +50,8 @@ namespace SE.API.Controllers
             {
                 return BadRequest();
             }
-            await _mediator.Send(command);
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            await _mediator.Send(command, cancelationToken);
             return NoContent();
         }
 
@@ -55,7 +59,8 @@ namespace SE.API.Controllers
         [HttpPut("{frameworkContextId:long}/delegate-evaluation-setup")]
         public async Task<IActionResult> DelegateEvaluationSetup(long frameworkContextId, [FromBody] DelegateEvaluationSetupCommand command)
         {
-            await _mediator.Send(command);
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            await _mediator.Send(command, cancelationToken);
             return NoContent();
         }
     }

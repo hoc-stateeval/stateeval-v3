@@ -19,21 +19,24 @@ namespace SE.API.Controllers
         [HttpGet("district-summary/{frameworkContextId}")]
         public async Task<IActionResult> GetDistrictSummaryAssignmentData(long frameworkContextId)
         {
-            var summaries = await _mediator.Send(new GetDistrictSummaryAssignmentDataQuery(frameworkContextId));
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            var summaries = await _mediator.Send(new GetDistrictSummaryAssignmentDataQuery(frameworkContextId), cancelationToken);
             return Ok(summaries);
         }
 
         [HttpGet("detail/{frameworkContextId}/{schoolCode?}")]
         public async Task<IActionResult> GetDetailAssignmentDataQuery(long frameworkContextId, string schoolCode)
         {
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+
             if (!String.IsNullOrEmpty(schoolCode))
             {
-                var result = await _mediator.Send(new GetSchoolDetailAssignmentDataQuery(frameworkContextId, schoolCode));
+                var result = await _mediator.Send(new GetSchoolDetailAssignmentDataQuery(frameworkContextId, schoolCode), cancelationToken);
                 return Ok(result);
             }
             else
             {
-                var result = await _mediator.Send(new GetDistrictDetailAssignmentDataQuery(frameworkContextId));
+                var result = await _mediator.Send(new GetDistrictDetailAssignmentDataQuery(frameworkContextId), cancelationToken);
                 return Ok(result);
 
             }

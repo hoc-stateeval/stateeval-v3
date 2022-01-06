@@ -18,14 +18,16 @@ namespace SE.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEvaluationById(long id)
         {
-            var evaluation = await _mediator.Send(new GetEvaluationByIdQuery(id));
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            var evaluation = await _mediator.Send(new GetEvaluationByIdQuery(id), cancelationToken);
             return Ok(evaluation);
         }
 
         [HttpGet("historical/{userId}")]
         public async Task<IActionResult> GetHistoricalEvaluationsForUser(long userId)
         {
-            var evaluation = await _mediator.Send(new GetHistoricalEvaluationsForUserQuery(userId));
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            var evaluation = await _mediator.Send(new GetHistoricalEvaluationsForUserQuery(userId), cancelationToken);
             return Ok(evaluation);
         }
 
@@ -36,8 +38,9 @@ namespace SE.API.Controllers
             {
                 return BadRequest();
             }
-            var result = await _mediator.Send(command);
-            var evaluation = await _mediator.Send(new GetEvaluationByIdQuery(id));
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            var result = await _mediator.Send(command, cancelationToken);
+            var evaluation = await _mediator.Send(new GetEvaluationByIdQuery(id), cancelationToken);
             return Ok(evaluation);
         }
 
@@ -48,36 +51,41 @@ namespace SE.API.Controllers
             {
                 return BadRequest();
             }
-            var result = await _mediator.Send(command);
-            var evaluation = await _mediator.Send(new GetEvaluationByIdQuery(id));
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            var result = await _mediator.Send(command, cancelationToken);
+            var evaluation = await _mediator.Send(new GetEvaluationByIdQuery(id), cancelationToken);
             return Ok(evaluation);
         }
 
         [HttpGet("workarea-context/{workAreaContextId}")]
         public async Task<IActionResult> GetEvaluationsForWorkAreaContext(long workAreaContextId)
         {
-            var evaluations = await _mediator.Send(new GetEvaluationsForWorkAreaContextQuery(workAreaContextId));
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            var evaluations = await _mediator.Send(new GetEvaluationsForWorkAreaContextQuery(workAreaContextId), cancelationToken);
             return Ok(evaluations);
         }
 
         [HttpGet("{frameworkContextId}/{evaluatorId}")]
         public async Task<IActionResult> GetEvaluationsForEvaluator(long frameworkContextId, long evaluatorId)
         {
-            var evaluations = await _mediator.Send(new GetEvaluationsForEvaluatorQuery(frameworkContextId, evaluatorId));
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            var evaluations = await _mediator.Send(new GetEvaluationsForEvaluatorQuery(frameworkContextId, evaluatorId), cancelationToken);
             return Ok(evaluations);
         }
 
         [HttpGet("{frameworkContextId}/{schoolCode}")]
         public async Task<IActionResult> GetEvaluationsForSchool(long frameworkContextId, string schoolCode)
         {
-            var evaluations = await _mediator.Send(new GetEvaluationsForSchoolQuery(frameworkContextId, schoolCode));
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            var evaluations = await _mediator.Send(new GetEvaluationsForSchoolQuery(frameworkContextId, schoolCode), cancelationToken);
             return Ok(evaluations);
         }
 
         [HttpGet("{frameworkContextId}/{evaluatorId}/{schoolCode?}")]
         public async Task<IActionResult> GetEvaluationsForDistrictViewer(long frameworkContextId, long evaluatorId, string schoolCode)
         {
-            var users = await _mediator.Send(new GetEvaluationsForDistrictViewerQuery(frameworkContextId, evaluatorId, schoolCode));
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            var users = await _mediator.Send(new GetEvaluationsForDistrictViewerQuery(frameworkContextId, evaluatorId, schoolCode), cancelationToken);
             return Ok(users);
         }
     }

@@ -45,8 +45,7 @@ namespace SE.Core.Queries
             public async Task<List<WorkAreaContextDTO>> Handle(GetWorkAreaContextsForUserQuery request, CancellationToken cancellationToken)
             {
                 var workAreaContexts = await _workAreaContextService
-                     .ExecuteWorkAreaContextDTOQuery(x => x.UserId == request.UserId)
-                     .ToListAsync();
+                    .GetWorkAreaContextsForUser(request.UserId);
 
                 return workAreaContexts;
             }

@@ -13,6 +13,7 @@ namespace SE.Core.Services
 {
     public interface IWorkAreaContextService
     {
+        public Task<List<WorkAreaContextDTO>> GetWorkAreaContextsForUser(long userId);
         public IQueryable<WorkAreaContextDTO> ExecuteWorkAreaContextDTOQuery(System.Linq.Expressions.Expression<System.Func<WorkAreaContext, bool>> expr);
     }
 
@@ -22,6 +23,14 @@ namespace SE.Core.Services
         public WorkAreaContextService(DataContext dataContext)
         {
             _dataContext = dataContext;
+        }
+
+        public async Task<List<WorkAreaContextDTO>> GetWorkAreaContextsForUser(long userId)
+        {
+            var workAreaContexts = await ExecuteWorkAreaContextDTOQuery(x => x.UserId == userId)
+                    .ToListAsync();
+
+            return workAreaContexts;
         }
 
         public IQueryable<WorkAreaContextDTO> ExecuteWorkAreaContextDTOQuery(System.Linq.Expressions.Expression<System.Func<WorkAreaContext, bool>> expr)

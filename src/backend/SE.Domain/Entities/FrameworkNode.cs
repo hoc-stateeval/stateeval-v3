@@ -32,6 +32,6 @@ namespace SE.Domain.Entities
         [ForeignKey("FrameworkId")]
         [Required]
         public virtual Framework Framework { get; set; }
-        public virtual ICollection<FrameworkNodeRubricRow> FrameworkNodeRubricRows { get; }
+        public virtual List<FrameworkNodeRubricRow> FrameworkNodeRubricRows { get; }
     }
 }

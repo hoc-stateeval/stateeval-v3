@@ -19,6 +19,6 @@ namespace SE.Domain.Entities
         [MaxLength(20)]
         [Required]
         public string FrameworkTagName { get; set; }
-        public virtual ICollection<FrameworkNode> FrameworkNodes { get; }
+        public virtual List<FrameworkNode> FrameworkNodes { get; }
     }
 }

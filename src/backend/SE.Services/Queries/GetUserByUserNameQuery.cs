@@ -46,10 +46,7 @@ namespace SE.Core.Queries
 
             public async Task<UserDTO> Handle(GetUserByUserNameQuery request, CancellationToken cancellationToken)
             {
-                var userDTO = await _userService
-                    .ExecuteUserDTOQuery(x => x.UserName == request.UserName)
-                    .FirstOrDefaultAsync();
-
+                var userDTO = await _userService.GetUserByUserName(request.UserName);
                 return userDTO;
             }
         }

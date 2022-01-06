@@ -16,7 +16,8 @@ namespace SE.API.Controllers
         [HttpGet("{id:long}")]
         public async Task<IActionResult> GetFrameworkById(long id)
         {
-            var framework = await _mediator.Send(new GetFrameworkByIdQuery(id));
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            var framework = await _mediator.Send(new GetFrameworkByIdQuery(id), cancelationToken);
             return Ok(framework);
         }
     }

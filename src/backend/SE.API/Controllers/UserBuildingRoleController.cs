@@ -18,7 +18,8 @@ namespace SE.API.Controllers
         [HttpPut("update-dte-role-in-schools/{userId}")]
         public async Task<IActionResult> UpdateDTERoleInSchools(long userId, [FromBody] UpdateDTERoleInSchoolsCommand command)
         {
-            await _mediator.Send(command);
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            await _mediator.Send(command, cancelationToken);
             return NoContent();
         }
     }

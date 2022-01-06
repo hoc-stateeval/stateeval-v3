@@ -16,6 +16,9 @@ namespace SE.Core.Services
         public Task<List<UserDTO>> GetUsersInRoleAtSchools(string districtCode, RoleType roleType);
         public Task<List<UserDTO>> GetUsersInRoleAtSchool(string schoolCode, RoleType roleType);
         public Task<List<UserDTO>> GetUsersInRoleAtDistrict(string districtCode, RoleType roleType);
+
+        public Task<UserDTO> GetUserByUserName(string userName);
+        public Task<UserDTO> GetUserById(long id);
         public IQueryable<UserDTO> ExecuteUserDTOQuery(System.Linq.Expressions.Expression<System.Func<User, bool>> expr);
 
     }
@@ -26,6 +29,22 @@ namespace SE.Core.Services
         public UserService(DataContext dataContext)
         {
             _dataContext = dataContext;
+        }
+
+        public async Task<UserDTO> GetUserByUserName(string userName)
+        {
+            var userDTO = await ExecuteUserDTOQuery(x => x.UserName == userName)
+                .FirstOrDefaultAsync();
+
+            return userDTO;
+        }
+
+        public async Task<UserDTO> GetUserById(long id)
+        {
+            var userDTO = await ExecuteUserDTOQuery(x => x.Id == id)
+                .FirstOrDefaultAsync();
+
+            return userDTO;
         }
 
         public IQueryable<UserDTO> ExecuteUserDTOQuery(System.Linq.Expressions.Expression<System.Func<User, bool>> expr)

@@ -33,6 +33,6 @@ namespace SE.Domain.Entities
         [Required]
         public virtual Evaluation Evaluation { get; set; }
 
-        public virtual ICollection<StudentGrowthGoal> Goals { get; set; }
+        public virtual List<StudentGrowthGoal> Goals { get; set; }
     }
 }

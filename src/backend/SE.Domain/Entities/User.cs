@@ -36,7 +36,9 @@ namespace SE.Domain.Entities
 
         public DateTime? LastLoginDateTime { get; set; }
 
-        public virtual ICollection<UserBuildingRole> UserBuildingRoles { get;  }
-        public virtual ICollection<WorkAreaContext> WorkAreaContexts { get; }
+        public virtual List<UserBuildingRole> UserBuildingRoles { get;  }
+        public virtual List<WorkAreaContext> WorkAreaContexts { get; }
+
+        public virtual List<RefreshToken> RefreshTokens { get; set; }
     }
 }

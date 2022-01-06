@@ -17,14 +17,16 @@ namespace SE.API.Controllers
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetWorkAreaContextsForUser(long userId)
         {
-            var workAreaContexts = await _mediator.Send(new GetWorkAreaContextsForUserQuery(userId));
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            var workAreaContexts = await _mediator.Send(new GetWorkAreaContextsForUserQuery(userId), cancelationToken);
             return Ok(workAreaContexts);
         }
 
         [HttpGet("user/{frameworkContextId}/{userId}/{schoolCode?}")]
         public async Task<IActionResult> GetWorkAreaContextForUser(long frameworkContextId, long userId, string schoolCode)
         {
-            var workAreaContext = await _mediator.Send(new GetWorkAreaContextForUserQuery(frameworkContextId, userId, schoolCode));
+            CancellationToken cancelationToken = HttpContext.RequestAborted;
+            var workAreaContext = await _mediator.Send(new GetWorkAreaContextForUserQuery(frameworkContextId, userId, schoolCode), cancelationToken);
             return Ok(workAreaContext);
         }
     }

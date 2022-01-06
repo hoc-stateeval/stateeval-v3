@@ -42,6 +42,6 @@ namespace SE.Domain.Entities
         public string LookFor3 { get; set; }
         public string LookFor4 { get; set; }
 
-        public virtual ICollection<FrameworkNodeRubricRow> FrameworkNodeRubricRows { get; }
+        public virtual List<FrameworkNodeRubricRow> FrameworkNodeRubricRows { get; }
     }
 }

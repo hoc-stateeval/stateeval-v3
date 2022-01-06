@@ -18,7 +18,8 @@ namespace SE.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateObservationCommand command)
         {
-            return Ok(await _mediator.Send(command));
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            return Ok(await _mediator.Send(command, cancelationToken));
         }
 
         [HttpPut("{id}")]
@@ -29,7 +30,8 @@ namespace SE.API.Controllers
                 return BadRequest();
             }
 
-            await _mediator.Send(command);
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            await _mediator.Send(command, cancelationToken);
 
             return NoContent();
         }
@@ -37,7 +39,8 @@ namespace SE.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            await _mediator.Send(new DeleteObservationCommand(id));
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            await _mediator.Send(new DeleteObservationCommand(id), cancelationToken);
 
             return NoContent();
         }

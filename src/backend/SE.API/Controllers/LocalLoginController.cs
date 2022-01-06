@@ -19,7 +19,8 @@ namespace SE.API.Controllers
         [Route("districts")]
         public async Task<IActionResult> GetDistricts()
         {
-            var districts = await _mediator.Send(new GetLocalLoginDistrictsQuery());
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            var districts = await _mediator.Send(new GetLocalLoginDistrictsQuery(), cancelationToken);
             return Ok(districts);
         }
 
@@ -27,7 +28,8 @@ namespace SE.API.Controllers
         [Route("users/{districtCode}")]
         public async Task<IActionResult> GetUsers(string districtCode)
         {
-            var users = await _mediator.Send(new GetLocalLoginUsersInDistrictQuery(districtCode));
+            CancellationToken cancelationToken =  HttpContext.RequestAborted;
+            var users = await _mediator.Send(new GetLocalLoginUsersInDistrictQuery(districtCode), cancelationToken);
             return Ok(users);
         }
     }

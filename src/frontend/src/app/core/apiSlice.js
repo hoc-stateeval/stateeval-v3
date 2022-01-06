@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi } from '@reduxjs/toolkit/query/react'
 import { config } from './config';
 import axios from 'axios'
 
@@ -9,7 +9,6 @@ const axiosBaseQuery =
       const result = await axios({ url: baseUrl + url, method, data })
       return { data: result.data }
     } catch (axiosError) {
-     // throw new Error("There was an error");
       throw new Error(`status: ${axiosError.response?.status}, data: ${axiosError.response?.data}`)
       // let err = axiosError
       // return {
