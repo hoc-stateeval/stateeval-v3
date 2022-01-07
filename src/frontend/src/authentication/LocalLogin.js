@@ -66,29 +66,25 @@ const LocalLogin = () => {
 
   const onClickLogin = async (e) => {
     const user = users.find((x) => x.id === userId);
-    try {
-      const data = await loginUser({
-        grant_type: 'password',
-        userName: user.userName,
-        password: 'password',
-        client_id: 'ngSEAuthApp',
-      }).unwrap();
+    const data = await loginUser({
+      grant_type: 'password',
+      userName: user.userName,
+      password: 'password',
+      client_id: 'ngSEAuthApp',
+    }).unwrap();
 
-      const authenticatedUser = data.user;
-      const workAreaContexts = data.workAreaContexts;
-      const defaultWorkAreaContextId = data.defaultWorkAreaContextId;
-      const defaultWorkArea = workAreaContexts.find(x => x.id === defaultWorkAreaContextId);
-      dispatch(setCurrentUser({
-        user: authenticatedUser,
-        workAreaContexts: workAreaContexts,
-      })).then(()=> {
-        const defaultPath = getDefaultPathForWorkAreaContext(defaultWorkArea);
-        navigate(defaultPath);
-      });
-    }
-    catch (err) {
-      handleError(err.message);
-    }
+    const authenticatedUser = data.user;
+    const workAreaContexts = data.workAreaContexts;
+    const defaultWorkAreaContextId = data.defaultWorkAreaContextId;
+    const defaultWorkArea = workAreaContexts.find(x => x.id === defaultWorkAreaContextId);
+    dispatch(setCurrentUser({
+      user: authenticatedUser,
+      workAreaContexts: workAreaContexts,
+    })).then(()=> {
+      const defaultPath = getDefaultPathForWorkAreaContext(defaultWorkArea);
+      navigate(defaultPath);
+    });
+
     // loginUser({
     //     grant_type: 'password',
     //     userName: user.userName,

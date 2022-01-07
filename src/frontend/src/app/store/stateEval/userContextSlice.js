@@ -6,7 +6,7 @@ import { clearState } from '../../core/persist';
 
 const getFramework = async (frameworkId) => {
   const response = await get(`frameworks/${frameworkId}`);
-  const data = await response.data;
+  const data = await response.data.data;
   return data;
 };
 
