@@ -1,10 +1,10 @@
 ﻿
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SE.Core.Commands;
 using SE.Core.Queries;
 using SE.Domain.Entities;
+using SE.API.Authorization;
 
 namespace SE.API.Controllers
 {
@@ -55,10 +55,10 @@ namespace SE.API.Controllers
             return Ok(new { message = "Token revoked" });
         }
 
+        [Authorize]
         [HttpGet("{username}")]
         public async Task<IActionResult> GetUserByUserName(string username)
         {
-            throw new Exception("Testing an exeception");
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
             var user = await _mediator.Send(new GetUserByUserNameQuery(username), cancelationToken);
             return Ok(user);

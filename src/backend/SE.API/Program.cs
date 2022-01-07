@@ -111,7 +111,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    // app.UseDeveloperExceptionPage();
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -124,7 +124,7 @@ app.UseCors();
 app.UseMiddleware<ErrorHandlerMiddleware>();
 
 // custom jwt auth middleware
-//app.UseMiddleware<JwtMiddleware>();
+app.UseMiddleware<JwtMiddleware>();
 
 //app.UseAuthorization();
 //app.UseAuthentication();
