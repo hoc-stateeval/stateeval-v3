@@ -2,6 +2,8 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 import { config } from './config';
 import axios from 'axios';
 
+import { getTokens, updateTokens } from './../core/tokenService';
+
 const axiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
@@ -10,9 +12,9 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      config.headers["Authorization"] = 'Bearer ' + token;  
+    const { accessToken } = getTokens();
+    if (accessToken) {
+      config.headers["Authorization"] = 'Bearer ' + accessToken;  
     }
     return config;
   },
@@ -34,8 +36,7 @@ const axiosBaseQuery =
       const login = url.includes('authenticate');
       if (login) {
         const { accessToken, refreshToken } = result.data.data.tokens;
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
+        updateTokens(accessToken, refreshToken);
       }
 
       return {data: result.data.data};
@@ -52,8 +53,7 @@ const axiosBaseQuery =
             },
           });
           const { accessToken, refreshToken } = rs.data.data;
-          localStorage.setItem('accessToken', accessToken);
-          localStorage.setItem('refreshToken', refreshToken);
+          updateTokens(accessToken, refreshToken);
           return axios(axiosError.config.url);
         } catch (_error) {
           return Promise.reject(_error);
