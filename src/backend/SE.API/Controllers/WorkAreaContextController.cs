@@ -1,13 +1,12 @@
 ﻿
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
+using SE.API.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SE.Core.Queries;
 
 namespace SE.API.Controllers
 {
     [Route("workarea-contexts")]
-    [AllowAnonymous]
     public class WorkAreaContextController : ApiControllerBase
     {
         public WorkAreaContextController(IMediator mediator) : base(mediator)

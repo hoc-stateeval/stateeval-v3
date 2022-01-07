@@ -21,6 +21,7 @@ using System.Text;
 using System.Text.Json;
 using System.Net;
 using SE.Core.Common.Exceptions;
+using Serilog.Sinks.MSSqlServer;
 
 const string ApiCorsPolicy = "APICorsPolicy";
 
@@ -30,19 +31,35 @@ var config = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .Build();
 
-// Serilog Configuration
-Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(config)
-    .CreateLogger();
+
+var connectionString = builder.Configuration.GetConnectionString("localDb");
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseSqlServer(connectionString));
 
 builder.Host.UseSerilog(); //.ConfigureWebHostDefaults(builder => builder.UseStartup<Program>());
 
+// Serilog Configuration
+//Log.Logger = new LoggerConfiguration()
+//    .ReadFrom.Configuration(config)
+//     .WriteTo.MSSqlServer(
+//        connectionString: connectionString)
+//    .CreateLogger();
+
 // CORS
-builder.Services.AddCors(options => options.AddPolicy(ApiCorsPolicy, policy =>
-    policy.AllowAnyMethod()
-        .AllowAnyHeader()
-        .AllowCredentials()
-));
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("http://localhost:3000")
+                             .AllowAnyHeader()
+                             .AllowAnyMethod();
+    });
+});
+//builder.Services.AddCors(options => options.AddPolicy(ApiCorsPolicy, policy =>
+//    policy.AllowAnyMethod()
+//        .AllowAnyHeader()
+//        .AllowCredentials()
+//));
 
 // JWT Authentication
 var jwtSettings = new JwtSettings();
@@ -51,34 +68,6 @@ builder.Services.AddSingleton(jwtSettings);
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 builder.Services.AddScoped<IJwtUtils, JwtUtils>();
-
-//builder.Services.AddAuthorization(x =>
-//{
-//    x.AddPolicy(JwtBearerDefaults.AuthenticationScheme, builder =>
-//    {
-//        builder.RequireAuthenticatedUser();
-//    });
-//});
-
-//builder.Services.AddAuthentication(x =>
-//{
-//    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//}).AddJwtBearer(x =>{
-//        x.SaveToken = true;
-//        x.RequireHttpsMetadata = false;
-//        x.TokenValidationParameters = new TokenValidationParameters
-//        {
-//            ValidateIssuerSigningKey = true,
-//            ValidateIssuer = true,
-//            ValidateAudience = true,
-//            ValidateLifetime = true,
-//            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.TokenSecret)),
-//            ValidIssuer = jwtSettings.Issuer,
-//            ValidAudience = jwtSettings.Audience
-//        };
-//    });
-
 
 // Add services to the container.
 
@@ -94,10 +83,6 @@ builder.Services.AddControllers()
     });
 
 builder.Services.AddMediatR(typeof(BaseService).GetTypeInfo().Assembly);
-
-var connectionString = builder.Configuration.GetConnectionString("localDb");
-builder.Services.AddDbContext<DataContext>(options => 
-    options.UseSqlServer(connectionString));
 
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
@@ -126,13 +111,9 @@ app.UseMiddleware<ErrorHandlerMiddleware>();
 // custom jwt auth middleware
 app.UseMiddleware<JwtMiddleware>();
 
-//app.UseAuthorization();
-//app.UseAuthentication();
-
 app.MapControllers();
 
 app.Run();
-
 
 #pragma warning disable CA1050 // Declare types in namespaces
 public partial class Program

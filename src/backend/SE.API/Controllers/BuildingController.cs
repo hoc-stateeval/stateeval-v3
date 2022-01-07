@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+using SE.API.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SE.Core.Queries;
 using SE.Domain.Entities;
@@ -7,13 +7,13 @@ using SE.Domain.Entities;
 namespace SE.API.Controllers
 {
     [Route("buildings")]
-    [AllowAnonymous]
     public class BuildingController : ApiControllerBase
     {
         public BuildingController(IMediator mediator) : base(mediator)
         {
         }
 
+        [Authorize]
         [HttpGet("{districtcode}/schools")]
         public async Task<IActionResult> GetSchoolsInDistrict(string districtCode)
         {

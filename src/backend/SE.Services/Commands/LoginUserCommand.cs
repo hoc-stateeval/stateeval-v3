@@ -23,7 +23,6 @@ namespace SE.Core.Commands
         {
             RuleFor(x=>x.UserName).NotEmpty();
             RuleFor(x => x.Password).NotEmpty();
-            RuleFor(x => x.IPAddress).NotEmpty();
         }
     }
 

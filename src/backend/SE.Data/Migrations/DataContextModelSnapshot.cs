@@ -604,6 +604,48 @@ namespace SE.Data.Migrations
                     b.ToTable("Observation", "dbo");
                 });
 
+            modelBuilder.Entity("SE.Domain.Entities.RefreshToken", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedByIp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Expires")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReasonRevoked")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReplacedByToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Revoked")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RevokedByIp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens", "dbo");
+                });
+
             modelBuilder.Entity("SE.Domain.Entities.Role", b =>
                 {
                     b.Property<long>("Id")
@@ -1180,6 +1222,13 @@ namespace SE.Data.Migrations
                     b.Navigation("Evaluator");
                 });
 
+            modelBuilder.Entity("SE.Domain.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("SE.Domain.Entities.User", null)
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("SE.Domain.Entities.SchoolConfiguration", b =>
                 {
                     b.HasOne("SE.Domain.Entities.FrameworkContext", "FrameworkContext")
@@ -1348,6 +1397,8 @@ namespace SE.Data.Migrations
 
             modelBuilder.Entity("SE.Domain.Entities.User", b =>
                 {
+                    b.Navigation("RefreshTokens");
+
                     b.Navigation("UserBuildingRoles");
 
                     b.Navigation("WorkAreaContexts");

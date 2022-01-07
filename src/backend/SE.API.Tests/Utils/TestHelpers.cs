@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using SE.Core.Commands;
+using SE.Core.Common;
 using SE.Core.Models;
-using SE.Core.Utils;
 using SE.Domain.Entities;
 using System;
 using System.Collections.Generic;

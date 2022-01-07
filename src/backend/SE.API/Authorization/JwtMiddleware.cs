@@ -25,7 +25,8 @@ namespace SE.API.Authorization
             if (userId != null)
             {
                 // attach user to context on successful jwt validation
-                context.Items["User"] = userService.GetUserById(userId.Value);
+                var user = await userService.GetUserById(userId.Value);
+                context.Items["User"] = user;
             }
 
             await _next(context);

@@ -1,12 +1,11 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+using SE.API.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SE.Core.Queries;
 
 namespace SE.API.Controllers
 {
     [Route("frameworks")]
-    [AllowAnonymous]
     public class FrameworkController : ApiControllerBase
     {
         public FrameworkController(IMediator mediator) : base(mediator)

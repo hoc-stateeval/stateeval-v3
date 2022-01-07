@@ -1,19 +1,122 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { config } from './config';
-import axios from 'axios'
+import axios from 'axios';
+
+// const request = (url, method = 'get', data = {}) => new Promise((resolve, reject) => {
+//   const token = localStorage.getItem('token');
+//   const preparedRequest = {
+//     method,
+//     url: `${config.API_URL}/${url}`,
+//     data: data,
+//     headers: {
+//       Authorization: `Bearer ${token}`
+//     }
+//   };
+//   axios(preparedRequest)
+//     .then((data) => {
+//       resolve(data.data);
+//     })
+//     .catch((err) => {
+//       if (err.response?.status === 401) {
+//         localStorage.removeItem('token');
+//         window.location.href = '/login';
+//       }
+//       reject(err.response.data.ErrorMessage);
+//     });
+// });
+
+const axiosInstance = axios.create({
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      config.headers["Authorization"] = 'Bearer ' + token;  
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// axiosInstance.interceptors.response.use(
+//   (res) => {
+//     return res;
+//   },
+//   async (err) => {
+//     const originalConfig = err.config;
+
+//     if (!originalConfig.url.contains("users/authenticate") && err.response) {
+//       // Access Token was expired
+//       if (err.response.status === 401 && !originalConfig._retry) {
+//         originalConfig._retry = true;
+
+//         try {
+//           const rs = await axiosInstance.post("users/refresh-token", {});
+//           const { accessToken } = rs.data;
+
+//           //dispatch(refreshToken(accessToken));
+//           //TokenService.updateLocalAccessToken(accessToken);
+//           localStorage.setItem('token', accessToken);
+//           return axiosInstance(originalConfig);
+//         } catch (_error) {
+//           return Promise.reject(_error);
+//         }
+//       }
+//     }
+
+//     return Promise.reject(err);
+//   });
 
 const axiosBaseQuery =
-  ({ baseUrl } = { baseUrl: '' }) =>
+  ({ baseUrl, headers } = { baseUrl: '', headers: '' }) =>
   async ({ url, method, data }) => {
-    try {
-      const result = await axios({ url: baseUrl + url, method, data })
-      return { data: result.data }
-    } catch (axiosError) {
-      throw new Error(`status: ${axiosError.response?.status}, data: ${axiosError.response?.data}`)
-      // let err = axiosError
-      // return {
-      //   error: { status: err.response?.status, data: err.response?.data },
+     try {
+     // const token = localStorage.getItem('accessToken');
+      const result = await axiosInstance({
+        method,
+        url: `${baseUrl}${url}`,
+        data: data,
+      });
+      // if (token) {
+      //   axios_args['headers'] = `Authorization: Bearer ${token}`;
       // }
+     // const result = await axios(axios_args);
+
+      const login = url.includes('authenticate');
+      if (login) {
+        const { accessToken, refreshToken } = result.data.data.tokens;
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+      }
+
+      return {data: result.data.data};
+    }
+    catch (axiosError) {
+      if (axiosError.response.status === 401) {
+        try {
+          const token = localStorage.getItem('refreshToken');
+          const rs = await axiosInstance({
+            method: 'POST',
+            url: `${baseUrl}users/refresh-token`,
+            data: {
+              refreshToken: token,
+            },
+          });
+          const { accessToken, refreshToken } = rs.data.data;
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('refreshToken', refreshToken);
+          return axios(axiosError.config.url);
+        } catch (_error) {
+          return Promise.reject(_error);
+        }
+      }
+      throw new Error(`status: ${axiosError.response?.status}, data: ${axiosError.response?.data.ErrorMessage}`)
     }
   }
 
@@ -68,7 +171,7 @@ export const apiSlice = createApi({
     // users
 
     loginUser: builder.mutation({
-      query: (data) => ({ url: `auth`, method: 'post', data: data }),
+      query: (data) => ({ url: `users/authenticate`, method: 'post', data: data }),
     }),
     
     getUsersInRoleAtDistrict: builder.query({

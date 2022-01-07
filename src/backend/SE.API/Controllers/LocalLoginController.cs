@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+using SE.API.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SE.Core.Queries.LocalLogin;
 using SE.Domain.Entities;
@@ -8,7 +8,6 @@ namespace SE.API.Controllers
 {
 
     [Route("local-login")]
-    [AllowAnonymous]
     public class LocalLoginController : ApiControllerBase
     {
         public LocalLoginController(IMediator mediator) : base(mediator)

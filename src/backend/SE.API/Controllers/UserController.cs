@@ -29,11 +29,14 @@ namespace SE.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken()
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand command)
         {
-            var refreshToken = Request.Cookies["refreshToken"];
+            //  Request.Cookies["refreshToken"];
+
+            command.IPAddress = ipAddress();
+
             CancellationToken cancelationToken = HttpContext.RequestAborted;
-            var authenticatedUserTokensDTO = await _mediator.Send(new RefreshTokenCommand(refreshToken, ipAddress()), cancelationToken);
+            var authenticatedUserTokensDTO = await _mediator.Send(command, cancelationToken);
             return Ok(authenticatedUserTokensDTO);
         }
 

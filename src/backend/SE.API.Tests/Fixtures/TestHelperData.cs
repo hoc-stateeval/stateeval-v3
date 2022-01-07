@@ -1,4 +1,4 @@
-﻿using SE.Core.Utils;
+﻿using SE.Core.Common;
 using SE.Domain.Entities;
 using System;
 using System.Collections.Generic;

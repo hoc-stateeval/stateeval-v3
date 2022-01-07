@@ -23,12 +23,23 @@ namespace SE.Core.Commands
         public RefreshTokenCommandValidator()
         {
             RuleFor(x => x.RefreshToken).NotEmpty();
-            RuleFor(x => x.IPAdress).NotEmpty();
         }
     }
-    
-    public record RefreshTokenCommand(string RefreshToken, string IPAdress) 
-        : IRequest<IResponse<AuthenticatedTokensDTO>>;
+
+    public sealed class RefreshTokenCommand :
+        IRequest<IResponse<AuthenticatedTokensDTO>>
+    {
+        public string RefreshToken { get; set; }
+        public string IPAddress { get; set; }
+        public CancellationToken CancellationToken { get; set; }
+
+        public RefreshTokenCommand(string refreshToken, string ipAddress, CancellationToken cancellationToken)
+        {
+            RefreshToken = refreshToken;
+            IPAddress = ipAddress;
+            CancellationToken = cancellationToken;
+        }
+    }
 
     public sealed class RefreshTokenCommandHandler :
     IRequestHandler<RefreshTokenCommand, IResponse<AuthenticatedTokensDTO>>
@@ -44,7 +55,7 @@ namespace SE.Core.Commands
 
         public async Task<IResponse<AuthenticatedTokensDTO>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
-            var tokens = await _authenticateService.RefreshToken(request.RefreshToken, request.IPAdress, cancellationToken);
+            var tokens = await _authenticateService.RefreshToken(request.RefreshToken, request.IPAddress, cancellationToken);
             return Response.Success(tokens);
            
         }

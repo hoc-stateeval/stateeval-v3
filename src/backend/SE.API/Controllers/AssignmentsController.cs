@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+using SE.API.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SE.Core.Commands;
 using SE.Core.Queries.Assignments;
@@ -9,7 +9,6 @@ using SE.Core.Models;
 namespace SE.API.Controllers
 {
     [Route("assignments")]
-    [AllowAnonymous]
     public class AssignmentsController : ApiControllerBase
     {
         public AssignmentsController(IMediator mediator) : base(mediator)

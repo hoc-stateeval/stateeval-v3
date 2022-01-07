@@ -50,7 +50,11 @@ namespace SE.Core.Services
 
         public async Task<AuthenticatedUserDTO> AuthenticateUser(string userName, string password, string ipAddress, CancellationToken cancellationToken)
         {
-            var user = await _dataContext.Users.Where(x => x.UserName == userName).FirstOrDefaultAsync();
+            var user = await _dataContext.Users
+                .Include(x => x.RefreshTokens)
+                .Include(x => x.UserBuildingRoles)
+                .Where(x => x.UserName == userName)
+                .FirstOrDefaultAsync();
   
             // todo
             //if (user == null || !BCryptNet.Verify(model.Password, user.PasswordHash))
@@ -123,7 +127,9 @@ namespace SE.Core.Services
 
         private async Task<User> GetUserByRefreshToken(string token)
         {
-            var user = await _dataContext.Users.FirstOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == token));
+            var user = await _dataContext.Users
+                .Include(x => x.RefreshTokens)
+                .FirstOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == token));
 
             if (user == null)
                 throw new AppException("Invalid token");

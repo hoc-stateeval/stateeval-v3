@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+using SE.API.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SE.Core.Commands;
 using SE.Core.Queries;
@@ -8,7 +8,6 @@ using SE.Domain.Entities;
 namespace SE.API.Controllers
 {
     [Route("evaluations")]
-    [AllowAnonymous]
     public class EvaluationController : ApiControllerBase
     {
         public EvaluationController(IMediator mediator) : base(mediator)
