@@ -9,7 +9,7 @@ using SE.Domain.Entities;
 namespace SE.API.Controllers
 {
     [Route("users")]
-    [Authorize]
+    //[Authorize]
     public class UserController : ApiControllerBase
     {
         public UserController(IMediator mediator) : base(mediator)
@@ -23,7 +23,7 @@ namespace SE.API.Controllers
             command.IPAddress = ipAddress();
             CancellationToken cancelationToken = HttpContext.RequestAborted;
             var authenticatedUser = await _mediator.Send(command, cancelationToken);
-            setTokenCookie(authenticatedUser.Tokens.RefreshToken);
+            setTokenCookie(authenticatedUser.Data.Tokens.RefreshToken);
             return Ok(authenticatedUser);
         }
 
@@ -58,6 +58,7 @@ namespace SE.API.Controllers
         [HttpGet("{username}")]
         public async Task<IActionResult> GetUserByUserName(string username)
         {
+            throw new Exception("Testing an exeception");
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
             var user = await _mediator.Send(new GetUserByUserNameQuery(username), cancelationToken);
             return Ok(user);

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SE.Core.Utils
+namespace SE.Core.Common.Extensions
 {
     //Task.Run(async () =>
     //{

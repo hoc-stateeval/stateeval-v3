@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using SE.Core.Queries;
 using SE.Core.Services;
 using SE.Core.Mappers;
-using SE.Core.Utils;
+using SE.Core.Common;
 
 namespace SE.Core.Queries.Assignments
 {
@@ -26,7 +26,7 @@ namespace SE.Core.Queries.Assignments
         }
     }
     public sealed class GetSchoolDetailAssignmentDataQuery :
-        IRequest<SchoolDetailAssignmentDataDTO>
+        IRequest<IResponse<SchoolDetailAssignmentDataDTO>>
     {
         public long FrameworkContextId { get; }
         public string SchoolCode { get; }
@@ -38,7 +38,7 @@ namespace SE.Core.Queries.Assignments
         }
 
         internal sealed class GetSchoolDetailAssignmentDataQueryHandler : 
-            IRequestHandler<GetSchoolDetailAssignmentDataQuery, SchoolDetailAssignmentDataDTO>
+            IRequestHandler<GetSchoolDetailAssignmentDataQuery, IResponse<SchoolDetailAssignmentDataDTO>>
         {
             private readonly DataContext _dataContext;
             private readonly IUserService _userService;
@@ -51,7 +51,7 @@ namespace SE.Core.Queries.Assignments
                 _evaluationService = evaluationService;
             }
 
-            public async Task<SchoolDetailAssignmentDataDTO> Handle(GetSchoolDetailAssignmentDataQuery request, CancellationToken cancellationToken)
+            public async Task<IResponse<SchoolDetailAssignmentDataDTO>> Handle(GetSchoolDetailAssignmentDataQuery request, CancellationToken cancellationToken)
             {
                 var result = new SchoolDetailAssignmentDataDTO();
 
@@ -71,8 +71,8 @@ namespace SE.Core.Queries.Assignments
                       (RoleType)frameworkContext.EvaluateeRole.Id, (EvaluationType)frameworkContext.EvaluationType);
 
                 result.Evaluators = RoleUtils.GetEvaluatorsBasedOnEvaluateeRoleType(_userService, frameworkContext, request.SchoolCode, result.EvaluatorRoleTypes);
- 
-                return result; 
+
+                return Response.Success(result);
             }
         }
     }

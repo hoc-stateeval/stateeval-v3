@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using SE.Core.Queries;
 using SE.Core.Mappers;
 using SE.Core.Services;
+using SE.Core.Common;
 
 namespace SE.Core.Queries
 {
@@ -23,7 +24,7 @@ namespace SE.Core.Queries
         }
     }
     public sealed class GetEvaluationsForEvaluatorQuery :
-        IRequest<List<EvaluationSummaryDTO>>
+        IRequest<IResponse<List<EvaluationSummaryDTO>>>
     {
         public long FrameworkContextId { get; }
         public long EvaluatorId { get; }
@@ -35,7 +36,7 @@ namespace SE.Core.Queries
         }
 
         internal sealed class GetEvaluationsForEvaluatorQueryHandler : 
-            IRequestHandler<GetEvaluationsForEvaluatorQuery, List<EvaluationSummaryDTO>>
+            IRequestHandler<GetEvaluationsForEvaluatorQuery, IResponse<List<EvaluationSummaryDTO>>>
         {
             private readonly DataContext _dataContext;
             private readonly IEvaluationService _evaluationService;
@@ -45,7 +46,7 @@ namespace SE.Core.Queries
                 _evaluationService = evaluationService;
             }
 
-            public async Task<List<EvaluationSummaryDTO>> Handle(GetEvaluationsForEvaluatorQuery request, CancellationToken cancellationToken)
+            public async Task<IResponse<List<EvaluationSummaryDTO>>> Handle(GetEvaluationsForEvaluatorQuery request, CancellationToken cancellationToken)
             {
                 var evaluations = await _evaluationService
                     .ExecuteEvaluationSummaryDTOQuery(
@@ -54,7 +55,7 @@ namespace SE.Core.Queries
                             x.EvaluatorId == request.EvaluatorId)
                     .ToListAsync();
 
-                return evaluations;
+                return Response.Success(evaluations);
             }
         }
     }

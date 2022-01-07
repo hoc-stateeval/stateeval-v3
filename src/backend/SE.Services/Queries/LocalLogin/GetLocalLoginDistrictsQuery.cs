@@ -9,18 +9,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SE.Core.Common;
 
 namespace SE.Core.Queries.LocalLogin
 {
     public sealed class GetLocalLoginDistrictsQuery :
-        IRequest<List<DistrictWithSchoolsDTO>>
+        IRequest<IResponse<List<DistrictWithSchoolsDTO>>>
     {
         public GetLocalLoginDistrictsQuery()
         {
         }
 
         internal sealed class GetLocalLoginDistrictsQueryHandler : 
-            IRequestHandler<GetLocalLoginDistrictsQuery, List<DistrictWithSchoolsDTO>>
+            IRequestHandler<GetLocalLoginDistrictsQuery, IResponse<List<DistrictWithSchoolsDTO>>>
         {
             private readonly DataContext _dataContext;
             public GetLocalLoginDistrictsQueryHandler(DataContext dataContext)
@@ -28,7 +29,7 @@ namespace SE.Core.Queries.LocalLogin
                 _dataContext = dataContext;
             }
 
-            public async Task<List<DistrictWithSchoolsDTO>> Handle(GetLocalLoginDistrictsQuery request, CancellationToken cancellationToken)
+            public async Task<IResponse<List<DistrictWithSchoolsDTO>>> Handle(GetLocalLoginDistrictsQuery request, CancellationToken cancellationToken)
             {
                 var districts = await _dataContext.Buildings.Where(x => !x.IsSchool).ToListAsync();
                 var schools = await _dataContext.Buildings.Where(x => x.IsSchool).ToListAsync();    
@@ -49,7 +50,7 @@ namespace SE.Core.Queries.LocalLogin
                             }).ToList()
                     }).ToList();
 
-                return list;
+                return Response.Success(list);
             }
         }
     }

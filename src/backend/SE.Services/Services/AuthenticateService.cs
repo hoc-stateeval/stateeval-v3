@@ -1,5 +1,4 @@
 ﻿using SE.Core.Models;
-using SE.Core.Settings;
 using SE.Data;
 using SE.Domain.Entities;
 using SE.Domain.Exceptions;
@@ -10,12 +9,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
-using SE.Core.Utils;
+using SE.Core.Common;
 using SE.Core.Mappers;
 using MediatR;
+using SE.Core.Common.Jwt;
+using SE.Core.Common.Exceptions;
 
 namespace SE.Core.Services
 {
+    //https://jasonwatmore.com/post/2021/06/15/net-5-api-jwt-authentication-with-refresh-tokens
     public interface IAuthenticateService
     {
         public Task<AuthenticatedUserDTO> AuthenticateUser(string userName, string password, string ipAddress, CancellationToken cancelationToken);

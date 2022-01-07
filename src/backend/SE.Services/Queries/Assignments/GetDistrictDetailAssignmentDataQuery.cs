@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using SE.Core.Queries;
 using SE.Core.Services;
 using SE.Core.Mappers;
-using SE.Core.Utils;
+using SE.Core.Common;
 
 namespace SE.Core.Queries.Assignments
 {
@@ -25,7 +25,7 @@ namespace SE.Core.Queries.Assignments
         }
     }
     public sealed class GetDistrictDetailAssignmentDataQuery :
-        IRequest<SchoolDetailAssignmentDataDTO>
+        IRequest<IResponse<SchoolDetailAssignmentDataDTO>>
     {
         public long FrameworkContextId { get; }
 
@@ -35,7 +35,7 @@ namespace SE.Core.Queries.Assignments
         }
 
         internal sealed class GetDistrictDetailAssignmentDataQueryHandler : 
-            IRequestHandler<GetDistrictDetailAssignmentDataQuery, SchoolDetailAssignmentDataDTO>
+            IRequestHandler<GetDistrictDetailAssignmentDataQuery, IResponse<SchoolDetailAssignmentDataDTO>>
         {
             private readonly DataContext _dataContext;
             private readonly IUserService _userService;
@@ -50,7 +50,7 @@ namespace SE.Core.Queries.Assignments
                 _buildingService = building;
             }
 
-            public async Task<SchoolDetailAssignmentDataDTO> Handle(GetDistrictDetailAssignmentDataQuery request, CancellationToken cancellationToken)
+            public async Task<IResponse<SchoolDetailAssignmentDataDTO>> Handle(GetDistrictDetailAssignmentDataQuery request, CancellationToken cancellationToken)
             {
                 var result = new SchoolDetailAssignmentDataDTO();
 
@@ -78,7 +78,7 @@ namespace SE.Core.Queries.Assignments
                     result.Evaluators.AddRange(next);
                 };
 
-                return result;
+                return Response.Success(result);
             }
         }
     }

@@ -11,6 +11,7 @@ using SE.Data;
 using SE.Domain.Entities;
 using SE.Core.Models;
 using SE.Core.Services;
+using SE.Core.Common;
 
 namespace SE.Core.Queries
 {
@@ -23,7 +24,7 @@ namespace SE.Core.Queries
         }
     }
     public sealed class GetSchoolsInDistrictQuery :
-        IRequest<List<BuildingDTO>>
+        IRequest<IResponse<List<BuildingDTO>>>
     {
         public string DistrictCode { get; }
 
@@ -33,7 +34,7 @@ namespace SE.Core.Queries
         }
 
         internal sealed class GetSchoolsInDistrictQueryHandler :
-            IRequestHandler<GetSchoolsInDistrictQuery, List<BuildingDTO>>
+            IRequestHandler<GetSchoolsInDistrictQuery, IResponse<List<BuildingDTO>>>
         {
             private readonly IBuildingService _buildingService;
             public GetSchoolsInDistrictQueryHandler(IBuildingService buildingService)
@@ -41,10 +42,10 @@ namespace SE.Core.Queries
                 _buildingService = buildingService;
             }
 
-            public async Task<List<BuildingDTO>> Handle(GetSchoolsInDistrictQuery request, CancellationToken cancellationToken)
+            public async Task<IResponse<List<BuildingDTO>>> Handle(GetSchoolsInDistrictQuery request, CancellationToken cancellationToken)
             {
                 var schools = await _buildingService.GetSchoolsInDistrict(request.DistrictCode);
-                return schools;
+                return Response.Success(schools);
             }
         }
     }

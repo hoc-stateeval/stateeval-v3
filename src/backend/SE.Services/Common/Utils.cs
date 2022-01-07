@@ -1,4 +1,5 @@
-﻿using SE.Core.Models;
+﻿using SE.Core.Common.Extensions;
+using SE.Core.Models;
 using SE.Core.Services;
 using SE.Domain.Entities;
 using System;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SE.Core.Utils
+namespace SE.Core.Common
 {
     public static class RoleUtils
     {

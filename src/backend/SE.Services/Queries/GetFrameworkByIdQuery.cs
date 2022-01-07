@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using SE.Data;
 using SE.Domain.Entities;
 using SE.Core.Models;
+using SE.Core.Common;
 
 namespace SE.Core.Queries
 {
@@ -22,7 +23,7 @@ namespace SE.Core.Queries
         }
     }
     public sealed class GetFrameworkByIdQuery : 
-        IRequest<FrameworkDTO>
+        IRequest<IResponse<FrameworkDTO>>
     {
         public long Id { get; }
 
@@ -32,7 +33,7 @@ namespace SE.Core.Queries
         }
 
         internal sealed class GetFrameworkByIdQueryHandler : 
-            IRequestHandler<GetFrameworkByIdQuery, FrameworkDTO>
+            IRequestHandler<GetFrameworkByIdQuery, IResponse<FrameworkDTO>>
         {
             private readonly DataContext _dataContext;
             public GetFrameworkByIdQueryHandler(DataContext dataContext)
@@ -40,7 +41,7 @@ namespace SE.Core.Queries
                 _dataContext = dataContext;
             }
 
-            public async Task<FrameworkDTO> Handle(GetFrameworkByIdQuery request, CancellationToken cancellationToken)
+            public async Task<IResponse<FrameworkDTO>> Handle(GetFrameworkByIdQuery request, CancellationToken cancellationToken)
             {
                 Framework? framework = await _dataContext.Frameworks
                     .Include(x => x.FrameworkNodes).ThenInclude(x => x.FrameworkNodeRubricRows).ThenInclude(x=>x.RubricRow)
@@ -81,7 +82,7 @@ namespace SE.Core.Queries
                     }).ToList()
                 };
 
-                return frameworkDTO;
+                return Response.Success(frameworkDTO);
             }
         }
     }

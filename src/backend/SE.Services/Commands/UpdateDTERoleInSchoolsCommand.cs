@@ -13,6 +13,7 @@ using SE.Core.Models;
 using SE.Core.Common.Exceptions;
 
 using SE.Core.Mappers;
+using SE.Core.Common;
 
 namespace SE.Core.Commands
 {
@@ -24,7 +25,7 @@ namespace SE.Core.Commands
         }
     }
     public sealed class UpdateDTERoleInSchoolsCommand : 
-        IRequest<Unit>
+        IRequest<IResponse<Unit>>
     {
         public long UserId{ get; }
         public List<UserBuildingRoleDTO> NewUserBuildingRoles { get; }
@@ -37,7 +38,7 @@ namespace SE.Core.Commands
     }
 
     public class UpdateDTERoleInSchoolsCommandHandler :
-    IRequestHandler<UpdateDTERoleInSchoolsCommand, Unit>
+    IRequestHandler<UpdateDTERoleInSchoolsCommand, IResponse<Unit>>
     {
         private readonly DataContext _dataContext;
         public UpdateDTERoleInSchoolsCommandHandler(DataContext dataContext)
@@ -45,7 +46,7 @@ namespace SE.Core.Commands
             _dataContext = dataContext;
         }
 
-        public async Task<Unit> Handle(UpdateDTERoleInSchoolsCommand request, CancellationToken cancellationToken)
+        public async Task<IResponse<Unit>> Handle(UpdateDTERoleInSchoolsCommand request, CancellationToken cancellationToken)
         {
             var currentUserBuildingRoles = await _dataContext.UserBuildingRoles
                 .Include(x => x.Building)
@@ -77,7 +78,7 @@ namespace SE.Core.Commands
 
             _dataContext.SaveChanges();
 
-            return Unit.Value;
+            return Response.Success(Unit.Value);
         }
     }
 }

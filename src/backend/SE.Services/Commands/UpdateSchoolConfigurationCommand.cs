@@ -11,6 +11,7 @@ using SE.Data;
 using SE.Domain.Entities;
 using SE.Core.Models;
 using SE.Core.Common.Exceptions;
+using SE.Core.Common;
 
 namespace SE.Core.Commands
 {
@@ -23,7 +24,7 @@ namespace SE.Core.Commands
         }
     }
     public sealed class UpdateSchoolConfigurationCommand : 
-        IRequest<Unit>
+        IRequest<IResponse<Unit>>
     {
         public long Id{ get; }
         public bool EvaluationSetupDelegated { get; }
@@ -36,7 +37,7 @@ namespace SE.Core.Commands
     }
 
     public class UpdateSchoolConfigurationCommandHandler :
-    IRequestHandler<UpdateSchoolConfigurationCommand, Unit>
+    IRequestHandler<UpdateSchoolConfigurationCommand, IResponse<Unit>>
     {
         private readonly DataContext _dataContext;
         public UpdateSchoolConfigurationCommandHandler(DataContext dataContext)
@@ -44,7 +45,7 @@ namespace SE.Core.Commands
             _dataContext = dataContext;
         }
 
-        public async Task<Unit> Handle(UpdateSchoolConfigurationCommand request, CancellationToken cancellationToken)
+        public async Task<IResponse<Unit>> Handle(UpdateSchoolConfigurationCommand request, CancellationToken cancellationToken)
         {
             SchoolConfiguration? config = await _dataContext.SchoolConfigurations
                    .Where(x => x.Id == request.Id)
@@ -58,7 +59,7 @@ namespace SE.Core.Commands
             config.EvaluationSetupDelegated = request.EvaluationSetupDelegated;
             _dataContext.SaveChanges();
 
-            return Unit.Value;
+            return Response.Success(Unit.Value);
         }
     }
 }

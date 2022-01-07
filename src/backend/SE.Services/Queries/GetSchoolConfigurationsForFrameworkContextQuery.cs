@@ -11,6 +11,7 @@ using SE.Data;
 using SE.Domain.Entities;
 using SE.Core.Models;
 using SE.Core.Services;
+using SE.Core.Common;
 
 namespace SE.Core.Queries
 {
@@ -23,7 +24,7 @@ namespace SE.Core.Queries
         }
     }
     public sealed class GetSchoolConfigurationsForFrameworkContextQuery :
-        IRequest<List<SchoolConfigurationDTO>>
+        IRequest<IResponse<List<SchoolConfigurationDTO>>>
     {
         public long FrameworkContextId { get; }
 
@@ -33,7 +34,7 @@ namespace SE.Core.Queries
         }
 
         internal sealed class GetSchoolConfigurationsForFrameworkContextQueryHandler :
-            IRequestHandler<GetSchoolConfigurationsForFrameworkContextQuery, List<SchoolConfigurationDTO>>
+            IRequestHandler<GetSchoolConfigurationsForFrameworkContextQuery, IResponse<List<SchoolConfigurationDTO>>>
         {
             private readonly ISchoolConfigurationService _schoolConfigurationService;
             public GetSchoolConfigurationsForFrameworkContextQueryHandler(ISchoolConfigurationService schoolConfigurationService)
@@ -41,10 +42,10 @@ namespace SE.Core.Queries
                 _schoolConfigurationService = schoolConfigurationService;
             }
 
-            public async Task<List<SchoolConfigurationDTO>> Handle(GetSchoolConfigurationsForFrameworkContextQuery request, CancellationToken cancellationToken)
+            public async Task<IResponse<List<SchoolConfigurationDTO>>> Handle(GetSchoolConfigurationsForFrameworkContextQuery request, CancellationToken cancellationToken)
             {
                 var configs = await _schoolConfigurationService.GetSchoolConfigurationsForFrameworkContext(request.FrameworkContextId);
-                return configs;
+                return Response.Success(configs);
             }
         }
     }

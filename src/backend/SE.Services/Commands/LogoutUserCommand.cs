@@ -15,6 +15,7 @@ using SE.Core.Services;
 using SE.Domain.Exceptions;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using SE.Core.Common;
 
 namespace SE.Core.Commands
 {
@@ -23,10 +24,11 @@ namespace SE.Core.Commands
     {
     }
     
-    public record LogoutUserCommand(string Token, string IPAddress, CancellationToken cancellationToken) : IRequest<Unit>;
+    public record LogoutUserCommand(string Token, string IPAddress, CancellationToken cancellationToken) 
+        : IRequest<IResponse<Unit>>;
 
     public sealed class LogoutUserCommandHandler :
-    IRequestHandler<LogoutUserCommand, Unit>
+    IRequestHandler<LogoutUserCommand, IResponse<Unit>>
     {
         private readonly DataContext _dataContext;
         private readonly IAuthenticateService _authenticateService;
@@ -37,10 +39,10 @@ namespace SE.Core.Commands
             _authenticateService = authenticationService;
         }
 
-        public async Task<Unit> Handle(LogoutUserCommand request, CancellationToken cancellationToken)
+        public async Task<IResponse<Unit>> Handle(LogoutUserCommand request, CancellationToken cancellationToken)
         {
             await _authenticateService.RevokeToken(request.Token, request.IPAddress, cancellationToken);
-            return Unit.Value;
+            return Response.Success(Unit.Value);
         }
     }
 }

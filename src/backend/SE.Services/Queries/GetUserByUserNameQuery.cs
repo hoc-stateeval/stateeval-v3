@@ -12,6 +12,7 @@ using SE.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using SE.Core.Mappers;
 using SE.Core.Services;
+using SE.Core.Common;
 
 namespace SE.Core.Queries
 {
@@ -24,7 +25,7 @@ namespace SE.Core.Queries
         }
     }
     public sealed class GetUserByUserNameQuery : 
-        IRequest<UserDTO>
+        IRequest<IResponse<UserDTO>>
     {
         public string UserName { get; }
 
@@ -34,7 +35,7 @@ namespace SE.Core.Queries
         }
 
         internal sealed class GetUserByUserNameQueryHandler : 
-            IRequestHandler<GetUserByUserNameQuery, UserDTO>
+            IRequestHandler<GetUserByUserNameQuery, IResponse<UserDTO>>
         {
             private readonly DataContext _dataContext;
             private readonly IUserService _userService;
@@ -44,10 +45,10 @@ namespace SE.Core.Queries
                 _userService = userService; 
             }
 
-            public async Task<UserDTO> Handle(GetUserByUserNameQuery request, CancellationToken cancellationToken)
+            public async Task<IResponse<UserDTO>> Handle(GetUserByUserNameQuery request, CancellationToken cancellationToken)
             {
                 var userDTO = await _userService.GetUserByUserName(request.UserName);
-                return userDTO;
+                return Response.Success(userDTO);
             }
         }
     }

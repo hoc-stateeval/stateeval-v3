@@ -13,7 +13,7 @@ namespace SE.API.Controllers
 {
     [ApiController]
     [Produces("application/json")]
-    [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
     //  [Authorize]
     public class ApiControllerBase : ControllerBase
     {

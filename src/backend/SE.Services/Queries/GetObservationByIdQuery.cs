@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using SE.Data;
 using SE.Domain.Entities;
 using SE.Core.Models;
+using SE.Core.Common;
 
 namespace SE.Core.Queries
 {
@@ -22,7 +23,7 @@ namespace SE.Core.Queries
         }
     }
     public sealed class GetObservationByIdQuery : 
-        IRequest<ObservationDTO>
+        IRequest<IResponse<ObservationDTO>>
     {
         public long Id { get; }
 
@@ -32,7 +33,7 @@ namespace SE.Core.Queries
         }
 
         internal sealed class GetObservationByIdQueryHandler : 
-            IRequestHandler<GetObservationByIdQuery, ObservationDTO>
+            IRequestHandler<GetObservationByIdQuery, IResponse<ObservationDTO>>
         {
             private readonly DataContext _dataContext;
             public GetObservationByIdQueryHandler(DataContext dataContext)
@@ -40,7 +41,7 @@ namespace SE.Core.Queries
                 _dataContext = dataContext;
             }
 
-            public async Task<ObservationDTO> Handle(GetObservationByIdQuery request, CancellationToken cancellationToken)
+            public async Task<IResponse<ObservationDTO>> Handle(GetObservationByIdQuery request, CancellationToken cancellationToken)
             {
                 Observation? observation = await _dataContext.Observations
                     .Include(x => x.Evaluation)
@@ -60,7 +61,7 @@ namespace SE.Core.Queries
                     CreationDateTime = observation.CreationDateTime
                 };
 
-                return observationDTO;
+                return Response.Success(observationDTO);
             }
         }
     }

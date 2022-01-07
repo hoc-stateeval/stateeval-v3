@@ -12,6 +12,7 @@ using SE.Domain.Entities;
 using SE.Core.Models;
 using SE.Core.Common.Exceptions;
 using SE.Core.Services;
+using SE.Core.Common;
 
 namespace SE.Core.Commands
 {
@@ -27,7 +28,7 @@ namespace SE.Core.Commands
     }
 
     public sealed class LoginUserCommand :
-    IRequest<AuthenticatedUserDTO>
+    IRequest<IResponse<AuthenticatedUserDTO>>
     {
         public string UserName { get; set; }    
         public string Password { get; set; }
@@ -44,7 +45,7 @@ namespace SE.Core.Commands
     }
 
     public sealed class LoginUserCommandHandler :
-    IRequestHandler<LoginUserCommand, AuthenticatedUserDTO>
+    IRequestHandler<LoginUserCommand, IResponse<AuthenticatedUserDTO>>
     {
         private readonly DataContext _dataContext;
         private readonly IAuthenticateService _authenticateService;
@@ -54,10 +55,10 @@ namespace SE.Core.Commands
             _authenticateService = authenticateService;
         }
 
-        public async Task<AuthenticatedUserDTO> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+        public async Task<IResponse<AuthenticatedUserDTO>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             var dto = await _authenticateService.AuthenticateUser(request.UserName, request.Password, request.IPAddress, cancellationToken);
-            return dto;
+            return Response.Success(dto);
         }
     }
 }

@@ -1,5 +1,4 @@
 
-
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -9,16 +8,41 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using SE.Core.Queries;
 using SE.Core.Services;
-using SE.Core.Utils;
 using SE.Data;
 using System.Diagnostics;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Newtonsoft.Json.Serialization;
-using SE.Core.Settings;
+using SE.Core.Common.Jwt;
 using SE.API.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Serilog;
+using System.Text;
+using System.Text.Json;
+using System.Net;
+using SE.Core.Common.Exceptions;
+
+const string ApiCorsPolicy = "APICorsPolicy";
 
 var builder = WebApplication.CreateBuilder(args);
+
+var config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
+
+// Serilog Configuration
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(config)
+    .CreateLogger();
+
+builder.Host.UseSerilog(); //.ConfigureWebHostDefaults(builder => builder.UseStartup<Program>());
+
+// CORS
+builder.Services.AddCors(options => options.AddPolicy(ApiCorsPolicy, policy =>
+    policy.AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials()
+));
 
 // JWT Authentication
 var jwtSettings = new JwtSettings();
@@ -28,18 +52,33 @@ builder.Services.AddSingleton(jwtSettings);
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 
+//builder.Services.AddAuthorization(x =>
+//{
+//    x.AddPolicy(JwtBearerDefaults.AuthenticationScheme, builder =>
+//    {
+//        builder.RequireAuthenticatedUser();
+//    });
+//});
 
-// https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-6.0
-// https://www.rahulpnath.com/blog/asp_net_core_cors_demystified/
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(builder =>
-    {
-        builder.WithOrigins("http://localhost:3000")
-                             .AllowAnyHeader()
-                             .AllowAnyMethod();
-    });
-});
+//builder.Services.AddAuthentication(x =>
+//{
+//    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//}).AddJwtBearer(x =>{
+//        x.SaveToken = true;
+//        x.RequireHttpsMetadata = false;
+//        x.TokenValidationParameters = new TokenValidationParameters
+//        {
+//            ValidateIssuerSigningKey = true,
+//            ValidateIssuer = true,
+//            ValidateAudience = true,
+//            ValidateLifetime = true,
+//            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.TokenSecret)),
+//            ValidIssuer = jwtSettings.Issuer,
+//            ValidAudience = jwtSettings.Audience
+//        };
+//    });
+
 
 // Add services to the container.
 
@@ -72,7 +111,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
+    // app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -81,10 +120,14 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors();
 
-// custom jwt auth middleware
-app.UseMiddleware<JwtMiddleware>();
+// global error handler
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
-app.UseAuthorization();
+// custom jwt auth middleware
+//app.UseMiddleware<JwtMiddleware>();
+
+//app.UseAuthorization();
+//app.UseAuthentication();
 
 app.MapControllers();
 

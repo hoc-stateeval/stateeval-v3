@@ -11,7 +11,7 @@ using SE.Data;
 using SE.Domain.Entities;
 using SE.Core.Models;
 using SE.Core.Common.Exceptions;
-using SE.Core.Utils;
+using SE.Core.Common;
 
 namespace SE.Core.Commands
 {
@@ -25,8 +25,7 @@ namespace SE.Core.Commands
             RuleFor(x=>x.EvaluatorId).NotEmpty();
         }
     }
-    public sealed class CreateObservationCommand : 
-        IRequest<long>
+    public sealed class CreateObservationCommand : IRequest<IResponse<long>>
     {
         public long EvaluationId { get; }
         public string Title { get; }
@@ -43,7 +42,7 @@ namespace SE.Core.Commands
     }
 
     public class CreateObservationCommandHandler :
-    IRequestHandler<CreateObservationCommand, long>
+    IRequestHandler<CreateObservationCommand, IResponse<long>>
     {
         private readonly DataContext _dataContext;
         public CreateObservationCommandHandler(DataContext dataContext)
@@ -51,7 +50,7 @@ namespace SE.Core.Commands
             _dataContext = dataContext;
         }
 
-        public async Task<long> Handle(CreateObservationCommand request, CancellationToken cancellationToken)
+        public async Task<IResponse<long>> Handle(CreateObservationCommand request, CancellationToken cancellationToken)
         {
             Evaluation? evaluation = await _dataContext.Evaluations
                  .Where(x => x.Id == request.EvaluationId)
@@ -91,7 +90,7 @@ namespace SE.Core.Commands
             _dataContext.Observations.Add(observation);
             _dataContext.SaveChanges();
 
-            return observation.Id;
+            return Response.Success(observation.Id);
         }
     }
 }

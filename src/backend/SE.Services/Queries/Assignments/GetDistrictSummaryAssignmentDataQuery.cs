@@ -11,7 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using SE.Core.Queries;
 using SE.Core.Services;
-using SE.Core.Utils;
+using SE.Core.Common;
+using SE.Core.Common.Extensions;
 
 namespace SE.Core.Queries.Assignments
 {
@@ -24,7 +25,7 @@ namespace SE.Core.Queries.Assignments
         }
     }
     public sealed class GetDistrictSummaryAssignmentDataQuery :
-        IRequest<List<SchoolSummaryAssignmentDataDTO>>
+        IRequest<IResponse<List<SchoolSummaryAssignmentDataDTO>>>
     {
         public long FrameworkContextId { get; }
 
@@ -34,7 +35,7 @@ namespace SE.Core.Queries.Assignments
         }
 
         internal sealed class GetDistrictSummaryAssignmentDataQueryHandler : 
-            IRequestHandler<GetDistrictSummaryAssignmentDataQuery, List<SchoolSummaryAssignmentDataDTO>>
+            IRequestHandler<GetDistrictSummaryAssignmentDataQuery, IResponse<List<SchoolSummaryAssignmentDataDTO>>>
         {
             private readonly DataContext _dataContext;
             private readonly IBuildingService _buildingService;
@@ -46,7 +47,7 @@ namespace SE.Core.Queries.Assignments
                 _userService = userService;
             }
 
-            public async Task<List<SchoolSummaryAssignmentDataDTO>> Handle(GetDistrictSummaryAssignmentDataQuery request, CancellationToken cancellationToken)
+            public async Task<IResponse<List<SchoolSummaryAssignmentDataDTO>>> Handle(GetDistrictSummaryAssignmentDataQuery request, CancellationToken cancellationToken)
             {
                 var frameworkContext = await _dataContext.FrameworkContexts
                     .Where(x => x.Id == request.FrameworkContextId)
@@ -85,7 +86,7 @@ namespace SE.Core.Queries.Assignments
                     });
                 }).Wait();
 
-                return schoolSummaries;
+                return Response.Success(schoolSummaries);
             }
         }
     }

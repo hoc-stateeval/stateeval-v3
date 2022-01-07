@@ -11,6 +11,7 @@ using SE.Domain.Entities;
 using SE.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using SE.Core.Services;
+using SE.Core.Common;
 
 namespace SE.Core.Queries
 {
@@ -24,7 +25,7 @@ namespace SE.Core.Queries
         }
     }
     public sealed class GetUsersInRoleInSchoolsQuery : 
-        IRequest<List<UserDTO>>
+        IRequest<IResponse<List<UserDTO>>>
     {
         public string DistrictCode { get; }
         public RoleType RoleType { get; }
@@ -36,7 +37,7 @@ namespace SE.Core.Queries
         }
 
         internal sealed class GetUsersInRoleInSchoolsQueryHandler : 
-            IRequestHandler<GetUsersInRoleInSchoolsQuery, List<UserDTO>>
+            IRequestHandler<GetUsersInRoleInSchoolsQuery, IResponse<List<UserDTO>>>
         {
             private readonly IUserService _userService;
             public GetUsersInRoleInSchoolsQueryHandler(IUserService userService)
@@ -44,10 +45,10 @@ namespace SE.Core.Queries
                 _userService = userService;
             }
 
-            public async Task<List<UserDTO>> Handle(GetUsersInRoleInSchoolsQuery request, CancellationToken cancellationToken)
+            public async Task<IResponse<List<UserDTO>>> Handle(GetUsersInRoleInSchoolsQuery request, CancellationToken cancellationToken)
             {
                 var users = await _userService.GetUsersInRoleAtSchools(request.DistrictCode, request.RoleType);
-                return users;
+                return Response.Success(users);
             }
         }
     }

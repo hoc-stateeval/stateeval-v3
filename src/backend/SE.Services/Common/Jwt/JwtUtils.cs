@@ -7,9 +7,8 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using SE.Domain.Entities;
-using SE.Core.Settings;
 
-namespace SE.Core.Utils
+namespace SE.Core.Common.Jwt
 {
     public interface IJwtUtils
     {

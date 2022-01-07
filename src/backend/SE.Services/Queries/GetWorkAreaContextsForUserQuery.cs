@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using SE.Data;
 using SE.Domain.Entities;
 using SE.Core.Models;
-using SE.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SE.Core.Services;
+using SE.Core.Common;
 
 namespace SE.Core.Queries
 {
@@ -22,7 +22,7 @@ namespace SE.Core.Queries
         }
     }
     public sealed class GetWorkAreaContextsForUserQuery : 
-        IRequest<List<WorkAreaContextDTO>>
+        IRequest<IResponse<List<WorkAreaContextDTO>>>
     {
         public long UserId { get; }
 
@@ -32,7 +32,7 @@ namespace SE.Core.Queries
         }
 
         internal sealed class GetWorkAreaContextsForUserQueryHandler : 
-            IRequestHandler<GetWorkAreaContextsForUserQuery, List<WorkAreaContextDTO>>
+            IRequestHandler<GetWorkAreaContextsForUserQuery, IResponse<List<WorkAreaContextDTO>>>
         {
             private readonly DataContext _dataContext;
             private readonly IWorkAreaContextService _workAreaContextService;
@@ -42,12 +42,12 @@ namespace SE.Core.Queries
                 _workAreaContextService = workAreaContextService;
             }
 
-            public async Task<List<WorkAreaContextDTO>> Handle(GetWorkAreaContextsForUserQuery request, CancellationToken cancellationToken)
+            public async Task<IResponse<List<WorkAreaContextDTO>>> Handle(GetWorkAreaContextsForUserQuery request, CancellationToken cancellationToken)
             {
                 var workAreaContexts = await _workAreaContextService
                     .GetWorkAreaContextsForUser(request.UserId);
 
-                return workAreaContexts;
+                return Response.Success(workAreaContexts);
             }
         }
     }

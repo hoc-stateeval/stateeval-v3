@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SE.Core.Mappers;
 using SE.Core.Models;
-using SE.Core.Utils;
+using SE.Core.Common;
 using SE.Data;
 using SE.Domain.Entities;
 using System;

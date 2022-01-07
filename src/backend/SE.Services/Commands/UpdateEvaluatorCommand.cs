@@ -11,6 +11,7 @@ using SE.Data;
 using SE.Domain.Entities;
 using SE.Core.Models;
 using SE.Core.Common.Exceptions;
+using SE.Core.Common;
 
 namespace SE.Core.Commands
 {
@@ -23,7 +24,7 @@ namespace SE.Core.Commands
         }
     }
     public sealed class UpdateEvaluatorCommand :
-        IRequest<Unit>
+        IRequest<IResponse<Unit>>
     {
         public long EvaluationId { get; }
         public long? EvaluatorId { get; }
@@ -38,7 +39,7 @@ namespace SE.Core.Commands
     }
 
     public class UpdateEvaluatorCommandHandler :
-    IRequestHandler<UpdateEvaluatorCommand, Unit>
+    IRequestHandler<UpdateEvaluatorCommand,IResponse<Unit>>
     {
         private readonly DataContext _dataContext;
         public UpdateEvaluatorCommandHandler(DataContext dataContext)
@@ -46,7 +47,7 @@ namespace SE.Core.Commands
             _dataContext = dataContext;
         }
 
-        public async Task<Unit> Handle(UpdateEvaluatorCommand request, CancellationToken cancellationToken)
+        public async Task<IResponse<Unit>> Handle(UpdateEvaluatorCommand request, CancellationToken cancellationToken)
         {
             Evaluation? evaluation = await _dataContext.Evaluations
                    .Where(x => x.Id == request.EvaluationId)
@@ -61,7 +62,7 @@ namespace SE.Core.Commands
 
             _dataContext.SaveChanges();
 
-            return Unit.Value;
+            return Response.Success(Unit.Value);
         }
     }
 }

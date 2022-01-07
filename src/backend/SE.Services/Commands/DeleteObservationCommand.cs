@@ -11,6 +11,7 @@ using SE.Data;
 using SE.Domain.Entities;
 using SE.Core.Models;
 using SE.Core.Common.Exceptions;
+using SE.Core.Common;
 
 namespace SE.Core.Commands
 {
@@ -23,7 +24,7 @@ namespace SE.Core.Commands
         }
     }
     public sealed class DeleteObservationCommand : 
-        IRequest<Unit>
+        IRequest<IResponse<Unit>>
     {
         public long ObservationId { get; }
         public DeleteObservationCommand(long observationId)
@@ -33,7 +34,7 @@ namespace SE.Core.Commands
     }
 
     public class DeleteObservationCommandHandler :
-    IRequestHandler<DeleteObservationCommand>
+    IRequestHandler<DeleteObservationCommand, IResponse<Unit>>
     {
         private readonly DataContext _dataContext;
         public DeleteObservationCommandHandler(DataContext dataContext)
@@ -41,7 +42,7 @@ namespace SE.Core.Commands
             _dataContext = dataContext;
         }
 
-        public async Task<Unit> Handle(DeleteObservationCommand request, CancellationToken cancellationToken)
+        public async Task<IResponse<Unit>> Handle(DeleteObservationCommand request, CancellationToken cancellationToken)
         {
             Observation? observation = await _dataContext.Observations
                  .Where(x => x.Id == request.ObservationId)
@@ -55,7 +56,7 @@ namespace SE.Core.Commands
             _dataContext.Observations.Remove(observation);
             _dataContext.SaveChanges();
 
-            return Unit.Value;
+            return Response.Success(Unit.Value);
         }
     }
 }

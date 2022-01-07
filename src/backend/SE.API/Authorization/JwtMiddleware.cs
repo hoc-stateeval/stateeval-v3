@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using SE.Core.Services;
-using SE.Core.Settings;
-using SE.Core.Utils;
 using System.Linq;
 using System.Threading.Tasks;
+using SE.Core.Common.Jwt;
 
 namespace SE.API.Authorization
 {

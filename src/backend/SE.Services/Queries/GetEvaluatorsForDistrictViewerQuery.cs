@@ -11,7 +11,7 @@ using SE.Domain.Entities;
 using SE.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using SE.Core.Services;
-using SE.Core.Utils;
+using SE.Core.Common;
 
 namespace SE.Core.Queries
 {
@@ -23,7 +23,7 @@ namespace SE.Core.Queries
         }
     }
     public sealed class GetEvaluatorsForDistrictViewerQuery : 
-        IRequest<List<UserDTO>>
+        IRequest<IResponse<List<UserDTO>>>
     {
         public long WorkAreaContextId { get; }
         public string SchoolCode { get; }  
@@ -35,7 +35,7 @@ namespace SE.Core.Queries
         }
 
         internal sealed class GetEvaluatorsForDistrictViewerQueryHandler : 
-            IRequestHandler<GetEvaluatorsForDistrictViewerQuery, List<UserDTO>>
+            IRequestHandler<GetEvaluatorsForDistrictViewerQuery, IResponse<List<UserDTO>>>
         {
             private readonly DataContext _dataContext;
             private readonly IUserService _userService;
@@ -46,7 +46,7 @@ namespace SE.Core.Queries
                 _userService = userService;
             }
 
-            public async Task<List<UserDTO>> Handle(GetEvaluatorsForDistrictViewerQuery request, CancellationToken cancellationToken)
+            public async Task<IResponse<List<UserDTO>>> Handle(GetEvaluatorsForDistrictViewerQuery request, CancellationToken cancellationToken)
             {
                 
                 var workAreaContext = await _dataContext.WorkAreaContexts
@@ -55,22 +55,27 @@ namespace SE.Core.Queries
                     .FirstOrDefaultAsync();
 
                 if (workAreaContext.WorkArea.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DV_PR_TR)) {
-                    return await _userService.GetUsersInRoleAtSchool(request.SchoolCode, RoleType.PR);
+                    var users = await _userService.GetUsersInRoleAtSchool(request.SchoolCode, RoleType.PR);
+                    return Response.Success(users);
                 }
                 else if (workAreaContext.WorkArea.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DV_PR_PR)) {
-                    return await _userService.GetUsersInRoleAtSchool(request.SchoolCode, RoleType.HEAD_PR);
+                    var users = await _userService.GetUsersInRoleAtSchool(request.SchoolCode, RoleType.HEAD_PR);
+                    return Response.Success(users);
                 }
                 else if (workAreaContext.WorkArea.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DV_DE))
                 {
-                    return await _userService.GetUsersInRoleAtSchools(request.SchoolCode, RoleType.DE);
+                    var users = await _userService.GetUsersInRoleAtSchools(request.SchoolCode, RoleType.DE);
+                    return Response.Success(users);
                 }
                 else if (workAreaContext.WorkArea.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DV_DTE))
                 {
-                    return await _userService.GetUsersInRoleAtSchool(request.SchoolCode, RoleType.DTE);
+                    var users = await _userService.GetUsersInRoleAtSchool(request.SchoolCode, RoleType.DTE);
+                    return Response.Success(users);
                 }
                 else if (workAreaContext.WorkArea.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DV_CT))
                 {
-                    return await _userService.GetUsersInRoleAtSchool(request.SchoolCode, RoleType.SPS_CT_TR);
+                    var users = await _userService.GetUsersInRoleAtSchool(request.SchoolCode, RoleType.SPS_CT_TR);
+                    return Response.Success(users);
                 }
                 else
                 {

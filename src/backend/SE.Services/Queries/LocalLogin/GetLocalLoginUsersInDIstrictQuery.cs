@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SE.Core.Common;
 
 namespace SE.Core.Queries.LocalLogin
 {
@@ -21,7 +22,7 @@ namespace SE.Core.Queries.LocalLogin
         }
     }
     public sealed class GetLocalLoginUsersInDistrictQuery :
-        IRequest<List<LocalLoginUserDTO>>
+        IRequest<IResponse<List<LocalLoginUserDTO>>>
     {
         public string DistrictCode { get; }
 
@@ -31,7 +32,7 @@ namespace SE.Core.Queries.LocalLogin
         }
 
         internal sealed class GetLocalLoginUsersInDistrictQueryHandler : 
-            IRequestHandler<GetLocalLoginUsersInDistrictQuery, List<LocalLoginUserDTO>>
+            IRequestHandler<GetLocalLoginUsersInDistrictQuery, IResponse<List<LocalLoginUserDTO>>>
         {
             private readonly DataContext _dataContext;
             public GetLocalLoginUsersInDistrictQueryHandler(DataContext dataContext)
@@ -39,7 +40,7 @@ namespace SE.Core.Queries.LocalLogin
                 _dataContext = dataContext;
             }
 
-            public async Task<List<LocalLoginUserDTO>> Handle(GetLocalLoginUsersInDistrictQuery request, CancellationToken cancellationToken)
+            public async Task<IResponse<List<LocalLoginUserDTO>>> Handle(GetLocalLoginUsersInDistrictQuery request, CancellationToken cancellationToken)
             {
                 var building = await _dataContext.Buildings
                     .Where(x => !x.IsSchool && x.DistrictCode == request.DistrictCode)
@@ -62,7 +63,7 @@ namespace SE.Core.Queries.LocalLogin
                     RoleName = x.Role.DisplayName
                  }).ToList();
 
-                return users;
+                return Response.Success(users);
             }
         }
     }

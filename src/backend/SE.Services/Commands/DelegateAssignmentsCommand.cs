@@ -11,6 +11,7 @@ using SE.Data;
 using SE.Domain.Entities;
 using SE.Core.Models;
 using SE.Core.Common.Exceptions;
+using SE.Core.Common;
 
 namespace SE.Core.Commands
 {
@@ -23,7 +24,7 @@ namespace SE.Core.Commands
         }
     }
     public sealed class DelegateEvaluationSetupCommand :
-        IRequest<Unit>
+        IRequest<IResponse<Unit>>
     {
         public long FrameworkContextId { get; }
         public bool DelegateEvalSetup { get; }
@@ -36,7 +37,7 @@ namespace SE.Core.Commands
     }
 
     public class DelegateEvaluationSetupCommandHandler :
-    IRequestHandler<DelegateEvaluationSetupCommand, Unit>
+    IRequestHandler<DelegateEvaluationSetupCommand, IResponse<Unit>>
     {
         private readonly DataContext _dataContext;
         public DelegateEvaluationSetupCommandHandler(DataContext dataContext)
@@ -44,7 +45,7 @@ namespace SE.Core.Commands
             _dataContext = dataContext;
         }
 
-        public async Task<Unit> Handle(DelegateEvaluationSetupCommand request, CancellationToken cancellationToken)
+        public async Task<IResponse<Unit>> Handle(DelegateEvaluationSetupCommand request, CancellationToken cancellationToken)
         {
             FrameworkContext? frameworkContext = await _dataContext.FrameworkContexts
                    .Where(x => x.Id == request.FrameworkContextId)
@@ -65,7 +66,7 @@ namespace SE.Core.Commands
 
             _dataContext.SaveChanges();
 
-            return Unit.Value;
+            return Response.Success(Unit.Value);
         }
     }
 }

@@ -13,7 +13,7 @@ using SE.Core.Models;
 using SE.Core.Common.Exceptions;
 using SE.Core.Services;
 using SE.Domain.Exceptions;
-using SE.Core.Utils;
+using SE.Core.Common;
 
 namespace SE.Core.Commands
 {
@@ -27,10 +27,11 @@ namespace SE.Core.Commands
         }
     }
     
-    public record RefreshTokenCommand(string RefreshToken, string IPAdress) : IRequest<AuthenticatedTokensDTO>;
+    public record RefreshTokenCommand(string RefreshToken, string IPAdress) 
+        : IRequest<IResponse<AuthenticatedTokensDTO>>;
 
     public sealed class RefreshTokenCommandHandler :
-    IRequestHandler<RefreshTokenCommand, AuthenticatedTokensDTO>
+    IRequestHandler<RefreshTokenCommand, IResponse<AuthenticatedTokensDTO>>
     {
         private readonly DataContext _dataContext;
         private readonly IAuthenticateService _authenticateService;
@@ -41,10 +42,10 @@ namespace SE.Core.Commands
             _authenticateService = authenticateService;
         }
 
-        public async Task<AuthenticatedTokensDTO> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+        public async Task<IResponse<AuthenticatedTokensDTO>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
             var tokens = await _authenticateService.RefreshToken(request.RefreshToken, request.IPAdress, cancellationToken);
-            return tokens;
+            return Response.Success(tokens);
            
         }
     }
