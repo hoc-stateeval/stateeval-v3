@@ -2,29 +2,6 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 import { config } from './config';
 import axios from 'axios';
 
-// const request = (url, method = 'get', data = {}) => new Promise((resolve, reject) => {
-//   const token = localStorage.getItem('token');
-//   const preparedRequest = {
-//     method,
-//     url: `${config.API_URL}/${url}`,
-//     data: data,
-//     headers: {
-//       Authorization: `Bearer ${token}`
-//     }
-//   };
-//   axios(preparedRequest)
-//     .then((data) => {
-//       resolve(data.data);
-//     })
-//     .catch((err) => {
-//       if (err.response?.status === 401) {
-//         localStorage.removeItem('token');
-//         window.location.href = '/login';
-//       }
-//       reject(err.response.data.ErrorMessage);
-//     });
-// });
-
 const axiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
@@ -44,49 +21,15 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// axiosInstance.interceptors.response.use(
-//   (res) => {
-//     return res;
-//   },
-//   async (err) => {
-//     const originalConfig = err.config;
-
-//     if (!originalConfig.url.contains("users/authenticate") && err.response) {
-//       // Access Token was expired
-//       if (err.response.status === 401 && !originalConfig._retry) {
-//         originalConfig._retry = true;
-
-//         try {
-//           const rs = await axiosInstance.post("users/refresh-token", {});
-//           const { accessToken } = rs.data;
-
-//           //dispatch(refreshToken(accessToken));
-//           //TokenService.updateLocalAccessToken(accessToken);
-//           localStorage.setItem('token', accessToken);
-//           return axiosInstance(originalConfig);
-//         } catch (_error) {
-//           return Promise.reject(_error);
-//         }
-//       }
-//     }
-
-//     return Promise.reject(err);
-//   });
-
 const axiosBaseQuery =
-  ({ baseUrl, headers } = { baseUrl: '', headers: '' }) =>
+  ({ baseUrl } = { baseUrl: '' }) =>
   async ({ url, method, data }) => {
      try {
-     // const token = localStorage.getItem('accessToken');
       const result = await axiosInstance({
         method,
         url: `${baseUrl}${url}`,
         data: data,
       });
-      // if (token) {
-      //   axios_args['headers'] = `Authorization: Bearer ${token}`;
-      // }
-     // const result = await axios(axios_args);
 
       const login = url.includes('authenticate');
       if (login) {
