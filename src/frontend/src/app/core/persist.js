@@ -1,3 +1,5 @@
+import { clearTokens } from './tokenService';
+
 const KEY = 'redux';
 
 export const loadState = () => {
@@ -21,4 +23,5 @@ export const saveState = (state) => {
 
 export const clearState = () => {
   localStorage.setItem(KEY, null);
+  clearTokens();
 }

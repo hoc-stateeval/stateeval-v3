@@ -15,8 +15,14 @@ const getTokens = () => {
   }
 }
 
+const clearTokens = () => {
+  localStorage.setItem(accessTokenKey, null);
+  localStorage.setItem(refreshTokenKey, null);
+}
+
 export {
   updateTokens,
   getTokens,
+  clearTokens,
 }
 
