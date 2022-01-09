@@ -7,8 +7,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import theme from './Theme';
 import { CacheProvider } from '@emotion/react';
 import { createEmotionCache } from './utils/create-emotion-cache';
-import { BrowserRouter as Router } from 'react-router-dom';
-import MainLayout from './layout/MainLayout';
+import { BrowserRouter } from 'react-router-dom';
+import { AppRouter } from './routing/AppRouter';
 
 const emotionCache = createEmotionCache();
 
@@ -17,14 +17,14 @@ const App = () => {
     <>
       <Provider store={store}>
         <CacheProvider value={emotionCache}>
-          <Router>
+          <BrowserRouter>
             <Suspense fallback={<div>Loading...</div>}>
               <ThemeProvider theme={theme}>
                 <CssBaseline/>
-                <MainLayout />
+                <AppRouter />
               </ThemeProvider>
             </Suspense>
-          </Router>
+          </BrowserRouter>
         </CacheProvider>
       </Provider>
     </>
