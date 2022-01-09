@@ -8,141 +8,200 @@ import SummativeEvalIcon from '@mui/icons-material/Summarize';
 import SettingsIcon from '@mui/icons-material/SettingsApplications';
 import { 
   WorkAreas,
-  DistrictViewerWorkAreas,
-  EvaluationWorkAreas, 
-  EvaluatorWorkAreas,
  } from '../../core/workAreas';
+
+import evaluationPaths from '../../routing/evaluationPaths';
+import districtViewerPaths from '../../routing/districtViewerPaths';
+import adminPaths from '../../routing/adminPaths';
+
+const evaluationSharedNavItems = {
+  artifacts: {
+    title: 'Artifacts',
+    icon: <ArtifactsIcon fontSize="small" />,
+    path: evaluationPaths.artifacts,
+  },
+  ytdEvidence: {
+    title: 'YTD Evidence',
+    icon: <YTDIcon fontSize="small" />,
+    path: evaluationPaths.ytdEvidence,
+  },
+  studentGrowth: {
+    title: 'Student Growth',
+    icon: <SGGIcon fontSize="small" />,
+    path: evaluationPaths.studentGrowth,
+  },
+  observations: {
+    title: 'Observations',
+    icon: <ObservationsIcon fontSize="small" />,
+    path: evaluationPaths.observations,
+  },
+  selfAssessments: {
+    title: 'Self-Assessments',
+    icon: <SelfAssessmentsIcon fontSize="small" />,
+    path: evaluationPaths.selfAssessments,
+  },
+  summativeEvaluation: {
+    title: 'Summative Evaluation',
+    icon: <SummativeEvalIcon fontSize="small" />,
+    path: evaluationPaths.summativeEvaluation,
+  },
+  settingsGeneral : {
+    title: 'General',
+    path: evaluationPaths.settingsGeneral,
+  },
+  settingsPromptBank: {
+    title: 'Prompt Bank',
+    path: evaluationPaths.settingsPromptBank,
+  }
+};
 
 const navSections = [
   {
-    title: 'District Viewer',
-    workAreaTags: DistrictViewerWorkAreas,
+    workAreaTag: WorkAreas.DV_PR_PR,
+    title: 'View Evaluator - Head Principal',
     items: [
       {
         title: 'Dashboard',
         icon: <GridViewIcon fontSize="small" />,
-        path: '/app/dashboards/dv-pr-pr',
-        workAreaTags: [WorkAreas.DV_PR_PR],
-      },
-      {
-        title: 'Dashboard',
-        icon: <GridViewIcon fontSize="small" />,
-        path: '/app/dashboards/dv-pr-tr',
-        workAreaTags: [WorkAreas.DV_PR_TR],
-      },
-      {
-        title: 'Dashboard',
-        icon: <GridViewIcon fontSize="small" />,
-        path: '/app/dashboards/dv-dte',
-        workAreaTags: [WorkAreas.DV_DTE],
-      },
-      {
-        title: 'Dashboard',
-        icon: <GridViewIcon fontSize="small" />,
-        path: '/app/dashboards/dv-de',
-        workAreaTags: [WorkAreas.DV_DE],
-      },
-      {
-        title: 'Dashboard',
-        icon: <GridViewIcon fontSize="small" />,
-        path: '/app/dashboards/dv-ct',
-        workAreaTags: [WorkAreas.DV_CT],
+        path: districtViewerPaths.prPr,
       }
     ]
   },
   {
-    title: 'Evaluation',
-    workAreaTags: EvaluationWorkAreas,
+    workAreaTag: WorkAreas.DV_PR_TR,
+    title: 'View Evaluator - Principal',
     items: [
       {
         title: 'Dashboard',
         icon: <GridViewIcon fontSize="small" />,
-        path: '/app/dashboard',
-      },
+        path: districtViewerPaths.prTr
+      }
+    ]
+  },
+  {
+    workAreaTag: WorkAreas.DV_DTE,
+    title: 'View Evaluator - DTE',
+    items: [
       {
-        title: 'Artifacts',
-        icon: <ArtifactsIcon fontSize="small" />,
-        path: '/app/evaluation/artifacts',
+        title: 'Dashboard',
+        icon: <GridViewIcon fontSize="small" />,
+        path: districtViewerPaths.dte,
       },
+    ]
+  },
+  {
+    workAreaTag: WorkAreas.DV_DE,
+    title: 'View Evaluator - DE',
+    items: [
       {
-        title: 'YTD Evidence',
-        icon: <YTDIcon fontSize="small" />,
-        path: '/app/evaluation/ytd',
+        title: 'Dashboard',
+        icon: <GridViewIcon fontSize="small" />,
+        path: districtViewerPaths.de,
       },
+    ]
+  },
+  {
+    workAreaTag: WorkAreas.DV_CT,
+    title: 'View Evaluator - Consulting Teacher',
+    items: [
       {
-        title: 'Student Growth',
-        icon: <SGGIcon fontSize="small" />,
-        path: '/app/evaluation/sgg',
-      },
+        title: 'Dashboard',
+        icon: <GridViewIcon fontSize="small" />,
+        path: districtViewerPaths.ct,
+      }
+    ]
+  },
+  {
+    workAreaTag: WorkAreas.PR_PR,
+    title: 'Evaluation',
+    items: [
       {
-        title: 'Observations',
-        icon: <ObservationsIcon fontSize="small" />,
-        path: '/app/evaluation/observations',
+        title: 'Dashboard',
+        icon: <GridViewIcon fontSize="small" />,
+        path: evaluationPaths.prPrDashboard,
       },
+      evaluationSharedNavItems.artifacts,
+      evaluationSharedNavItems.ytdEvidence,
+      evaluationSharedNavItems.studentGrowth,
+      evaluationSharedNavItems.observations,
+      evaluationSharedNavItems.selfAssessments,
+      evaluationSharedNavItems.summativeEvaluation,
       {
-        title: 'Self-Assessments',
-        icon: <SelfAssessmentsIcon fontSize="small" />,
-        path: '/app/evaluation/self-assessments',
-      },
-      {
-        title: 'Summative Evaluation',
-        icon: <SummativeEvalIcon fontSize="small" />,
-        path: '/app/evaluation/summative-eval',
-      },
-       {
         title: 'Settings',
         icon: <SettingsIcon fontSize="small" />,
         path: '/app/evaluation/settings',
-        workAreaTags: EvaluatorWorkAreas,
         children: [
-          {
-            title: 'General',
-            path: '/app/evaluation/settings/general',
-          },
-          {
-            title: 'Prompt Bank',
-            path: '/app/evaluation/settings/prompt-bank',
-          },
-          {
-            title: 'Assignments',
-            path: '/app/evaluation/settings/assignments',
-          },
-          {
-            title: 'User Groups',
-            path: '/app/evaluation/settings/user-groups',
-          },
+          evaluationSharedNavItems.settingsGeneral,
+         
         ],
       },
-      // {
-      //   title: 'Report Archives',
-      //   icon: <HomeIcon fontSize="small" />,
-      //   path: '/evaluation/report-archives',
-      // },
-      // {
-      //   title: 'Resources',
-      //   icon: <HomeIcon fontSize="small" />,
-      //   path: '/evaluation/resources',
-      // },
     ],
   },
   {
-    title: 'Evaluation Setup',
-    workAreaTags: WorkAreas.DA_TR,
+    workAreaTag: WorkAreas.PR_TR,
+    title: 'Evaluation',
     items: [
       {
         title: 'Dashboard',
         icon: <GridViewIcon fontSize="small" />,
-        path: '/app/dashboards/da-tr',
+        path: evaluationPaths.prTrDashboard,
+      },
+      evaluationSharedNavItems.artifacts,
+      evaluationSharedNavItems.ytdEvidence,
+      evaluationSharedNavItems.studentGrowth,
+      evaluationSharedNavItems.observations,
+      evaluationSharedNavItems.selfAssessments,
+      evaluationSharedNavItems.summativeEvaluation,
+      {
+        title: 'Settings',
+        icon: <SettingsIcon fontSize="small" />,
+        path: '/app/evaluation/settings',
+        children: [
+          evaluationSharedNavItems.settingsGeneral,
+         
+        ],
+      },
+    ],
+  },
+  {
+    workAreaTag: WorkAreas.DA_PR,
+    title: 'Evaluation Setup',
+    items: [
+      {
+        title: 'Dashboard',
+        icon: <GridViewIcon fontSize="small" />,
+        path: adminPaths.daPrDashboard,
       },
       {
         title: 'Assignments',
         icon: <ArtifactsIcon fontSize="small" />,
-        path: '/app/admin/assignments/district-summary',
+        path: adminPaths.assignmentsDistrictSummary,
       },
       {
         title: 'DTE Setup',
         icon: <ArtifactsIcon fontSize="small" />,
-        path: '/app/admin/assignments/dte-setup',
+        path: adminPaths.dteSetup,
+      }
+    ]
+  },
+  {
+    workAreaTag: WorkAreas.DA_TR,
+    title: 'Evaluation Setup',
+    items: [
+      {
+        title: 'Dashboard',
+        icon: <GridViewIcon fontSize="small" />,
+        path: adminPaths.daTrDashboard,
+      },
+      {
+        title: 'Assignments',
+        icon: <ArtifactsIcon fontSize="small" />,
+        path: adminPaths.assignmentsDistrictSummary,
+      },
+      {
+        title: 'DTE Setup',
+        icon: <ArtifactsIcon fontSize="small" />,
+        path: adminPaths.dteSetup,
       }
     ]
   },
@@ -188,20 +247,11 @@ const navSections = [
   //   ],
   // },
 ];
+ 
 
 export const buildNavSectionsForWorkArea = (workAreaTag) => {
-
-  const result = navSections.reduce( (acc, nextSection) => {
-    if (nextSection.workAreaTags.includes(workAreaTag)) {
-      let section = {...nextSection};
-      section.items = section.items.filter(x=>(!x.workAreaTags?x:x.workAreaTags.includes(workAreaTag)));
-      acc.push(section);
-    }
-    return acc;
-  }, []);
-
-  return result;
+  return navSections.filter(x=>x.workAreaTag === workAreaTag);
 }
- 
+
 export default buildNavSectionsForWorkArea;
  

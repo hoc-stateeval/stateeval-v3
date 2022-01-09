@@ -3,31 +3,39 @@ import { useSelector } from 'react-redux';
 import { Navigate, Routes, Route, useRoutes} from 'react-router-dom';
 import LocalLogin from '../../authentication/LocalLogin';
 import Layout from './Layout';
-import buildRoutes from '../routing/buildRoutes';
-import { selectActiveWorkAreaContext } from '../store/stateEval/userContextSlice';
+import { 
+  selectActiveWorkAreaContext,
+} from '../store/stateEval/userContextSlice';
+
+import buildNavRoutesForWorkArea from '../routing/nav-routes';
 
 const NotFound = lazy(() => import('../routing/NotFound'));
 
 const MainLayout = () => {
   const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
-  const routeConfig = (buildRoutes(activeWorkAreaContext));
-  const routes = useRoutes(routeConfig);
+  const activeWorkAreaNavRoutes = buildNavRoutesForWorkArea(activeWorkAreaContext)
+
+  const routes = useRoutes(
+    [ ...activeWorkAreaNavRoutes,
+      { path: "404", element: <NotFound /> },
+      { path: "*", element: <Navigate to="/404" /> }
+    ]);
+
+  if (!activeWorkAreaContext) {
+    return (
+      <Routes>
+        <Route path="/" element={<Navigate to="/localLogin" />} />
+        <Route path="/localLogin" element={<LocalLogin />} />
+        <Route path="*" element={<NotFound />} />
+    </Routes>
+    )
+  }
 
   return (
-    <>
-    { activeWorkAreaContext ? (
-      <Layout>
+    <Layout>
         {routes}
-      </Layout>
-    ): (
-      <Routes>
-          <Route path="/" element={<Navigate to="/localLogin" />} />
-          <Route path="/localLogin" element={<LocalLogin />} />
-          <Route path="*" element={<NotFound />} />
-      </Routes>
-    )}
-    </>
-  );
+    </Layout>
+  )
 }
 
 export default MainLayout;

@@ -8,20 +8,10 @@ import {
 const PrivateRoute = ({ element, workAreaTags }) => {
 
   const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
-
-
-  // const { isAuthenticated, user, loading } = useSelector(state => state.auth);
-  // if (loading) {
-  //   return <p className="container">Checking auth..</p>;
-  // }
-  // if (!isAuthenticated) {
-  //   return <Navigate to="/login" state={{ from: location }} />;
-  // }
-
   const correctWorkArea = activeWorkAreaContext && workAreaTags.includes(activeWorkAreaContext.tagName);
 
-  if (!correctWorkArea) {
-    return <Navigate to="/localLogin" />; 
+  if (!activeWorkAreaContext || !correctWorkArea) {
+    return <Navigate to="/localLogin" />;
   }
 
   return element;

@@ -28,7 +28,7 @@ const createWorkAreaContextState = async (state, workAreaContext) => {
   }, frameworksHashMap);
 
   const newState = {
-    currentUser: state.currentUser,
+    ...state,
     ids: {
       ...state.ids,
       activeWorkAreaContextId: workAreaContext.id,
@@ -73,7 +73,7 @@ export const setCurrentUser = createAsyncThunk(
   async (data, { dispatch, getState }) => {
     const workAreaContexts = data.workAreaContexts;
     const defaultWorkAreaContext = workAreaContexts[0];
-
+   
     const { userContext: state } = getState().stateEval;
 
     let newState = {
@@ -107,7 +107,7 @@ const initialState = {
     // these need to be zero for select element defaults
     activeEvaluationId: '0',
     activeDistrictViewerSchoolCode: '0',
-    activeDistrictViewerEvaluatorId: '0'
+    activeDistrictViewerEvaluatorId: '0',
   },
   entities: {
     workAreaContexts: {},
@@ -347,6 +347,18 @@ export const selectActiveDistrictViewerEvaluatorId = createSelector(
   [getActiveDistrictViewerEvaluatorId], (id) => {
   return id;
 });
+
+// const getCurrentNavRoutes = (state) => {
+//   const { navRoutes } = state.stateEval.userContext;
+//   return navRoutes;
+// }
+
+// export const selectActiveWorkAreaNavRoutes = createSelector(
+//   [getActiveWorkAreaContext, getCurrentNavRoutes], (activeWorkArea, currentNavRoutes) => {
+//     const activeRoutes = currentNavRoutes.length===0?
+//       []:currentNavRoutes.find(x=>x.workAreaTag === activeWorkArea.tagName).routes;
+//       return activeRoutes;
+//   });
 
 export const { 
   setActiveFrameworkId, 

@@ -1,5 +1,11 @@
 import { lazy } from 'react'
-import { EvaluationWorkAreas } from '../core/workAreas';
+import GridViewIcon from '@mui/icons-material/GridView';
+
+import { WorkAreas } from '../core/workAreas';
+import { sharedRoutes as adminSharedRoutes } from './adminRoutesConfig';
+
+import evaluationPaths from './evaluationPaths';
+
 const ArtifactsDashboard = lazy(() => import('../features/evaluation/artifacts/Dashboard'));
 const StudentGrowthDashboard = lazy(() => import('../features/evaluation/student-growth/Dashboard'));
 const YearToDateDashboard = lazy(() => import('../features/evaluation/ytd/Dashboard'));
@@ -7,59 +13,69 @@ const EvaluationDashboard = lazy(() => import('../features/evaluation/dashboards
 const ObservationsDashboard = lazy(() => import('../features/evaluation/observations/Dashboard'));
 const SelfAssessmentsDashboard = lazy(() => import('../features/evaluation/self-assessments/Dashboard'));
 const SummativeEvalDashboard = lazy(() => import('../features/evaluation/summative-eval/Dashboard'));
-const PromptBank = lazy(() => import('../features/evaluation/settings/prompt-bank/PromptBank'));
-const GeneralSettings = lazy(() => import('../features/evaluation/settings/general/GeneralSettings'));
-const Assignments = lazy(() => import('../features/evaluation/settings/assignments/Assignments'));
-const UserGroups = lazy(() => import('../features/evaluation/settings/user-groups/UserGroups'));
 
-const EvaluationRoutes =   {
-  workAreaTags: EvaluationWorkAreas,
-  items: [
-  {
-    path: "/app/dashboard",
-    element: <EvaluationDashboard />,
+const sharedRoutes = {
+  dashboard:  {
+    path: evaluationPaths.dashboard,
+    element: <EvaluationDashboard/>
   },
-  {
-    path: "/app/evaluation/artifacts",
-    element: <ArtifactsDashboard />,
+  artifacts:  {
+    path: evaluationPaths.artifacts,
+    element: <ArtifactsDashboard/>
   },
-  {
-    path: "/app/evaluation/ytd",
-    element: <YearToDateDashboard />,
+  ytdEvidence: {
+    path: evaluationPaths.ytdEvidence,
+    element: <YearToDateDashboard/>
   },
-  {
-    path: "/app/evaluation/sgg",
-    element: <StudentGrowthDashboard />,
+  studentGrowth: {
+    path: evaluationPaths.studentGrowth,
+    element: <StudentGrowthDashboard/>
   },
-  {
-    path: "/app/evaluation/observations",
-    element: <ObservationsDashboard />,
+  observations: {
+    path: evaluationPaths.observations,
+    element: <ObservationsDashboard/>
   },
-  {
-    path: "/app/evaluation/self-assessments",
-    element: <SelfAssessmentsDashboard />,
+  selfAssessments: {
+    path: evaluationPaths.selfAssessments,
+    element: <SelfAssessmentsDashboard/>
   },
-  {
-    path: "/app/evaluation/summative-eval",
-    element: <SummativeEvalDashboard />,
+  summativeEvaluation: {
+    path: evaluationPaths.summativeEvaluation,
+    element: <SummativeEvalDashboard/>
   },
-  {
-    path: "/app/evaluation/settings/general",
-    element: <GeneralSettings />,
+  settingsAssignments: {
+    path: evaluationPaths.settingsAssignments,
+    element: <SummativeEvalDashboard/>
   },
-  {
-    path: "/app/evaluation/settings/assignments",
-    element: <Assignments />,
-  },
-  {
-    path: "/app/evaluation/settings/prompt-bank",
-    element: <PromptBank />,
-  },
-  {
-    path: "/app/evaluation/settings/user-groups",
-    element: <UserGroups />,
-  },
-], 
+}
+
+const evaluationRoutes_PR_TR = {
+  workAreaTag: WorkAreas.PR_TR,
+  routes: [
+    sharedRoutes.dashboard,
+    sharedRoutes.artifacts,
+    sharedRoutes.ytdEvidence,
+    sharedRoutes.studentGrowth,
+    sharedRoutes.observations,
+    sharedRoutes.selfAssessments,
+    adminSharedRoutes.assignmentsSchoolDetail
+  ]
 };
 
-export default EvaluationRoutes;
+const evaluationRoutes_PR_PR = {
+  workAreaTag: WorkAreas.PR_PR,
+  routes: [
+    sharedRoutes.dashboard,
+    sharedRoutes.artifacts,
+    sharedRoutes.ytdEvidence,
+    sharedRoutes.studentGrowth,
+    sharedRoutes.observations,
+    sharedRoutes.selfAssessments,
+    adminSharedRoutes.assignmentsSchoolDetail
+  ]
+};
+
+export {
+  evaluationRoutes_PR_PR,
+  evaluationRoutes_PR_TR
+};

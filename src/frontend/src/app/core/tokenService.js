@@ -11,7 +11,7 @@ const updateTokens = (accessToken, refreshToken) => {
 const getTokens = () => {
   return {
     accessToken: localStorage.getItem(accessTokenKey),
-    resfreshToken: localStorage.getItem(refreshTokenKey),
+    refreshToken: localStorage.getItem(refreshTokenKey),
   }
 }
 
