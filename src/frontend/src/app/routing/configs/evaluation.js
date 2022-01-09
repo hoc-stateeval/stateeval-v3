@@ -1,17 +1,17 @@
 import { lazy } from 'react'
 
-import { WorkArea } from '../enums';
-import { sharedRoutes as adminSharedRoutes } from './adminRoutesConfig';
+import { WorkArea } from '../../enums';
+import { sharedRoutes as adminSharedRoutes } from './admin';
 
-import evaluationPaths from './evaluationPaths';
+import { evaluationPaths } from '../paths';
 
-const ArtifactsDashboard = lazy(() => import('../features/evaluation/artifacts/Dashboard'));
-const StudentGrowthDashboard = lazy(() => import('../features/evaluation/student-growth/Dashboard'));
-const YearToDateDashboard = lazy(() => import('../features/evaluation/ytd/Dashboard'));
-const EvaluationDashboard = lazy(() => import('../features/evaluation/dashboards/EvaluationDashboard'));
-const ObservationsDashboard = lazy(() => import('../features/evaluation/observations/Dashboard'));
-const SelfAssessmentsDashboard = lazy(() => import('../features/evaluation/self-assessments/Dashboard'));
-const SummativeEvalDashboard = lazy(() => import('../features/evaluation/summative-eval/Dashboard'));
+const ArtifactsDashboard = lazy(() => import('../../features/evaluation/artifacts/Dashboard'));
+const StudentGrowthDashboard = lazy(() => import('../../features/evaluation/student-growth/Dashboard'));
+const YearToDateDashboard = lazy(() => import('../../features/evaluation/ytd/Dashboard'));
+const EvaluationDashboard = lazy(() => import('../../features/evaluation/dashboards/EvaluationDashboard'));
+const ObservationsDashboard = lazy(() => import('../../features/evaluation/observations/Dashboard'));
+const SelfAssessmentsDashboard = lazy(() => import('../../features/evaluation/self-assessments/Dashboard'));
+const SummativeEvalDashboard = lazy(() => import('../../features/evaluation/summative-eval/Dashboard'));
 
 const sharedRoutes = {
   dashboard:  {

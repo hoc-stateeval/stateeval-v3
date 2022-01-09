@@ -4,7 +4,7 @@ import {
   Typography,
 } from '@mui/material';
 
-const PageHeader = (props) => {
+export const PageHeader = (props) => {
   return (
     <Box sx={{mb:5}}>
       <Typography variant="h2">{props.title}</Typography>
@@ -14,5 +14,3 @@ const PageHeader = (props) => {
     </Box>
   );
 };
-
-export default PageHeader;

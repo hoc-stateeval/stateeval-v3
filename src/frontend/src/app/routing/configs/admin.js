@@ -1,16 +1,16 @@
 import { lazy } from 'react'
 
-import { WorkArea } from '../enums';
+import { WorkArea } from '../../enums';
 import GridViewIcon from '@mui/icons-material/GridView';
 
-import adminPaths from './adminPaths';
+import { adminPaths } from '../paths';
 
-const DistrictAdminTeacherDashboard = lazy(() => import('../dashboards/da-tr/Dashboard'));
-const DistrictAdminPrincipalDashboard = lazy(() => import('../dashboards/da-pr/Dashboard'));
-const AssignmentsDistrictSummary = lazy(() => import('../features/admin/assignments/AssignmentsDistrictSummary'));
-const AssignmentsDistrictDetail = lazy(() => import('../features/admin/assignments/AssignmentsDistrictDetail'));
-const AssignmentsSchoolDetail = lazy(() => import('../features/admin/assignments/AssignmentsSchoolDetail'));
-const DTESetup = lazy(() => import('../features/admin/assignments/DTESetup'));
+const DistrictAdminTeacherDashboard = lazy(() => import('../../dashboards/da-tr/Dashboard'));
+const DistrictAdminPrincipalDashboard = lazy(() => import('../../dashboards/da-pr/Dashboard'));
+const AssignmentsDistrictSummary = lazy(() => import('../../features/admin/assignments/AssignmentsDistrictSummary'));
+const AssignmentsDistrictDetail = lazy(() => import('../../features/admin/assignments/AssignmentsDistrictDetail'));
+const AssignmentsSchoolDetail = lazy(() => import('../../features/admin/assignments/AssignmentsSchoolDetail'));
+const DTESetup = lazy(() => import('../../features/admin/assignments/DTESetup'));
 
 const sharedRoutes = {
   assignmentsSchoolDetail:  {

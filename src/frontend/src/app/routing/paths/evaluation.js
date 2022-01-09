@@ -1,4 +1,4 @@
-const evaluationPaths = {
+export const evaluationPaths = {
   prTrDashboard: '/app/dashboards/pr-tr',
   prPrDashboard: '/app/dashboards/pr-pr',
   artifacts: '/app/evaluation/artifacts',
@@ -11,5 +11,3 @@ const evaluationPaths = {
   settingsAssignments: '/app/evaluation/settings/assignments',
   settingsPromptBank: '/app/evaluation/settings/prompt-bank',
 };
-
-export default evaluationPaths;

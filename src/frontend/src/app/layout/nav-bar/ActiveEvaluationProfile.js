@@ -11,7 +11,7 @@ import {
 
 import blankProfile from '../../../images/blank-profile-48x48.png';
 
-import PlanTypeDisplay from '../../components/PlanTypeDisplay';
+import { PlanTypeDisplay } from '../../shared-components';
 
 const ActiveEvaluationProfile = () => {
 

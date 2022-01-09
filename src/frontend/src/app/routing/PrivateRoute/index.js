@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import {
   selectActiveWorkAreaContext,
-} from '../store/stateEval/userContextSlice';
+} from '../../store/stateEval/userContextSlice';
 
 const PrivateRoute = ({ element, workAreaTags }) => {
 

@@ -10,9 +10,9 @@ import {
   selectInstructionalFramework,
   selectActiveFrameworkId,
   setActiveFrameworkId,
-} from '../store/stateEval/userContextSlice';
+} from '../../store/stateEval/userContextSlice';
 
-function FrameworkSwitcher() {
+export const FrameworkSwitcher = () => {
   const dispatch = useDispatch();
   const stateFramework = useSelector(selectStateFramework);
   const instructionalFramework = useSelector(selectInstructionalFramework);
@@ -49,6 +49,5 @@ function FrameworkSwitcher() {
   );
 }
 
-export default FrameworkSwitcher;
 
 

@@ -8,9 +8,12 @@ import SummativeEvalIcon from '@mui/icons-material/Summarize';
 import SettingsIcon from '@mui/icons-material/SettingsApplications';
 import { WorkArea } from '../../enums';
 
-import evaluationPaths from '../../routing/evaluationPaths';
-import districtViewerPaths from '../../routing/districtViewerPaths';
-import adminPaths from '../../routing/adminPaths';
+import { 
+  adminPaths, 
+  evaluationPaths,
+  districtViewerPaths 
+} from '../../routing/paths';
+
 
 const evaluationSharedNavItems = {
   artifacts: {

@@ -1,7 +1,7 @@
 import { Box, Container, Link, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-const NotFound = () => {
+export const NotFound = () => {
   const theme = useTheme();
   const mobileDevice = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -73,4 +73,3 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;

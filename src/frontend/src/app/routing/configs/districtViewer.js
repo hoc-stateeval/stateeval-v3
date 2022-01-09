@@ -1,13 +1,13 @@
 import { lazy } from 'react'
-import PrivateRoute from './PrivateRoute';
-import { WorkArea } from '../enums';
-const DistrictViewerCTDashboard = lazy(() => import('../dashboards/dv-ct/Dashboard'));
-const DistrictViewerDEDashboard = lazy(() => import('../dashboards/dv-de/Dashboard'));
-const DistrictViewerDTEDashboard = lazy(() => import('../dashboards/dv-dte/Dashboard'));
-const DistrictViewerPRPRDashboard = lazy(() => import('../dashboards/dv-pr-pr/Dashboard'));
-const DistrictViewerPRTRDashboard = lazy(() => import('../dashboards/dv-pr-tr/Dashboard'));
+import PrivateRoute from '../../shared-components';
+import { WorkArea } from '../../enums';
+const DistrictViewerCTDashboard = lazy(() => import('../../dashboards/dv-ct/Dashboard'));
+const DistrictViewerDEDashboard = lazy(() => import('../../dashboards/dv-de/Dashboard'));
+const DistrictViewerDTEDashboard = lazy(() => import('../../dashboards/dv-dte/Dashboard'));
+const DistrictViewerPRPRDashboard = lazy(() => import('../../dashboards/dv-pr-pr/Dashboard'));
+const DistrictViewerPRTRDashboard = lazy(() => import('../../dashboards/dv-pr-tr/Dashboard'));
 
-const DistrictViewerRoutes = [
+export const DistrictViewerRoutes = [
   {
     path: '/app/dashboards/dv-ct',
     element: <PrivateRoute element={<DistrictViewerCTDashboard/>} workAreaTags={[WorkArea.DV_CT]} />,
@@ -30,4 +30,3 @@ const DistrictViewerRoutes = [
   },
 ];
 
-export default DistrictViewerRoutes;

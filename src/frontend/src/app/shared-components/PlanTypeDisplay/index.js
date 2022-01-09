@@ -2,11 +2,11 @@ import {
   Typography,
 } from '@mui/material';
 
-import { PlanType } from '../enums';
-import { PerformanceLevelShortNameMapper } from "../utils/performanceLevelUtils";
-import { SchoolYearMapper } from "../utils/schoolYearUtils";
+import { PlanType } from '../../enums';
+import { PerformanceLevelShortNameMapper } from "../../utils/performanceLevelUtils";
+import { SchoolYearMapper } from "../../utils/schoolYearUtils";
 
-const PlanTypeDisplay = ({evaluation}) => {
+export const PlanTypeDisplay = ({evaluation}) => {
  
   const planTypeDisplayName = evaluation.planTypeDisplayName;
 
@@ -43,5 +43,3 @@ const PlanTypeDisplay = ({evaluation}) => {
     return `Unknown plan type: ${evaluation.evaluationType}`;
   }
 };
-
-export default PlanTypeDisplay;

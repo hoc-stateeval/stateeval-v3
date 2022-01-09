@@ -33,7 +33,7 @@ import {
 } from '../../../store/stateEval/userContextSlice';
 import { PlanType } from '../../../enums';
 
-import PlanTypeDisplay from '../../../components/PlanTypeDisplay';
+import { PlanTypeDisplay } from '../../../shared-components';
 
 import { PerformanceLevel } from '../../../enums/performanceLevel';
 

@@ -6,7 +6,7 @@ import {
   Stack,
   useMediaQuery,
 } from '@mui/material';
-import { Scrollbar } from '../../components/Scrollbar';
+import { Scrollbar } from '../../shared-components';
 import SidebarSection from './SidebarSection';
 import SidebarWorkAreaContext from './SidebarWorkAreaContext';
 import buildNavSectionsForWorkArea from './buildNavSectionsForWorkArea';
