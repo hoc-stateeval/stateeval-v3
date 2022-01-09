@@ -11,6 +11,7 @@ const SchoolYearMapper = {
   '2022': '2021-2022',
 };
 
+
 export {
-  SchoolYearMapper,
+  SchoolYearMapper
 }

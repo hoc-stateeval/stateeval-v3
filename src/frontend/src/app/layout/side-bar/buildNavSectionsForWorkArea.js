@@ -6,9 +6,7 @@ import ObservationsIcon from '@mui/icons-material/Visibility';
 import SelfAssessmentsIcon from '@mui/icons-material/LocalCafe';
 import SummativeEvalIcon from '@mui/icons-material/Summarize';
 import SettingsIcon from '@mui/icons-material/SettingsApplications';
-import { 
-  WorkAreas,
- } from '../../core/workAreas';
+import { WorkArea } from '../../enums';
 
 import evaluationPaths from '../../routing/evaluationPaths';
 import districtViewerPaths from '../../routing/districtViewerPaths';
@@ -57,7 +55,7 @@ const evaluationSharedNavItems = {
 
 const navSections = [
   {
-    workAreaTag: WorkAreas.DV_PR_PR,
+    workAreaTag: WorkArea.DV_PR_PR,
     title: 'View Evaluator - Head Principal',
     items: [
       {
@@ -68,7 +66,7 @@ const navSections = [
     ]
   },
   {
-    workAreaTag: WorkAreas.DV_PR_TR,
+    workAreaTag: WorkArea.DV_PR_TR,
     title: 'View Evaluator - Principal',
     items: [
       {
@@ -79,7 +77,7 @@ const navSections = [
     ]
   },
   {
-    workAreaTag: WorkAreas.DV_DTE,
+    workAreaTag: WorkArea.DV_DTE,
     title: 'View Evaluator - DTE',
     items: [
       {
@@ -90,7 +88,7 @@ const navSections = [
     ]
   },
   {
-    workAreaTag: WorkAreas.DV_DE,
+    workAreaTag: WorkArea.DV_DE,
     title: 'View Evaluator - DE',
     items: [
       {
@@ -101,7 +99,7 @@ const navSections = [
     ]
   },
   {
-    workAreaTag: WorkAreas.DV_CT,
+    workAreaTag: WorkArea.DV_CT,
     title: 'View Evaluator - Consulting Teacher',
     items: [
       {
@@ -112,7 +110,7 @@ const navSections = [
     ]
   },
   {
-    workAreaTag: WorkAreas.PR_PR,
+    workAreaTag: WorkArea.PR_PR,
     title: 'Evaluation',
     items: [
       {
@@ -138,7 +136,7 @@ const navSections = [
     ],
   },
   {
-    workAreaTag: WorkAreas.PR_TR,
+    workAreaTag: WorkArea.PR_TR,
     title: 'Evaluation',
     items: [
       {
@@ -164,7 +162,7 @@ const navSections = [
     ],
   },
   {
-    workAreaTag: WorkAreas.DA_PR,
+    workAreaTag: WorkArea.DA_PR,
     title: 'Evaluation Setup',
     items: [
       {
@@ -185,7 +183,7 @@ const navSections = [
     ]
   },
   {
-    workAreaTag: WorkAreas.DA_TR,
+    workAreaTag: WorkArea.DA_TR,
     title: 'Evaluation Setup',
     items: [
       {
@@ -207,7 +205,7 @@ const navSections = [
   },
   {
     title: 'Evaluation Setup',
-    workAreaTags: WorkAreas.DA_PR,
+    workAreaTags: WorkArea.DA_PR,
     items: [
       {
         title: 'Dashboard',

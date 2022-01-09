@@ -7,7 +7,8 @@ import {
 
 import { useTheme } from '@mui/material/styles';
 
-import { DistrictViewerSchoolEvaluatorWorkAreas, WorkAreas } from '../../core/workAreas';
+import { WorkArea } from '../../enums';
+import { DistrictViewerSchoolEvaluatorWorkAreas } from '../../utils/workAreaUtils';
 import { getSelectStyles } from './selectItemStyles';
 
 import {
@@ -22,19 +23,19 @@ import {
 } from '../../store/stateEval/userContextSlice';
 
 const buildEvaluatorLabel = (tagName) => {
-  if (tagName === WorkAreas.DV_PR_PR) {
+  if (tagName === WorkArea.DV_PR_PR) {
     return "Head Principal";
   }
-  else if (tagName === WorkAreas.DV_PR_TR) {
+  else if (tagName === WorkArea.DV_PR_TR) {
     return "Principal";
   }
-  else if (tagName === WorkAreas.DV_DE) {
+  else if (tagName === WorkArea.DV_DE) {
     return "District Evaluator";
   }
-  else if (tagName === WorkAreas.DV_DTE) {
+  else if (tagName === WorkArea.DV_DTE) {
     return "District-wide Teacher Evaluator";
   }
-  else if (tagName === WorkAreas.DV_CT) {
+  else if (tagName === WorkArea.DV_CT) {
     return "Consulting Teacher";
   }
   return "Evaluator";

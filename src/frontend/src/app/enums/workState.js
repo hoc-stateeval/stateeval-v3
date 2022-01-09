@@ -1,4 +1,4 @@
-const WorkState = {
+export const WorkState = {
   'UNDEFINED': 0,
   'EVAL_DRAFT': 1,
   'EVAL_READY_FOR_CONFERENCE': 2,
@@ -22,7 +22,3 @@ const WorkState = {
   'PERCEPTION_SURVEY_OPEN': 20,
   'PERCEPTION_SURVEY_COMPLETE': 21
 };
-
-export {
-  WorkState
-}

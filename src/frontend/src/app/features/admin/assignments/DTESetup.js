@@ -28,7 +28,7 @@ import {
   selectActiveWorkAreaContext,
 } from '../../../store/stateEval/userContextSlice';
 
-import { RoleType } from '../../../core/roleType';
+import { RoleType } from '../../../enums/roleType';
 
 const DTESetup = () => {
   const pageTitle = "District-wide Teacher Evaluator Setup";

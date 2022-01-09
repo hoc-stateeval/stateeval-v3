@@ -23,7 +23,7 @@ import {
 
 import { 
   getDefaultPathForWorkAreaContext
- } from '../app/core/workAreas';
+ } from '../app/utils/workAreaUtils';
 
 const ErrorFallback = ({error}) => {
   return (

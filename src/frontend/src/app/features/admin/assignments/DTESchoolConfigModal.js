@@ -22,7 +22,7 @@ import {
   useGetSchoolsInDistrictQuery,
   useUpdateDTERoleInSchoolsMutation,
 } from '../../../core/apiSlice';
-import { RoleType } from '../../../core/roleType';
+import { RoleType } from '../../../enums/roleType';
 
 const getDTEBuildingRolesInSchools = (user, districtCode) => {
   return user.userBuildingRoles.reduce((acc, next) => {

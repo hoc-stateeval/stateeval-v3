@@ -2,9 +2,9 @@ import {
   Typography,
 } from '@mui/material';
 
-import { PlanType } from '../core/evalPlanType';
-import { PerformanceLevelShortNameMapper } from "../core/performanceLevel";
-import { SchoolYearMapper } from "../core/schoolYear";
+import { PlanType } from '../enums';
+import { PerformanceLevelShortNameMapper } from "../utils/performanceLevelUtils";
+import { SchoolYearMapper } from "../utils/schoolYearUtils";
 
 const PlanTypeDisplay = ({evaluation}) => {
  

@@ -31,13 +31,11 @@ import {
 import {
   selectStateFramework,
 } from '../../../store/stateEval/userContextSlice';
-import { 
-  PlanType 
-} from '../../../core/evalPlanType';
+import { PlanType } from '../../../enums';
 
 import PlanTypeDisplay from '../../../components/PlanTypeDisplay';
 
-import { PerformanceLevel } from '../../../core/performanceLevel';
+import { PerformanceLevel } from '../../../enums/performanceLevel';
 
 const PlanTypeField = ( props ) => {
 

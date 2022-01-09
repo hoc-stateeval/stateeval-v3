@@ -26,7 +26,7 @@ import PageHeader from '../../../components/PageHeader';
 import {
   buildLastYearPlanTypeDisplayString,
   buildSuggestedPlanTypeDisplayString
-} from '../../../core/evalPlanType';
+} from '../../../utils/planTypeUtils';
 
 import PlanTypeField from './PlanTypeField';
 

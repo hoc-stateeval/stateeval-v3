@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit';
 import { get } from '../../core/api';
-import ThunkState from '../../core/thunkState';
+import { ThunkState } from '../../enums';
 import { convertArrayToHashMap } from '../../core/utils';
 import { clearState } from '../../core/persist';
 

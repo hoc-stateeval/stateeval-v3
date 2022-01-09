@@ -1,7 +1,6 @@
 import { lazy } from 'react'
-import GridViewIcon from '@mui/icons-material/GridView';
 
-import { WorkAreas } from '../core/workAreas';
+import { WorkArea } from '../enums';
 import { sharedRoutes as adminSharedRoutes } from './adminRoutesConfig';
 
 import evaluationPaths from './evaluationPaths';
@@ -50,7 +49,7 @@ const sharedRoutes = {
 }
 
 const evaluationRoutes_PR_TR = {
-  workAreaTag: WorkAreas.PR_TR,
+  workAreaTag: WorkArea.PR_TR,
   routes: [
     sharedRoutes.dashboard,
     sharedRoutes.artifacts,
@@ -63,7 +62,7 @@ const evaluationRoutes_PR_TR = {
 };
 
 const evaluationRoutes_PR_PR = {
-  workAreaTag: WorkAreas.PR_PR,
+  workAreaTag: WorkArea.PR_PR,
   routes: [
     sharedRoutes.dashboard,
     sharedRoutes.artifacts,

@@ -21,7 +21,7 @@ import {
   DistrictViewerDistrictEvaluatorWorkAreas,
   EvaluatorWorkAreas,
   getDefaultPathForWorkAreaContext
- } from '../../core/workAreas';
+ } from '../../utils/workAreaUtils';
 
 import DistrictViewerDistrictEvaluatorOptions from './DistrictViewerDistrictEvaluatorOptions';
 import DistrictViewerSchoolEvaluatorOptions from './DistrictViewerSchoolEvaluatorOptions';

@@ -1,9 +1,5 @@
-const PlanType = {
-  'UNDEFINED': 0,
-  'COMPREHENSIVE': 1,
-  'FOCUSED': 2,
-  'MODIFIED_COMP_2021': 3
-};
+
+import { PlanType } from '../enums';
 
 const buildLastYearPlanTypeDisplayString = (evaluation) => {
   const planType = evaluation.lastYearEvaluateePlanType;
@@ -95,7 +91,6 @@ const buildSuggestedPlanTypeDisplayString = (evaluation) => {
 
 
 export {
-  PlanType,
   buildLastYearPlanTypeDisplayString,
   buildSuggestedPlanTypeDisplayString
 };

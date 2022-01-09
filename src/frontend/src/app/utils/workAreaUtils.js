@@ -1,44 +1,27 @@
-const WorkAreas = {
-  PR_TR: 'PR_TR',
-  PR_ME: 'PR_ME',
-  TR_ME: 'TR_ME',
-  PR_PR: 'PR_PR',
-  DE: 'DE_PR',
-  DTE: 'DTE',
-  DA_TR: 'DA_TR',
-  DA_PR: 'DA_PR',
-  SA_TR: 'SA_TR',
-  SA_PR: 'SA_PR',
-  DV_PR_TR: 'DV_PR_TR',
-  DV_PR_PR: 'DV_PR_PR',
-  DV_DTE: 'DV_DTE',
-  DV_DE: 'DV_DE',
-  DV_CT: 'DV_CT'
-};
+import { WorkArea } from '../enums';
 
 const getDefaultPathForWorkAreaContext = (workAreaContext) => {
   const dashboard = workAreaContext.tagName.toLowerCase().replaceAll('_','-');
   return `/app/dashboards/${dashboard}`;
 }
 
-const EvaluatorWorkAreas = [WorkAreas.PR_PR, WorkAreas.PR_TR, WorkAreas.DTE, WorkAreas.DE];
-const EvaluateeWorkAreas = [WorkAreas.PR_ME, WorkAreas.TR_ME];
-const DistrictViewerSchoolEvaluatorWorkAreas = [WorkAreas.DV_PR_TR, WorkAreas.DV_PR_PR];
-const DistrictViewerDistrictEvaluatorWorkAreas = [WorkAreas.DV_DTE, WorkAreas.DE];
+const EvaluatorWorkAreas = [WorkArea.PR_PR, WorkArea.PR_TR, WorkArea.DTE, WorkArea.DE];
+const EvaluateeWorkAreas = [WorkArea.PR_ME, WorkArea.TR_ME];
+const DistrictViewerSchoolEvaluatorWorkAreas = [WorkArea.DV_PR_TR, WorkArea.DV_PR_PR];
+const DistrictViewerDistrictEvaluatorWorkAreas = [WorkArea.DV_DTE, WorkArea.DE];
 const DistrictViewerWorkAreas = [...DistrictViewerSchoolEvaluatorWorkAreas, ...DistrictViewerDistrictEvaluatorWorkAreas];
 
 const EvaluationWorkAreas = [...EvaluatorWorkAreas, ...EvaluateeWorkAreas, ...DistrictViewerSchoolEvaluatorWorkAreas, DistrictViewerDistrictEvaluatorWorkAreas];
-const AdminWorkAreas = [WorkAreas.DA_TR, WorkAreas.DA_PR, WorkAreas.SA_TR, WorkAreas.SA_PR];
-const DistrictAdminWorkAreas = [WorkAreas.DA_TR, WorkAreas.DA_PR];
-const TeacherAssignmentWorkAreas = [WorkAreas.DA_TR, WorkAreas.SA_TR, WorkAreas.PR_TR];
-const PrincipalAssignmentWorkAreas = [WorkAreas.DA_PR, WorkAreas.SA_PR, WorkAreas.PR_PR, WorkAreas.DE];
+const AdminWorkAreas = [WorkArea.DA_TR, WorkArea.DA_PR, WorkArea.SA_TR, WorkArea.SA_PR];
+const DistrictAdminWorkAreas = [WorkArea.DA_TR, WorkArea.DA_PR];
+const TeacherAssignmentWorkAreas = [WorkArea.DA_TR, WorkArea.SA_TR, WorkArea.PR_TR];
+const PrincipalAssignmentWorkAreas = [WorkArea.DA_PR, WorkArea.SA_PR, WorkArea.PR_PR, WorkArea.DE];
 
 const isEvaluator = (workArea) => EvaluatorWorkAreas.includes(workArea.tagName);
 const isEvaluatee = (workArea) => EvaluateeWorkAreas.includes(workArea.tagName);
 const isEvaluationWorkArea = (workArea) => isEvaluator(workArea) || isEvaluatee(workArea);
 
 export {
-  WorkAreas,
   EvaluatorWorkAreas,
   EvaluateeWorkAreas,
   EvaluationWorkAreas,

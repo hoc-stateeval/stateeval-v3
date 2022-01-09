@@ -1,5 +1,6 @@
 import { lazy } from 'react'
 
+import { WorkArea } from '../enums';
 import GridViewIcon from '@mui/icons-material/GridView';
 
 import adminPaths from './adminPaths';
@@ -26,19 +27,23 @@ const sharedRoutes = {
   },
 };
 
-const adminRoutes_DA_PR = [
-  {
-    path: adminPaths.daPrDashboard,
-    element: <DistrictAdminPrincipalDashboard/>
-  },
-  {
-    path: adminPaths.assignmentsDistrictDetail,
-    element: <AssignmentsDistrictDetail/>
-  },
-  sharedRoutes.assignmentsSchoolDetail,
-];
+const adminRoutes_DA_PR = {
+  workAreaTag: WorkArea.DA_PR,
+  routes: [
+    {
+      path: adminPaths.daPrDashboard,
+      element: <DistrictAdminPrincipalDashboard/>
+    },
+    {
+      path: adminPaths.assignmentsDistrictDetail,
+      element: <AssignmentsDistrictDetail/>
+    },
+    sharedRoutes.assignmentsSchoolDetail,
+  ]
+};
 
 const adminRoutes_DA_TR = {
+  workAreaTag: WorkArea.DA_TR,
   routes: [
     {
       path: adminPaths.daTrDashboard,

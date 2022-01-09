@@ -1,5 +1,5 @@
 import { lazy } from 'react'
-import { WorkAreas } from '../../core/workAreas';
+import { WorkArea } from '../../enums';
 import PrivateRoute from '../../routing/PrivateRoute';
 
 import GridViewIcon from '@mui/icons-material/GridView';
@@ -27,7 +27,7 @@ const ROUTES = {
 
 const NAV_ROUTES = [
   {
-    workAreaTag: WorkAreas.DA_TR,
+    workAreaTag: WorkArea.DA_TR,
     routes: [
       {
         title: 'Dashboard',
@@ -56,7 +56,7 @@ const NAV_ROUTES = [
     ]
   },
   {
-    workAreaTag: WorkAreas.DA_PR,
+    workAreaTag: WorkArea.DA_PR,
     routes: [
       {
         title: 'Dashboard',
