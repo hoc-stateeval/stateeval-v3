@@ -9,8 +9,20 @@ import {
   SidebarLogo,
 } from "./components";
 
-import buildNavSectionsForWorkArea from "./lib/buildNavSectionsForWorkArea";
+import { 
+  SIDEBAR_ROUTES
+} from '@routes/sidebar-routes';
+
 import { selectActiveWorkAreaContext } from "@user-context-slice";
+
+const buildNavSectionsForWorkArea = (tagName) => {
+  return SIDEBAR_ROUTES.reduce((finalRoutes, next)=> {
+    if (next.workAreaTag === tagName) { 
+      finalRoutes.push(...next.sections);
+    }
+    return finalRoutes;
+  }, []);
+}
 
 const Sidebar = ({ onClose, open, sidebarWidth }) => {
   const location = useLocation();

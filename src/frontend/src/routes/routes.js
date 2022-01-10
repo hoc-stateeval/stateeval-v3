@@ -131,9 +131,13 @@ const evaluationRoutes_PR_PR = {
   ]
 };
 
-export {
+const ROUTER_ROUTES = [
   adminRoutes_DA_PR,
   adminRoutes_DA_TR,
   evaluationRoutes_PR_PR,
   evaluationRoutes_PR_TR,
+];
+
+export {
+  ROUTER_ROUTES,
 }
