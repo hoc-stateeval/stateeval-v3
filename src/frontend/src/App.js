@@ -7,7 +7,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
 import { createEmotionCache } from '@lib/utils/create-emotion-cache';
-import RootRoute from '@ui/routes/RootRoute';
+import RootRoute from '@routes/RootRoute';
 
 import store from './store';
 import theme from './Theme';
