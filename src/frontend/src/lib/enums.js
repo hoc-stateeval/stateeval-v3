@@ -1,0 +1,81 @@
+
+export const PerformanceLevel = {
+  'UNDEFINED': 0,
+  'UNS': 1,
+  'BAS': 2,
+  'PRO': 3,
+  'DIS': 4
+};
+
+export const PlanType = {
+  'UNDEFINED': 0,
+  'COMPREHENSIVE': 1,
+  'FOCUSED': 2,
+  'MODIFIED_COMP_2021': 3
+};
+
+export const RoleType = {
+  'DA': 1,
+  'DAM': 2,
+  'SPS_CT_TR': 3,
+  'DE': 4,
+  'DV': 5,
+  'DTE': 6,
+  'SA': 7,
+  'HEAD_PR': 8,
+  'PR': 9,
+  'TR': 10,
+};
+
+export const ThunkState = {
+  INIT: 'INIT',
+  RUNNING: 'RUNNING',
+  COMPLETE: 'COMPLETE',
+  FAILED: 'FAILED',
+};
+
+export const WorkArea = {
+  PR_TR: 'PR_TR',
+  PR_ME: 'PR_ME',
+  TR_ME: 'TR_ME',
+  PR_PR: 'PR_PR',
+  DE: 'DE_PR',
+  DTE: 'DTE',
+  DA_TR: 'DA_TR',
+  DA_PR: 'DA_PR',
+  SA_TR: 'SA_TR',
+  SA_PR: 'SA_PR',
+  DV_PR_TR: 'DV_PR_TR',
+  DV_PR_PR: 'DV_PR_PR',
+  DV_DTE: 'DV_DTE',
+  DV_DE: 'DV_DE',
+  DV_CT: 'DV_CT'
+};
+
+export const WorkState = {
+  'UNDEFINED': 0,
+  'EVAL_DRAFT': 1,
+  'EVAL_READY_FOR_CONFERENCE': 2,
+  'EVAL_READY_FOR_FORMAL_RECEIPT': 3,
+  'EVAL_RECEIVED': 4,
+  'EVAL_LOCKED_SEALED': 5,
+  'OBS_IN_PROGRESS_TOR': 6,
+  'OBS_LOCKED_TEE_REVIEW': 7,
+  'OBS_LOCKED_SEALED': 8,
+  'OBS_UNLOCK_REQUEST_TOR': 9,
+  'OBS_UNLOCK_REQUEST_TEE': 10,
+  'SGBUNDLE_STARTED': 11,
+  'SGBUNDLE_PROCESS_SHARED': 12,
+  'SGBUNDLE_PROCESS_COMPLETE': 13,
+  'SGBUNDLE_UNLOCK_REQUEST_TEE': 14,
+  'EVAL_UNLOCK_REQUEST_TOR': 15,
+  'EVAL_UNLOCK_REQUEST_TEE': 16,
+  'SGBUNDLE_UNLOCK_REQUEST_TOR': 17,
+  'PERCEPTION_SURVEY_BUILDING':18,
+  'PERCEPTION_SURVEY_CLOSED': 19,
+  'PERCEPTION_SURVEY_OPEN': 20,
+  'PERCEPTION_SURVEY_COMPLETE': 21
+};
+
+
+
