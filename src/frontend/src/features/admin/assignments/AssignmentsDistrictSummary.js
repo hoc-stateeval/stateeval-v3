@@ -28,6 +28,8 @@ import {
   useUpdateSchoolConfigurationBatchEvaluationSetupDelegationMutation,
 } from "@api-slice";
 
+import { adminPaths } from '@routes/paths';
+
 import { PageHeader } from "@components";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -218,7 +220,7 @@ const AssignmentsDistrictSummary = () => {
                   <TableCell align="center">
                     <Button
                       component={RouterLink}
-                      to={`/app/admin/assignments/school-detail/${row.schoolCode}/${row.schoolName}`}
+                      to={`${adminPaths.assignmentsRoot}/school-detail/${row.schoolCode}/${row.schoolName}`}
                       color="secondary"
                       size="small"
                       variant="contained"

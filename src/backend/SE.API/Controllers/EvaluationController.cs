@@ -30,7 +30,7 @@ namespace SE.API.Controllers
             return Ok(evaluation);
         }
 
-        [HttpPut("{id}/updateplantype")]
+        [HttpPut("{id}/update-plan-type")]
         public async Task<IActionResult> UpdateEvaluateePlanType(long id, [FromBody] UpdateEvaluateePlanTypeCommand command)
         {
             if (id != command.EvaluationId)
@@ -43,7 +43,7 @@ namespace SE.API.Controllers
             return Ok(evaluation);
         }
 
-        [HttpPut("{id}/updateevaluator")]
+        [HttpPut("{id}/update-evaluator")]
         public async Task<IActionResult> UpdateEvaluator(long id, [FromBody] UpdateEvaluatorCommand command)
         {
             if (id != command.EvaluationId)
@@ -56,7 +56,7 @@ namespace SE.API.Controllers
             return Ok(evaluation);
         }
 
-        [HttpGet("workarea-context/{workAreaContextId}")]
+        [HttpGet("work-area-context/{workAreaContextId}")]
         public async Task<IActionResult> GetEvaluationsForWorkAreaContext(long workAreaContextId)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;

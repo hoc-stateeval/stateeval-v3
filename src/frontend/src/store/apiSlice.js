@@ -68,42 +68,32 @@ const baseUrl = `${config.API_URL}/`;
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: axiosBaseQuery({ baseUrl: baseUrl }),
-  tagTypes: ['SchoolConfiguration'],
+  tagTypes: [],
   endpoints: builder => ({
 
     // evaluations
     updateEvaluationSetEvaluator: builder.mutation({
       query(data) {
         return {
-          url: `evaluations/${data.id}/updateevaluator`,
+          url: ({url: `evaluations/${data.id}/update-evaluator`, method: 'put', data: data}) ,
           method: 'PUT',
           body: data,
         };
       },
     }),
 
+    // evaluations
     updateEvaluationSetPlanType: builder.mutation({
-      query(data) {
-        return {
-          url: `evaluations/${data.evaluationId}/updateplantype`,
-          method: 'PUT',
-          body: data,
-        };
-      },
+      query: (data) => ({url: `evaluations/${data.evaluationId}/update-plantype`, method: 'get'})
     }),
-
     getHistoricalEvaluations: builder.query({
-      query: (evaluateeId) => `evaluations/historical/${evaluateeId}`
+      query: (evaluateeId) => ({url: `evaluations/historical/${evaluateeId}`, method: 'get'}) 
     }),
-
     getEvaluationsForWorkAreaContext: builder.query({
-      query: (workAreaContextId) => `evaluations/workarea-context/${workAreaContextId}`
+      query: (workAreaContextId) => ({url: `evaluations/work-area-context/${workAreaContextId}`, method: 'get'}) 
     }),
-
     getEvaluationsForDistrictViewer: builder.query({
-      query: (data) => {
-        return `evaluations/${data.frameworkContextId}/${data.evaluatorId}/${data.schoolCode}`;
-      }
+      query: (data) => ({url: `evaluations/${data.frameworkContextId}/${data.evaluatorId}/${data.schoolCode}`, method: 'get'})
     }),
 
     // buildings
@@ -112,47 +102,33 @@ export const apiSlice = createApi({
     }),
 
     // users
-
     loginUser: builder.mutation({
       query: (data) => ({ url: `users/authenticate`, method: 'post', data: data }),
     }),
-    
     getUsersInRoleAtDistrict: builder.query({
-      query: (data) => `users/district/${data.districtCode}/usersinrole/${data.roleType}`
+      query: (data) => ({url:`users/district/${data.districtCode}/users-in-role/${data.roleType}`, method: 'get' })
     }),
-
     getUsersInRoleAtSchool: builder.query({
-      query: (data) => `users/school/${data.schoolCode}/usersinrole/${data.roleType}`
+      query: (data) => ({url: `users/school/${data.schoolCode}/users-in-role/${data.roleType}`, method: 'get'})
     }),
-
     getUsersInRoleAtSchools: builder.query({
-      query: (data) => `users/${data.districtCode}/usersinroleinschools/${data.roleType}`
+      query: (data) => ({url: `users/${data.districtCode}/users-in-role-in-schools/${data.roleType}`, method: 'get'})
     }),
-
     getEvaluatorsForDistrictViewer: builder.query({
-      query: (data) => {
-        return `users/${data.workAreaContextId}/evaluators-for-district-viewer/${data.schoolCode}`
-      }
+      query: (data) =>({url: `users/${data.workAreaContextId}/evaluators-for-district-viewer/${data.schoolCode}`, method: 'get'})
     }),
 
     // roles
     updateDTERoleInSchools: builder.mutation({
-      query(data) {
-        return {
-          url: `user-building-roles/update-dte-role-in-schools/${data.userId}`,
-          method: 'PUT',
-          body: data,
-        };
-      },
+      query: (data) => ({url: `user-building-roles/update-dte-role-in-schools/${data.userId}`, method: 'put', data: data})
     }),
 
     // assignments
     getAssignmentsSummaryForDistrict: builder.query({
-      query: (frameworkContextId) => `assignments/district-summary/${frameworkContextId}`
+      query: (frameworkContextId) => ({url: `assignments/district-summary/${frameworkContextId}`, method: 'get'}) 
     }),
-
     getAssignmentsDetail: builder.query({
-      query: (data) => `assignments/detail/${data.frameworkContextId}/${data.schoolCode}`
+      query: (data) => ({url: `assignments/detail/${data.frameworkContextId}/${data.schoolCode}`, method: 'get'})
     }),
 
     // local login
@@ -165,32 +141,16 @@ export const apiSlice = createApi({
 
     // school configurations
     getSchoolConfigurationsForFrameworkContext: builder.query({
-      query: (frameworkContextId) => `school-configurations/framework-context/${frameworkContextId}`,
-      providesTags: ['SchoolConfiguration'],
+      query: (frameworkContextId) => ({url: `school-configurations/framework-context/${frameworkContextId}`, method: 'get'})
     }),
     getSchoolConfigurationById: builder.query({
-      query: (id) => `school-configurations/${id}`,
-      providesTags: ['SchoolConfiguration'],
+      query: (id) => ({url: `school-configurations/${id}`, method: 'get'})
     }),
     updateSchoolConfiguration: builder.mutation({
-      query(data) {
-        return {
-          url: `school-configurations/${data.id}`,
-          method: 'PUT',
-          body: data,
-        };
-      },
-      invalidatesTags: ['SchoolConfiguration'],
+      query: (data) => ({url:`school-configurations/${data.id}`,method:'put', data:data})
     }),
     updateSchoolConfigurationBatchEvaluationSetupDelegation: builder.mutation({
-      query(data) {
-        return {
-          url: `school-configurations/${data.frameworkContextId}/delegate-evaluation-setup`,
-          method: 'PUT',
-          body: data,
-        };
-      },
-      invalidatesTags: ['SchoolConfiguration'],
+      query: (data) => ({url:`school-configurations/${data.frameworkContextId}/delegate-evaluation-setup`, method: 'put', data: data})
     }),
   })
 })

@@ -67,7 +67,7 @@ namespace SE.API.Controllers
             return Ok(user);
         }
 
-        [HttpGet("district/{districtCode}/usersinrole/{roleType}")]
+        [HttpGet("district/{districtCode}/users-in-role/{roleType}")]
         public async Task<IActionResult> GetUsersInRoleAtDistrict(string districtCode, RoleType roleType)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
@@ -75,7 +75,7 @@ namespace SE.API.Controllers
             return Ok(users);
         }
 
-        [HttpGet("school/{schoolCode}/usersinrole/{roleType}")]
+        [HttpGet("school/{schoolCode}/users-in-role/{roleType}")]
         public async Task<IActionResult> GetUsersInRoleInSchool(string schoolCode, RoleType roleType)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
@@ -83,7 +83,7 @@ namespace SE.API.Controllers
             return Ok(users);
         }
 
-        [HttpGet("{districtCode}/usersinroleinschools/{roleType}")]
+        [HttpGet("{districtCode}/users-in-role-in-schools/{roleType}")]
         public async Task<IActionResult> GetUsersInRoleInSchools(string districtCode, RoleType roleType)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;

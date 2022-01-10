@@ -6,6 +6,7 @@ export const unAuthenticatedPaths = {
 export const adminPaths = {
   daPrDashboard: '/admin/dashboards/da-pr',
   daTrDashboard: '/admin/dashboards/da-tr',
+  assignmentsRoot: '/admin/assignments',
   dteSetup: '/admin/assignments/dte-setup',
   assignmentsDistrictSummary: '/admin/assignments/district-summary',
   assignmentsDistrictDetail: '/admin/assignments/district-detail',

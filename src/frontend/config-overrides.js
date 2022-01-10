@@ -10,6 +10,7 @@ module.exports = function override(config) {
     "@components": "src/components",
     "@routes": "src/routes",
     "@lib": "src/lib",
+    "@config": "src/config",
     "@images": "src/images",
     "@api-slice": "src/store/apiSlice",
     "@user-context-slice": "src/store/stateEval/userContextSlice",
