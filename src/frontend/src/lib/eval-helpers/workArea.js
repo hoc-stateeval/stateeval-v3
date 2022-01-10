@@ -1,8 +1,19 @@
 import { WorkArea } from '@lib/enums';
+import { adminPaths, evaluationPaths } from '@routes/paths';
 
 const getDefaultPathForWorkAreaContext = (workAreaContext) => {
-  const dashboard = workAreaContext.tagName.toLowerCase().replaceAll('_','-');
-  return `/app/dashboards/${dashboard}`;
+  switch (workAreaContext.tagName) {
+    case WorkArea.DA_PR:
+      return adminPaths.daPrDashboard;
+    case WorkArea.DA_TR:
+      return adminPaths.daTrDashboard;
+    case WorkArea.PR_PR:
+      return evaluationPaths.prPrDashboard;
+    case WorkArea.PR_TR:
+      return evaluationPaths.prTrDashboard;
+    default:
+      throw Error(`getDefaultPathForWorkAreaContext: unknown workArea: ${workAreaContext.tagName}`);
+  }
 }
 
 const EvaluatorWorkAreas = [WorkArea.PR_PR, WorkArea.PR_TR, WorkArea.DTE, WorkArea.DE];
