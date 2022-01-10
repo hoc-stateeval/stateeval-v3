@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { selectActiveWorkAreaContext } from "@user-context-slice";
+import { unAuthenticatedPaths } from "@routes/paths";
 
 const PrivateRoute = ({ element, workAreaTags }) => {
   const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
@@ -9,7 +10,7 @@ const PrivateRoute = ({ element, workAreaTags }) => {
     workAreaTags.includes(activeWorkAreaContext.tagName);
 
   if (!activeWorkAreaContext || !correctWorkArea) {
-    return <Navigate to="/localLogin" />;
+    return <Navigate to={unAuthenticatedPaths.login} />;
   }
 
   return element;

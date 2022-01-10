@@ -6,8 +6,8 @@ import { styled } from "@mui/material/styles";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 import { logout } from "@user-context-slice";
-
 import FrameworkSwitcher from "./FrameworkSwitcher";
+import { unAuthenticatedPaths } from "@routes/paths";
 
 const NavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -25,7 +25,7 @@ const Navbar = (props) => {
 
   const onClickLogout = async () => {
     await dispatch(logout());
-    navigate("/localLogin", true);
+    navigate(unAuthenticatedPaths.login, true);
   };
 
   return (

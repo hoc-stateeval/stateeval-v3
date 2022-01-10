@@ -29,7 +29,6 @@ import {
 } from "@api-slice";
 
 import { adminPaths } from '@routes/paths';
-
 import { PageHeader } from "@components";
 
 const Item = styled(Paper)(({ theme }) => ({
