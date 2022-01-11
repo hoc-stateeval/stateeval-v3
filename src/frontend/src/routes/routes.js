@@ -17,6 +17,10 @@ const DteSetup = lazy(() => import('@admin/dte-setup/Dashboard'));
 const DvSetup = lazy(() => import('@admin/dv-setup/Dashboard'));
 
 const AdminGeneralSettingsDashboard = lazy(() => import('@admin/settings/general/Dashboard'));
+const AdminObservationReportSettingsDashboard = lazy(() => import('@admin/settings/observation-report/Dashboard'));
+const AdminSelfAssessmentReportSettingsDashboard = lazy(() => import('@admin/settings/self-assessment-report/Dashboard'));
+const AdminMidYearReportSettingsDashboard = lazy(() => import('@admin/settings/mid-year-report/Dashboard'));
+const AdminSummativeReportSettingsDashboard = lazy(() => import('@admin/settings/summative-report/Dashboard'));
 
 const AdminResourcesDashboard = lazy(() => import('@admin/resources/Dashboard'));
 
@@ -43,6 +47,45 @@ const EvaluationResourcesDashboard = lazy(() => import('@evaluation/resources/Da
  * Admin Routes 
  */
 
+const adminSettingsRoutes = [
+  {
+    path: adminPaths.settingsGeneral,
+    element: <AdminGeneralSettingsDashboard/>
+  },
+  {
+    path: adminPaths.settingsObservationReport,
+    element: <AdminObservationReportSettingsDashboard/>
+  },
+  {
+    path: adminPaths.settingsSelfAssessmentReport,
+    element: <AdminSelfAssessmentReportSettingsDashboard/>
+  },
+  {
+    path: adminPaths.settingsMidYearReport,
+    element: <AdminMidYearReportSettingsDashboard/>
+  },
+  {
+    path: adminPaths.settingsSummativeReport,
+    element: <AdminSummativeReportSettingsDashboard/>
+  },
+];
+
+
+const adminPromptBankRoute = {
+  path: adminPaths.promptBankRoot,
+  element: <PromptBankDashboard/>
+};
+
+const adminResourcesRoute = {
+  path: adminPaths.resources,
+  element: <AdminResourcesDashboard/>
+};
+
+const adminReportsRoute =  {
+  path: adminPaths.reports,
+  element: <AdminReportsDashboard/>
+};
+
 const adminRoutes_DA_PR = {
   workAreaTag: WorkArea.DA_PR,
   routes: [
@@ -50,26 +93,14 @@ const adminRoutes_DA_PR = {
       path: adminPaths.daPrDashboard,
       element: <DistrictAdminPrincipalDashboard/>
     },
-    {
-      path: adminPaths.promptBankRoot,
-      element: <PromptBankDashboard/>
-    },
+    adminPromptBankRoute,
     {
       path: adminPaths.assignmentsDistrictDetail,
       element: <AssignmentsDistrictDetail/>
     },
-    {
-      path: adminPaths.settingsGeneral,
-      element: <AdminGeneralSettingsDashboard/>
-    },
-    {
-      path: adminPaths.resources,
-      element: <AdminResourcesDashboard/>
-    },
-    {
-      path: adminPaths.reports,
-      element: <AdminReportsDashboard/>
-    },
+    ...adminSettingsRoutes,
+    adminResourcesRoute,
+    adminReportsRoute,
   ]
 };
 
@@ -88,10 +119,7 @@ const adminRoutes_DA_TR = {
       path: adminPaths.assignmentsSchoolDetail,
       element : <AssignmentsSchoolDetail/>,
     },
-    {
-      path: adminPaths.promptBankRoot,
-      element: <PromptBankDashboard/>
-    },
+    adminPromptBankRoute,
     {
       path: adminPaths.dteSetup,
       element : <DteSetup/>,
@@ -100,18 +128,9 @@ const adminRoutes_DA_TR = {
       path: adminPaths.dvSetup,
       element : <DvSetup/>,
     },
-    {
-      path: adminPaths.settingsGeneral,
-      element: <AdminGeneralSettingsDashboard/>
-    },
-    {
-      path: adminPaths.resources,
-      element: <AdminResourcesDashboard/>
-    },
-    {
-      path: adminPaths.reports,
-      element: <AdminReportsDashboard/>
-    },
+    ...adminSettingsRoutes,
+    adminResourcesRoute,
+    adminReportsRoute,
   ]
 } ;
 

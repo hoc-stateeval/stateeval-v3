@@ -289,6 +289,52 @@ const routes_CT = {
  * Admin Routes 
  */
 
+const adminRoutePromptBank = {
+    title: 'Prompt Bank',
+    icon: <ArtifactsIcon fontSize="small" />,
+    path: adminPaths.promptBankRoot,
+};
+
+const adminRouteReports = {
+  title: 'Reports',
+  icon: <ArtifactsIcon fontSize="small" />,
+  path: adminPaths.reports,
+};
+
+const adminRouteResources = {
+  title: 'Resources',
+  icon: <ArtifactsIcon fontSize="small" />,
+  path: adminPaths.resources,
+};
+
+const adminRouteSettings = {
+  title: 'Settings',
+  icon: <ArtifactsIcon fontSize="small" />,
+  path: adminPaths.settingsRoot,
+  children: [
+    {
+      title: 'General',
+      path: adminPaths.settingsGeneral,
+    },
+    {
+      title: 'Observation Report',
+      path: adminPaths.settingsObservationReport,
+    },
+    {
+      title: 'Self-Assessment Report',
+      path: adminPaths.settingsSelfAssessmentReport,
+    },
+    {
+      title: 'Mid-Year Report',
+      path: adminPaths.settingsMidYearReport,
+    },
+    {
+      title: 'Summative Report',
+      path: adminPaths.settingsSummativeReport,
+    }
+  ],
+};
+
 const routes_DA_PR = {
   workAreaTag: WorkArea.DA_PR,
   sections: [
@@ -300,22 +346,15 @@ const routes_DA_PR = {
           icon: <GridViewIcon fontSize="small" />,
           path: adminPaths.daPrDashboard,
         },
-        {
-          title: 'Prompt Bank',
-          icon: <ArtifactsIcon fontSize="small" />,
-          path: adminPaths.promptBankRoot,
-        },
+        adminRoutePromptBank,
         {
           title: 'Assignments',
           icon: <ArtifactsIcon fontSize="small" />,
           path: adminPaths.assignmentsDistrictDetail,
         },
-        {
-          title: 'Resources',
-          icon: <ArtifactsIcon fontSize="small" />,
-          path: adminPaths.resources,
-        }
-        
+        adminRouteSettings,
+        adminRouteReports,
+        adminRouteResources,
       ]
     }
   ]
@@ -332,11 +371,7 @@ const routes_DA_TR = {
           icon: <GridViewIcon fontSize="small" />,
           path: adminPaths.daTrDashboard,
         },
-        {
-          title: 'Prompt Bank',
-          icon: <ArtifactsIcon fontSize="small" />,
-          path: adminPaths.promptBankRoot,
-        },
+        adminRoutePromptBank,
         {
           title: 'Assignments',
           icon: <ArtifactsIcon fontSize="small" />,
@@ -352,27 +387,9 @@ const routes_DA_TR = {
           icon: <ArtifactsIcon fontSize="small" />,
           path: adminPaths.dvSetup,
         },
-        {
-          title: 'Settings',
-          icon: <ArtifactsIcon fontSize="small" />,
-          path: adminPaths.settingsRoot,
-          children: [
-            {
-              title: 'General',
-              path: adminPaths.settingsGeneral,
-            }
-          ],
-        },
-        {
-          title: 'Reports',
-          icon: <ArtifactsIcon fontSize="small" />,
-          path: adminPaths.reports,
-        },
-        {
-          title: 'Resources',
-          icon: <ArtifactsIcon fontSize="small" />,
-          path: adminPaths.resources,
-        }
+        adminRouteSettings,
+        adminRouteReports,
+        adminRouteResources,
       ]
     }
   ]

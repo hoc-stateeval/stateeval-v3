@@ -29,6 +29,10 @@ export const adminPaths = {
 
   settings: `${adminSettingsRoot}`,
   settingsGeneral: `${adminSettingsRoot}/general`,
+  settingsObservationReport: `${adminSettingsRoot}/observation-report`,
+  settingsSelfAssessmentReport: `${adminSettingsRoot}/self-assessment-report`,
+  settingsMidYearReport: `${adminSettingsRoot}/mid-year-report`,
+  settingsSummativeReport: `${adminSettingsRoot}/summative-report`,
 
   reports: `${adminRoot}/reports`,
   resources: `${adminRoot}/resources`,
