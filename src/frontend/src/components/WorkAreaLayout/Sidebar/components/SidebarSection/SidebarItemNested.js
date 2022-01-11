@@ -23,7 +23,7 @@ const SidebarItemNested = (props) => {
       disableGutters
       sx={{
         display: 'flex',
-        mb: 0.5,
+        "& .MuiListItemButton-root": { paddingTop:.5, paddingBottom:.5 },
         py: 0
       }}
     >

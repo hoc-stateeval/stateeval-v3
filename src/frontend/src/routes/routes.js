@@ -41,13 +41,6 @@ const AdminReportSettingsDashboard = lazy(() => import('@admin/settings/reports/
 const AdminResourcesDashboard = lazy(() => import('@admin/resources/Dashboard'));
 const AdminReportsDashboard = lazy(() => import('@admin/reports/Dashboard'));
 
-const adminSchoolEvaluatorSettingsRoutes = [
-  {
-    path: adminPaths.settingsReports,
-    element: <AdminReportSettingsDashboard/>
-  },
-];
-
 const adminPromptBankRoute = {
   path: adminPaths.promptBankRoot,
   element: <PromptBankDashboard/>
@@ -67,6 +60,7 @@ const adminGeneralSettingsRoute = {
   path: adminPaths.settingsGeneral,
   element: <AdminGeneralSettingsDashboard/>
 };
+
 const adminReportSettingsRoute =   {
   path: adminPaths.settingsReports,
   element: <AdminReportSettingsDashboard/>
@@ -92,6 +86,7 @@ const SelfAssessmentsDashboard = lazy(() => import('@evaluation/self-assessments
 const SummativeEvalDashboard = lazy(() => import('@evaluation/summative-eval/Dashboard'));
 const MidYearEvalDashboard = lazy(() => import('@evaluation/mid-year-eval/Dashboard'));
 const EvaluationResourcesDashboard = lazy(() => import('@evaluation/resources/Dashboard'));
+const EvaluationReportArchivesDashboard = lazy(() => import('@evaluation/report-archives/Dashboard'));
 
 const evaluationSharedRoutes = {
   artifacts:  {
@@ -126,11 +121,16 @@ const evaluationSharedRoutes = {
     path: evaluationPaths.settingsAssignments,
     element: <SummativeEvalDashboard/>
   },
+  reportArchives: {
+    path: evaluationPaths.reportArchives,
+    element: <EvaluationReportArchivesDashboard/>
+  },
   resources: {
     path: evaluationPaths.resources,
     element: <EvaluationResourcesDashboard/>
-  },
+  }
 }
+
 
 const evaluationRoutes_coreRoutes = [
   evaluationSharedRoutes.artifacts,
@@ -140,6 +140,7 @@ const evaluationRoutes_coreRoutes = [
   evaluationSharedRoutes.selfAssessments,
   evaluationSharedRoutes.midYearEvaluation,
   evaluationSharedRoutes.summativeEvaluation,
+  evaluationSharedRoutes.reportArchives,
   evaluationSharedRoutes.resources,
 ];
 
@@ -213,11 +214,15 @@ const evaluationRoutes_PR_TR = {
       element: <PrTrDashboard/>
     },
     ...evaluationRoutes_coreRoutes,
+
+    // admin section
     {
       path: adminPaths.assignmentsSchoolDetailRoot,
       element : <AssignmentsSchoolDetail/>,
     },
-    ...adminSchoolEvaluatorSettingsRoutes,
+    adminPromptBankRoute,
+    adminReportSettingsRoute,
+
     ...trainingRoutes,
   ]
 };
@@ -230,11 +235,15 @@ const evaluationRoutes_PR_PR = {
       element: <PrPrDashboard/>
     },
     ...evaluationRoutes_coreRoutes,
+
+    // admin section
     {
       path: adminPaths.assignmentsSchoolDetail,
       element : <AssignmentsSchoolDetail/>,
     },
-    ...adminSchoolEvaluatorSettingsRoutes,
+    adminPromptBankRoute,
+    adminReportSettingsRoute,
+
     ...trainingRoutes,
   ]
 };
@@ -247,7 +256,11 @@ const evaluationRoutes_DTE = {
       element: <DteDashboard/>
     },
     ...evaluationRoutes_coreRoutes,
-    ...adminSchoolEvaluatorSettingsRoutes,
+
+    // admin section
+    adminPromptBankRoute,
+    adminReportSettingsRoute,
+    
     ...trainingRoutes,
   ]
 };
@@ -260,7 +273,15 @@ const evaluationRoutes_DE = {
       element: <DeDashboard/>
     },
     ...evaluationRoutes_coreRoutes,
-    ...adminSchoolEvaluatorSettingsRoutes,
+ 
+    // admin section
+    {
+      path: adminPaths.assignmentsDistrictDetail,
+      element : <AssignmentsDistrictDetail/>,
+    },
+    adminPromptBankRoute,
+    adminReportSettingsRoute,
+
     ...trainingRoutes,
   ]
 };

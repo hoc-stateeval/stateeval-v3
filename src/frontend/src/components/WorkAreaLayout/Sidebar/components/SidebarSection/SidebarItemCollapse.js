@@ -28,7 +28,7 @@ const SidebarItemCollapse = (props) => {
       disableGutters
       sx={{
         display: 'block',
-        mb: 0.5,
+        "& .MuiListItemButton-root": { paddingTop:.5, paddingBottom:.5 },
         py: 0,
       }}>
         <ListItemButton onClick={handleToggle}

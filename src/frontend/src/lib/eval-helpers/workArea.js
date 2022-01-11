@@ -7,6 +7,10 @@ const getDefaultPathForWorkAreaContext = (workAreaContext) => {
       return adminPaths.daPrDashboard;
     case WorkArea.DA_TR:
       return adminPaths.daTrDashboard;
+    case WorkArea.DE:
+      return evaluationPaths.deDashboard;
+    case WorkArea.DTE:
+      return evaluationPaths.dteDashboard;
     case WorkArea.PR_PR:
       return evaluationPaths.prPrDashboard;
     case WorkArea.PR_TR:
@@ -15,6 +19,8 @@ const getDefaultPathForWorkAreaContext = (workAreaContext) => {
       return evaluationPaths.prMeDashboard;
     case WorkArea.TR_ME:
       return evaluationPaths.trMeDashboard;
+      case WorkArea.CT:
+        return evaluationPaths.ctDashboard;
     default:
       throw Error(`getDefaultPathForWorkAreaContext: unknown workArea: ${workAreaContext.tagName}`);
   }
@@ -23,7 +29,7 @@ const getDefaultPathForWorkAreaContext = (workAreaContext) => {
 const EvaluatorWorkAreas = [WorkArea.PR_PR, WorkArea.PR_TR, WorkArea.DTE, WorkArea.DE];
 const EvaluateeWorkAreas = [WorkArea.PR_ME, WorkArea.TR_ME];
 const DistrictViewerSchoolEvaluatorWorkAreas = [WorkArea.DV_PR_TR, WorkArea.DV_PR_PR];
-const DistrictViewerDistrictEvaluatorWorkAreas = [WorkArea.DV_DTE, WorkArea.DE];
+const DistrictViewerDistrictEvaluatorWorkAreas = [WorkArea.DV_DTE, WorkArea.DV_DE];
 const DistrictViewerWorkAreas = [...DistrictViewerSchoolEvaluatorWorkAreas, ...DistrictViewerDistrictEvaluatorWorkAreas];
 
 const EvaluationWorkAreas = [...EvaluatorWorkAreas, ...EvaluateeWorkAreas, ...DistrictViewerSchoolEvaluatorWorkAreas, DistrictViewerDistrictEvaluatorWorkAreas];

@@ -28,7 +28,7 @@ const DistrictViewerDistrictEvaluatorOptions = () => {
 
   return (
     <>
-      <DistrictViewerEvaluatorDropDown />
+      <DistrictViewerEvaluatorDropDown  schoolCode="" />
       <EvaluatingDropDown evaluations={waitOnDependencies ? [] : evaluations} />
     </>
   );

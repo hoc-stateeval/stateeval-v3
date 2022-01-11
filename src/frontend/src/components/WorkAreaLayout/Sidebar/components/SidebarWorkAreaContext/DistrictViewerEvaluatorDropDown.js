@@ -32,7 +32,7 @@ const buildEvaluatorLabel = (tagName) => {
   return "Evaluator";
 };
 
-const DistrictViewerEvaluatorDropDown = () => {
+const DistrictViewerEvaluatorDropDown = ( {schoolCode}) => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -40,18 +40,15 @@ const DistrictViewerEvaluatorDropDown = () => {
   const activeDistrictViewerEvaluatorId = useSelector(
     selectActiveDistrictViewerEvaluatorId
   );
-  const activeDistrictViewerSchoolCode = useSelector(
-    selectActiveDistrictViewerSchoolCode
-  );
 
   const waitOnDependencies =
     DistrictViewerSchoolEvaluatorWorkAreas.includes(
       activeWorkAreaContext.tagName
-    ) && activeDistrictViewerSchoolCode === "0";
+    ) && schoolCode === "0";
   const { data: evaluators } = useGetEvaluatorsForDistrictViewerQuery(
     {
       workAreaContextId: activeWorkAreaContext.id,
-      schoolCode: activeDistrictViewerSchoolCode,
+      schoolCode: schoolCode,
     },
     { skip: waitOnDependencies }
   );

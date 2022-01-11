@@ -39,7 +39,7 @@ export const WorkArea = {
   PR_ME: 'PR_ME',
   TR_ME: 'TR_ME',
   PR_PR: 'PR_PR',
-  DE: 'DE_PR',
+  DE: 'DE',
   DTE: 'DTE',
   DA_TR: 'DA_TR',
   DA_PR: 'DA_PR',

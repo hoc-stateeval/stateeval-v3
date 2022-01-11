@@ -8,6 +8,7 @@ import YTDIcon from '@mui/icons-material/VerticalSplit';
 import ObservationsIcon from '@mui/icons-material/Visibility';
 import SelfAssessmentsIcon from '@mui/icons-material/LocalCafe';
 import SummativeEvalIcon from '@mui/icons-material/Summarize';
+import ReportArchivesIcon from '@mui/icons-material/Summarize';
 import SettingsIcon from '@mui/icons-material/SettingsApplications';
 
 const trainingSection = {
@@ -72,6 +73,11 @@ const evaluationSharedNavItems = {
     icon: <SummativeEvalIcon fontSize="small" />,
     path: evaluationPaths.summativeEvaluation,
   },
+  reportArchives: {
+    title: 'Report Archives',
+    icon: <ReportArchivesIcon fontSize="small" />,
+    path: evaluationPaths.reportArchives,
+  },
   settingsGeneral : {
     title: 'General',
     path: evaluationPaths.settingsGeneral,
@@ -95,7 +101,8 @@ const evaluationCoreNavItems = [
   evaluationSharedNavItems.selfAssessments,
   evaluationSharedNavItems.midYearEvaluation,
   evaluationSharedNavItems.summativeEvaluation,
-  evaluationSharedNavItems.resources
+  evaluationSharedNavItems.resources,
+  evaluationSharedNavItems.reportArchives
 ];
 
 const adminPromptNavItem = {

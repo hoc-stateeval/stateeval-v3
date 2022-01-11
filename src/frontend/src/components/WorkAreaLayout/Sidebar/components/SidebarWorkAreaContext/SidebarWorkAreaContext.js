@@ -116,6 +116,9 @@ const SidebarWorkAreaContext = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeWorkAreaContext]);
 
+  // show settings section for those work areas that have extra configuration
+  // for example, PR_TR has the EvaluatingDropdown to select the teacher
+  // to evaluate
   const showWorkAreaSettings =
     DistrictViewerDistrictEvaluatorWorkAreas.includes(
       activeWorkAreaContext.tagName
@@ -200,6 +203,7 @@ const SidebarWorkAreaContext = () => {
           </TextField>
         </Stack>
       </List>
+      
       {showWorkAreaSettings && (
         <List
           sx={{ pl: 2 }}

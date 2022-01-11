@@ -78,6 +78,7 @@ export const evaluationPaths = {
   selfAssessments: `${evaluationRoot}/self-assessments`,
   midYearEvaluation:  `${evaluationRoot}/mid-year-eval`,
   summativeEvaluation: `${evaluationRoot}/summative-eval`,
+  reportArchives: `${evaluationRoot}/report-archives`,
   resources:  `${evaluationRoot}/resources`,
 
   settingsRoot: `${evalSettingsRoot}`,
