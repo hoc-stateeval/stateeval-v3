@@ -36,6 +36,11 @@ const evaluationSharedNavItems = {
     icon: <SelfAssessmentsIcon fontSize="small" />,
     path: evaluationPaths.selfAssessments,
   },
+  midYearEvaluation: {
+    title: 'Mid-year Evaluation',
+    icon: <SummativeEvalIcon fontSize="small" />,
+    path: evaluationPaths.midYearEvaluation,
+  },
   summativeEvaluation: {
     title: 'Summative Evaluation',
     icon: <SummativeEvalIcon fontSize="small" />,
@@ -48,8 +53,24 @@ const evaluationSharedNavItems = {
   settingsPromptBank: {
     title: 'Prompt Bank',
     path: evaluationPaths.settingsPromptBank,
-  }
+  },
+  resources: {
+    title: 'Resources',
+    icon: <SummativeEvalIcon fontSize="small" />,
+    path: evaluationPaths.resources,
+  },
 };
+
+const evaluationCoreNavItems = [
+  evaluationSharedNavItems.artifacts,
+  evaluationSharedNavItems.ytdEvidence,
+  evaluationSharedNavItems.studentGrowth,
+  evaluationSharedNavItems.observations,
+  evaluationSharedNavItems.selfAssessments,
+  evaluationSharedNavItems.midYearEvaluation,
+  evaluationSharedNavItems.summativeEvaluation,
+  evaluationSharedNavItems.resources
+];
 
 /*
  * Evaluation Routes 
@@ -65,12 +86,7 @@ const routes_PR_ME = {
           icon: <GridViewIcon fontSize="small" />,
           path: evaluationPaths.prMeDashboard,
         },
-        evaluationSharedNavItems.artifacts,
-        evaluationSharedNavItems.ytdEvidence,
-        evaluationSharedNavItems.studentGrowth,
-        evaluationSharedNavItems.observations,
-        evaluationSharedNavItems.selfAssessments,
-        evaluationSharedNavItems.summativeEvaluation
+        ...evaluationCoreNavItems,
       ],
     }
   ]
@@ -87,12 +103,7 @@ const routes_TR_ME = {
           icon: <GridViewIcon fontSize="small" />,
           path: evaluationPaths.trMeDashboard,
         },
-        evaluationSharedNavItems.artifacts,
-        evaluationSharedNavItems.ytdEvidence,
-        evaluationSharedNavItems.studentGrowth,
-        evaluationSharedNavItems.observations,
-        evaluationSharedNavItems.selfAssessments,
-        evaluationSharedNavItems.summativeEvaluation
+        ...evaluationCoreNavItems,
       ],
     }
   ]
@@ -109,12 +120,7 @@ const routes_PR_PR = {
           icon: <GridViewIcon fontSize="small" />,
           path: evaluationPaths.prPrDashboard,
         },
-        evaluationSharedNavItems.artifacts,
-        evaluationSharedNavItems.ytdEvidence,
-        evaluationSharedNavItems.studentGrowth,
-        evaluationSharedNavItems.observations,
-        evaluationSharedNavItems.selfAssessments,
-        evaluationSharedNavItems.summativeEvaluation,
+        ...evaluationCoreNavItems,
         {
           title: 'Settings',
           icon: <SettingsIcon fontSize="small" />,
@@ -142,12 +148,7 @@ const routes_PR_TR = {
           icon: <GridViewIcon fontSize="small" />,
           path: evaluationPaths.prTrDashboard,
         },
-        evaluationSharedNavItems.artifacts,
-        evaluationSharedNavItems.ytdEvidence,
-        evaluationSharedNavItems.studentGrowth,
-        evaluationSharedNavItems.observations,
-        evaluationSharedNavItems.selfAssessments,
-        evaluationSharedNavItems.summativeEvaluation,
+        ...evaluationCoreNavItems,
         {
           title: 'Settings',
           icon: <SettingsIcon fontSize="small" />,
@@ -164,6 +165,125 @@ const routes_PR_TR = {
     }
   ]
 };
+
+const routes_DE = {
+  workAreaTag: WorkArea.DE,
+  sections: [
+    {
+      title: 'Evaluation',
+      items: [
+        {
+          title: 'Dashboard',
+          icon: <GridViewIcon fontSize="small" />,
+          path: evaluationPaths.deDashboard,
+        },
+        ...evaluationCoreNavItems,
+        {
+          title: 'Settings',
+          icon: <SettingsIcon fontSize="small" />,
+          path: evaluationPaths.settingsRoot,
+          children: [
+            // {
+            //   title: 'Prompt Bank',
+            //   path: adminPaths,
+            // },
+            // {
+            //   title: 'General Settings',
+            //   path: adminPaths,
+            // },
+            // {
+            //   title: 'Assignments',
+            //   path: adminPaths,
+            // }
+           
+          ],
+        },
+      ],
+    }
+  ]
+}
+
+const routes_DTE = {
+  workAreaTag: WorkArea.DTE,
+  sections: [
+    {
+      title: 'Evaluation',
+      items: [
+        {
+          title: 'Dashboard',
+          icon: <GridViewIcon fontSize="small" />,
+          path: evaluationPaths.dteDashboard,
+        },
+        ...evaluationCoreNavItems,
+        {
+          title: 'Settings',
+          icon: <SettingsIcon fontSize="small" />,
+          path: evaluationPaths.settingsRoot,
+          children: [
+            // {
+            //   title: 'Prompt Bank',
+            //   path: adminPaths,
+            // },
+            // {
+            //   title: 'General Settings',
+            //   path: adminPaths,
+            // },
+            // {
+            //   title: 'Assignment Requests',
+            //   path: adminPaths,
+            // }
+           
+          ],
+        },
+      ],
+    }
+  ]
+}
+
+const routes_CT = {
+  workAreaTag: WorkArea.CT,
+  sections: [
+    {
+      title: 'Evaluation',
+      items: [
+        {
+          title: 'Dashboard',
+          icon: <GridViewIcon fontSize="small" />,
+          path: evaluationPaths.ctDashboard,
+        },
+        evaluationSharedNavItems.artifacts,
+        evaluationSharedNavItems.ytdEvidence,
+        evaluationSharedNavItems.observations,
+        {
+          title: 'Mid-Year',
+          icon: <GridViewIcon fontSize="small" />,
+          path: evaluationPaths.midYearEvaluation,
+        },
+        evaluationSharedNavItems.summativeEvaluation,
+        {
+          title: 'Settings',
+          icon: <SettingsIcon fontSize="small" />,
+          path: evaluationPaths.settingsRoot,
+          children: [
+            // {
+            //   title: 'Prompt Bank',
+            //   path: adminPaths,
+            // },
+            // {
+            //   title: 'General Settings',
+            //   path: adminPaths,
+            // },
+            // {
+            //   title: 'Assignment Requests',
+            //   path: adminPaths,
+            // }
+           
+          ],
+        },
+      ],
+    }
+  ]
+}
 
 /*
  * Admin Routes 
@@ -185,6 +305,16 @@ const routes_DA_PR = {
           icon: <ArtifactsIcon fontSize="small" />,
           path: adminPaths.assignmentsSchoolDetailRoot,
         },
+        {
+          title: 'Prompt Bank',
+          icon: <ArtifactsIcon fontSize="small" />,
+          path: adminPaths.promptBankRoot,
+        },
+        {
+          title: 'Resources',
+          icon: <ArtifactsIcon fontSize="small" />,
+          path: adminPaths.resources,
+        }
         
       ]
     }
@@ -208,9 +338,19 @@ const routes_DA_TR = {
           path: adminPaths.assignmentsDistrictSummary,
         },
         {
+          title: 'Prompt Bank',
+          icon: <ArtifactsIcon fontSize="small" />,
+          path: adminPaths.promptBankRoot,
+        },
+        {
           title: 'DTE Setup',
           icon: <ArtifactsIcon fontSize="small" />,
           path: adminPaths.dteSetup,
+        },
+        {
+          title: 'Resources',
+          icon: <ArtifactsIcon fontSize="small" />,
+          path: adminPaths.resources,
         }
       ]
     }
@@ -339,7 +479,9 @@ const SIDEBAR_ROUTES = [
     routes_DV_PR_PR,
     routes_DV_PR_TR,
     routes_PR_ME,
-    routes_TR_ME
+    routes_TR_ME,
+    routes_DTE,
+    routes_DE
 ];
 
 export {
