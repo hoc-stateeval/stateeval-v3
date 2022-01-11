@@ -301,14 +301,14 @@ const routes_DA_PR = {
           path: adminPaths.daPrDashboard,
         },
         {
-          title: 'Assignments',
-          icon: <ArtifactsIcon fontSize="small" />,
-          path: adminPaths.assignmentsSchoolDetailRoot,
-        },
-        {
           title: 'Prompt Bank',
           icon: <ArtifactsIcon fontSize="small" />,
           path: adminPaths.promptBankRoot,
+        },
+        {
+          title: 'Assignments',
+          icon: <ArtifactsIcon fontSize="small" />,
+          path: adminPaths.assignmentsDistrictDetail,
         },
         {
           title: 'Resources',
@@ -333,19 +333,40 @@ const routes_DA_TR = {
           path: adminPaths.daTrDashboard,
         },
         {
-          title: 'Assignments',
-          icon: <ArtifactsIcon fontSize="small" />,
-          path: adminPaths.assignmentsDistrictSummary,
-        },
-        {
           title: 'Prompt Bank',
           icon: <ArtifactsIcon fontSize="small" />,
           path: adminPaths.promptBankRoot,
         },
         {
+          title: 'Assignments',
+          icon: <ArtifactsIcon fontSize="small" />,
+          path: adminPaths.assignmentsDistrictSummary,
+        },
+        {
           title: 'DTE Setup',
           icon: <ArtifactsIcon fontSize="small" />,
           path: adminPaths.dteSetup,
+        },
+        {
+          title: 'District Viewer Setup',
+          icon: <ArtifactsIcon fontSize="small" />,
+          path: adminPaths.dvSetup,
+        },
+        {
+          title: 'Settings',
+          icon: <ArtifactsIcon fontSize="small" />,
+          path: adminPaths.settingsRoot,
+          children: [
+            {
+              title: 'General',
+              path: adminPaths.settingsGeneral,
+            }
+          ],
+        },
+        {
+          title: 'Reports',
+          icon: <ArtifactsIcon fontSize="small" />,
+          path: adminPaths.reports,
         },
         {
           title: 'Resources',

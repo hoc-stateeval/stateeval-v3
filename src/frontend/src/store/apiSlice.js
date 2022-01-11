@@ -119,8 +119,12 @@ export const apiSlice = createApi({
     }),
 
     // roles
-    updateDTERoleInSchools: builder.mutation({
+    updateDteRoleInSchools: builder.mutation({
       query: (data) => ({url: `user-building-roles/update-dte-role-in-schools/${data.userId}`, method: 'put', data: data})
+    }),
+
+    updateDvRoleInSchools: builder.mutation({
+      query: (data) => ({url: `user-building-roles/update-dv-role-in-schools/${data.userId}`, method: 'put', data: data})
     }),
 
     // assignments
@@ -168,7 +172,8 @@ export const {
   useGetUsersInRoleAtSchoolQuery,
   useGetUsersInRoleAtSchoolsQuery,
   useGetSchoolsInDistrictQuery,
-  useUpdateDTERoleInSchoolsMutation,
+  useUpdateDteRoleInSchoolsMutation,
+  useUpdateDvRoleInSchoolsMutation,
   useUpdateEvaluationSetEvaluatorMutation,
   useGetHistoricalEvaluationsQuery,
   useUpdateEvaluationSetPlanTypeMutation,

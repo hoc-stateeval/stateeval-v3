@@ -8,6 +8,7 @@ const adminDashboardsRoot = `${adminRoot}/dashboards`
 const assignmentsRoot = `${adminRoot}/assignments`;
 const assignmentsSchoolDetailRoot = `${assignmentsRoot}/school-detail/`;
 const promptBankRoot = `${adminRoot}/prompt-bank`;
+const adminSettingsRoot =   `${adminRoot}/settings`;
 
 export const adminPaths = {
   daPrDashboard: `${adminDashboardsRoot}/da-pr`,
@@ -23,8 +24,13 @@ export const adminPaths = {
 
   promptBankRoot: `${promptBankRoot}`,
 
-  dteSetup: `${assignmentsRoot}/dte-setup`,
+  dteSetup: `${adminRoot}/dte-setup`,
+  dvSetup: `${adminRoot}/dv-setup`,
 
+  settings: `${adminSettingsRoot}`,
+  settingsGeneral: `${adminSettingsRoot}/general`,
+
+  reports: `${adminRoot}/reports`,
   resources: `${adminRoot}/resources`,
 };
 

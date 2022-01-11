@@ -20,11 +20,11 @@ import {
 
 import {
   useGetSchoolsInDistrictQuery,
-  useUpdateDTERoleInSchoolsMutation,
+  useUpdateDvRoleInSchoolsMutation,
 } from "@api-slice";
 import { RoleType } from "@lib/enums";
 
-const getDTEBuildingRolesInSchools = (user, districtCode) => {
+const getDvBuildingRolesInSchools = (user, districtCode) => {
   return user.userBuildingRoles.reduce((acc, next) => {
     if (
       next.districtCode === districtCode &&
@@ -38,12 +38,12 @@ const getDTEBuildingRolesInSchools = (user, districtCode) => {
   }, []);
 };
 
-const DTESchoolConfigModal = ({ districtCode, user, setDlgOpen, dlgOpen }) => {
+const DVSchoolConfigModal = ({ districtCode, user, setDlgOpen, dlgOpen }) => {
   const [buildingRoles, setBuildingRoles] = useState(
-    getDTEBuildingRolesInSchools(user, districtCode)
+    getDvBuildingRolesInSchools(user, districtCode)
   );
   const { data: schools } = useGetSchoolsInDistrictQuery(districtCode);
-  const [updateRoles] = useUpdateDTERoleInSchoolsMutation();
+  const [updateRoles] = useUpdateDvRoleInSchoolsMutation();
 
   const handleClickDlgCancel = () => {
     setDlgOpen(false);
@@ -88,7 +88,7 @@ const DTESchoolConfigModal = ({ districtCode, user, setDlgOpen, dlgOpen }) => {
             <Stack spacing={3}>
               <Typography variant="body1">
                 Check the schools where the <strong>{user.displayName}</strong>{" "}
-                can evaluate teachers.
+                can view evaluators.
               </Typography>
               <TableContainer component={Paper}>
                 <Table size="small" aria-label="simple table">
@@ -133,4 +133,4 @@ const DTESchoolConfigModal = ({ districtCode, user, setDlgOpen, dlgOpen }) => {
   );
 };
 
-export default DTESchoolConfigModal;
+export default DVSchoolConfigModal;

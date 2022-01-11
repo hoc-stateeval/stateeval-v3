@@ -13,7 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import DTESchoolConfigModal from "./DTESchoolConfigModal";
+import DteSchoolConfigModal from "./DteSchoolConfigModal";
 
 import { setPageTitle } from "@user-context-slice";
 
@@ -23,7 +23,7 @@ import { selectActiveWorkAreaContext } from "@user-context-slice";
 
 import { RoleType } from "@lib/enums";
 
-const DTESetup = () => {
+const Dashboard = () => {
   const pageTitle = "District-wide Teacher Evaluator Setup";
 
   const dispatch = useDispatch();
@@ -89,7 +89,7 @@ const DTESetup = () => {
                       >
                         Edit
                       </Button>
-                      <DTESchoolConfigModal
+                      <DteSchoolConfigModal
                         user={user}
                         districtCode={workAreaContext.districtCode}
                         setDlgOpen={setDlgOpen}
@@ -106,4 +106,4 @@ const DTESetup = () => {
   );
 };
 
-export default DTESetup;
+export default Dashboard;

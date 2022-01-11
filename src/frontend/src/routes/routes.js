@@ -13,9 +13,14 @@ const AssignmentsSchoolDetail = lazy(() => import('@admin/assignments/Assignment
 
 const PromptBankDashboard = lazy(() => import('@admin/prompt-bank/Dashboard'));
 
-const DTESetup = lazy(() => import('@admin/assignments/DTESetup'));
+const DteSetup = lazy(() => import('@admin/dte-setup/Dashboard'));
+const DvSetup = lazy(() => import('@admin/dv-setup/Dashboard'));
+
+const AdminGeneralSettingsDashboard = lazy(() => import('@admin/settings/general/Dashboard'));
 
 const AdminResourcesDashboard = lazy(() => import('@admin/resources/Dashboard'));
+
+const AdminReportsDashboard = lazy(() => import('@admin/reports/Dashboard'));
 
 /************ Evaluation Routes ***********/
 const ArtifactsDashboard = lazy(() => import('@evaluation/artifacts/Dashboard'));
@@ -46,16 +51,24 @@ const adminRoutes_DA_PR = {
       element: <DistrictAdminPrincipalDashboard/>
     },
     {
-      path: adminPaths.assignmentsDistrictDetail,
-      element: <AssignmentsDistrictDetail/>
-    },
-    {
       path: adminPaths.promptBankRoot,
       element: <PromptBankDashboard/>
     },
     {
+      path: adminPaths.assignmentsDistrictDetail,
+      element: <AssignmentsDistrictDetail/>
+    },
+    {
+      path: adminPaths.settingsGeneral,
+      element: <AdminGeneralSettingsDashboard/>
+    },
+    {
       path: adminPaths.resources,
       element: <AdminResourcesDashboard/>
+    },
+    {
+      path: adminPaths.reports,
+      element: <AdminReportsDashboard/>
     },
   ]
 };
@@ -81,11 +94,23 @@ const adminRoutes_DA_TR = {
     },
     {
       path: adminPaths.dteSetup,
-      element : <DTESetup/>,
+      element : <DteSetup/>,
+    },
+    {
+      path: adminPaths.dvSetup,
+      element : <DvSetup/>,
+    },
+    {
+      path: adminPaths.settingsGeneral,
+      element: <AdminGeneralSettingsDashboard/>
     },
     {
       path: adminPaths.resources,
       element: <AdminResourcesDashboard/>
+    },
+    {
+      path: adminPaths.reports,
+      element: <AdminReportsDashboard/>
     },
   ]
 } ;
