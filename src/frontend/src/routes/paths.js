@@ -46,12 +46,9 @@ export const adminPaths = {
   dteSetup: `${adminRoot}/dte-setup`,
   dvSetup: `${adminRoot}/dv-setup`,
 
-  settings: `${adminSettingsRoot}`,
+  settingsRoot: `${adminSettingsRoot}`,
   settingsGeneral: `${adminSettingsRoot}/general`,
-  settingsObservationReport: `${adminSettingsRoot}/observation-report`,
-  settingsSelfAssessmentReport: `${adminSettingsRoot}/self-assessment-report`,
-  settingsMidYearReport: `${adminSettingsRoot}/mid-year-report`,
-  settingsSummativeReport: `${adminSettingsRoot}/summative-report`,
+  settingsReports: `${adminSettingsRoot}/reports`,
 
   reports: `${adminRoot}/reports`,
   resources: `${adminRoot}/resources`,

@@ -98,8 +98,29 @@ const evaluationCoreNavItems = [
   evaluationSharedNavItems.resources
 ];
 
+const adminPromptNavItem = {
+  title: 'Prompt Bank',
+  path: adminPaths.promptBankRoot,
+};
+
+const adminAssignmentsNavItem = {
+  title: 'Assignments',
+  path: adminPaths.assignmentsSchoolDetailRoot,
+};
+
+const adminReportSettingsNavItem = {
+  title: 'Report Settings',
+  path: adminPaths.settingsReports,
+};
+
+const evaluationEvaluatorSettingsNavItems = [
+  adminPromptNavItem,
+  adminAssignmentsNavItem,
+  adminReportSettingsNavItem
+];
+
 /*
- * Evaluation Routes 
+ * Evaluation Routes - Evaluatees
  */
 const routes_PR_ME = {
   workAreaTag: WorkArea.PR_ME,
@@ -137,6 +158,9 @@ const routes_TR_ME = {
   ]
 }
 
+/*
+ * Evaluation Routes - Evaluators
+ */
 const routes_PR_PR = {
   workAreaTag: WorkArea.PR_PR,
   sections: [
@@ -154,10 +178,7 @@ const routes_PR_PR = {
           icon: <SettingsIcon fontSize="small" />,
           path: evaluationPaths.settingsRoot,
           children: [
-            {
-              title: 'Assignments',
-              path: adminPaths.assignmentsSchoolDetailRoot,
-            }
+           ...evaluationEvaluatorSettingsNavItems
            
           ],
         },
@@ -179,15 +200,11 @@ const routes_PR_TR = {
         },
         ...evaluationCoreNavItems,
         {
-          title: 'Settings',
+          title: 'Admin',
           icon: <SettingsIcon fontSize="small" />,
           path: evaluationPaths.settingsRoot,
           children: [
-            {
-              title: 'Assignments',
-              path: adminPaths.assignmentsSchoolDetailRoot,
-            }
-          
+            ...evaluationEvaluatorSettingsNavItems
           ],
         },
       ],
@@ -209,23 +226,11 @@ const routes_DE = {
         },
         ...evaluationCoreNavItems,
         {
-          title: 'Settings',
+          title: 'Admin',
           icon: <SettingsIcon fontSize="small" />,
           path: evaluationPaths.settingsRoot,
           children: [
-            // {
-            //   title: 'Prompt Bank',
-            //   path: adminPaths,
-            // },
-            // {
-            //   title: 'General Settings',
-            //   path: adminPaths,
-            // },
-            // {
-            //   title: 'Assignments',
-            //   path: adminPaths,
-            // }
-           
+            ...evaluationEvaluatorSettingsNavItems
           ],
         },
       ],
@@ -251,19 +256,7 @@ const routes_DTE = {
           icon: <SettingsIcon fontSize="small" />,
           path: evaluationPaths.settingsRoot,
           children: [
-            // {
-            //   title: 'Prompt Bank',
-            //   path: adminPaths,
-            // },
-            // {
-            //   title: 'General Settings',
-            //   path: adminPaths,
-            // },
-            // {
-            //   title: 'Assignment Requests',
-            //   path: adminPaths,
-            // }
-           
+            ...evaluationEvaluatorSettingsNavItems
           ],
         },
       ],
@@ -292,26 +285,6 @@ const routes_CT = {
           path: evaluationPaths.midYearEvaluation,
         },
         evaluationSharedNavItems.summativeEvaluation,
-        {
-          title: 'Settings',
-          icon: <SettingsIcon fontSize="small" />,
-          path: evaluationPaths.settingsRoot,
-          children: [
-            // {
-            //   title: 'Prompt Bank',
-            //   path: adminPaths,
-            // },
-            // {
-            //   title: 'General Settings',
-            //   path: adminPaths,
-            // },
-            // {
-            //   title: 'Assignment Requests',
-            //   path: adminPaths,
-            // }
-           
-          ],
-        },
       ],
     },
     trainingSection,
@@ -321,7 +294,6 @@ const routes_CT = {
 /*
  * Admin Routes 
  */
-
 const adminRoutePromptBank = {
     title: 'Prompt Bank',
     icon: <ArtifactsIcon fontSize="small" />,
@@ -356,21 +328,9 @@ const adminRouteSettings = {
       path: adminPaths.settingsGeneral,
     },
     {
-      title: 'Observation Report',
-      path: adminPaths.settingsObservationReport,
+      title: 'Report Settings',
+      path: adminPaths.settingsReports,
     },
-    {
-      title: 'Self-Assessment Report',
-      path: adminPaths.settingsSelfAssessmentReport,
-    },
-    {
-      title: 'Mid-Year Report',
-      path: adminPaths.settingsMidYearReport,
-    },
-    {
-      title: 'Summative Report',
-      path: adminPaths.settingsSummativeReport,
-    }
   ],
 };
 
@@ -432,6 +392,59 @@ const routes_DA_TR = {
     trainingSection,
   ]
 };
+
+const routes_SA_PR = {
+  workAreaTag: WorkArea.SA_PR,
+  sections: [
+    {
+      title: 'Evaluation Setup',
+      items: [
+        {
+          title: 'Dashboard',
+          icon: <GridViewIcon fontSize="small" />,
+          path: adminPaths.saPrDashboard,
+        },
+        adminRoutePromptBank,
+        {
+          title: 'Assignments',
+          icon: <ArtifactsIcon fontSize="small" />,
+          path: adminPaths.assignmentsSchoolDetail,
+        },
+        adminReportSettingsNavItem,
+        adminRouteReports,
+        adminRouteResources,
+      ]
+    },
+    trainingSection,
+  ]
+};
+
+const routes_SA_TR = {
+  workAreaTag: WorkArea.SA_TR,
+  sections: [
+    {
+      title: 'Evaluation Setup',
+      items: [
+        {
+          title: 'Dashboard',
+          icon: <GridViewIcon fontSize="small" />,
+          path: adminPaths.saTrDashboard,
+        },
+        adminRoutePromptBank,
+        {
+          title: 'Assignments',
+          icon: <ArtifactsIcon fontSize="small" />,
+          path: adminPaths.assignmentsSchoolDetail,
+        },
+        adminReportSettingsNavItem,
+        adminRouteReports,
+        adminRouteResources,
+      ]
+    },
+    trainingSection,
+  ]
+};
+
 
 /*
  * District Viewer Routes 
@@ -524,20 +537,31 @@ const routes_DV_CT = {
 };
  
 const SIDEBAR_ROUTES = [
+    // admin - district
     routes_DA_PR,
     routes_DA_TR,
+
+    // admin - school
+    routes_SA_PR,
+    routes_SA_TR,
+
+    // evaluation - evaluator
     routes_PR_PR,
     routes_PR_TR,
+    routes_DTE,
+    routes_DE,
+    routes_CT,
+
+    // evaluation - evaluatee
+    routes_PR_ME,
+    routes_TR_ME,
+
+    // district viewer
     routes_DV_CT,
     routes_DV_DE,
     routes_DV_DTE,
     routes_DV_PR_PR,
     routes_DV_PR_TR,
-    routes_PR_ME,
-    routes_TR_ME,
-    routes_DTE,
-    routes_DE,
-    routes_CT
 ];
 
 export {

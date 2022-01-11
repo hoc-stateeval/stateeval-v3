@@ -30,46 +30,21 @@ const trainingRoutes = [
  */
 const DistrictAdminTeacherDashboard = lazy(() => import('@admin/dashboards/da-tr/Dashboard'));
 const DistrictAdminPrincipalDashboard = lazy(() => import('@admin/dashboards/da-pr/Dashboard'));
-
 const AssignmentsDistrictSummary = lazy(() => import('@admin/assignments/AssignmentsDistrictSummary'));
 const AssignmentsDistrictDetail = lazy(() => import('@admin/assignments/AssignmentsDistrictDetail'));
 const AssignmentsSchoolDetail = lazy(() => import('@admin/assignments/AssignmentsSchoolDetail'));
-
 const PromptBankDashboard = lazy(() => import('@admin/prompt-bank/Dashboard'));
-
 const DteSetup = lazy(() => import('@admin/dte-setup/Dashboard'));
 const DvSetup = lazy(() => import('@admin/dv-setup/Dashboard'));
-
 const AdminGeneralSettingsDashboard = lazy(() => import('@admin/settings/general/Dashboard'));
-const AdminObservationReportSettingsDashboard = lazy(() => import('@admin/settings/observation-report/Dashboard'));
-const AdminSelfAssessmentReportSettingsDashboard = lazy(() => import('@admin/settings/self-assessment-report/Dashboard'));
-const AdminMidYearReportSettingsDashboard = lazy(() => import('@admin/settings/mid-year-report/Dashboard'));
-const AdminSummativeReportSettingsDashboard = lazy(() => import('@admin/settings/summative-report/Dashboard'));
-
+const AdminReportSettingsDashboard = lazy(() => import('@admin/settings/reports/Dashboard'));
 const AdminResourcesDashboard = lazy(() => import('@admin/resources/Dashboard'));
-
 const AdminReportsDashboard = lazy(() => import('@admin/reports/Dashboard'));
 
-const adminSettingsRoutes = [
+const adminSchoolEvaluatorSettingsRoutes = [
   {
-    path: adminPaths.settingsGeneral,
-    element: <AdminGeneralSettingsDashboard/>
-  },
-  {
-    path: adminPaths.settingsObservationReport,
-    element: <AdminObservationReportSettingsDashboard/>
-  },
-  {
-    path: adminPaths.settingsSelfAssessmentReport,
-    element: <AdminSelfAssessmentReportSettingsDashboard/>
-  },
-  {
-    path: adminPaths.settingsMidYearReport,
-    element: <AdminMidYearReportSettingsDashboard/>
-  },
-  {
-    path: adminPaths.settingsSummativeReport,
-    element: <AdminSummativeReportSettingsDashboard/>
+    path: adminPaths.settingsReports,
+    element: <AdminReportSettingsDashboard/>
   },
 ];
 
@@ -86,6 +61,15 @@ const adminResourcesRoute = {
 const adminReportsRoute =  {
   path: adminPaths.reports,
   element: <AdminReportsDashboard/>
+};
+
+const adminGeneralSettingsRoute = {
+  path: adminPaths.settingsGeneral,
+  element: <AdminGeneralSettingsDashboard/>
+};
+const adminReportSettingsRoute =   {
+  path: adminPaths.settingsReports,
+  element: <AdminReportSettingsDashboard/>
 };
 
 
@@ -159,8 +143,6 @@ const evaluationRoutes_coreRoutes = [
   evaluationSharedRoutes.resources,
 ];
 
-
-
 /*
  * Exported Routes 
  */
@@ -181,9 +163,10 @@ const adminRoutes_DA_PR = {
       path: adminPaths.dvSetup,
       element : <DvSetup/>,
     },
-    ...adminSettingsRoutes,
     adminResourcesRoute,
     adminReportsRoute,
+    adminReportSettingsRoute,
+    adminGeneralSettingsRoute,
 
     ...trainingRoutes,
   ]
@@ -196,6 +179,7 @@ const adminRoutes_DA_TR = {
       path: adminPaths.daTrDashboard,
       element: <DistrictAdminTeacherDashboard/>
     },
+    adminPromptBankRoute,
     {
       path: adminPaths.assignmentsDistrictSummary,
       element: <AssignmentsDistrictSummary/>
@@ -204,7 +188,6 @@ const adminRoutes_DA_TR = {
       path: adminPaths.assignmentsSchoolDetail,
       element : <AssignmentsSchoolDetail/>,
     },
-    adminPromptBankRoute,
     {
       path: adminPaths.dteSetup,
       element : <DteSetup/>,
@@ -213,9 +196,10 @@ const adminRoutes_DA_TR = {
       path: adminPaths.dvSetup,
       element : <DvSetup/>,
     },
-    ...adminSettingsRoutes,
     adminResourcesRoute,
     adminReportsRoute,
+    adminReportSettingsRoute,
+    adminGeneralSettingsRoute,
 
     ...trainingRoutes,
   ]
@@ -233,7 +217,7 @@ const evaluationRoutes_PR_TR = {
       path: adminPaths.assignmentsSchoolDetailRoot,
       element : <AssignmentsSchoolDetail/>,
     },
-
+    ...adminSchoolEvaluatorSettingsRoutes,
     ...trainingRoutes,
   ]
 };
@@ -250,7 +234,7 @@ const evaluationRoutes_PR_PR = {
       path: adminPaths.assignmentsSchoolDetail,
       element : <AssignmentsSchoolDetail/>,
     },
-
+    ...adminSchoolEvaluatorSettingsRoutes,
     ...trainingRoutes,
   ]
 };
@@ -263,7 +247,7 @@ const evaluationRoutes_DTE = {
       element: <DteDashboard/>
     },
     ...evaluationRoutes_coreRoutes,
-
+    ...adminSchoolEvaluatorSettingsRoutes,
     ...trainingRoutes,
   ]
 };
@@ -276,7 +260,7 @@ const evaluationRoutes_DE = {
       element: <DeDashboard/>
     },
     ...evaluationRoutes_coreRoutes,
-
+    ...adminSchoolEvaluatorSettingsRoutes,
     ...trainingRoutes,
   ]
 };
@@ -294,7 +278,6 @@ const evaluationRoutes_CT = {
     evaluationSharedRoutes.midYearEvaluation,
     evaluationSharedRoutes.summativeEvaluation,
     evaluationSharedRoutes.resources,
-
     ...trainingRoutes,
   ]
 };
