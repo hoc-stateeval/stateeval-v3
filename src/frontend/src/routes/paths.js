@@ -1,8 +1,27 @@
 
+/*
+ * Public Routes 
+ */
 export const unAuthenticatedPaths = {
   login: '/login'
 };
 
+/*
+ * Training Routes 
+ */
+const trainingRoot = '/training';
+const trainingVideosRoot = `${trainingRoot}/videos`;
+
+export const trainingPaths = {
+  root: `${trainingRoot}`,
+  videos: `${trainingVideosRoot}`,
+  bercVideos: `${trainingVideosRoot}/berc`,
+  nationalBoardVideos: `${trainingVideosRoot}/national-board`,
+};
+
+/*
+ * Admin Routes 
+ */
 const adminRoot = '/admin';
 const adminDashboardsRoot = `${adminRoot}/dashboards`
 const assignmentsRoot = `${adminRoot}/assignments`;
@@ -38,6 +57,10 @@ export const adminPaths = {
   resources: `${adminRoot}/resources`,
 };
 
+/*
+ * Evaluation Routes 
+ */
+
 const evaluationRoot = '/evaluation';
 const evalDashboardsRoot = `${evaluationRoot}/dashboards`
 const evalSettingsRoot = `${evaluationRoot}/settings`;
@@ -65,6 +88,10 @@ export const evaluationPaths = {
   settingsAssignments: `${evalSettingsRoot}/assignments`,
   settingsPromptBank: `${evalSettingsRoot}/prompt-bank`,
 };
+
+/*
+ * District Viewer Routes 
+ */
 
 const dvRoot = '/district-viewer';
 const dvDashboardsRoot = `${dvRoot}/dashboards`

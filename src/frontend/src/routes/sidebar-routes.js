@@ -1,5 +1,5 @@
 import { WorkArea } from '@lib/enums';
-import { adminPaths, evaluationPaths, districtViewerPaths } from '@routes/paths';
+import { adminPaths, evaluationPaths, districtViewerPaths, trainingPaths } from '@routes/paths';
 
 import ArtifactsIcon  from '@mui/icons-material/Article';
 import SGGIcon from '@mui/icons-material/Face';
@@ -9,6 +9,32 @@ import ObservationsIcon from '@mui/icons-material/Visibility';
 import SelfAssessmentsIcon from '@mui/icons-material/LocalCafe';
 import SummativeEvalIcon from '@mui/icons-material/Summarize';
 import SettingsIcon from '@mui/icons-material/SettingsApplications';
+
+const trainingSection = {
+    title: 'Training',
+    items: [
+      {
+        title: 'Dashboard',
+        icon: <ArtifactsIcon fontSize="small" />,
+        path: trainingPaths.root,
+      },
+      {
+        title: 'Videos',
+        icon: <SettingsIcon fontSize="small" />,
+        path: trainingPaths.videos,
+        children: [
+          {
+            title: 'BERC Videos',
+            path: trainingPaths.bercVideos,
+          },
+          {
+            title: 'National Board Videos',
+            path: trainingPaths.nationalBoardVideos,
+          },   
+        ],
+      },
+    ],
+  };
 
 const evaluationSharedNavItems = {
   artifacts: {
@@ -88,7 +114,8 @@ const routes_PR_ME = {
         },
         ...evaluationCoreNavItems,
       ],
-    }
+    },
+    trainingSection,
   ]
 }
 
@@ -105,7 +132,8 @@ const routes_TR_ME = {
         },
         ...evaluationCoreNavItems,
       ],
-    }
+    },
+    trainingSection,
   ]
 }
 
@@ -134,7 +162,8 @@ const routes_PR_PR = {
           ],
         },
       ],
-    }
+    },
+    trainingSection
   ]
 }
 const routes_PR_TR = {
@@ -162,7 +191,8 @@ const routes_PR_TR = {
           ],
         },
       ],
-    }
+    },
+    trainingSection,
   ]
 };
 
@@ -199,7 +229,8 @@ const routes_DE = {
           ],
         },
       ],
-    }
+    },
+    trainingSection,
   ]
 }
 
@@ -236,7 +267,8 @@ const routes_DTE = {
           ],
         },
       ],
-    }
+    },
+    trainingSection,
   ]
 }
 
@@ -281,7 +313,8 @@ const routes_CT = {
           ],
         },
       ],
-    }
+    },
+    trainingSection,
   ]
 }
 
@@ -305,6 +338,12 @@ const adminRouteResources = {
   title: 'Resources',
   icon: <ArtifactsIcon fontSize="small" />,
   path: adminPaths.resources,
+};
+
+const adminRouteDvSetup =         {
+  title: 'District Viewer Setup',
+  icon: <ArtifactsIcon fontSize="small" />,
+  path: adminPaths.dvSetup,
 };
 
 const adminRouteSettings = {
@@ -352,11 +391,13 @@ const routes_DA_PR = {
           icon: <ArtifactsIcon fontSize="small" />,
           path: adminPaths.assignmentsDistrictDetail,
         },
+        adminRouteDvSetup,
         adminRouteSettings,
         adminRouteReports,
         adminRouteResources,
       ]
-    }
+    },
+    trainingSection,
   ]
 };
 
@@ -382,16 +423,13 @@ const routes_DA_TR = {
           icon: <ArtifactsIcon fontSize="small" />,
           path: adminPaths.dteSetup,
         },
-        {
-          title: 'District Viewer Setup',
-          icon: <ArtifactsIcon fontSize="small" />,
-          path: adminPaths.dvSetup,
-        },
+        adminRouteDvSetup,
         adminRouteSettings,
         adminRouteReports,
         adminRouteResources,
       ]
-    }
+    },
+    trainingSection,
   ]
 };
 
@@ -411,7 +449,8 @@ const routes_DV_PR_PR = {
           path: districtViewerPaths.prPr,
         }
       ]
-    }
+    },
+    trainingSection,
   ]
 };
 
@@ -427,7 +466,8 @@ const routes_DV_PR_TR = {
           path: districtViewerPaths.prTr
         }
       ]
-    }
+    },
+    trainingSection,
   ]
 };
 
@@ -443,7 +483,8 @@ const routes_DV_DTE = {
           path: districtViewerPaths.dte,
         },
       ]
-    }
+    },
+    trainingSection,
   ]
 };
 
@@ -459,7 +500,8 @@ const routes_DV_DE = {
           path: districtViewerPaths.de,
         },
       ]
-    }
+    },
+    trainingSection,
   ]
 };
 
@@ -476,35 +518,10 @@ const routes_DV_CT = {
           path: districtViewerPaths.ct,
         },
       ]
-    }
+    },
+    trainingSection,
   ]
 };
-
-  // {
-  //   title: 'Training',
-  //   workAreaTags: ['PR_TR', 'PR_PR', 'PR_ME', 'TR_ME', 'DTE', 'DE'],
-  //   items: [
-  //     {
-  //       title: 'Dashboard',
-  //       icon: <HomeIcon fontSize="small" />,
-  //       path: '/training/dashboard',
-  //     },
-  //     {
-  //       title: 'Videos',
-  //       icon: <HomeIcon fontSize="small" />,
-  //       children: [
-  //         {
-  //           title: 'BERC Videos',
-  //           path: '/training/berc-videos',
-  //         },
-  //         {
-  //           title: 'National Board Videos',
-  //           path: '/training/national-board-videos',
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // },
  
 const SIDEBAR_ROUTES = [
     routes_DA_PR,
@@ -519,7 +536,8 @@ const SIDEBAR_ROUTES = [
     routes_PR_ME,
     routes_TR_ME,
     routes_DTE,
-    routes_DE
+    routes_DE,
+    routes_CT
 ];
 
 export {

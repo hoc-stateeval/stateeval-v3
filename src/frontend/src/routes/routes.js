@@ -1,9 +1,33 @@
 import { lazy } from 'react'
 
 import { WorkArea } from '@lib/enums';
-import { adminPaths, evaluationPaths } from '@routes/paths';
+import { adminPaths, evaluationPaths, trainingPaths } from '@routes/paths';
 
-/******** Admin Routes **************/
+/*
+ * Training Routes Setup
+ */
+const TrainingDashboard = lazy(() => import('@training/Dashboard'));
+const TrainingBercVideos = lazy(() => import('@training/videos/berc/Dashboard'));
+const TrainingNationalBoardVideos = lazy(() => import('@training/videos/national-board/Dashboard'));
+
+const trainingRoutes = [
+  {
+    path: trainingPaths.root,
+    element: <TrainingDashboard/>
+  },
+  {
+    path: trainingPaths.bercVideos,
+    element: <TrainingBercVideos/>
+  },
+  {
+    path: trainingPaths.nationalBoardVideos,
+    element: <TrainingNationalBoardVideos/>
+  },
+];
+
+/*
+ * Admin Routes Setup
+ */
 const DistrictAdminTeacherDashboard = lazy(() => import('@admin/dashboards/da-tr/Dashboard'));
 const DistrictAdminPrincipalDashboard = lazy(() => import('@admin/dashboards/da-pr/Dashboard'));
 
@@ -25,27 +49,6 @@ const AdminSummativeReportSettingsDashboard = lazy(() => import('@admin/settings
 const AdminResourcesDashboard = lazy(() => import('@admin/resources/Dashboard'));
 
 const AdminReportsDashboard = lazy(() => import('@admin/reports/Dashboard'));
-
-/************ Evaluation Routes ***********/
-const ArtifactsDashboard = lazy(() => import('@evaluation/artifacts/Dashboard'));
-const StudentGrowthDashboard = lazy(() => import('@evaluation/student-growth/Dashboard'));
-const YearToDateDashboard = lazy(() => import('@evaluation/ytd/Dashboard'));
-const PrTrDashboard = lazy(() => import('@evaluation/dashboards/pr-tr/Dashboard'));
-const PrPrDashboard = lazy(() => import('@evaluation/dashboards/pr-pr/Dashboard'));
-const DteDashboard = lazy(() => import('@evaluation/dashboards/dte/Dashboard'));
-const DeDashboard = lazy(() => import('@evaluation/dashboards/de/Dashboard'));
-const CtDashboard = lazy(() => import('@evaluation/dashboards/ct/Dashboard'));
-const PrMeDashboard = lazy(() => import('@evaluation/dashboards/pr-me/Dashboard'));
-const TrMeDashboard = lazy(() => import('@evaluation/dashboards/tr-me/Dashboard'));
-
-const ObservationsDashboard = lazy(() => import('@evaluation/observations/Dashboard'));
-const SelfAssessmentsDashboard = lazy(() => import('@evaluation/self-assessments/Dashboard'));
-const SummativeEvalDashboard = lazy(() => import('@evaluation/summative-eval/Dashboard'));
-const MidYearEvalDashboard = lazy(() => import('@evaluation/mid-year-eval/Dashboard'));
-const EvaluationResourcesDashboard = lazy(() => import('@evaluation/resources/Dashboard'));
-/*
- * Admin Routes 
- */
 
 const adminSettingsRoutes = [
   {
@@ -70,7 +73,6 @@ const adminSettingsRoutes = [
   },
 ];
 
-
 const adminPromptBankRoute = {
   path: adminPaths.promptBankRoot,
   element: <PromptBankDashboard/>
@@ -86,57 +88,26 @@ const adminReportsRoute =  {
   element: <AdminReportsDashboard/>
 };
 
-const adminRoutes_DA_PR = {
-  workAreaTag: WorkArea.DA_PR,
-  routes: [
-    {
-      path: adminPaths.daPrDashboard,
-      element: <DistrictAdminPrincipalDashboard/>
-    },
-    adminPromptBankRoute,
-    {
-      path: adminPaths.assignmentsDistrictDetail,
-      element: <AssignmentsDistrictDetail/>
-    },
-    ...adminSettingsRoutes,
-    adminResourcesRoute,
-    adminReportsRoute,
-  ]
-};
-
-const adminRoutes_DA_TR = {
-  workAreaTag: WorkArea.DA_TR,
-  routes: [
-    {
-      path: adminPaths.daTrDashboard,
-      element: <DistrictAdminTeacherDashboard/>
-    },
-    {
-      path: adminPaths.assignmentsDistrictSummary,
-      element: <AssignmentsDistrictSummary/>
-    },
-    {
-      path: adminPaths.assignmentsSchoolDetail,
-      element : <AssignmentsSchoolDetail/>,
-    },
-    adminPromptBankRoute,
-    {
-      path: adminPaths.dteSetup,
-      element : <DteSetup/>,
-    },
-    {
-      path: adminPaths.dvSetup,
-      element : <DvSetup/>,
-    },
-    ...adminSettingsRoutes,
-    adminResourcesRoute,
-    adminReportsRoute,
-  ]
-} ;
 
 /*
- * Evaluation Routes 
+ * Evaluation Routes Setup
  */
+const ArtifactsDashboard = lazy(() => import('@evaluation/artifacts/Dashboard'));
+const StudentGrowthDashboard = lazy(() => import('@evaluation/student-growth/Dashboard'));
+const YearToDateDashboard = lazy(() => import('@evaluation/ytd/Dashboard'));
+const PrTrDashboard = lazy(() => import('@evaluation/dashboards/pr-tr/Dashboard'));
+const PrPrDashboard = lazy(() => import('@evaluation/dashboards/pr-pr/Dashboard'));
+const DteDashboard = lazy(() => import('@evaluation/dashboards/dte/Dashboard'));
+const DeDashboard = lazy(() => import('@evaluation/dashboards/de/Dashboard'));
+const CtDashboard = lazy(() => import('@evaluation/dashboards/ct/Dashboard'));
+const PrMeDashboard = lazy(() => import('@evaluation/dashboards/pr-me/Dashboard'));
+const TrMeDashboard = lazy(() => import('@evaluation/dashboards/tr-me/Dashboard'));
+
+const ObservationsDashboard = lazy(() => import('@evaluation/observations/Dashboard'));
+const SelfAssessmentsDashboard = lazy(() => import('@evaluation/self-assessments/Dashboard'));
+const SummativeEvalDashboard = lazy(() => import('@evaluation/summative-eval/Dashboard'));
+const MidYearEvalDashboard = lazy(() => import('@evaluation/mid-year-eval/Dashboard'));
+const EvaluationResourcesDashboard = lazy(() => import('@evaluation/resources/Dashboard'));
 
 const evaluationSharedRoutes = {
   artifacts:  {
@@ -188,6 +159,68 @@ const evaluationRoutes_coreRoutes = [
   evaluationSharedRoutes.resources,
 ];
 
+
+
+/*
+ * Exported Routes 
+ */
+
+const adminRoutes_DA_PR = {
+  workAreaTag: WorkArea.DA_PR,
+  routes: [
+    {
+      path: adminPaths.daPrDashboard,
+      element: <DistrictAdminPrincipalDashboard/>
+    },
+    adminPromptBankRoute,
+    {
+      path: adminPaths.assignmentsDistrictDetail,
+      element: <AssignmentsDistrictDetail/>
+    },
+    {
+      path: adminPaths.dvSetup,
+      element : <DvSetup/>,
+    },
+    ...adminSettingsRoutes,
+    adminResourcesRoute,
+    adminReportsRoute,
+
+    ...trainingRoutes,
+  ]
+};
+
+const adminRoutes_DA_TR = {
+  workAreaTag: WorkArea.DA_TR,
+  routes: [
+    {
+      path: adminPaths.daTrDashboard,
+      element: <DistrictAdminTeacherDashboard/>
+    },
+    {
+      path: adminPaths.assignmentsDistrictSummary,
+      element: <AssignmentsDistrictSummary/>
+    },
+    {
+      path: adminPaths.assignmentsSchoolDetail,
+      element : <AssignmentsSchoolDetail/>,
+    },
+    adminPromptBankRoute,
+    {
+      path: adminPaths.dteSetup,
+      element : <DteSetup/>,
+    },
+    {
+      path: adminPaths.dvSetup,
+      element : <DvSetup/>,
+    },
+    ...adminSettingsRoutes,
+    adminResourcesRoute,
+    adminReportsRoute,
+
+    ...trainingRoutes,
+  ]
+} ;
+
 const evaluationRoutes_PR_TR = {
   workAreaTag: WorkArea.PR_TR,
   routes: [
@@ -200,6 +233,8 @@ const evaluationRoutes_PR_TR = {
       path: adminPaths.assignmentsSchoolDetailRoot,
       element : <AssignmentsSchoolDetail/>,
     },
+
+    ...trainingRoutes,
   ]
 };
 
@@ -215,6 +250,8 @@ const evaluationRoutes_PR_PR = {
       path: adminPaths.assignmentsSchoolDetail,
       element : <AssignmentsSchoolDetail/>,
     },
+
+    ...trainingRoutes,
   ]
 };
 
@@ -226,6 +263,8 @@ const evaluationRoutes_DTE = {
       element: <DteDashboard/>
     },
     ...evaluationRoutes_coreRoutes,
+
+    ...trainingRoutes,
   ]
 };
 
@@ -237,6 +276,8 @@ const evaluationRoutes_DE = {
       element: <DeDashboard/>
     },
     ...evaluationRoutes_coreRoutes,
+
+    ...trainingRoutes,
   ]
 };
 
@@ -253,6 +294,8 @@ const evaluationRoutes_CT = {
     evaluationSharedRoutes.midYearEvaluation,
     evaluationSharedRoutes.summativeEvaluation,
     evaluationSharedRoutes.resources,
+
+    ...trainingRoutes,
   ]
 };
 
@@ -264,6 +307,8 @@ const evaluationRoutes_PR_ME = {
       element: <PrMeDashboard/>
     },
     ...evaluationRoutes_coreRoutes,
+
+    ...trainingRoutes,
   ]
 };
 
@@ -275,10 +320,12 @@ const evaluationRoutes_TR_ME = {
       element: <TrMeDashboard/>
     },
     ...evaluationRoutes_coreRoutes,
+
+    ...trainingRoutes,
   ]
 };
 
-const ROUTER_ROUTES = [
+export const ROUTER_ROUTES = [
   adminRoutes_DA_PR,
   adminRoutes_DA_TR,
   // evaluator routes
@@ -291,7 +338,3 @@ const ROUTER_ROUTES = [
   evaluationRoutes_PR_ME,
   evaluationRoutes_TR_ME,
 ];
-
-export {
-  ROUTER_ROUTES,
-}
