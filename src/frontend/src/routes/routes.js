@@ -20,8 +20,8 @@ const PrPrDashboard = lazy(() => import('@evaluation/dashboards/pr-pr/Dashboard'
 // const DteDashboard = lazy(() => import('@evaluation/dashboards/dte/Dashboard'));
 // const DeDashboard = lazy(() => import('@evaluation/dashboards/de/Dashboard'));
 // const CtDashboard = lazy(() => import('@evaluation/dashboards/ct/Dashboard'));
-// const PrMeDashboard = lazy(() => import('@evaluation/dashboards/pr-me/Dashboard'));
-// const TrMeDashboard = lazy(() => import('@evaluation/dashboards/tr-me/Dashboard'));
+const PrMeDashboard = lazy(() => import('@evaluation/dashboards/pr-me/Dashboard'));
+const TrMeDashboard = lazy(() => import('@evaluation/dashboards/tr-me/Dashboard'));
 const ObservationsDashboard = lazy(() => import('@evaluation/observations/Dashboard'));
 const SelfAssessmentsDashboard = lazy(() => import('@evaluation/self-assessments/Dashboard'));
 const SummativeEvalDashboard = lazy(() => import('@evaluation/summative-eval/Dashboard'));
@@ -141,11 +141,45 @@ const evaluationRoutes_PR_PR = {
   ]
 };
 
+const evaluationRoutes_PR_ME = {
+  workAreaTag: WorkArea.PR_ME,
+  routes: [
+    {
+      path: evaluationPaths.prMeDashboard,
+      element: <PrMeDashboard/>
+    },
+    evaluationSharedRoutes.artifacts,
+    evaluationSharedRoutes.ytdEvidence,
+    evaluationSharedRoutes.studentGrowth,
+    evaluationSharedRoutes.observations,
+    evaluationSharedRoutes.selfAssessments,
+    evaluationSharedRoutes.summativeEvaluation
+  ]
+};
+
+const evaluationRoutes_TR_ME = {
+  workAreaTag: WorkArea.TR_ME,
+  routes: [
+    {
+      path: evaluationPaths.trMeDashboard,
+      element: <TrMeDashboard/>
+    },
+    evaluationSharedRoutes.artifacts,
+    evaluationSharedRoutes.ytdEvidence,
+    evaluationSharedRoutes.studentGrowth,
+    evaluationSharedRoutes.observations,
+    evaluationSharedRoutes.selfAssessments,
+    evaluationSharedRoutes.summativeEvaluation
+  ]
+};
+
 const ROUTER_ROUTES = [
   adminRoutes_DA_PR,
   adminRoutes_DA_TR,
   evaluationRoutes_PR_PR,
   evaluationRoutes_PR_TR,
+  evaluationRoutes_PR_ME,
+  evaluationRoutes_TR_ME
 ];
 
 export {

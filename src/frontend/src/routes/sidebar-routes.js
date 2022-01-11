@@ -54,6 +54,49 @@ const evaluationSharedNavItems = {
 /*
  * Evaluation Routes 
  */
+const routes_PR_ME = {
+  workAreaTag: WorkArea.PR_ME,
+  sections: [
+    {
+      title: 'Evaluation',
+      items: [
+        {
+          title: 'Dashboard',
+          icon: <GridViewIcon fontSize="small" />,
+          path: evaluationPaths.prMeDashboard,
+        },
+        evaluationSharedNavItems.artifacts,
+        evaluationSharedNavItems.ytdEvidence,
+        evaluationSharedNavItems.studentGrowth,
+        evaluationSharedNavItems.observations,
+        evaluationSharedNavItems.selfAssessments,
+        evaluationSharedNavItems.summativeEvaluation
+      ],
+    }
+  ]
+}
+
+const routes_TR_ME = {
+  workAreaTag: WorkArea.TR_ME,
+  sections: [
+    {
+      title: 'Evaluation',
+      items: [
+        {
+          title: 'Dashboard',
+          icon: <GridViewIcon fontSize="small" />,
+          path: evaluationPaths.trMeDashboard,
+        },
+        evaluationSharedNavItems.artifacts,
+        evaluationSharedNavItems.ytdEvidence,
+        evaluationSharedNavItems.studentGrowth,
+        evaluationSharedNavItems.observations,
+        evaluationSharedNavItems.selfAssessments,
+        evaluationSharedNavItems.summativeEvaluation
+      ],
+    }
+  ]
+}
 
 const routes_PR_PR = {
   workAreaTag: WorkArea.PR_PR,
@@ -295,6 +338,8 @@ const SIDEBAR_ROUTES = [
     routes_DV_DTE,
     routes_DV_PR_PR,
     routes_DV_PR_TR,
+    routes_PR_ME,
+    routes_TR_ME
 ];
 
 export {

@@ -22,6 +22,8 @@ const evalSettingsRoot = `${evaluationRoot}/settings`;
 export const evaluationPaths = {
   prTrDashboard: `${evaluationRoot}/dashboards/pr-tr`,
   prPrDashboard: `${evaluationRoot}/dashboards/pr-pr`,
+  prMeDashboard: `${evaluationRoot}/dashboards/pr-me`,
+  trMeDashboard: `${evaluationRoot}/dashboards/tr-me`,
   artifacts: `${evaluationRoot}/artifacts`,
   ytdEvidence: `${evaluationRoot}/ytd`,
   studentGrowth: `${evaluationRoot}/sgg`,

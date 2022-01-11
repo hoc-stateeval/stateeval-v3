@@ -11,6 +11,10 @@ const getDefaultPathForWorkAreaContext = (workAreaContext) => {
       return evaluationPaths.prPrDashboard;
     case WorkArea.PR_TR:
       return evaluationPaths.prTrDashboard;
+    case WorkArea.PR_ME:
+      return evaluationPaths.prMeDashboard;
+    case WorkArea.TR_ME:
+      return evaluationPaths.trMeDashboard;
     default:
       throw Error(`getDefaultPathForWorkAreaContext: unknown workArea: ${workAreaContext.tagName}`);
   }
