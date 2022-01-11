@@ -3,34 +3,42 @@ export const unAuthenticatedPaths = {
   login: '/login'
 };
 
+const adminRoot = '/admin';
+const assignmentsRoot = `${adminRoot}/assignments`;
+const assignmentsSchoolDetailRoot = `${assignmentsRoot}/school-detail/`;
 export const adminPaths = {
-  daPrDashboard: '/admin/dashboards/da-pr',
-  daTrDashboard: '/admin/dashboards/da-tr',
-  assignmentsRoot: '/admin/assignments',
-  dteSetup: '/admin/assignments/dte-setup',
-  assignmentsDistrictSummary: '/admin/assignments/district-summary',
-  assignmentsDistrictDetail: '/admin/assignments/district-detail',
-  assignmentsSchoolDetail: '/admin/assignments/school-detail/:schoolCode/:schoolName',
+  daPrDashboard: `${adminRoot}/dashboards/da-pr`,
+  daTrDashboard: `${adminRoot}/dashboards/da-tr`,
+  assignmentsRoot: `${assignmentsRoot}`,
+  dteSetup: `${assignmentsRoot}/dte-setup`,
+  assignmentsDistrictSummary: `${assignmentsRoot}/district-summary`,
+  assignmentsDistrictDetail: `${assignmentsRoot}/district-detail`,
+  assignmentsSchoolDetailRoot: `${assignmentsSchoolDetailRoot}`,
+  assignmentsSchoolDetail: `${assignmentsSchoolDetailRoot}/:schoolCode/:schoolName`,
 };
 
+const evaluationRoot = '/evaluation';
+const evalSettingsRoot = `${evaluationRoot}/settings`;
 export const evaluationPaths = {
-  prTrDashboard: '/evaluation/dashboards/pr-tr',
-  prPrDashboard: '/evaluation/dashboards/pr-pr',
-  artifacts: '/evaluation/artifacts',
-  ytdEvidence: '/evaluation/ytd',
-  studentGrowth: '/evaluation/sgg',
-  observations: '/evaluation/observations',
-  selfAssessments: '/evaluation/self-assessments',
-  summativeEvaluation: '/evaluation/summative-eval',
-  settingsGeneral: '/evaluation/settings/general',
-  settingsAssignments: '/evaluation/settings/assignments',
-  settingsPromptBank: '/evaluation/settings/prompt-bank',
+  prTrDashboard: `${evaluationRoot}/dashboards/pr-tr`,
+  prPrDashboard: `${evaluationRoot}/dashboards/pr-pr`,
+  artifacts: `${evaluationRoot}/artifacts`,
+  ytdEvidence: `${evaluationRoot}/ytd`,
+  studentGrowth: `${evaluationRoot}/sgg`,
+  observations: `${evaluationRoot}/observations`,
+  selfAssessments: `${evaluationRoot}/self-assessments`,
+  summativeEvaluation: `${evaluationRoot}/summative-eval`,
+  settingsRoot: `${evalSettingsRoot}`,
+  settingsGeneral: `${evalSettingsRoot}/general`,
+  settingsAssignments: `${evalSettingsRoot}/assignments`,
+  settingsPromptBank: `${evalSettingsRoot}/prompt-bank`,
 };
 
+const dvRoot = '/district-viewer';
 export const districtViewerPaths = {
-  prTrDashboard: '/district-viewer/dashboards/pr-tr',
-  prPrDashboard: '/district-viewer/dashboards/pr-pr',
-  dteDashboard: '/district-viewer/dashboards/dte',
-  deDashboard: '/district-viewer/dashboards/de',
-  ctDashboard: '/district-viewer/dashboards/ct'
+  prTrDashboard: `${dvRoot}/dashboards/pr-tr`,
+  prPrDashboard: `${dvRoot}/dashboards/pr-pr`,
+  dteDashboard: `${dvRoot}/dashboards/dte`,
+  deDashboard: `${dvRoot}/dashboards/de`,
+  ctDashboard: `${dvRoot}/dashboards/ct`
 };

@@ -51,6 +51,10 @@ const evaluationSharedNavItems = {
   }
 };
 
+/*
+ * Evaluation Routes 
+ */
+
 const routes_PR_PR = {
   workAreaTag: WorkArea.PR_PR,
   sections: [
@@ -71,9 +75,12 @@ const routes_PR_PR = {
         {
           title: 'Settings',
           icon: <SettingsIcon fontSize="small" />,
-          path: '@ui/routing/evaluation/settings',
+          path: evaluationPaths.settingsRoot,
           children: [
-            evaluationSharedNavItems.settingsGeneral,
+            {
+              title: 'Assignments',
+              path: adminPaths.assignmentsSchoolDetailRoot,
+            }
            
           ],
         },
@@ -101,9 +108,12 @@ const routes_PR_TR = {
         {
           title: 'Settings',
           icon: <SettingsIcon fontSize="small" />,
-          path: '@ui/routing/evaluation/settings',
+          path: evaluationPaths.settingsRoot,
           children: [
-            evaluationSharedNavItems.settingsGeneral,
+            {
+              title: 'Assignments',
+              path: adminPaths.assignmentsSchoolDetailRoot,
+            }
           
           ],
         },
@@ -111,6 +121,10 @@ const routes_PR_TR = {
     }
   ]
 };
+
+/*
+ * Admin Routes 
+ */
 
 const routes_DA_PR = {
   workAreaTag: WorkArea.DA_PR,
@@ -126,7 +140,7 @@ const routes_DA_PR = {
         {
           title: 'Assignments',
           icon: <ArtifactsIcon fontSize="small" />,
-          path: adminPaths.assignmentsDistrictDetail,
+          path: adminPaths.assignmentsSchoolDetailRoot,
         },
         
       ]
@@ -159,6 +173,10 @@ const routes_DA_TR = {
     }
   ]
 };
+
+/*
+ * District Viewer Routes 
+ */
 
 const routes_DV_PR_PR = {
   workAreaTag: WorkArea.DV_PR_PR,

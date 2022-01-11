@@ -54,7 +54,7 @@ const AssignmentsSchoolDetail = () => {
 
   const { data } = useGetAssignmentsDetailQuery({
     frameworkContextId: workAreaContext.frameworkContextId,
-    schoolCode,
+    schoolCode: schoolCode?schoolCode:workAreaContext.schoolCode
   });
   const [updateEvaluator] = useUpdateEvaluationSetEvaluatorMutation();
 

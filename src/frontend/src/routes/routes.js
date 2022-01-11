@@ -26,6 +26,10 @@ const ObservationsDashboard = lazy(() => import('@evaluation/observations/Dashbo
 const SelfAssessmentsDashboard = lazy(() => import('@evaluation/self-assessments/Dashboard'));
 const SummativeEvalDashboard = lazy(() => import('@evaluation/summative-eval/Dashboard'));
 
+/*
+ * Admin Routes 
+ */
+
 const adminRoutes_DA_PR = {
   workAreaTag: WorkArea.DA_PR,
   routes: [
@@ -61,6 +65,10 @@ const adminRoutes_DA_TR = {
     }
   ]
 } ;
+
+/*
+ * Evaluation Routes 
+ */
 
 const evaluationSharedRoutes = {
   artifacts:  {
@@ -105,8 +113,9 @@ const evaluationRoutes_PR_TR = {
     evaluationSharedRoutes.studentGrowth,
     evaluationSharedRoutes.observations,
     evaluationSharedRoutes.selfAssessments,
+    evaluationSharedRoutes.summativeEvaluation,
     {
-      path: adminPaths.assignmentsSchoolDetail,
+      path: adminPaths.assignmentsSchoolDetailRoot,
       element : <AssignmentsSchoolDetail/>,
     },
   ]
@@ -124,6 +133,7 @@ const evaluationRoutes_PR_PR = {
     evaluationSharedRoutes.studentGrowth,
     evaluationSharedRoutes.observations,
     evaluationSharedRoutes.selfAssessments,
+    evaluationSharedRoutes.summativeEvaluation,
     {
       path: adminPaths.assignmentsSchoolDetail,
       element : <AssignmentsSchoolDetail/>,

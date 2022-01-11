@@ -9,24 +9,17 @@ import {
 import { useTheme } from '@mui/material/styles';
 import { getListItemButtonStyles, getListItemTextStyles } from '../SidebarWorkAreaContext/styles/listItemStyles';
 
-const SidebarItem = (props) => {
+const SidebarItem = ({ active,icon, path, title,}) => {
 
   const theme = useTheme();
-  const {
-    active,
-    icon,
-    path,
-    title,
-  } = props;
+  const listItemButtonStyles = getListItemButtonStyles(active, theme);
 
-const listItemButtonStyles = getListItemButtonStyles(active, theme);
+  const listItemIconStyles = { 
+    marginLeft: active? '-4px': '0px', 
+    color: active ? '#FFF' : `${theme.palette.neutral[400]}`,
+  };
 
-const listItemIconStyles = { 
-  marginLeft: active? '-4px': '0px', 
-  color: active ? '#FFF' : `${theme.palette.neutral[400]}`,
-};
-
-const listItemTextStyles = getListItemTextStyles(active, theme);
+  const listItemTextStyles = getListItemTextStyles(active, theme);
 
   return (
     <ListItem
