@@ -13,7 +13,7 @@
   height:0px;
 }
 
-.rubric-helper .collapse.in {
+.rubric-helper .expand {
   display: block;
   height:auto;
 }

@@ -35,19 +35,20 @@ const RubricNavigatorRubricRow = ({rubricRow}) => {
   )
 };
 
-const RubricNavigatorFrameworkNode = ({frameworkNode}) => {
+const RubricNavigatorFrameworkNode = ({frameworkNode, toggleExpanded, expanded}) => {
 
   const dispatch = useDispatch();
   const theme = useTheme();
 
-  const [ expanded, setExpanded ] = useState(false);
+  //const [ expanded, setExpanded ] = useState(false);
 
   const onClickFrameworkNodeShortName = () => {
+    toggleExpanded(frameworkNode);
     dispatch(setActiveFrameworkNodeId(frameworkNode.id));
   }
 
   const onClickFrameworkNodeTitle = () => {
-    setExpanded((prev)=>!prev);
+    toggleExpanded(frameworkNode);
     dispatch(setActiveFrameworkNodeId(frameworkNode.id));
   }
 
@@ -59,11 +60,7 @@ const RubricNavigatorFrameworkNode = ({frameworkNode}) => {
         <div className="cell-3"></div>
       </Box>
 
-      <Box 
-        style={{height:`${expanded ? "auto" : "0px"}`}} 
-        className={`${expanded ? "collapse in" : "collapse"}`}
-      >
-
+      <Box className={`${expanded ? "expand" : "collapse"}`}>
         {frameworkNode.rubricRows.map((x) => {
           return (<RubricNavigatorRubricRow key={x.id} rubricRow={x} />);
         })}
@@ -76,6 +73,23 @@ const RubricNavigator = () => {
 
   const activeFramework = useSelector(selectActiveFramework);
 
+  const [expandedMap, setExpandedMap] = useState({});
+
+  const toggleExpanded = (frameworkNode) => {
+    let newMap = {...expandedMap};
+    let newValue = !newMap[frameworkNode.id];
+    for (const prop in newMap) {
+      newMap[prop] = false;
+    }
+    if (!expandedMap[frameworkNode.id]) {
+      newMap[frameworkNode.id] = true;
+    }
+    else {
+      newMap[frameworkNode.id] = newValue;
+    }
+    setExpandedMap(newMap);
+  }
+
   return (
     <>
       <Box className="rubric-helper">
@@ -83,7 +97,11 @@ const RubricNavigator = () => {
           <Typography className="row" variant="h4">Rubric Navigator</Typography>
           {activeFramework.frameworkNodes.map((x)=> (
             <Box className="section">
-                <RubricNavigatorFrameworkNode key={x.id} frameworkNode={x} />
+                <RubricNavigatorFrameworkNode 
+                  key={x.id} 
+                  frameworkNode={x} 
+                  expanded={expandedMap[x.id] ?? false} 
+                  toggleExpanded={toggleExpanded} />
             </Box>
           ))}
         </Box>
