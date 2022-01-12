@@ -18,7 +18,7 @@ import {
 
 
 // TODO: move to theme
-const rubricNavigatorBorderColor = 'grey';
+const rubricNavigatorBorderColor = '#ddd';
 const rubricNavigatorNodeBackgroundColor = '#2f4050';
 const rubricNavigatorNodeTextColor = 'white';
 const rubricNavigatorNodeHoverBackgroundColor ='#7FB8EC';
@@ -129,14 +129,30 @@ const RubricNavigatorFrameworkNode = ({frameworkNode}) => {
   )
 };
 
+const getRubricNavigatorStyles = () => {
+  return {
+      minHeight: '20px',
+      padding: '19px',
+      marginBottom: '20px',
+      backgroundColor: '#f5f5f5',
+      border: '1px solid #e3e3e3',
+      borderRadius: '4px',
+      boxShadow: 'inset 0 1px 1px rgb(0 0 0 / 5%)',
+  }
+}
+
 const RubricNavigator = () => {
 
   const activeFramework = useSelector(selectActiveFramework);
 
   return (
     <>
-      <Box sx={{borderBottom: `1px solid ${rubricNavigatorBorderColor}`}}>
-        <Typography variant="h6">Rubric Navigator</Typography>
+      <Box 
+      sx={{
+          borderBottom: `1px solid ${rubricNavigatorBorderColor}`, 
+          ...getRubricNavigatorStyles()
+        }}>
+        <Typography variant="h4">Rubric Navigator</Typography>
         <Stack spacing={3}>
           <div className="navigator">
             <div className="body">

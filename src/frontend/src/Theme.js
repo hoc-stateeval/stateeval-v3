@@ -43,6 +43,11 @@ let theme = createTheme(
         fontWeight: 100,
         lineHeight: 3
       },
+      h4: {
+        fontSize: '1rem',
+        fontWeight: 600,
+        marginBottom: '10px',
+      },
       body1: {
         fontSize:13,
       },
