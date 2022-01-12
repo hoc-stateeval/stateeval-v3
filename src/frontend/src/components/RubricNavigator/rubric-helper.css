@@ -1,0 +1,384 @@
+.well {
+  min-height: 20px;
+  padding: 19px;
+  margin-bottom: 20px;
+  background-color: #f5f5f5;
+  border: 1px solid #e3e3e3;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px rgb(0 0 0 / 5%);
+}
+
+.rubric-helper .collapse {
+  display: none;
+  height:0px;
+}
+
+.rubric-helper .collapse.in {
+  display: block;
+  height:auto;
+}
+
+.rubric-helper {
+  display: block;
+}
+
+.rubric-helper .ct-sps-header-node-score {
+  display: inline-block;
+  border: 1px solid lightgray;
+  background-color: white;
+  font-size: 12px;
+  text-align: center;
+  line-height: 17px;
+  width: 18px;
+  margin-left: 4px;
+  border-radius: 3px;
+  font-weight: bold;
+  position: relative;
+}
+
+.rubric-helper .ct-sps-node-evals-in-report-count-active {
+  background-color: #18a689;
+  color: white;
+}
+
+.rubric-helper .item-header {
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.rubric-helper .framework-highlight {
+  font-size: 12px;
+  user-select: none;
+}
+
+.rubric-helper .framework-highlight .bordergreen {
+  border: solid 2px #1ab394;
+}
+
+.rubric-helper .framework-highlight .section-row div.node-name {
+  background: #2f4050;
+  border-top: solid 1px #2f4050;
+  color: white;
+  border-bottom: solid 1px #2f4050;
+}
+
+.rubric-helper .framework-highlight div.node-name, 
+.rubric-helper .framework-highlight div.row-name {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.rubric-helper .framework-highlight .disabled div.node-name {
+  background-color: #c2c2c2;
+  border-color: #c2c2c2;
+}
+
+.rubric-helper .framework-highlight .disabled .cell-1 {
+  color: #c2c2c2;
+}
+
+.rubric-helper .framework-highlight .disabled .cell-2 {
+  color: #c2c2c2;
+}
+
+.rubric-helper .framework-highlight .disabled .cell-3 {
+  display: none;
+}
+
+.rubric-helper .framework-highlight .done div.node-name {
+  background-color: #1ab394;
+  border-color: #1ab394;
+}
+
+.rubric-helper .framework-highlight .row-name {
+  border-right: solid 1px lightgrey;
+  border-top: solid 1px transparent;
+}
+
+.rubric-helper .framework-highlight .section {
+  background-color: #fff;
+  margin: 5px 0;
+}
+
+.rubric-helper .framework-highlight .section-row {
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+  overflow: hidden;
+  border-right: 1px solid #ddd;
+}
+
+.rubric-helper .framework-highlight .section-row > div {
+  line-height: 34px;
+  padding: 0px 0px;
+  flex-grow: 0;
+  border-bottom: solid 1px #eee;
+}
+
+.rubric-helper .framework-highlight .rubric-row {
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+}
+
+.rubric-helper .framework-highlight .cell-1 {
+  width: 40px;
+  min-width: 40px;
+  white-space: nowrap;
+  text-align: center;
+  font-weight: bold;
+}
+
+.rubric-helper .framework-highlight div.cell-2 {
+  flex-grow: 1;
+  border-width: 1px 0;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  line-height: 18px;
+  padding: 8px;
+  border-bottom: solid 1px #eee;
+  font-size: 12px;
+  position: relative;
+}
+
+.rubric-helper .framework-highlight .cell-3 {
+  flex-shrink: 0;
+  border-width: 1px 0;
+  border-style: solid;
+  border-color: transparent;
+  margin-right: 4px;
+}
+
+.rubric-helper .framework-highlight .selected {
+  border: 1px solid #18a689;
+}
+
+.rubric-helper .framework-highlight .node-row:hover {
+  border: solid 1px #cecece;
+}
+
+.rubric-helper .framework-highlight .rubric-row:hover {
+  background: #ececec;
+}
+
+.rubric-helper .framework-highlight .selected .cell-2, 
+.rubric-helper .framework-highlight .node-row:hover .cell-2 {
+  border: none;
+}
+
+.rubric-helper .framework-highlight .selected .cell-3, 
+.rubric-helper .framework-highlight .node-row:hover .cell-3 {
+  border: none;
+  margin-right: 4px;
+}
+
+.rubric-helper .framework-highlight .selected .cell-1, 
+.rubric-helper .framework-highlight .node-row:hover .cell-1 {
+  border-top: none;
+  border-bottom: none;
+}
+
+.rubric-helper .framework-highlight .selected div.node-name, 
+.rubric-helper .framework-highlight .node-row:hover div.node-name {
+  border: none;
+}
+
+.rubric-helper .framework-highlight .helper-switch, 
+.rubric-helper .framework-highlight .ctsps-mid-year-totals {
+  white-space: nowrap;
+}
+
+.rubric-helper .framework-highlight .helper-switch .node-score, 
+.rubric-helper .framework-highlight .ctsps-mid-year-totals .node-score {
+  display: inline-block;
+  border: 1px solid lightgray;
+  background-color: white;
+  font-size: 12px;
+  text-align: center;
+  line-height: 17px;
+  width: 18px;
+  margin-left: 4px;
+  border-radius: 3px;
+  font-weight: bold;
+  position: relative;
+}
+
+.rubric-helper .framework-highlight .helper-switch .node-score-inactive, 
+.rubric-helper .framework-highlight .ctsps-mid-year-totals .node-score-inactive {
+  width: 18px;
+  margin-left: 4px;
+  position: relative;
+  border: 0px solid white !important;
+}
+
+.rubric-helper .framework-highlight .helper-switch .node-evals-in-report-count-active, 
+.rubric-helper .framework-highlight .ctsps-mid-year-totals .node-evals-in-report-count-active {
+  background-color: #18a689;
+  color: white;
+}
+
+.rubric-helper .framework-highlight .node-row .helper-switch .node-score.active, 
+.rubric-helper .framework-highlight .rubric-row .helper-switch .node-score.active {
+  background: #2f4050;
+  color: white;
+  border-color: #2f4050;
+}
+
+.rubric-helper .framework-highlight .rubric-row .helper-switch .node-score.asterisk {
+  color: #18a689;
+  border-color: #18a689;
+}
+
+.rubric-helper .framework-highlight .helper-switch .node-score .score {
+  position: absolute;
+  background: #bdbdbd;
+  font-size: 8px;
+  width: 10px;
+  height: 10px;
+  line-height: 10px;
+  border-radius: 5px;
+  right: -5px;
+  bottom: -5px;
+}
+
+.rubric-helper .framework-highlight .helper-switch .node-score .score.active {
+  background: #18a689;
+}
+
+.rubric-helper .framework-highlight .helper-switch .node-score .include-in-report {
+  position: absolute;
+  background: #bdbdbd;
+  font-size: 8px;
+  width: 10px;
+  height: 10px;
+  line-height: 10px;
+  border-radius: 5px;
+  right: -5px;
+  bottom: -5px;
+}
+
+.rubric-helper .framework-highlight .helper-switch .node-score .include-in-report.active {
+  background: #18a689;
+  color: white;
+}
+
+.rubric-helper .framework-highlight.affix {
+  position: fixed;
+  top: 20px;
+  max-height: 95%;
+ /* bottom: 60px;
+ */
+  overflow-y: auto;
+  z-index: 1;
+}
+
+.rubric-helper .framework-highlight .node-row:hover {
+  border-color: #ddd;
+}
+
+.rubric-helper .framework-highlight .section-row:not(.disabled) div.node-name {
+  transition: background-color 0.15s ease;
+  border-color: #2f4050;
+  z-index: 100;
+  background: url(@images/helper-nav-indicator.png) 95% 1px no-repeat #2f4050;
+}
+
+.rubric-helper .framework-highlight .section-row:not(.disabled) div.node-name + .cell-2:before {
+  content: 'Navigate to summative view..';
+  opacity: 0;
+  position: absolute;
+  left: -50px;
+  transition: all ease-in 0.15s;
+  height: 100%;
+  margin-top: -8px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.rubric-helper .framework-highlight .section-row:not(.disabled) div.node-name + .cell-2 span {
+  transition: all ease-out 0.15s;
+}
+
+.rubric-helper .framework-highlight .section-row:not(.disabled) div.node-name:hover {
+  border-color: #7fb8ec;
+  background-color: #7fb8ec;
+  color: #2f4050;
+}
+
+.rubric-helper .framework-highlight .section-row:not(.disabled) div.node-name:hover + .cell-2:before {
+  opacity: 1;
+  left: 8px;
+}
+
+.rubric-helper .framework-highlight .section-row:not(.disabled) div.node-name:hover + .cell-2 span {
+  opacity: 0;
+}
+
+.rubric-helper .btn-group button {
+  min-width: 0;
+}
+
+.rubric-helper .hide-btn {
+  min-width: 0;
+  margin-left: 5px;
+}
+
+.rubric-helper .collection-score {
+  background-color: #3a4459;
+  color: white;
+  display: flex;
+  min-height: 34px;
+  align-items: center;
+}
+
+.rubric-helper .collection-score > div:first-child {
+  flex: 2 1 auto;
+  text-align: left;
+  padding: 5px 5px 5px 10px;
+}
+
+.rubric-helper .collection-score > div:last-child {
+  flex: 1 0 auto;
+  padding: 0 5px;
+}
+
+.rubric-helper .collection-score > div:last-child .btn-score {
+  display: inline-block;
+  border: 1px solid lightgray;
+  background-color: white;
+  color: grey;
+  font-size: 12px;
+  text-align: center;
+  line-height: 17px;
+  width: 18px;
+  margin-left: 4px;
+  border-radius: 3px;
+  font-weight: bold;
+  padding: 0;
+}
+
+.rubric-helper .collection-score > div:last-child .btn-score-active {
+  background-color: #18a689;
+  border-color: #18a689;
+  color: white;
+}
+
+.sub-heading .pull-left h4 {
+  margin-top: 10px;
+}
+
+.sub-heading .pull-right {
+  padding-top: 4px;
+}
+
+@media (min-width: 1200px) and (max-width: 1380px) {
+  .sub-heading .pull-left h4 {
+    width: 70px;
+    margin-top: 10px;
+ }
+  .sub-heading .pull-right {
+    padding-top: 13px;
+ }
+}

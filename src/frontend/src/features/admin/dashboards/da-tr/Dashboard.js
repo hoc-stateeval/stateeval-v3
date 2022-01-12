@@ -31,8 +31,8 @@ const Dashboard = () => {
     <>
       <Typography variant="h2">{pageTitle}</Typography>
       
-      <Box sx={{display:'flex', justifyContent:'space-between'}}>
-        <Box sx={{width:'80%'}}>
+      <Box sx={{display:'grid', gridTemplateColumns:'auto 300px'}}>
+        <Box>
           <Typography variant="h2" >
             {activeFrameworkNode?.shortName} - {activeFrameworkNode?.title}
           </Typography>
