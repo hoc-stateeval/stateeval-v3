@@ -284,7 +284,7 @@
   background: url(@images/helper-nav-indicator.png) 95% 1px no-repeat #2f4050;
 }
 
-.rubric-helper .framework-highlight .section-row:not(.disabled) div.node-name + .cell-2:before {
+/* .rubric-helper .framework-highlight .section-row:not(.disabled) div.node-name + .cell-2:before {
   content: 'Navigate to summative view..';
   opacity: 0;
   position: absolute;
@@ -295,7 +295,7 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-}
+} */
 
 .rubric-helper .framework-highlight .section-row:not(.disabled) div.node-name + .cell-2 span {
   transition: all ease-out 0.15s;
@@ -371,6 +371,10 @@
 
 .sub-heading .pull-right {
   padding-top: 4px;
+}
+
+.rubric-helper .rr-expand .node-name.cell-1 {
+  background-color: #18a689 !important;
 }
 
 @media (min-width: 1200px) and (max-width: 1380px) {

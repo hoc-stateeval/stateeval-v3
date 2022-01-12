@@ -40,21 +40,26 @@ const RubricNavigatorFrameworkNode = ({frameworkNode, toggleExpanded, expanded})
   const dispatch = useDispatch();
   const theme = useTheme();
 
-  //const [ expanded, setExpanded ] = useState(false);
+  // the old site had different behavior if you clicked the shortname vs
+  // the title, but it now just always switches framework ndoes when 
+  // you click on a different one.
 
-  const onClickFrameworkNodeShortName = () => {
+  const clickRow = () => {
     toggleExpanded(frameworkNode);
     dispatch(setActiveFrameworkNodeId(frameworkNode.id));
+    dispatch(setActiveRubricRowId(frameworkNode.rubricRows[0].id))
+  }
+  const onClickFrameworkNodeShortName = () => {
+    clickRow();
   }
 
   const onClickFrameworkNodeTitle = () => {
-    toggleExpanded(frameworkNode);
-    dispatch(setActiveFrameworkNodeId(frameworkNode.id));
+    clickRow();
   }
 
   return (
     <>
-      <Box className="section-row node-row">
+      <Box  className={`section-row node-row ${expanded ? "rr-expand" : ""}`}>
         <div className="node-name cell-1" onClick={()=>onClickFrameworkNodeShortName()}>{frameworkNode?.shortName} </div>
         <div className="cell-2" onClick={()=>onClickFrameworkNodeTitle()}>{frameworkNode.title}</div>
         <div className="cell-3"></div>
@@ -72,7 +77,6 @@ const RubricNavigatorFrameworkNode = ({frameworkNode, toggleExpanded, expanded})
 const RubricNavigator = () => {
 
   const activeFramework = useSelector(selectActiveFramework);
-
   const [expandedMap, setExpandedMap] = useState({});
 
   const toggleExpanded = (frameworkNode) => {
