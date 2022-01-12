@@ -1,9 +1,7 @@
-import { useState } from 'react';
+
 import { useSelector, useDispatch } from "react-redux";
-import { useTheme } from "@mui/material/styles";
 import {
   Box,
-  Stack,
   Typography,
 } from "@mui/material";
 
@@ -14,20 +12,21 @@ import {
 import {
   setActiveFrameworkNodeId,
   setActiveRubricRowId,
+  selectActiveRubricRowId,
+  selectActiveFrameworkNodeId
 } from "@rubric-navigator-slice";
 
 import './rubric-helper.css';
 
-const RubricNavigatorRubricRow = ({rubricRow}) => {
+const RubricNavigatorRubricRow = ({rubricRow, selected}) => {
   const dispatch = useDispatch();
-  const theme = useTheme();
 
   const onClickRubricRow = () => {
     dispatch(setActiveRubricRowId(rubricRow.id));
   }
 
   return (
-    <Box className="section-row rubric-row" onClick={()=>onClickRubricRow()} >
+    <Box className={`section-row rubric-row ${selected ? "selected" : ""}`} onClick={()=>onClickRubricRow()} >
         <Box className="row-name cell-1">{rubricRow?.shortName} </Box>
         <Box className="cell-2">{rubricRow.title}</Box>
         <Box className="cell-3"></Box>
@@ -35,17 +34,12 @@ const RubricNavigatorRubricRow = ({rubricRow}) => {
   )
 };
 
-const RubricNavigatorFrameworkNode = ({frameworkNode, toggleExpanded, expanded}) => {
+const RubricNavigatorFrameworkNode = ({frameworkNode, expanded}) => {
 
   const dispatch = useDispatch();
-  const theme = useTheme();
-
-  // the old site had different behavior if you clicked the shortname vs
-  // the title, but it now just always switches framework ndoes when 
-  // you click on a different one.
+  const activeRubricRowId = useSelector(selectActiveRubricRowId);
 
   const clickRow = () => {
-    toggleExpanded(frameworkNode);
     dispatch(setActiveFrameworkNodeId(frameworkNode.id));
     dispatch(setActiveRubricRowId(frameworkNode.rubricRows[0].id))
   }
@@ -67,7 +61,11 @@ const RubricNavigatorFrameworkNode = ({frameworkNode, toggleExpanded, expanded})
 
       <Box className={`${expanded ? "expand" : "collapse"}`}>
         {frameworkNode.rubricRows.map((x) => {
-          return (<RubricNavigatorRubricRow key={x.id} rubricRow={x} />);
+          return (<RubricNavigatorRubricRow 
+                    key={x.id} 
+                    rubricRow={x} 
+                    selected={x.id===activeRubricRowId}
+                    />);
         })}
       </Box>
     </>
@@ -77,22 +75,7 @@ const RubricNavigatorFrameworkNode = ({frameworkNode, toggleExpanded, expanded})
 const RubricNavigator = () => {
 
   const activeFramework = useSelector(selectActiveFramework);
-  const [expandedMap, setExpandedMap] = useState({});
-
-  const toggleExpanded = (frameworkNode) => {
-    let newMap = {...expandedMap};
-    let newValue = !newMap[frameworkNode.id];
-    for (const prop in newMap) {
-      newMap[prop] = false;
-    }
-    if (!expandedMap[frameworkNode.id]) {
-      newMap[frameworkNode.id] = true;
-    }
-    else {
-      newMap[frameworkNode.id] = newValue;
-    }
-    setExpandedMap(newMap);
-  }
+  const activeFrameworkNodeId = useSelector(selectActiveFrameworkNodeId);
 
   return (
     <>
@@ -104,8 +87,8 @@ const RubricNavigator = () => {
                 <RubricNavigatorFrameworkNode 
                   key={x.id} 
                   frameworkNode={x} 
-                  expanded={expandedMap[x.id] ?? false} 
-                  toggleExpanded={toggleExpanded} />
+                  expanded={x.id===activeFrameworkNodeId}
+                />
             </Box>
           ))}
         </Box>

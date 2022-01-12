@@ -302,8 +302,8 @@
 }
 
 .rubric-helper .framework-highlight .section-row:not(.disabled) div.node-name:hover {
-  border-color: #7fb8ec;
-  background-color: #7fb8ec;
+  border-color: #18a689; /*#7fb8ec;*/
+  background-color: #18a689; /* #7fb8ec;*/
   color: #2f4050;
 }
 

@@ -46,6 +46,11 @@ export const selectActiveFrameworkNode = createSelector(
   return frameworkNode;
 });
 
+export const selectActiveFrameworkNodeId = createSelector(
+  [getActiveFrameworkNode], (frameworkNode) => {
+  return frameworkNode?.id;
+});
+
 const getActiveRubricRow = (state) => {
   const { activeFrameworkNodeId, activeRubricRowId } = state.stateEval.rubricNavigator.ids;
   if (!activeFrameworkNodeId || !activeRubricRowId) return null;
@@ -65,6 +70,7 @@ const getActiveRubricRowId = (state) => {
   const { activeRubricRowId } = state.stateEval.rubricNavigator.ids;
   return activeRubricRowId;
 };
+
 export const selectActiveRubricRowId = createSelector(
   [getActiveRubricRowId], (id) => {
   return id;
