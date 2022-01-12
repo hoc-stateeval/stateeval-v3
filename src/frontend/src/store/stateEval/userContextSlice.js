@@ -348,18 +348,6 @@ export const selectActiveDistrictViewerEvaluatorId = createSelector(
   return id;
 });
 
-// const getCurrentNavRoutes = (state) => {
-//   const { navRoutes } = state.stateEval.userContext;
-//   return navRoutes;
-// }
-
-// export const selectActiveWorkAreaNavRoutes = createSelector(
-//   [getActiveWorkAreaContext, getCurrentNavRoutes], (activeWorkArea, currentNavRoutes) => {
-//     const activeRoutes = currentNavRoutes.length===0?
-//       []:currentNavRoutes.find(x=>x.workAreaTag === activeWorkArea.tagName).routes;
-//       return activeRoutes;
-//   });
-
 export const { 
   setActiveFrameworkId, 
   setActiveEvaluation,

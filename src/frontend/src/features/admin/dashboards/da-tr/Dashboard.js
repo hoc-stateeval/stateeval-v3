@@ -4,6 +4,8 @@ import { Typography } from "@mui/material";
 
 import { setPageTitle } from "@user-context-slice";
 
+import { RubricNavigator } from '@components';
+
 const Dashboard = () => {
   const dispatch = useDispatch();
   const pageTitle = "DA TR Dashboard";
@@ -17,6 +19,8 @@ const Dashboard = () => {
   return (
     <>
       <Typography variant="h2">{pageTitle}</Typography>
+      
+      <RubricNavigator/>
     </>
   );
 };

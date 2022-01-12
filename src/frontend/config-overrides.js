@@ -14,24 +14,8 @@ module.exports = function override(config) {
     "@images": "src/images",
     "@api-slice": "src/store/apiSlice",
     "@user-context-slice": "src/store/stateEval/userContextSlice",
+    "@rubric-navigator-slice": "src/store/stateEval/rubricNavigatorSlice",
   })(config);
 
   return config;
 };
-
-// const rewireAliases = require('react-app-rewire-alias');
-// const { paths } = require('react-app-rewired');
-// const path = require('path');
-
-// /* config-overrides.js */
-// module.exports = function override(config, env) {
-// 	config = rewireAliases.aliasesOptions({
-//     '@features': path.resolve(__dirname, `${paths.appSrc}/features`),
-// 		'@components': path.resolve(__dirname, `${paths.appSrc}/components`),
-//     '@routes': path.resolve(__dirname, `${paths.appSrc}/routes`),
-//     '@user-context-slice': path.resolve(__dirname, `${paths.appSrc}/store`),
-//     '@lib': path.resolve(__dirname, `${paths.appSrc}/lib`),
-//     '@images': path.resolve(__dirname, `${paths.appSrc}/images`),
-// 	})(config, env);
-//   return config;
-// }

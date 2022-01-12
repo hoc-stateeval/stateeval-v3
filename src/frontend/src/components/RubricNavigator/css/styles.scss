@@ -1,0 +1,71 @@
+
+$rubric-navigator-border-color: grey;
+$rubric-navigator-node-background-color: #2f4050;
+$rubric-navigator-node-text-color: white;
+$rubric-navigator-node-hover-background-color:#7FB8EC;
+$rubric-navigator-node-hover-text-color: #2F4050;
+
+.navigator .body {
+  border-bottom: 1px solid $rubric-navigator-border-color;
+  .fn,
+  .rr {
+     display:grid;
+     grid-template-columns:3rem auto;
+     grid-template-rows: 3rem;
+
+     >div {
+        height:3rem;
+        line-height:3rem;
+        border-left: 1px solid $rubric-navigator-border-color;
+        border-top: 1px solid $rubric-navigator-border-color;
+        cursor: pointer;
+     }
+     >div:first-child {
+        text-align:center;
+        width:3rem;
+     }
+     >div:nth-child(2) {
+        border-right: 1px solid $rubric-navigator-border-color;
+        padding:3px;
+        text-align:left;
+        width:auto;
+        //font-size: .75rem;
+     }
+  }
+
+  .fn {
+     >div:first-child {
+        background-color: $rubric-navigator-node-background-color;
+        color: $rubric-navigator-node-text-color;
+        font-weight: 700;
+        &:hover {
+           background-color: $rubric-navigator-node-hover-background-color;
+           color: $rubric-navigator-node-hover-text-color;
+        }
+     }
+     >div:nth-child(2) {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+     }
+  }
+
+  .rr {
+     >div:first-child {
+        font-weight: 700;
+     }
+     >div:nth-child(2) {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+     }
+  }
+
+  /* // ngx-rubric-navigator-rr.expanded {
+  //    display:block;
+  // }
+
+  // ngx-rubric-navigator-rr.collapsed {
+  //    display:none;
+  // } */
+}

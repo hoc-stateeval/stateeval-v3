@@ -64,12 +64,12 @@ namespace SE.Core.Queries
                 }
                 else if (workAreaContext.WorkArea.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DV_DE))
                 {
-                    var users = await _userService.GetUsersInRoleAtSchools(request.SchoolCode, RoleType.DE);
+                    var users = await _userService.GetUsersInRoleAtDistrict(request.SchoolCode, RoleType.DE);
                     return Response.Success(users);
                 }
                 else if (workAreaContext.WorkArea.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DV_DTE))
                 {
-                    var users = await _userService.GetUsersInRoleAtSchool(request.SchoolCode, RoleType.DTE);
+                    var users = await _userService.GetUsersInRoleAtDistrict(request.SchoolCode, RoleType.DTE);
                     return Response.Success(users);
                 }
                 else if (workAreaContext.WorkArea.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DV_CT))
