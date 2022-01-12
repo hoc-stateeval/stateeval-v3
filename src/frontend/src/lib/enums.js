@@ -43,6 +43,8 @@ export const WorkArea = {
   DTE: 'DTE',
   DA_TR: 'DA_TR',
   DA_PR: 'DA_PR',
+  DAM_TR: 'DAM_TR',
+  DAM_PR: 'DAM_PR',
   SA_TR: 'SA_TR',
   SA_PR: 'SA_PR',
   DV_PR_TR: 'DV_PR_TR',

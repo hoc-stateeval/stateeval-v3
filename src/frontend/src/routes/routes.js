@@ -1,7 +1,7 @@
 import { lazy } from 'react'
 
 import { WorkArea } from '@lib/enums';
-import { adminPaths, evaluationPaths, trainingPaths } from '@routes/paths';
+import { adminPaths, evaluationPaths, trainingPaths, districtViewerPaths } from '@routes/paths';
 
 /*
  * Training Routes Setup
@@ -82,7 +82,11 @@ const DeDashboard = lazy(() => import('@evaluation/dashboards/de/Dashboard'));
 const CtDashboard = lazy(() => import('@evaluation/dashboards/ct/Dashboard'));
 const PrMeDashboard = lazy(() => import('@evaluation/dashboards/pr-me/Dashboard'));
 const TrMeDashboard = lazy(() => import('@evaluation/dashboards/tr-me/Dashboard'));
-
+const DvPrPrDashboard = lazy(() => import('@district-viewer/dashboards/dv-pr-pr/Dashboard'));
+const DvPrTrDashboard = lazy(() => import('@district-viewer/dashboards/dv-pr-tr/Dashboard'));
+const DvCtDashboard = lazy(() => import('@district-viewer/dashboards/dv-ct/Dashboard'));
+const DvDeDashboard = lazy(() => import('@district-viewer/dashboards/dv-de/Dashboard'));
+const DvDteDashboard = lazy(() => import('@district-viewer/dashboards/dv-dte/Dashboard'));
 const ObservationsDashboard = lazy(() => import('@evaluation/observations/Dashboard'));
 const SelfAssessmentsDashboard = lazy(() => import('@evaluation/self-assessments/Dashboard'));
 const SummativeEvalDashboard = lazy(() => import('@evaluation/summative-eval/Dashboard'));
@@ -175,6 +179,20 @@ const adminRoutes_DA_PR = {
   ]
 };
 
+const adminRoutes_DAM_PR = {
+  workAreaTag: WorkArea.DAM_PR,
+  routes: [
+    {
+      path: adminPaths.assignmentsDistrictDetail,
+      element: <AssignmentsDistrictDetail/>
+    },
+    {
+      path: adminPaths.dvSetup,
+      element : <DvSetup/>,
+    },
+  ]
+};
+
 const adminRoutes_DA_TR = {
   workAreaTag: WorkArea.DA_TR,
   routes: [
@@ -205,6 +223,28 @@ const adminRoutes_DA_TR = {
     adminGeneralSettingsRoute,
 
     ...trainingRoutes,
+  ]
+} ;
+
+const adminRoutes_DAM_TR = {
+  workAreaTag: WorkArea.DAM_TR,
+  routes: [
+    {
+      path: adminPaths.assignmentsDistrictSummary,
+      element: <AssignmentsDistrictSummary/>
+    },
+    {
+      path: adminPaths.assignmentsSchoolDetail,
+      element : <AssignmentsSchoolDetail/>,
+    },
+    {
+      path: adminPaths.dteSetup,
+      element : <DteSetup/>,
+    },
+    {
+      path: adminPaths.dvSetup,
+      element : <DvSetup/>,
+    },
   ]
 } ;
 
@@ -376,10 +416,77 @@ const evaluationRoutes_TR_ME = {
   ]
 };
 
+const districtViewerRoutes_DV_PR_PR = {
+  workAreaTag: WorkArea.DV_PR_PR,
+  routes: [
+    {
+      path: districtViewerPaths.prPrDashboard,
+      element: <DvPrPrDashboard/>
+    },
+    ...evaluationRoutes_coreRoutes,
+
+    ...trainingRoutes,
+  ]
+};
+
+const districtViewerRoutes_DV_PR_TR = {
+  workAreaTag: WorkArea.DV_PR_TR,
+  routes: [
+    {
+      path: districtViewerPaths.prTrDashboard,
+      element: <DvPrTrDashboard/>
+    },
+    ...evaluationRoutes_coreRoutes,
+
+    ...trainingRoutes,
+  ]
+};
+
+const districtViewerRoutes_DV_DTE = {
+  workAreaTag: WorkArea.DV_DTE,
+  routes: [
+    {
+      path: districtViewerPaths.dteDashboard,
+      element: <DvDteDashboard/>
+    },
+    ...evaluationRoutes_coreRoutes,
+
+    ...trainingRoutes,
+  ]
+};
+
+const districtViewerRoutes_DV_DE = {
+  workAreaTag: WorkArea.DV_DE,
+  routes: [
+    {
+      path: districtViewerPaths.deDashboard,
+      element: <DvDeDashboard/>
+    },
+    ...evaluationRoutes_coreRoutes,
+
+    ...trainingRoutes,
+  ]
+};
+
+const districtViewerRoutes_DV_CT = {
+  workAreaTag: WorkArea.DV_CT,
+  routes: [
+    {
+      path: districtViewerPaths.ctDashboard,
+      element: <DvCtDashboard/>
+    },
+    ...evaluationRoutes_coreRoutes,
+
+    ...trainingRoutes,
+  ]
+};
+
 export const ROUTER_ROUTES = [
   // admin routes
   adminRoutes_DA_PR,
   adminRoutes_DA_TR,
+  adminRoutes_DAM_PR,
+  adminRoutes_DAM_TR,
   adminRoutes_SA_PR,
   adminRoutes_SA_TR,
   // evaluator routes
@@ -391,4 +498,10 @@ export const ROUTER_ROUTES = [
   // evaluatee routes
   evaluationRoutes_PR_ME,
   evaluationRoutes_TR_ME,
+  // district viewer routes
+  districtViewerRoutes_DV_PR_PR,
+  districtViewerRoutes_DV_PR_TR,
+  districtViewerRoutes_DV_DTE,
+  districtViewerRoutes_DV_DE,
+  districtViewerRoutes_DV_CT,
 ];

@@ -319,10 +319,16 @@ const adminRouteResources = {
   path: adminPaths.resources,
 };
 
-const adminRouteDvSetup =         {
+const adminRouteDvSetup = {
   title: 'District Viewer Setup',
   icon: <ArtifactsIcon fontSize="small" />,
   path: adminPaths.dvSetup,
+};
+
+const adminRouteDteSetup = {
+  title: 'DTE Setup',
+  icon: <ArtifactsIcon fontSize="small" />,
+  path: adminPaths.dteSetup,
 };
 
 const adminRouteSettings = {
@@ -374,6 +380,23 @@ const routes_DA_PR = {
   ]
 };
 
+const routes_DAM_PR = {
+  workAreaTag: WorkArea.DAM_PR,
+  sections: [
+    {
+      title: 'Evaluation Setup',
+      items: [
+        {
+          title: 'Assignments',
+          icon: <ArtifactsIcon fontSize="small" />,
+          path: adminPaths.assignmentsDistrictDetail,
+        },
+        adminRouteDvSetup,
+      ]
+    },
+  ]
+};
+
 const routes_DA_TR = {
   workAreaTag: WorkArea.DA_TR,
   sections: [
@@ -391,11 +414,7 @@ const routes_DA_TR = {
           icon: <ArtifactsIcon fontSize="small" />,
           path: adminPaths.assignmentsDistrictSummary,
         },
-        {
-          title: 'DTE Setup',
-          icon: <ArtifactsIcon fontSize="small" />,
-          path: adminPaths.dteSetup,
-        },
+        adminRouteDteSetup,
         adminRouteDvSetup,
         adminRouteSettings,
         adminRouteReports,
@@ -403,6 +422,24 @@ const routes_DA_TR = {
       ]
     },
     trainingSection,
+  ]
+};
+
+const routes_DAM_TR = {
+  workAreaTag: WorkArea.DAM_TR,
+  sections: [
+    {
+      title: 'Evaluation Setup',
+      items: [
+        {
+          title: 'Assignments',
+          icon: <ArtifactsIcon fontSize="small" />,
+          path: adminPaths.assignmentsDistrictSummary,
+        },
+        adminRouteDteSetup,
+        adminRouteDvSetup,
+      ]
+    },
   ]
 };
 
@@ -473,7 +510,7 @@ const routes_DV_PR_PR = {
         {
           title: 'Dashboard',
           icon: <GridViewIcon fontSize="small" />,
-          path: districtViewerPaths.prPr,
+          path: districtViewerPaths.prPrDashboard,
         }
       ]
     },
@@ -490,7 +527,7 @@ const routes_DV_PR_TR = {
         {
           title: 'Dashboard',
           icon: <GridViewIcon fontSize="small" />,
-          path: districtViewerPaths.prTr
+          path: districtViewerPaths.prTrDashboard
         }
       ]
     },
@@ -507,7 +544,7 @@ const routes_DV_DTE = {
         {
           title: 'Dashboard',
           icon: <GridViewIcon fontSize="small" />,
-          path: districtViewerPaths.dte,
+          path: districtViewerPaths.dteDashboard,
         },
       ]
     },
@@ -524,14 +561,13 @@ const routes_DV_DE = {
         {
           title: 'Dashboard',
           icon: <GridViewIcon fontSize="small" />,
-          path: districtViewerPaths.de,
+          path: districtViewerPaths.deDashboard,
         },
       ]
     },
     trainingSection,
   ]
 };
-
 
 const routes_DV_CT = {
   workAreaTag: WorkArea.DV_CT,
@@ -542,18 +578,22 @@ const routes_DV_CT = {
         {
           title: 'Dashboard',
           icon: <GridViewIcon fontSize="small" />,
-          path: districtViewerPaths.ct,
+          path: districtViewerPaths.ctDashboard,
         },
       ]
     },
     trainingSection,
   ]
 };
- 
+
 const SIDEBAR_ROUTES = [
     // admin - district
     routes_DA_PR,
     routes_DA_TR,
+
+    // district assignment manager
+    routes_DAM_PR,
+    routes_DAM_TR,
 
     // admin - school
     routes_SA_PR,

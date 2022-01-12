@@ -1,5 +1,5 @@
 import { WorkArea } from '@lib/enums';
-import { adminPaths, evaluationPaths } from '@routes/paths';
+import { adminPaths, evaluationPaths, districtViewerPaths } from '@routes/paths';
 
 const getDefaultPathForWorkAreaContext = (workAreaContext) => {
   switch (workAreaContext.tagName) {
@@ -7,6 +7,10 @@ const getDefaultPathForWorkAreaContext = (workAreaContext) => {
       return adminPaths.daPrDashboard;
     case WorkArea.DA_TR:
       return adminPaths.daTrDashboard;
+    case WorkArea.DAM_PR:
+      return adminPaths.assignmentsDistrictDetail;
+    case WorkArea.DAM_TR:
+      return adminPaths.assignmentsDistrictSummary;
     case WorkArea.SA_PR:
       return adminPaths.saPrDashboard;
     case WorkArea.SA_TR:
@@ -23,8 +27,18 @@ const getDefaultPathForWorkAreaContext = (workAreaContext) => {
       return evaluationPaths.prMeDashboard;
     case WorkArea.TR_ME:
       return evaluationPaths.trMeDashboard;
-      case WorkArea.CT:
-        return evaluationPaths.ctDashboard;
+    case WorkArea.CT:
+      return evaluationPaths.ctDashboard;
+    case WorkArea.DV_PR_PR:
+      return districtViewerPaths.prPrDashboard;
+    case WorkArea.DV_PR_TR:
+      return districtViewerPaths.prTrDashboard;
+    case WorkArea.DV_DTE:
+      return districtViewerPaths.dteDashboard;
+    case WorkArea.DV_DE:
+      return districtViewerPaths.deDashboard;    
+    case WorkArea.DV_CT:
+      return districtViewerPaths.ctDashboard;
     default:
       throw Error(`getDefaultPathForWorkAreaContext: unknown workArea: ${workAreaContext.tagName}`);
   }
