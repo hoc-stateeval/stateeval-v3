@@ -1,10 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { useTheme } from "@mui/material/styles";
-import { styled } from "@mui/material/styles";
 import {
   Box,
-  Paper,
   Stack,
   Typography,
 } from "@mui/material";
@@ -14,8 +12,8 @@ import {
 } from "@user-context-slice";
 
 import {
-  selectActiveFrameworkId,
-  selectActiveRubricRowId,
+  // selectActiveFrameworkNodeId,
+  // selectActiveRubricRowId,
   setActiveFrameworkNodeId,
   setActiveRubricRowId,
 } from "@rubric-navigator-slice";
@@ -92,9 +90,10 @@ const RubricNavigatorRubricRow = ({rubricRow}) => {
   }
 
   return (
-    <Box sx={{ ...getRowStyles(theme, false) }} >
-        <div className="rr" onClick={()=>onClickRubricRow()}>{rubricRow?.shortName} </div>
-        <div>{rubricRow.title}</div>
+    <Box onClick={()=>onClickRubricRow()} 
+      sx={{ ...getRowStyles(theme, false) }} >
+        <Box>{rubricRow?.shortName} </Box>
+        <Box>{rubricRow.title}</Box>
     </Box>
   )
 };
@@ -104,23 +103,28 @@ const RubricNavigatorFrameworkNode = ({frameworkNode}) => {
   const dispatch = useDispatch();
   const theme = useTheme();
 
-  // const [ expanded, setExpanded ] = useState(false);
+  const [ expanded, setExpanded ] = useState(false);
 
-  const onClickFrameworkNode = () => {
-    //dispatch(setActiveFrameworkNodeId(frameworkNode.id));
+  const onClickFrameworkNodeShortName = () => {
+    dispatch(setActiveFrameworkNodeId(frameworkNode.id));
+  }
+
+  const onClickFrameworkNodeTitle = () => {
+    setExpanded((prev)=>!prev);
+    dispatch(setActiveFrameworkNodeId(frameworkNode.id));
   }
 
   return (
     <>
       <Box sx={{ ...getRowStyles(theme, true) }} >
-        <div onClick={()=>onClickFrameworkNode()}>{frameworkNode?.shortName} </div>
-        <div>{frameworkNode.title}</div>
+        <div onClick={()=>onClickFrameworkNodeShortName()}>{frameworkNode?.shortName} </div>
+        <div onClick={()=>onClickFrameworkNodeTitle()}>{frameworkNode.title}</div>
       </Box>
 
       <div>
-        {frameworkNode.rubricRows.map((x)=>(
-          <RubricNavigatorRubricRow key={x.id} rubricRow={x} />
-        ))}
+        {frameworkNode.rubricRows.map((x) => {
+          return (expanded)? (<RubricNavigatorRubricRow key={x.id} rubricRow={x} />): (<></>);
+        })}
       </div>
     </>
   )
