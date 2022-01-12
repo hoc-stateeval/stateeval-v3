@@ -32,13 +32,33 @@ const rubricNavigatorSlice = createSlice({
   },
 });
 
-const getActiveFrameworkNodeId = (state) => {
+const getActiveFrameworkNode = (state) => {
   const { activeFrameworkNodeId } = state.stateEval.rubricNavigator.ids;
-  return activeFrameworkNodeId;
+  if (!activeFrameworkNodeId) return null;
+  const { activeFrameworkId } = state.stateEval.userContext.ids;
+  const { frameworks } = state.stateEval.userContext.entities;
+  const framework = frameworks[activeFrameworkId];
+  return framework.frameworkNodes.find(x=>x.id===activeFrameworkNodeId);
 };
-export const selectActiveFrameworkNodeId = createSelector(
-  [getActiveFrameworkNodeId], (id) => {
-  return id;
+
+export const selectActiveFrameworkNode = createSelector(
+  [getActiveFrameworkNode], (frameworkNode) => {
+  return frameworkNode;
+});
+
+const getActiveRubricRow = (state) => {
+  const { activeFrameworkNodeId, activeRubricRowId } = state.stateEval.rubricNavigator.ids;
+  if (!activeFrameworkNodeId || !activeRubricRowId) return null;
+  const { activeFrameworkId } = state.stateEval.userContext.ids;
+  const { frameworks } = state.stateEval.userContext.entities;
+  const framework = frameworks[activeFrameworkId];
+  const frameworkNode = framework.frameworkNodes.find(x=>x.id===activeFrameworkNodeId);
+  return frameworkNode.rubricRows.find(x=>x.id===activeRubricRowId);
+};
+
+export const selectActiveRubricRow = createSelector(
+  [getActiveRubricRow], (rubricRow) => {
+  return rubricRow;
 });
 
 const getActiveRubricRowId = (state) => {

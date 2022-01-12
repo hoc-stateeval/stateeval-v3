@@ -1,14 +1,25 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { Typography } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { 
+  Box,
+  Typography 
+} from "@mui/material";
 
 import { setPageTitle } from "@user-context-slice";
+
+import {
+  selectActiveFrameworkNode,
+  selectActiveRubricRow,
+} from "@rubric-navigator-slice";
 
 import { RubricNavigator } from '@components';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const pageTitle = "DA TR Dashboard";
+
+  const activeFrameworkNode = useSelector(selectActiveFrameworkNode);
+  const activeRubricRow = useSelector(selectActiveRubricRow);
 
   useEffect(() => {
     dispatch(setPageTitle(pageTitle));
@@ -20,7 +31,17 @@ const Dashboard = () => {
     <>
       <Typography variant="h2">{pageTitle}</Typography>
       
-      <RubricNavigator/>
+      <Box sx={{display:'flex', justifyContent:'space-between'}}>
+        <Box sx={{width:'80%'}}>
+          <Typography variant="h2" >
+            {activeFrameworkNode?.shortName} - {activeFrameworkNode?.title}
+          </Typography>
+          <Typography variant="h2">
+            {activeRubricRow?.shortName} - {activeRubricRow?.title}
+          </Typography>
+        </Box>
+        <RubricNavigator/>
+      </Box>
     </>
   );
 };

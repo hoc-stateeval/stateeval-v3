@@ -12,13 +12,12 @@ import {
 } from "@user-context-slice";
 
 import {
-  // selectActiveFrameworkNodeId,
-  // selectActiveRubricRowId,
   setActiveFrameworkNodeId,
   setActiveRubricRowId,
 } from "@rubric-navigator-slice";
 
 
+// TODO: move to theme
 const rubricNavigatorBorderColor = 'grey';
 const rubricNavigatorNodeBackgroundColor = '#2f4050';
 const rubricNavigatorNodeTextColor = 'white';
