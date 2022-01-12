@@ -7,6 +7,10 @@ const getDefaultPathForWorkAreaContext = (workAreaContext) => {
       return adminPaths.daPrDashboard;
     case WorkArea.DA_TR:
       return adminPaths.daTrDashboard;
+    case WorkArea.SA_PR:
+      return adminPaths.saPrDashboard;
+    case WorkArea.SA_TR:
+      return adminPaths.saTrDashboard;
     case WorkArea.DE:
       return evaluationPaths.deDashboard;
     case WorkArea.DTE:

@@ -30,6 +30,8 @@ const trainingRoutes = [
  */
 const DistrictAdminTeacherDashboard = lazy(() => import('@admin/dashboards/da-tr/Dashboard'));
 const DistrictAdminPrincipalDashboard = lazy(() => import('@admin/dashboards/da-pr/Dashboard'));
+const SchoolAdminTeacherDashboard = lazy(() => import('@admin/dashboards/sa-tr/Dashboard'));
+const SchoolAdminPrincipalDashboard = lazy(() => import('@admin/dashboards/sa-pr/Dashboard'));
 const AssignmentsDistrictSummary = lazy(() => import('@admin/assignments/AssignmentsDistrictSummary'));
 const AssignmentsDistrictDetail = lazy(() => import('@admin/assignments/AssignmentsDistrictDetail'));
 const AssignmentsSchoolDetail = lazy(() => import('@admin/assignments/AssignmentsSchoolDetail'));
@@ -206,6 +208,47 @@ const adminRoutes_DA_TR = {
   ]
 } ;
 
+
+const adminRoutes_SA_PR = {
+  workAreaTag: WorkArea.SA_PR,
+  routes: [
+    {
+      path: adminPaths.saPrDashboard,
+      element: <SchoolAdminPrincipalDashboard/>
+    },
+    adminPromptBankRoute,
+    {
+      path: adminPaths.assignmentsSchoolDetailRoot,
+      element: <AssignmentsDistrictDetail/>
+    },
+    adminResourcesRoute,
+    adminReportsRoute,
+    adminReportSettingsRoute,
+
+    ...trainingRoutes,
+  ]
+};
+
+const adminRoutes_SA_TR = {
+  workAreaTag: WorkArea.SA_TR,
+  routes: [
+    {
+      path: adminPaths.saTrDashboard,
+      element: <SchoolAdminTeacherDashboard/>
+    },
+    adminPromptBankRoute,
+    {
+      path: adminPaths.assignmentsSchoolDetailRoot,
+      element: <AssignmentsDistrictDetail/>
+    },
+    adminResourcesRoute,
+    adminReportsRoute,
+    adminReportSettingsRoute,
+
+    ...trainingRoutes,
+  ]
+};
+
 const evaluationRoutes_PR_TR = {
   workAreaTag: WorkArea.PR_TR,
   routes: [
@@ -258,6 +301,10 @@ const evaluationRoutes_DTE = {
     ...evaluationRoutes_coreRoutes,
 
     // admin section
+    {
+      path: adminPaths.assignmentsDistrictDetail,
+      element : <AssignmentsDistrictDetail/>,
+    },
     adminPromptBankRoute,
     adminReportSettingsRoute,
     
@@ -330,8 +377,11 @@ const evaluationRoutes_TR_ME = {
 };
 
 export const ROUTER_ROUTES = [
+  // admin routes
   adminRoutes_DA_PR,
   adminRoutes_DA_TR,
+  adminRoutes_SA_PR,
+  adminRoutes_SA_TR,
   // evaluator routes
   evaluationRoutes_PR_PR,
   evaluationRoutes_PR_TR,

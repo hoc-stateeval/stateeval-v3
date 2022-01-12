@@ -36,18 +36,27 @@ export const adminPaths = {
   saTrDashboard: `${adminDashboardsRoot}/sa-tr`,
 
   assignmentsRoot: `${assignmentsRoot}`,
+
+  // da-only
   assignmentsDistrictSummary: `${assignmentsRoot}/district-summary`,
   assignmentsDistrictDetail: `${assignmentsRoot}/district-detail`,
+
+  // district, school, and evaluator
   assignmentsSchoolDetailRoot: `${assignmentsSchoolDetailRoot}`,
   assignmentsSchoolDetail: `${assignmentsSchoolDetailRoot}/:schoolCode/:schoolName`,
 
+
   promptBankRoot: `${promptBankRoot}`,
 
+  // da-only
   dteSetup: `${adminRoot}/dte-setup`,
   dvSetup: `${adminRoot}/dv-setup`,
 
   settingsRoot: `${adminSettingsRoot}`,
+
+  // da-only
   settingsGeneral: `${adminSettingsRoot}/general`,
+
   settingsReports: `${adminSettingsRoot}/reports`,
 
   reports: `${adminRoot}/reports`,

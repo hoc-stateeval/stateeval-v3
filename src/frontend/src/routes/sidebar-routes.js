@@ -78,14 +78,6 @@ const evaluationSharedNavItems = {
     icon: <ReportArchivesIcon fontSize="small" />,
     path: evaluationPaths.reportArchives,
   },
-  settingsGeneral : {
-    title: 'General',
-    path: evaluationPaths.settingsGeneral,
-  },
-  settingsPromptBank: {
-    title: 'Prompt Bank',
-    path: evaluationPaths.settingsPromptBank,
-  },
   resources: {
     title: 'Resources',
     icon: <SummativeEvalIcon fontSize="small" />,
@@ -105,26 +97,26 @@ const evaluationCoreNavItems = [
   evaluationSharedNavItems.reportArchives
 ];
 
-const adminPromptNavItem = {
+const nestedPromptBankNavItem = {
   title: 'Prompt Bank',
   path: adminPaths.promptBankRoot,
 };
 
-const adminAssignmentsNavItem = {
+const nestedAssignmentsDistrictDetailNavItem = {
   title: 'Assignments',
+  path: adminPaths.assignmentsDistrictDetail,
+};
+
+const nestedAssignmentsSchoolDetailNavItem = {
+  title: 'Assignments',
+  icon: <GridViewIcon fontSize="small" />,
   path: adminPaths.assignmentsSchoolDetailRoot,
 };
 
-const adminReportSettingsNavItem = {
+const nestedReportSettingsNavItem = {
   title: 'Report Settings',
   path: adminPaths.settingsReports,
 };
-
-const evaluationEvaluatorSettingsNavItems = [
-  adminPromptNavItem,
-  adminAssignmentsNavItem,
-  adminReportSettingsNavItem
-];
 
 /*
  * Evaluation Routes - Evaluatees
@@ -185,8 +177,9 @@ const routes_PR_PR = {
           icon: <SettingsIcon fontSize="small" />,
           path: evaluationPaths.settingsRoot,
           children: [
-           ...evaluationEvaluatorSettingsNavItems
-           
+            nestedPromptBankNavItem,
+            nestedAssignmentsSchoolDetailNavItem,
+            nestedReportSettingsNavItem
           ],
         },
       ],
@@ -194,6 +187,7 @@ const routes_PR_PR = {
     trainingSection
   ]
 }
+
 const routes_PR_TR = {
   workAreaTag: WorkArea.PR_TR,
   sections: [
@@ -211,7 +205,9 @@ const routes_PR_TR = {
           icon: <SettingsIcon fontSize="small" />,
           path: evaluationPaths.settingsRoot,
           children: [
-            ...evaluationEvaluatorSettingsNavItems
+            nestedPromptBankNavItem,
+            nestedAssignmentsSchoolDetailNavItem,
+            nestedReportSettingsNavItem
           ],
         },
       ],
@@ -237,7 +233,9 @@ const routes_DE = {
           icon: <SettingsIcon fontSize="small" />,
           path: evaluationPaths.settingsRoot,
           children: [
-            ...evaluationEvaluatorSettingsNavItems
+            nestedPromptBankNavItem,
+            nestedAssignmentsDistrictDetailNavItem,
+            nestedReportSettingsNavItem
           ],
         },
       ],
@@ -263,7 +261,9 @@ const routes_DTE = {
           icon: <SettingsIcon fontSize="small" />,
           path: evaluationPaths.settingsRoot,
           children: [
-            ...evaluationEvaluatorSettingsNavItems
+            nestedPromptBankNavItem,
+            nestedAssignmentsDistrictDetailNavItem,
+            nestedReportSettingsNavItem
           ],
         },
       ],
@@ -341,6 +341,12 @@ const adminRouteSettings = {
   ],
 };
 
+const schoolAdminReportSettings = {
+  title: 'Report Settings',
+  icon: <ArtifactsIcon fontSize="small" />,
+  path: adminPaths.settingsReports,
+}
+
 const routes_DA_PR = {
   workAreaTag: WorkArea.DA_PR,
   sections: [
@@ -415,10 +421,11 @@ const routes_SA_PR = {
         {
           title: 'Assignments',
           icon: <ArtifactsIcon fontSize="small" />,
-          path: adminPaths.assignmentsSchoolDetail,
+          path: adminPaths.assignmentsSchoolDetailRoot,
         },
-        adminReportSettingsNavItem,
+        schoolAdminReportSettings,
         adminRouteReports,
+      
         adminRouteResources,
       ]
     },
@@ -441,9 +448,9 @@ const routes_SA_TR = {
         {
           title: 'Assignments',
           icon: <ArtifactsIcon fontSize="small" />,
-          path: adminPaths.assignmentsSchoolDetail,
+          path: adminPaths.assignmentsSchoolDetailRoot,
         },
-        adminReportSettingsNavItem,
+        schoolAdminReportSettings,
         adminRouteReports,
         adminRouteResources,
       ]
