@@ -71,6 +71,11 @@ export const apiSlice = createApi({
   tagTypes: [],
   endpoints: builder => ({
 
+    // evidenceItems
+    getEvidenceItemsForCollection: builder.mutation({
+      query: (data) => ({url: `evidenceItems/${data.evidenceCollectionType}/${data.evidenceCollectionObjectId}`, method: 'get'})
+    }),
+
     // evaluations
     updateEvaluationSetEvaluator: builder.mutation({
       query(data) {
@@ -82,7 +87,6 @@ export const apiSlice = createApi({
       },
     }),
 
-    // evaluations
     updateEvaluationSetPlanType: builder.mutation({
       query: (data) => ({url: `evaluations/${data.evaluationId}/update-plantype`, method: 'get'})
     }),
@@ -156,6 +160,7 @@ export const apiSlice = createApi({
     updateSchoolConfigurationBatchEvaluationSetupDelegation: builder.mutation({
       query: (data) => ({url:`school-configurations/${data.frameworkContextId}/delegate-evaluation-setup`, method: 'put', data: data})
     }),
+
   })
 })
 

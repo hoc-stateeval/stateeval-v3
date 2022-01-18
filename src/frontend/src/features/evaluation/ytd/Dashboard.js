@@ -1,12 +1,56 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { 
+  Box,
+  Button,
+  Stack,
+  Typography 
+} from "@mui/material";
+
+import { setPageTitle } from "@user-context-slice";
 
 import {
-  Typography,
-} from '@mui/material';
+  selectActiveFrameworkNode,
+  selectActiveRubricRow,
+} from "@rubric-navigator-slice";
+
+import { RubricNavigator } from '@components';
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
+  const pageTitle = "DA TR Dashboard";
+
+  const activeFrameworkNode = useSelector(selectActiveFrameworkNode);
+  const activeRubricRow = useSelector(selectActiveRubricRow);
+
+  useEffect(() => {
+    dispatch(setPageTitle(pageTitle));
+    // throw Error("something happened");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
-      <Typography variant="h2">YTD Dashboard</Typography>
+      <Typography variant="h2">{pageTitle}</Typography>
+      
+      <Box sx={{display:'grid', gridTemplateColumns:'auto 300px'}}>
+        <Box>
+          <Typography variant="h2" >
+            {activeFrameworkNode?.shortName} - {activeFrameworkNode?.title}
+          </Typography>
+          <Typography variant="h2">
+            {activeRubricRow?.shortName} - {activeRubricRow?.title}
+          </Typography>
+
+          <Box>
+            
+          </Box>
+
+  
+          <Button variant="contained">Add Other Evidence</Button>
+        </Box>
+        <RubricNavigator/>
+      </Box>
     </>
   );
 };
