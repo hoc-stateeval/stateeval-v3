@@ -101,14 +101,12 @@ SELECT @PR_WfStateID = 12 -- 'SGBUNDLE PROCESS-COMPLETE'
 
 INSERT dbo.StudentGrowthGoalBundle(
 	EvaluationID, 
-	WfState, 
-	EvaluationType, 
+	WfState,  
 	InRevision,
 	SharingDraft,
 	EvaluatorScoresShared) 
 SELECT e.Id,
 	   CASE @EvaluationType WHEN 2 THEN @TR_WfStateID ELSE @PR_WfStateID END,
-	   @EvaluationType,
 	   0,
 	   0,
 	   0

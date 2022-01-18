@@ -11,7 +11,12 @@ namespace SE.Domain.Entities
     [Table("StudentGrowthGoalBundle")]
     public class StudentGrowthGoalBundle : BaseEntity
     {
-        public EvaluationType EvaluationType { get; set; }
+        [ForeignKey("Evaluation")]
+        public long EvaluationId { get; }
+
+        [Required]
+        public virtual Evaluation Evaluation { get; set; }
+
         public WfState WfState { get; set; }
         public bool InRevision { get; set; }
         public string EvaluatorProcessConfNotes { get; set; }
@@ -25,13 +30,6 @@ namespace SE.Domain.Entities
         public DateTime? GoalSettingConfDateTime { get; set; }
         public DateTime? ProcessCompleteDateTime { get; set; }
         public DateTime? ProcessSharedDateTime { get; set; }
-
-
-        [ForeignKey("Evaluation")]
-        public long EvaluationId { get; set; }
-
-        [Required]
-        public virtual Evaluation Evaluation { get; set; }
 
         public virtual List<StudentGrowthGoal> Goals { get; set; }
     }

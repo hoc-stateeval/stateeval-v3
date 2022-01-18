@@ -14,6 +14,7 @@ namespace SE.Domain.Entities
         public DateTime CreationDateTime { get; set; }
         public bool IsActive { get; set; }
         public string DeactivateMessage { get; set; }
+        
         public WfState WfState { get; set; }
 
         [MaxLength(20)]

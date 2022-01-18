@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using SE.Core.Commands;
 using SE.Core.Queries;
 using SE.Domain.Entities;
+using SE.Core.Commands.SchoolConfigurations;
+using SE.Core.Queries.SchoolConfigurations;
 
 namespace SE.API.Controllers
 {

@@ -22,6 +22,7 @@ using System.Text.Json;
 using System.Net;
 using SE.Core.Common.Exceptions;
 using Serilog.Sinks.MSSqlServer;
+using SE.Core.Queries.Frameworks;
 
 const string ApiCorsPolicy = "APICorsPolicy";
 

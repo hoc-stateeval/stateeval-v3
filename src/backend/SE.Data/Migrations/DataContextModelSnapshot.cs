@@ -370,6 +370,103 @@ namespace SE.Data.Migrations
                     b.ToTable("Evaluation", "dbo");
                 });
 
+            modelBuilder.Entity("SE.Domain.Entities.EvidenceItem", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<long>("CreatedByUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreationDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("EvaluationId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("EvidenceCollectionObjectId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("EvidenceCollectionType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EvidenceText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EvidenceType")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("ObservationNoteClientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("RubricRowId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserPromptResponseId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("RubricRowId");
+
+                    b.HasIndex("UserPromptResponseId");
+
+                    b.ToTable("EvidenceItems", "dbo");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.EvidencePackage", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("AdditionalInput")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("CreatedByUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreationDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PerformanceLevel")
+                        .HasColumnType("int");
+
+                    b.Property<long>("RubricRowId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("RubricStatement")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.ToTable("EvidencePackage", "dbo");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.EvidencePackageEvidenceItem", b =>
+                {
+                    b.Property<long>("EvidencePackageId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("EvidenceItemId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("EvidencePackageId", "EvidenceItemId");
+
+                    b.HasIndex("EvidenceItemId");
+
+                    b.ToTable("EvidencePackageEvidenceItem", "dbo");
+                });
+
             modelBuilder.Entity("SE.Domain.Entities.Framework", b =>
                 {
                     b.Property<long>("Id")
@@ -573,8 +670,14 @@ namespace SE.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
+                    b.Property<long>("CreatedByUserId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("CreationDateTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<long>("EvaluateeId")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("EvaluateePlanType")
                         .HasColumnType("int");
@@ -597,7 +700,12 @@ namespace SE.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EvaluationId");
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("EvaluateeId");
+
+                    b.HasIndex("EvaluationId")
+                        .IsUnique();
 
                     b.HasIndex("EvaluatorId");
 
@@ -761,6 +869,46 @@ namespace SE.Data.Migrations
                     b.ToTable("SchoolConfiguration", "dbo");
                 });
 
+            modelBuilder.Entity("SE.Domain.Entities.SelfAssessment", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<long>("CreatedByUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreationDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EvaluateePlanType")
+                        .HasColumnType("int");
+
+                    b.Property<long>("EvaluationId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ShortName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("EvaluationId")
+                        .IsUnique();
+
+                    b.ToTable("SelfAssessment", "dbo");
+                });
+
             modelBuilder.Entity("SE.Domain.Entities.StudentGrowthGoal", b =>
                 {
                     b.Property<long>("Id")
@@ -837,9 +985,6 @@ namespace SE.Data.Migrations
                     b.Property<long>("EvaluationId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("EvaluationType")
-                        .HasColumnType("int");
-
                     b.Property<string>("EvaluatorEoyconfNotes")
                         .HasColumnType("nvarchar(max)");
 
@@ -872,7 +1017,8 @@ namespace SE.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EvaluationId");
+                    b.HasIndex("EvaluationId")
+                        .IsUnique();
 
                     b.ToTable("StudentGrowthGoalBundle", "dbo");
                 });
@@ -955,6 +1101,131 @@ namespace SE.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserBuildingRole", "dbo");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.UserPrompt", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<bool>("CreatedAsAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("CreatedByUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("EvaluationId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("FrameworkContextId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("ObservationId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("Private")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Prompt")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PromptType")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Retired")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SchoolCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<short>("Sequence")
+                        .HasColumnType("smallint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserPrompts", "dbo");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.UserPromptGroup", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<bool>("CreatedAsAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("CreatedByUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("FrameworkContextId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PromptType")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("SGFrameworkNodeId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("SchoolCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserPromptGroup", "dbo");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.UserPromptGroupUserPrompt", b =>
+                {
+                    b.Property<long>("UserPromptGroupId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserPromptId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("UserPromptGroupId", "UserPromptId");
+
+                    b.HasIndex("UserPromptId");
+
+                    b.ToTable("UserPromptGroupUserPrompt", "dbo");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.UserPromptResponse", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<bool>("DefaultAssignment")
+                        .HasColumnType("bit");
+
+                    b.Property<long?>("EvaluationId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("LastModifiedDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Response")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("UserPromptId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserPromptId");
+
+                    b.ToTable("UserPromptResponses", "dbo");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.WorkArea", b =>
@@ -1107,6 +1378,61 @@ namespace SE.Data.Migrations
                     b.Navigation("NextYearFocusedSGframeworkNode");
                 });
 
+            modelBuilder.Entity("SE.Domain.Entities.EvidenceItem", b =>
+                {
+                    b.HasOne("SE.Domain.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SE.Domain.Entities.RubricRow", "RubricRow")
+                        .WithMany()
+                        .HasForeignKey("RubricRowId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SE.Domain.Entities.UserPromptResponse", "UserPromptResponse")
+                        .WithMany()
+                        .HasForeignKey("UserPromptResponseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("RubricRow");
+
+                    b.Navigation("UserPromptResponse");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.EvidencePackage", b =>
+                {
+                    b.HasOne("SE.Domain.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.EvidencePackageEvidenceItem", b =>
+                {
+                    b.HasOne("SE.Domain.Entities.EvidenceItem", null)
+                        .WithMany("EvidencePackageEvidenceItems")
+                        .HasForeignKey("EvidenceItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SE.Domain.Entities.EvidencePackage", "EvidencePackage")
+                        .WithMany("EvidencePackageEvidenceItems")
+                        .HasForeignKey("EvidencePackageId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("EvidencePackage");
+                });
+
             modelBuilder.Entity("SE.Domain.Entities.FrameworkContext", b =>
                 {
                     b.HasOne("SE.Domain.Entities.Framework", "DefaultFramework")
@@ -1205,10 +1531,22 @@ namespace SE.Data.Migrations
 
             modelBuilder.Entity("SE.Domain.Entities.Observation", b =>
                 {
-                    b.HasOne("SE.Domain.Entities.Evaluation", "Evaluation")
+                    b.HasOne("SE.Domain.Entities.User", "CreatedByUser")
                         .WithMany()
-                        .HasForeignKey("EvaluationId")
+                        .HasForeignKey("CreatedByUserId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SE.Domain.Entities.User", "Evaluatee")
+                        .WithMany()
+                        .HasForeignKey("EvaluateeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SE.Domain.Entities.Evaluation", "Evaluation")
+                        .WithOne()
+                        .HasForeignKey("SE.Domain.Entities.Observation", "EvaluationId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SE.Domain.Entities.User", "Evaluator")
@@ -1216,6 +1554,10 @@ namespace SE.Data.Migrations
                         .HasForeignKey("EvaluatorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("Evaluatee");
 
                     b.Navigation("Evaluation");
 
@@ -1238,6 +1580,25 @@ namespace SE.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("FrameworkContext");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.SelfAssessment", b =>
+                {
+                    b.HasOne("SE.Domain.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SE.Domain.Entities.Evaluation", "Evaluation")
+                        .WithOne()
+                        .HasForeignKey("SE.Domain.Entities.SelfAssessment", "EvaluationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("Evaluation");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.StudentGrowthGoal", b =>
@@ -1286,9 +1647,9 @@ namespace SE.Data.Migrations
             modelBuilder.Entity("SE.Domain.Entities.StudentGrowthGoalBundle", b =>
                 {
                     b.HasOne("SE.Domain.Entities.Evaluation", "Evaluation")
-                        .WithMany()
-                        .HasForeignKey("EvaluationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithOne()
+                        .HasForeignKey("SE.Domain.Entities.StudentGrowthGoalBundle", "EvaluationId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Evaluation");
@@ -1319,6 +1680,32 @@ namespace SE.Data.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.UserPromptGroupUserPrompt", b =>
+                {
+                    b.HasOne("SE.Domain.Entities.UserPromptGroup", "UserPromptGroup")
+                        .WithMany("UserPromptGroupUserPrompts")
+                        .HasForeignKey("UserPromptGroupId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SE.Domain.Entities.UserPrompt", null)
+                        .WithMany("UserPromptGroupUserPrompts")
+                        .HasForeignKey("UserPromptId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserPromptGroup");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.UserPromptResponse", b =>
+                {
+                    b.HasOne("SE.Domain.Entities.UserPrompt", null)
+                        .WithMany("Responses")
+                        .HasForeignKey("UserPromptId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.WorkArea", b =>
@@ -1375,6 +1762,16 @@ namespace SE.Data.Migrations
                     b.Navigation("WorkArea");
                 });
 
+            modelBuilder.Entity("SE.Domain.Entities.EvidenceItem", b =>
+                {
+                    b.Navigation("EvidencePackageEvidenceItems");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.EvidencePackage", b =>
+                {
+                    b.Navigation("EvidencePackageEvidenceItems");
+                });
+
             modelBuilder.Entity("SE.Domain.Entities.Framework", b =>
                 {
                     b.Navigation("FrameworkNodes");
@@ -1402,6 +1799,18 @@ namespace SE.Data.Migrations
                     b.Navigation("UserBuildingRoles");
 
                     b.Navigation("WorkAreaContexts");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.UserPrompt", b =>
+                {
+                    b.Navigation("Responses");
+
+                    b.Navigation("UserPromptGroupUserPrompts");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.UserPromptGroup", b =>
+                {
+                    b.Navigation("UserPromptGroupUserPrompts");
                 });
 #pragma warning restore 612, 618
         }

@@ -21,7 +21,6 @@ namespace SE.Data.Configuration
         {
             base.Configure(builder);
 
-
             builder
                 .HasOne(x => x.GoalBundle)
                 .WithMany()

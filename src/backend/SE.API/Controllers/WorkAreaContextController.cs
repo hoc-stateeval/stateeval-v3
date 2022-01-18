@@ -3,6 +3,7 @@ using MediatR;
 using SE.API.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SE.Core.Queries;
+using SE.Core.Queries.WorkAreaContexts;
 
 namespace SE.API.Controllers
 {

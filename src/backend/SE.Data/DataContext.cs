@@ -14,6 +14,8 @@ namespace SE.Data
         public DbSet<Building> Buildings { get; set; }
         public DbSet<DistrictConfiguration> DistrictConfigurations { get; set; }
         public DbSet<Evaluation> Evaluations { get; set; }
+        public DbSet<EvidenceItem> EvidenceItems { get; set; }
+        public DbSet<EvidencePackage> EvidencePackages { get; set; }
         public DbSet<Framework> Frameworks { get; set; }
         public DbSet<FrameworkContext> FrameworkContexts { get; set; }
         public DbSet<Observation> Observations { get; set; }
@@ -21,6 +23,9 @@ namespace SE.Data
         public DbSet<SchoolConfiguration> SchoolConfigurations { get; set;}
         public DbSet<User> Users { get; set; }
         public DbSet<UserBuildingRole> UserBuildingRoles { get; set; }  
+        public DbSet<UserPromptGroup> UserPromptGroups { get; set; }
+        public DbSet<UserPrompt> UserPrompts { get; set; }
+        public DbSet<UserPromptResponse> UserPromptResponses { get; set; }
         public DbSet<WorkAreaContext> WorkAreaContexts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

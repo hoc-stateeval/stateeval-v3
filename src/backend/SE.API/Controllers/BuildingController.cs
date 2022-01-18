@@ -3,6 +3,7 @@ using SE.API.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SE.Core.Queries;
 using SE.Domain.Entities;
+using SE.Core.Queries.Buildings;
 
 namespace SE.API.Controllers
 {

@@ -20,9 +20,19 @@ namespace SE.Data.Configuration
         {
             base.Configure(builder);
 
-           builder.HasOne(x => x.Evaluator)
+            builder.HasOne(x => x.Evaluatee)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(x => x.Evaluator)
+                 .WithMany()
+                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder
+                 .HasOne(x => x.Evaluation)
+                 .WithOne()
+                 .IsRequired()
+                 .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

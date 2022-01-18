@@ -19,7 +19,6 @@ namespace SE.Data.Configuration
         public override void Configure(EntityTypeBuilder<Evaluation> builder)
         {
             base.Configure(builder);
-
         }
     }
 }

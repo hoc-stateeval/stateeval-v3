@@ -1,5 +1,7 @@
 ﻿using FluentAssertions;
 using SE.Core.Commands;
+using SE.Core.Commands.Evaluations;
+using SE.Core.Commands.Users;
 using SE.Core.Common;
 using SE.Core.Models;
 using SE.Domain.Entities;

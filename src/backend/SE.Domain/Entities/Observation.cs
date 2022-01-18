@@ -9,21 +9,23 @@ using System.Threading.Tasks;
 namespace SE.Domain.Entities
 {
     [Table("Observation")]
-    public class Observation : BaseEntity
+    public class Observation : BaseRecurringEvidenceCollection 
     {
-        [MaxLength(50)]
-        [Required]
-        public string ShortName { get; set; }
+        public Observation() { 
+        }
 
-        [MaxLength(250)]
-        [Required]
-        public string Title { get; set; }
-        public DateTime CreationDateTime { get; set; }
-
-        public EvaluateePlanType EvaluateePlanType { get; set;}
+        public Observation(Evaluation evaluation, User evaluator, string shortName)
+        {
+            CreationDateTime = DateTime.Now;
+            EvaluateePlanType = (EvaluateePlanType)evaluation.EvaluateePlanType;
+            EvaluationId = evaluation.Id;
+            EvaluatorId = evaluation.Id;
+            ShortName = shortName;
+            Title = shortName;
+        }
 
         [ForeignKey("Evaluation")]
-        public long EvaluationId { get; set; }
+        public long EvaluationId { get; }
 
         [Required]
         public virtual Evaluation Evaluation { get; set; }
@@ -33,6 +35,14 @@ namespace SE.Domain.Entities
 
         [Required]
         public virtual User Evaluator { get; set; }
+
+        [ForeignKey("Evaluatee")]
+        public long EvaluateeId { get; set; }
+
+        [Required]
+        public virtual User Evaluatee { get; set; }
+
+        public EvaluateePlanType EvaluateePlanType { get; set; }
 
     }
 }

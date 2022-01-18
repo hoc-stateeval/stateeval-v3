@@ -9,11 +9,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SE.Core.Common.Exceptions;
 
 namespace SE.Core.Services
 {
     public interface IEvaluationService
     {
+        public Task<Evaluation> GetEvaluationById(long id);
         public IQueryable<EvaluationSummaryDTO> ExecuteEvaluationSummaryDTOQuery(System.Linq.Expressions.Expression<System.Func<Evaluation, bool>> expr);
         public Task<List<EvaluationSummaryDTO>> GetEvaluationsForWorkAreaContext(WorkAreaContext workAreaContext);
     }
@@ -25,6 +27,21 @@ namespace SE.Core.Services
         {
             _dataContext = dataContext;
         }
+
+        public async Task<Evaluation> GetEvaluationById(long id)
+        {
+            Evaluation? evaluation = await _dataContext.Evaluations
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (evaluation == null)
+            {
+                throw new NotFoundException(nameof(Observation), id);
+            }
+
+            return evaluation;
+        }
+
 
         public async Task<List<EvaluationSummaryDTO>> GetEvaluationsForWorkAreaContext(WorkAreaContext workAreaContext)
         {

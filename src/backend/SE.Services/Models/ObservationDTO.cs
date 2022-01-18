@@ -10,9 +10,12 @@ namespace SE.Core.Models
     public class ObservationDTO
     {
         public long Id { get; set; }
+        public long EvaluationId { get; set; }
         public string ShortName { get; set; } = "";
         public string Title { get; set; } = "";
         public EvaluateePlanType EvaluateePlanType { get; set; }
         public DateTime CreationDateTime { get; set; }
+
+        public Guid? ObservationNoteClientId { get; set; }
     }
 }

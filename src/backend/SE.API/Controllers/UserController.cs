@@ -5,6 +5,9 @@ using SE.Core.Commands;
 using SE.Core.Queries;
 using SE.Domain.Entities;
 using SE.API.Authorization;
+using SE.Core.Commands.Authentication;
+using SE.Core.Queries.Users;
+using SE.Core.Queries.Evaluators;
 
 namespace SE.API.Controllers
 {

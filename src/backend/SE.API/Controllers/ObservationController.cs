@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SE.Core.Queries;
 using SE.Core.Commands;
 using SE.Core.Models;
+using SE.Core.Commands.Observations;
 
 namespace SE.API.Controllers
 {

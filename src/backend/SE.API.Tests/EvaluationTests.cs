@@ -11,6 +11,8 @@ using FluentValidation;
 using FluentAssertions;
 using SE.Domain.Entities;
 using SE.Core.Commands;
+using SE.Core.Commands.Evaluations;
+using SE.Core.Commands.Users;
 
 namespace SE.API.Tests
 {
