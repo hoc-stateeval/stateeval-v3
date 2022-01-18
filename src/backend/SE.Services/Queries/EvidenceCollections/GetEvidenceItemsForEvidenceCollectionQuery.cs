@@ -13,7 +13,7 @@ using SE.Core.Models;
 using SE.Core.Common;
 using SE.Core.Mappers;
 
-namespace SE.Core.Queries.Observations
+namespace SE.Core.Queries.EvidenceCollections
 {
     public class GetEvidenceItemsForEvidenceCollectionQueryValidator
     : AbstractValidator<GetEvidenceItemsForEvidenceCollectionQuery>
@@ -29,8 +29,8 @@ namespace SE.Core.Queries.Observations
         public long EvidenceCollectionObjectId { get; }
 
         public GetEvidenceItemsForEvidenceCollectionQuery(
-            long evidenceCollectionObjectId, 
-            EvidenceCollectionType evidenceCollectionType)
+            EvidenceCollectionType evidenceCollectionType,
+            long evidenceCollectionObjectId)
         {
             EvidenceCollectionObjectId = evidenceCollectionObjectId;
             EvidenceCollectionType = evidenceCollectionType;

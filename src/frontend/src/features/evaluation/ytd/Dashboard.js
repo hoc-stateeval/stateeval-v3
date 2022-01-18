@@ -4,10 +4,15 @@ import {
   Box,
   Button,
   Stack,
+  TextField,
   Typography 
 } from "@mui/material";
 
-import { setPageTitle } from "@user-context-slice";
+import { EvidenceCollectionType, EvidenceType } from "@lib/enums"
+
+import { setPageTitle, selectActiveEvaluationId, selectCurrentUser } from "@user-context-slice";
+
+import { useCreateEvidenceItemMutation } from "@api-slice";
 
 import {
   selectActiveFrameworkNode,
@@ -22,12 +27,30 @@ const Dashboard = () => {
 
   const activeFrameworkNode = useSelector(selectActiveFrameworkNode);
   const activeRubricRow = useSelector(selectActiveRubricRow);
+  const activeEvaluationId = useSelector(selectActiveEvaluationId);
+  const currentUser = useSelector(selectCurrentUser);
+
+  const [createEvidenceItem] = useCreateEvidenceItemMutation();
 
   useEffect(() => {
     dispatch(setPageTitle(pageTitle));
     // throw Error("something happened");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const onClickAddOtherEvidence = (e) => {
+    let data = {
+      evidenceCollectionType: EvidenceCollectionType.OTHER_EVIDENCE,
+      evidenceType: EvidenceType.RUBRIC_ROW_NOTE,
+      evidenceCollectionObjectId: activeEvaluationId,
+      evaluationId: activeEvaluationId,
+      rubricRowId: activeRubricRow.id,
+      createdByUserId: currentUser,
+      evidenceText: e.target.value,
+      public: true, 
+    }
+    createEvidenceItem(data);
+  }
 
   return (
     <>
@@ -42,12 +65,24 @@ const Dashboard = () => {
             {activeRubricRow?.shortName} - {activeRubricRow?.title}
           </Typography>
 
-          <Box>
-            
+          <Box
+            component="form"
+            noValidate
+            autoComplete="off"
+          >
+            <Stack spacing={3}>
+              <TextField
+                id="standard-multiline-flexible"
+                label="Multiline"
+                multiline
+                maxRows={4}
+                // value={value}
+                variant="standard"
+              />
+              <Button variant="contained" onClick={onClickAddOtherEvidence}>Add Other Evidence</Button>
+            </Stack>
           </Box>
-
   
-          <Button variant="contained">Add Other Evidence</Button>
         </Box>
         <RubricNavigator/>
       </Box>

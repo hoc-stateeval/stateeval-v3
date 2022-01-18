@@ -384,7 +384,8 @@ namespace SE.Data.Migrations
                     LastModifiedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DefaultAssignment = table.Column<bool>(type: "bit", nullable: false),
                     UserPromptId = table.Column<long>(type: "bigint", nullable: false),
-                    EvaluationId = table.Column<long>(type: "bigint", nullable: true)
+                    EvaluationId = table.Column<long>(type: "bigint", nullable: true),
+                    ObservationId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -489,6 +490,7 @@ namespace SE.Data.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Public = table.Column<bool>(type: "bit", nullable: false),
                     EvidenceType = table.Column<int>(type: "int", nullable: false),
                     CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedByUserId = table.Column<long>(type: "bigint", nullable: false),
@@ -496,9 +498,9 @@ namespace SE.Data.Migrations
                     EvaluationId = table.Column<long>(type: "bigint", nullable: false),
                     EvidenceCollectionObjectId = table.Column<long>(type: "bigint", nullable: false),
                     EvidenceCollectionType = table.Column<int>(type: "int", nullable: false),
-                    ObservationNoteClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CodedEvidenceClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     EvidenceText = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserPromptResponseId = table.Column<long>(type: "bigint", nullable: false)
+                    UserPromptResponseId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -522,8 +524,7 @@ namespace SE.Data.Migrations
                         column: x => x.UserPromptResponseId,
                         principalSchema: "dbo",
                         principalTable: "UserPromptResponses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -838,6 +839,27 @@ namespace SE.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OtherEvidenceCollection",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EvaluationId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OtherEvidenceCollection", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OtherEvidenceCollection_Evaluation_EvaluationId",
+                        column: x => x.EvaluationId,
+                        principalSchema: "dbo",
+                        principalTable: "Evaluation",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SelfAssessment",
                 schema: "dbo",
                 columns: table => new
@@ -1132,6 +1154,12 @@ namespace SE.Data.Migrations
                 column: "EvaluatorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OtherEvidenceCollection_EvaluationId",
+                schema: "dbo",
+                table: "OtherEvidenceCollection",
+                column: "EvaluationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_UserId",
                 schema: "dbo",
                 table: "RefreshTokens",
@@ -1282,6 +1310,10 @@ namespace SE.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Observation",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "OtherEvidenceCollection",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

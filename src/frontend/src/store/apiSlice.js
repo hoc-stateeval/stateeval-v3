@@ -75,6 +75,15 @@ export const apiSlice = createApi({
     getEvidenceItemsForCollection: builder.mutation({
       query: (data) => ({url: `evidenceItems/${data.evidenceCollectionType}/${data.evidenceCollectionObjectId}`, method: 'get'})
     }),
+    createEvidenceItem: builder.mutation({
+      query(data) {
+        return {
+          url: ({url: `evidenceItems/${data.evidenceCollectionType}/${data.evidenceCollectionObjectId}`, method: 'put', data: data}) ,
+          method: 'PUT',
+          body: data,
+        };
+      },
+    }),
 
     // evaluations
     updateEvaluationSetEvaluator: builder.mutation({
@@ -186,4 +195,6 @@ export const {
   useGetEvaluationsForDistrictViewerQuery,
   useGetEvaluatorsForDistrictViewerQuery,
   useLoginUserMutation,
+  useGetEvidenceItemsForCollectionQuery,
+  useCreateEvidenceItemMutation,
 } = apiSlice

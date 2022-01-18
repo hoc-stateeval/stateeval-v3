@@ -10,6 +10,8 @@ namespace SE.Domain.Entities
     public class EvidenceItem : BaseEntity
     {
         public EvidenceItem() { }
+
+        public bool Public { get; set; }
         public EvidenceType EvidenceType { get; set; }
 
         public DateTime CreationDateTime { get; set; }
@@ -28,9 +30,9 @@ namespace SE.Domain.Entities
 
         // specific evidence fields
 
-        // RR_ANNOTATION_OBSERVATION_NOTES: coded text within the observation notes WYSIWYG editor
-        // is wrapped with an element with a clientid attribute on it.
-        public Guid? ObservationNoteClientId { get; set; }
+        // coded text with in the WYSIWYG editor is an html element wrapping the text 
+        // with an attribute on the element clientid="" to identify it.
+        public Guid? CodedEvidenceClientId { get; set; }
 
         // RR_ANNOTATION_*: all those the text that has been coded as evidence
         public string EvidenceText { get; set; }
@@ -38,7 +40,7 @@ namespace SE.Domain.Entities
         // links to objects where evidence text is coded
 
         [ForeignKey("UserPromptResponse")]
-        public long UserPromptResponseId { get; set; }
+        public long? UserPromptResponseId { get; set; }
         public virtual UserPromptResponse UserPromptResponse { get; set; }
 
         // Artifact

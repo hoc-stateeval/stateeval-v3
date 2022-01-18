@@ -10,5 +10,9 @@ namespace SE.Domain.Entities
     [Table("OtherEvidenceCollection")]
     public class OtherEvidenceCollection : BaseEntity
     {
+        [ForeignKey("Evaluation")]
+        public long EvaluationId { get; }
+
+        public virtual Evaluation Evaluation { get; set; }
     }
 }

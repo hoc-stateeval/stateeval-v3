@@ -219,19 +219,19 @@ SELECT e.Id,
 	WHERE rr.IsStudentGrowthAligned = 1 AND rr.ShortName NOT LIKE ('%.1')
 
 
---INSERT dbo.SEOtherEvidenceCollection(EvaluationID)
---SELECT e.EvaluationID
---  FROM dbo.SEEvaluation e
---  JOIN dbo.#User u ON e.EvaluateeID=u.UserID
--- WHERE e.FrameworkContextID=@pFrameworkContextID
+INSERT dbo.OtherEvidenceCollection(EvaluationID)
+SELECT e.Id
+  FROM dbo.Evaluation e
+  JOIN dbo.#User u ON e.EvaluateeID=u.Id
+ WHERE e.FrameworkContextID=@pFrameworkContextID
  
---  SELECT @sql_error = @@ERROR
---		IF @sql_error <> 0
---			BEGIN
---				SELECT @sql_error_message = 'Problem inserting into SEOtherEvidenceCollection' 
+  SELECT @sql_error = @@ERROR
+		IF @sql_error <> 0
+			BEGIN
+				SELECT @sql_error_message = 'Problem inserting into OtherEvidenceCollection' 
 
---				GOTO ErrorHandler
---			END
+				GOTO ErrorHandler
+			END
 
 --INSERT dbo.SEEvidenceCollectionVisibility(EvidenceCollectionTypeID, EvidenceCollectionObjectID, EvaluationID, EvidenceOwnerID, EvidenceShared)
 --SELECT 1, oe.OtherEvidenceCollectionID, e.EvaluationID, u.UserID, 1

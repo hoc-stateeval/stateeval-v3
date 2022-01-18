@@ -18,5 +18,9 @@ namespace SE.Domain.Entities
         [ForeignKey("Evaluation")]
         public long? EvaluationId { get; set; }
         public virtual Evaluation Evaluation { get; }
+
+        [ForeignKey("Observation")]
+        public long? ObservationId { get; set; }
+        public virtual Observation Observation { get; }
     }
 }

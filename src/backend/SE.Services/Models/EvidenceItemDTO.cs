@@ -10,7 +10,6 @@ namespace SE.Core.Models
     public class EvidenceItemDTO
     {
         public long Id { get; set; }
-        public EvidenceType EvidenceType { get; set; }
 
         public DateTime CreationDateTime { get; set; }
 
@@ -22,6 +21,12 @@ namespace SE.Core.Models
 
         public long EvidenceCollectionObjectId { get; set; }
 
+        public EvidenceType EvidenceType { get; set; }
+
         public EvidenceCollectionType EvidenceCollectionType { get; set; }
+
+        public Guid? CodedEvidenceClientId {  get; set; }   
+
+        public long? UserPromptReponseId { get; set; }
     }
 }

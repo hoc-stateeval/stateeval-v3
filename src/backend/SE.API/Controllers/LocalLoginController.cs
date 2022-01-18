@@ -16,6 +16,7 @@ namespace SE.API.Controllers
 
         [HttpGet]
         [Route("districts")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetDistricts()
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
@@ -25,6 +26,7 @@ namespace SE.API.Controllers
 
         [HttpGet]
         [Route("users/{districtCode}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetUsers(string districtCode)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;

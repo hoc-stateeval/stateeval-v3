@@ -20,7 +20,6 @@ namespace SE.Core.Commands.Users
     {
         public UpdateEvaluatorCommandValidator()
         {
-            RuleFor(x => x.EvaluationId).NotEmpty();
         }
     }
     public sealed class UpdateEvaluatorCommand :

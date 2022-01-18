@@ -12,7 +12,7 @@ using SE.Data;
 namespace SE.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220118013728_init")]
+    [Migration("20220118181338_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -380,6 +380,9 @@ namespace SE.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
+                    b.Property<Guid?>("CodedEvidenceClientId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<long>("CreatedByUserId")
                         .HasColumnType("bigint");
 
@@ -401,13 +404,13 @@ namespace SE.Data.Migrations
                     b.Property<int>("EvidenceType")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("ObservationNoteClientId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<bool>("Public")
+                        .HasColumnType("bit");
 
                     b.Property<long>("RubricRowId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("UserPromptResponseId")
+                    b.Property<long?>("UserPromptResponseId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -712,6 +715,24 @@ namespace SE.Data.Migrations
                     b.HasIndex("EvaluatorId");
 
                     b.ToTable("Observation", "dbo");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.OtherEvidenceCollection", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<long>("EvaluationId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EvaluationId");
+
+                    b.ToTable("OtherEvidenceCollection", "dbo");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.RefreshToken", b =>
@@ -1217,6 +1238,9 @@ namespace SE.Data.Migrations
                     b.Property<DateTime?>("LastModifiedDateTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<long?>("ObservationId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Response")
                         .HasColumnType("nvarchar(max)");
 
@@ -1396,9 +1420,7 @@ namespace SE.Data.Migrations
 
                     b.HasOne("SE.Domain.Entities.UserPromptResponse", "UserPromptResponse")
                         .WithMany()
-                        .HasForeignKey("UserPromptResponseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserPromptResponseId");
 
                     b.Navigation("CreatedByUser");
 
@@ -1564,6 +1586,17 @@ namespace SE.Data.Migrations
                     b.Navigation("Evaluation");
 
                     b.Navigation("Evaluator");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.OtherEvidenceCollection", b =>
+                {
+                    b.HasOne("SE.Domain.Entities.Evaluation", "Evaluation")
+                        .WithMany()
+                        .HasForeignKey("EvaluationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Evaluation");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.RefreshToken", b =>
