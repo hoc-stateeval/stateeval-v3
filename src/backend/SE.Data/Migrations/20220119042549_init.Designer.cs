@@ -12,7 +12,7 @@ using SE.Data;
 namespace SE.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220118181338_init")]
+    [Migration("20220119042549_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -421,7 +421,7 @@ namespace SE.Data.Migrations
 
                     b.HasIndex("UserPromptResponseId");
 
-                    b.ToTable("EvidenceItems", "dbo");
+                    b.ToTable("EvidenceItem", "dbo");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.EvidencePackage", b =>

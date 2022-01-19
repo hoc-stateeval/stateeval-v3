@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { 
   Box,
@@ -25,6 +25,8 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const pageTitle = "DA TR Dashboard";
 
+  const [evidenceText, setEvidenceText] = useState('');
+
   const activeFrameworkNode = useSelector(selectActiveFrameworkNode);
   const activeRubricRow = useSelector(selectActiveRubricRow);
   const activeEvaluationId = useSelector(selectActiveEvaluationId);
@@ -38,16 +40,18 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onClickAddOtherEvidence = (e) => {
+  const onClickAddOtherEvidence = () => {
     let data = {
       evidenceCollectionType: EvidenceCollectionType.OTHER_EVIDENCE,
       evidenceType: EvidenceType.RUBRIC_ROW_NOTE,
       evidenceCollectionObjectId: activeEvaluationId,
       evaluationId: activeEvaluationId,
       rubricRowId: activeRubricRow.id,
-      createdByUserId: currentUser,
-      evidenceText: e.target.value,
+      createdByUserId: currentUser.id,
+      evidenceText: evidenceText,
       public: true, 
+      codedEvidenceClientId: null,
+      userPromptResponseId: null
     }
     createEvidenceItem(data);
   }
@@ -76,7 +80,8 @@ const Dashboard = () => {
                 label="Multiline"
                 multiline
                 maxRows={4}
-                // value={value}
+                onChange={(e)=>setEvidenceText(e.target.value)}
+                value={evidenceText}
                 variant="standard"
               />
               <Button variant="contained" onClick={onClickAddOtherEvidence}>Add Other Evidence</Button>

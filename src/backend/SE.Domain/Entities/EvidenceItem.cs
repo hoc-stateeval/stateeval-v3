@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace SE.Domain.Entities
 {
+    [Table("EvidenceItem")]
     public class EvidenceItem : BaseEntity
     {
         public EvidenceItem() { }

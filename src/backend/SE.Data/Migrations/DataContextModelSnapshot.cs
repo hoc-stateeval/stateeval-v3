@@ -419,7 +419,7 @@ namespace SE.Data.Migrations
 
                     b.HasIndex("UserPromptResponseId");
 
-                    b.ToTable("EvidenceItems", "dbo");
+                    b.ToTable("EvidenceItem", "dbo");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.EvidencePackage", b =>

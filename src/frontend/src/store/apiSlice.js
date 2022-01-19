@@ -72,30 +72,17 @@ export const apiSlice = createApi({
   endpoints: builder => ({
 
     // evidenceItems
-    getEvidenceItemsForCollection: builder.mutation({
-      query: (data) => ({url: `evidenceItems/${data.evidenceCollectionType}/${data.evidenceCollectionObjectId}`, method: 'get'})
+    getEvidenceItemsForCollection: builder.query({
+      query: (data) => ({url: `evidence-items/${data.evidenceCollectionType}/${data.evidenceCollectionObjectId}`, method: 'get'})
     }),
     createEvidenceItem: builder.mutation({
-      query(data) {
-        return {
-          url: ({url: `evidenceItems/${data.evidenceCollectionType}/${data.evidenceCollectionObjectId}`, method: 'put', data: data}) ,
-          method: 'PUT',
-          body: data,
-        };
-      },
+      query: (data) => ({url: `evidence-items/${data.evidenceCollectionType}/${data.evidenceCollectionObjectId}`, method: 'post', data: data}) 
     }),
 
     // evaluations
     updateEvaluationSetEvaluator: builder.mutation({
-      query(data) {
-        return {
-          url: ({url: `evaluations/${data.id}/update-evaluator`, method: 'put', data: data}) ,
-          method: 'PUT',
-          body: data,
-        };
-      },
+      query: (data) => ({url: `evaluations/${data.id}/update-evaluator`, method: 'put', data: data}) 
     }),
-
     updateEvaluationSetPlanType: builder.mutation({
       query: (data) => ({url: `evaluations/${data.evaluationId}/update-plantype`, method: 'get'})
     }),
@@ -169,7 +156,6 @@ export const apiSlice = createApi({
     updateSchoolConfigurationBatchEvaluationSetupDelegation: builder.mutation({
       query: (data) => ({url:`school-configurations/${data.frameworkContextId}/delegate-evaluation-setup`, method: 'put', data: data})
     }),
-
   })
 })
 

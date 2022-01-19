@@ -484,7 +484,7 @@ namespace SE.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EvidenceItems",
+                name: "EvidenceItem",
                 schema: "dbo",
                 columns: table => new
                 {
@@ -504,23 +504,23 @@ namespace SE.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EvidenceItems", x => x.Id);
+                    table.PrimaryKey("PK_EvidenceItem", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EvidenceItems_RubricRow_RubricRowId",
+                        name: "FK_EvidenceItem_RubricRow_RubricRowId",
                         column: x => x.RubricRowId,
                         principalSchema: "dbo",
                         principalTable: "RubricRow",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EvidenceItems_User_CreatedByUserId",
+                        name: "FK_EvidenceItem_User_CreatedByUserId",
                         column: x => x.CreatedByUserId,
                         principalSchema: "dbo",
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EvidenceItems_UserPromptResponses_UserPromptResponseId",
+                        name: "FK_EvidenceItem_UserPromptResponses_UserPromptResponseId",
                         column: x => x.UserPromptResponseId,
                         principalSchema: "dbo",
                         principalTable: "UserPromptResponses",
@@ -778,10 +778,10 @@ namespace SE.Data.Migrations
                 {
                     table.PrimaryKey("PK_EvidencePackageEvidenceItem", x => new { x.EvidencePackageId, x.EvidenceItemId });
                     table.ForeignKey(
-                        name: "FK_EvidencePackageEvidenceItem_EvidenceItems_EvidenceItemId",
+                        name: "FK_EvidencePackageEvidenceItem_EvidenceItem_EvidenceItemId",
                         column: x => x.EvidenceItemId,
                         principalSchema: "dbo",
-                        principalTable: "EvidenceItems",
+                        principalTable: "EvidenceItem",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -1039,21 +1039,21 @@ namespace SE.Data.Migrations
                 column: "NextYearFocusedSGframeworkNodeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EvidenceItems_CreatedByUserId",
+                name: "IX_EvidenceItem_CreatedByUserId",
                 schema: "dbo",
-                table: "EvidenceItems",
+                table: "EvidenceItem",
                 column: "CreatedByUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EvidenceItems_RubricRowId",
+                name: "IX_EvidenceItem_RubricRowId",
                 schema: "dbo",
-                table: "EvidenceItems",
+                table: "EvidenceItem",
                 column: "RubricRowId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EvidenceItems_UserPromptResponseId",
+                name: "IX_EvidenceItem_UserPromptResponseId",
                 schema: "dbo",
-                table: "EvidenceItems",
+                table: "EvidenceItem",
                 column: "UserPromptResponseId");
 
             migrationBuilder.CreateIndex(
@@ -1345,7 +1345,7 @@ namespace SE.Data.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "EvidenceItems",
+                name: "EvidenceItem",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

@@ -39,15 +39,16 @@ namespace SE.Core.Commands.EvidenceCollections
     }
     public sealed class CreateEvidenceItemCommand : IRequest<IResponse<Unit>>
     {
-        public long EvidenceCollectionObjectId { get; }
-        public EvidenceCollectionType EvidenceCollectionType { get; }
-        public EvidenceType EvidenceType { get; }
-        public long CreatedByUserId { get; }
-        public long RubricRowId { get; }
-        public long EvaluationId { get; }
-        public string EvidenceText { get; } = string.Empty;
-        public Guid? CodedEvidenceClientId { get; }
-        public long? UserPromptReponseId { get; }
+        public CreateEvidenceItemCommand() { }
+        public long EvidenceCollectionObjectId { get; set; }
+        public EvidenceCollectionType EvidenceCollectionType { get; set;  }
+        public EvidenceType EvidenceType { get; set; }
+        public long CreatedByUserId { get; set; }
+        public long RubricRowId { get; set; }
+        public long EvaluationId { get; set; }
+        public string EvidenceText { get; set; } = string.Empty;
+        public Guid? CodedEvidenceClientId { get; set; }
+        public long? UserPromptReponseId { get; set; }
         public bool Public { get; }
     }
 

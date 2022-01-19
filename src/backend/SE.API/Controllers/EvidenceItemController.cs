@@ -25,10 +25,10 @@ namespace SE.API.Controllers
             return Ok(items);
         }
 
-        [HttpPost("{evidenceCollectionType}/{evidenceCollectionObjectId}")]
+        [HttpPost("{collectionType}/{collectionObjectId}")]
         public async Task<IActionResult> CreateEvidenceItem(
             EvidenceCollectionType collectionType, 
-            long evidenceCollectionObjectId, 
+            long collectionObjectId, 
             [FromBody] CreateEvidenceItemCommand command)
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;
