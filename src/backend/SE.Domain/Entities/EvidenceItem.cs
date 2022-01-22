@@ -40,6 +40,10 @@ namespace SE.Domain.Entities
 
         // links to objects where evidence text is coded
 
+        [ForeignKey("Observation")]
+        public long? ObservationId { get; set; }
+        public virtual Observation Observation { get; set; }
+
         [ForeignKey("UserPromptResponse")]
         public long? UserPromptResponseId { get; set; }
         public virtual UserPromptResponse UserPromptResponse { get; set; }

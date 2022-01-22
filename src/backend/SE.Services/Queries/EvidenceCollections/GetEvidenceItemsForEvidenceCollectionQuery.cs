@@ -25,15 +25,15 @@ namespace SE.Core.Queries.EvidenceCollections
     public sealed class GetEvidenceItemsForEvidenceCollectionQuery : 
         IRequest<IResponse<List<EvidenceItemDTO>>>
     {
-        public EvidenceCollectionType EvidenceCollectionType { get; set; }
-        public long EvidenceCollectionObjectId { get; }
+        public EvidenceCollectionType CollectionType { get; set; }
+        public long CollectionObjectId { get; set;  }
 
         public GetEvidenceItemsForEvidenceCollectionQuery(
-            EvidenceCollectionType evidenceCollectionType,
-            long evidenceCollectionObjectId)
+            EvidenceCollectionType collectionType,
+            long collectionObjectId)
         {
-            EvidenceCollectionObjectId = evidenceCollectionObjectId;
-            EvidenceCollectionType = evidenceCollectionType;
+            CollectionObjectId = collectionObjectId;
+            CollectionType = collectionType;
         }
 
         internal sealed class GetEvidenceItemsForEvidenceCollectionQueryHandler : 
@@ -48,8 +48,8 @@ namespace SE.Core.Queries.EvidenceCollections
             public async Task<IResponse<List<EvidenceItemDTO>>> Handle(GetEvidenceItemsForEvidenceCollectionQuery request, CancellationToken cancellationToken)
             {
                 var evidenceItems = _dataContext.EvidenceItems
-                     .Where(x => x.EvidenceCollectionType == request.EvidenceCollectionType &&
-                               x.EvidenceCollectionObjectId == request.EvidenceCollectionObjectId);
+                     .Where(x => x.EvidenceCollectionType == request.CollectionType &&
+                               x.EvidenceCollectionObjectId == request.CollectionObjectId);
 
                 return Response.Success(evidenceItems.Select(x => x.MapToEvidenceItemDTO()).ToList());
             }

@@ -189,15 +189,15 @@ namespace SE.Domain.Entities
         OTHER_EVIDENCE = 1,
         OBSERVATION = 2,
         SELF_ASSESSMENT = 3,
-        STUDENT_GROWTH_GOALS = 4,
+        STUDENT_GROWTH = 4,
         SUMMATIVE = 5,
         /* obsolete
         LEARNING_WALK_OBS,
         LEARNING_WALK_SUMMATIVE,
         PRACTICE_SESSION_OBS,
         PRACTICE_SESSION_SUMMATIVE,
-        */
         YEAR_TO_DATE = 10,
+        */
         CALIBRATION_EXERCISE = 11
     }
 
@@ -216,6 +216,7 @@ namespace SE.Domain.Entities
         STUDENT_GROWTH_GOAL_SETTING_PROMPT_RESPONSE,
         SUMMATIVE_CODED_REFLECTION_PROMPT_RESPONSE,
         RUBRIC_ROW_NOTE,
+        ARTIFACT_CODED_NOTES,
         TRAINING_EVIDENCE_SEGMENT,
     }
 }

@@ -14,6 +14,7 @@ namespace SE.Core.Models
         public DateTime CreationDateTime { get; set; }
 
         public long CreatedByUserId { get; set; }
+        public string CreatedByDisplayName { get; set; }
 
         public long RubricRowId { get; set; }
 
@@ -22,8 +23,13 @@ namespace SE.Core.Models
         public long EvidenceCollectionObjectId { get; set; }
 
         public EvidenceType EvidenceType { get; set; }
+        public string EvidenceTypeDisplayName { get; set; } 
 
         public EvidenceCollectionType EvidenceCollectionType { get; set; }
+
+        public string EvidenceText { get; set; }
+
+        public string EvidenceCollectionDisplayName { get; set; }
 
         public Guid? CodedEvidenceClientId {  get; set; }   
 

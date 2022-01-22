@@ -484,50 +484,6 @@ namespace SE.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EvidenceItem",
-                schema: "dbo",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Public = table.Column<bool>(type: "bit", nullable: false),
-                    EvidenceType = table.Column<int>(type: "int", nullable: false),
-                    CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedByUserId = table.Column<long>(type: "bigint", nullable: false),
-                    RubricRowId = table.Column<long>(type: "bigint", nullable: false),
-                    EvaluationId = table.Column<long>(type: "bigint", nullable: false),
-                    EvidenceCollectionObjectId = table.Column<long>(type: "bigint", nullable: false),
-                    EvidenceCollectionType = table.Column<int>(type: "int", nullable: false),
-                    CodedEvidenceClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    EvidenceText = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserPromptResponseId = table.Column<long>(type: "bigint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EvidenceItem", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_EvidenceItem_RubricRow_RubricRowId",
-                        column: x => x.RubricRowId,
-                        principalSchema: "dbo",
-                        principalTable: "RubricRow",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EvidenceItem_User_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalSchema: "dbo",
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EvidenceItem_UserPromptResponses_UserPromptResponseId",
-                        column: x => x.UserPromptResponseId,
-                        principalSchema: "dbo",
-                        principalTable: "UserPromptResponses",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "DistrictConfiguration",
                 schema: "dbo",
                 columns: table => new
@@ -767,32 +723,6 @@ namespace SE.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EvidencePackageEvidenceItem",
-                schema: "dbo",
-                columns: table => new
-                {
-                    EvidencePackageId = table.Column<long>(type: "bigint", nullable: false),
-                    EvidenceItemId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EvidencePackageEvidenceItem", x => new { x.EvidencePackageId, x.EvidenceItemId });
-                    table.ForeignKey(
-                        name: "FK_EvidencePackageEvidenceItem_EvidenceItem_EvidenceItemId",
-                        column: x => x.EvidenceItemId,
-                        principalSchema: "dbo",
-                        principalTable: "EvidenceItem",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EvidencePackageEvidenceItem_EvidencePackage_EvidencePackageId",
-                        column: x => x.EvidencePackageId,
-                        principalSchema: "dbo",
-                        principalTable: "EvidencePackage",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Observation",
                 schema: "dbo",
                 columns: table => new
@@ -836,27 +766,6 @@ namespace SE.Data.Migrations
                         principalSchema: "dbo",
                         principalTable: "User",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OtherEvidenceCollection",
-                schema: "dbo",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EvaluationId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OtherEvidenceCollection", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OtherEvidenceCollection_Evaluation_EvaluationId",
-                        column: x => x.EvaluationId,
-                        principalSchema: "dbo",
-                        principalTable: "Evaluation",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -925,6 +834,57 @@ namespace SE.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EvidenceItem",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Public = table.Column<bool>(type: "bit", nullable: false),
+                    EvidenceType = table.Column<int>(type: "int", nullable: false),
+                    CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedByUserId = table.Column<long>(type: "bigint", nullable: false),
+                    RubricRowId = table.Column<long>(type: "bigint", nullable: false),
+                    EvaluationId = table.Column<long>(type: "bigint", nullable: false),
+                    EvidenceCollectionObjectId = table.Column<long>(type: "bigint", nullable: false),
+                    EvidenceCollectionType = table.Column<int>(type: "int", nullable: false),
+                    CodedEvidenceClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    EvidenceText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ObservationId = table.Column<long>(type: "bigint", nullable: true),
+                    UserPromptResponseId = table.Column<long>(type: "bigint", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EvidenceItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EvidenceItem_Observation_ObservationId",
+                        column: x => x.ObservationId,
+                        principalSchema: "dbo",
+                        principalTable: "Observation",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_EvidenceItem_RubricRow_RubricRowId",
+                        column: x => x.RubricRowId,
+                        principalSchema: "dbo",
+                        principalTable: "RubricRow",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EvidenceItem_User_CreatedByUserId",
+                        column: x => x.CreatedByUserId,
+                        principalSchema: "dbo",
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EvidenceItem_UserPromptResponses_UserPromptResponseId",
+                        column: x => x.UserPromptResponseId,
+                        principalSchema: "dbo",
+                        principalTable: "UserPromptResponses",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "StudentGrowthGoal",
                 schema: "dbo",
                 columns: table => new
@@ -981,6 +941,32 @@ namespace SE.Data.Migrations
                         column: x => x.StudentGrowthGoalBundleId,
                         principalSchema: "dbo",
                         principalTable: "StudentGrowthGoalBundle",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EvidencePackageEvidenceItem",
+                schema: "dbo",
+                columns: table => new
+                {
+                    EvidencePackageId = table.Column<long>(type: "bigint", nullable: false),
+                    EvidenceItemId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EvidencePackageEvidenceItem", x => new { x.EvidencePackageId, x.EvidenceItemId });
+                    table.ForeignKey(
+                        name: "FK_EvidencePackageEvidenceItem_EvidenceItem_EvidenceItemId",
+                        column: x => x.EvidenceItemId,
+                        principalSchema: "dbo",
+                        principalTable: "EvidenceItem",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EvidencePackageEvidenceItem_EvidencePackage_EvidencePackageId",
+                        column: x => x.EvidencePackageId,
+                        principalSchema: "dbo",
+                        principalTable: "EvidencePackage",
                         principalColumn: "Id");
                 });
 
@@ -1043,6 +1029,12 @@ namespace SE.Data.Migrations
                 schema: "dbo",
                 table: "EvidenceItem",
                 column: "CreatedByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EvidenceItem_ObservationId",
+                schema: "dbo",
+                table: "EvidenceItem",
+                column: "ObservationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EvidenceItem_RubricRowId",
@@ -1152,12 +1144,6 @@ namespace SE.Data.Migrations
                 schema: "dbo",
                 table: "Observation",
                 column: "EvaluatorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OtherEvidenceCollection_EvaluationId",
-                schema: "dbo",
-                table: "OtherEvidenceCollection",
-                column: "EvaluationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_UserId",
@@ -1309,14 +1295,6 @@ namespace SE.Data.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "Observation",
-                schema: "dbo");
-
-            migrationBuilder.DropTable(
-                name: "OtherEvidenceCollection",
-                schema: "dbo");
-
-            migrationBuilder.DropTable(
                 name: "RefreshTokens",
                 schema: "dbo");
 
@@ -1366,6 +1344,10 @@ namespace SE.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "WorkArea",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "Observation",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

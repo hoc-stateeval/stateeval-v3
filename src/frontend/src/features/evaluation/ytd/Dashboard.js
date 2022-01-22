@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { 
   Box,
   Button,
+  Paper,
   Stack,
   TextField,
   Typography 
@@ -85,7 +86,7 @@ const Dashboard = () => {
     <>
       <Typography variant="h2">{pageTitle}</Typography>
       
-      <Box sx={{display:'grid', gridTemplateColumns:'auto 300px'}}>
+      <Box sx={{display:'grid', gap: '20px', gridTemplateColumns:'auto 300px'}}>
         <Box>
           <Typography variant="h2" >
             {activeFrameworkNode?.shortName} - {activeFrameworkNode?.title}
@@ -98,6 +99,19 @@ const Dashboard = () => {
             {evidenceItems && evidenceItems.map(x=>(
               <Box key={x.id}
                 sx={{...evidenceItemStyles}}>
+                  <Stack direction="row" sx={{}} spacing={2}>
+                    <Box>
+                      <strong>Source:&nbsp;</strong>
+                      {x.evidenceCollectionDisplayName}
+                    </Box>
+                    <Box>
+                      <strong>Type:&nbsp;</strong>
+                      {x.evidenceTypeDisplayName}
+                    </Box>
+                    <Box>
+
+                    </Box>
+                  </Stack>
                 {x.evidenceText}
               </Box>
             ))}

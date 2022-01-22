@@ -22,12 +22,12 @@ namespace SE.Core.Commands.EvidenceCollections
     {
         public CreateEvidenceItemCommandValidator()
         {
-            RuleFor(x => x.EvidenceCollectionObjectId).GreaterThan(0);
+            RuleFor(x => x.CollectionObjectId).GreaterThan(0);
             RuleFor(x => x.RubricRowId).GreaterThan(0);
             RuleFor(x => x.CreatedByUserId).GreaterThan(0);
             RuleFor(x => x.EvaluationId).GreaterThan(0);
             RuleFor(x => x.EvidenceType).NotEqual(EvidenceType.UNDEFINED);
-            RuleFor(x => x.EvidenceCollectionType).NotEqual(EvidenceCollectionType.UNDEFINED);
+            RuleFor(x => x.CollectionType).NotEqual(EvidenceCollectionType.UNDEFINED);
             RuleFor(x => x.EvidenceText).NotEmpty();
 
             RuleFor(x => x.UserPromptReponseId).GreaterThan(0)
@@ -40,8 +40,8 @@ namespace SE.Core.Commands.EvidenceCollections
     public sealed class CreateEvidenceItemCommand : IRequest<IResponse<Unit>>
     {
         public CreateEvidenceItemCommand() { }
-        public long EvidenceCollectionObjectId { get; set; }
-        public EvidenceCollectionType EvidenceCollectionType { get; set;  }
+        public long CollectionObjectId { get; set; }
+        public EvidenceCollectionType CollectionType { get; set;  }
         public EvidenceType EvidenceType { get; set; }
         public long CreatedByUserId { get; set; }
         public long RubricRowId { get; set; }
@@ -65,9 +65,9 @@ namespace SE.Core.Commands.EvidenceCollections
         {
             var evidenceItem = new EvidenceItem()
             {
-                EvidenceCollectionType = request.EvidenceCollectionType,
+                EvidenceCollectionType = request.CollectionType,
                 EvidenceType = request.EvidenceType,
-                EvidenceCollectionObjectId = request.EvidenceCollectionObjectId,
+                EvidenceCollectionObjectId = request.CollectionObjectId,
                 EvaluationId = request.EvaluationId,
                 RubricRowId = request.RubricRowId,
                 CreatedByUserId = request.CreatedByUserId,

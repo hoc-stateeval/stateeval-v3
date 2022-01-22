@@ -17,7 +17,10 @@ namespace SE.Core.Mappers
             target.Id = source.Id;
             target.EvidenceCollectionType = (EvidenceCollectionType)source.EvidenceCollectionType;
             target.EvidenceCollectionObjectId = source.EvidenceCollectionObjectId;
-
+            target.EvidenceText = source.EvidenceText;
+            target.EvidenceTypeDisplayName = EnumUtils.MapEvidenceTypeToDisplayName(source.EvidenceType);
+            target.CreatedByDisplayName = $"{source.CreatedByUser.FirstName} {source.CreatedByUser.LastName}";
+            target.EvidenceCollectionDisplayName = EnumUtils.MapEvidenceCollectionTypeToDisplayName(source);
             target.EvidenceType = source.EvidenceType;
             target.CreationDateTime = source.CreationDateTime;
             target.CreatedByUserId = source.CreatedByUserId;

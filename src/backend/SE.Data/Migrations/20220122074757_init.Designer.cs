@@ -12,7 +12,7 @@ using SE.Data;
 namespace SE.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220119042549_init")]
+    [Migration("20220122074757_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -404,6 +404,9 @@ namespace SE.Data.Migrations
                     b.Property<int>("EvidenceType")
                         .HasColumnType("int");
 
+                    b.Property<long?>("ObservationId")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("Public")
                         .HasColumnType("bit");
 
@@ -416,6 +419,8 @@ namespace SE.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("ObservationId");
 
                     b.HasIndex("RubricRowId");
 
@@ -715,24 +720,6 @@ namespace SE.Data.Migrations
                     b.HasIndex("EvaluatorId");
 
                     b.ToTable("Observation", "dbo");
-                });
-
-            modelBuilder.Entity("SE.Domain.Entities.OtherEvidenceCollection", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<long>("EvaluationId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EvaluationId");
-
-                    b.ToTable("OtherEvidenceCollection", "dbo");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.RefreshToken", b =>
@@ -1412,6 +1399,10 @@ namespace SE.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SE.Domain.Entities.Observation", "Observation")
+                        .WithMany()
+                        .HasForeignKey("ObservationId");
+
                     b.HasOne("SE.Domain.Entities.RubricRow", "RubricRow")
                         .WithMany()
                         .HasForeignKey("RubricRowId")
@@ -1423,6 +1414,8 @@ namespace SE.Data.Migrations
                         .HasForeignKey("UserPromptResponseId");
 
                     b.Navigation("CreatedByUser");
+
+                    b.Navigation("Observation");
 
                     b.Navigation("RubricRow");
 
@@ -1586,17 +1579,6 @@ namespace SE.Data.Migrations
                     b.Navigation("Evaluation");
 
                     b.Navigation("Evaluator");
-                });
-
-            modelBuilder.Entity("SE.Domain.Entities.OtherEvidenceCollection", b =>
-                {
-                    b.HasOne("SE.Domain.Entities.Evaluation", "Evaluation")
-                        .WithMany()
-                        .HasForeignKey("EvaluationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Evaluation");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.RefreshToken", b =>

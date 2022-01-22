@@ -166,7 +166,7 @@ namespace SE.Core.Common
             return displayName;
         }
 
-        public static string MapPerformanceLeveltoDisplayName(RubricPerformanceLevel? performanceLevel)
+        public static string MapPerformanceLevelToDisplayName(RubricPerformanceLevel? performanceLevel)
         {
             var displayName = performanceLevel switch
             {
@@ -176,7 +176,37 @@ namespace SE.Core.Common
                 RubricPerformanceLevel.PL1 => "UNS",
                 RubricPerformanceLevel.UNDEFINED => "N/A",
                 null => "N/A",
-                _ => throw new Exception($"MapPerformanceLeveltoDIsplayName: Unknown mapping: {performanceLevel}")
+                _ => throw new Exception($"MapPerformanceLevelToDIsplayName: Unknown mapping: {performanceLevel}")
+            };
+            return displayName;
+        }
+
+        public static string MapEvidenceTypeToDisplayName(EvidenceType evidenceType)
+        {
+            var displayName = evidenceType switch
+            {
+                EvidenceType.RUBRIC_ROW_NOTE => "Rubric Component Note",
+                EvidenceType.UNDEFINED => "N/A",
+                EvidenceType.ARTIFACT => "Artifact",
+                EvidenceType.ARTIFACT_CODED_NOTES => "Artifact Coded Note",
+                EvidenceType.OBSERVATION_CODED_NOTES => "Observation Coded Note",
+                EvidenceType.OBSERVATION_CODED_POSTCONF_PROMPT_RESPONSE => "Observation Coded Post Conf Prompt Ressponse",
+                _ => throw new Exception($"MapEvidenceTypeToDisplayName: Unknown mapping: {evidenceType}")
+            };
+            return displayName;
+        }
+
+        public static string MapEvidenceCollectionTypeToDisplayName(EvidenceItem evidenceItem)
+        {
+            var displayName = evidenceItem.EvidenceCollectionType switch
+            {
+                EvidenceCollectionType.OTHER_EVIDENCE => "Other Evidence",
+                EvidenceCollectionType.UNDEFINED => "N/A",
+                EvidenceCollectionType.SUMMATIVE => "Summative",
+                EvidenceCollectionType.OBSERVATION => $"Observation - {evidenceItem.Observation.Title}",
+                EvidenceCollectionType.SELF_ASSESSMENT => "Self Assessment",
+                EvidenceCollectionType.STUDENT_GROWTH => "Student Growth",
+                _ => throw new Exception($"MapEvidenceCollectionTypeToDisplayName: Unknown mapping: {evidenceItem.EvidenceCollectionType}")
             };
             return displayName;
         }

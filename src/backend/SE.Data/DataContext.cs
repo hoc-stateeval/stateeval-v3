@@ -19,7 +19,6 @@ namespace SE.Data
         public DbSet<Framework> Frameworks { get; set; }
         public DbSet<FrameworkContext> FrameworkContexts { get; set; }
         public DbSet<Observation> Observations { get; set; }
-        public DbSet<OtherEvidenceCollection> OtherEvidenceCollections { get; set;}
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<SchoolConfiguration> SchoolConfigurations { get; set;}
         public DbSet<User> Users { get; set; }

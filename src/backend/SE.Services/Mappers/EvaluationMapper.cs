@@ -57,7 +57,7 @@ namespace SE.Core.Mappers
             target.SuggestedFocusedSGframeworkNodeShortName = source.SuggestedFocusedSGframeworkNodeShortName;
 
             target.PerformanceLevel = source.PerformanceLevel ?? RubricPerformanceLevel.UNDEFINED;
-            target.PerformanceLevelDisplayName = EnumUtils.MapPerformanceLeveltoDisplayName(source.PerformanceLevel);
+            target.PerformanceLevelDisplayName = EnumUtils.MapPerformanceLevelToDisplayName(source.PerformanceLevel);
 
             target.LockDateTime = source.LockDateTime;
 
