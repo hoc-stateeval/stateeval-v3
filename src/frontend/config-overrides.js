@@ -14,7 +14,6 @@ module.exports = function override(config) {
     "@images": "src/images",
     "@api-slice": "src/store/apiSlice",
     "@user-context-slice": "src/store/stateEval/userContextSlice",
-    "@rubric-navigator-slice": "src/store/stateEval/rubricNavigatorSlice",
   })(config);
 
   return config;

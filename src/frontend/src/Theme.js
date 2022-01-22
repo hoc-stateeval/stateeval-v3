@@ -99,17 +99,17 @@ let theme = createTheme(
             fontSize:'13px'
           }
         }
-      }
+      },
 
-      // MuiCheckbox: {
-      //   styleOverrides: {
-      //     root: {
-      //       '&.Mui-checked': {
-      //         color: secondary,
-      //       },
-      //     }
-      //   }
-      // },
+      MuiCheckbox: {
+        styleOverrides: {
+          root: {
+            '&.Mui-checked': {
+              color: secondary,
+            },
+          }
+        }
+      },
 
       // MuiStepIcon: {
       //   styleOverrides: {

@@ -38,6 +38,8 @@ const createWorkAreaContextState = async (state, workAreaContext) => {
       activeEvaluationId: '0',
       activeDistrictViewerSchoolCode: '0',
       activeDistrictViewerEvaluatorId: '0',
+      activeFrameworkNodeId: null,
+      activeRubricRowId: null,
     },
     entities: {
       ...state.entities,
@@ -108,6 +110,8 @@ const initialState = {
     activeEvaluationId: '0',
     activeDistrictViewerSchoolCode: '0',
     activeDistrictViewerEvaluatorId: '0',
+    activeFrameworkNodeId: null,
+    activeRubricRowId: null,
   },
   entities: {
     workAreaContexts: {},
@@ -129,11 +133,18 @@ const userContextSlice = createSlice({
       }
     },
     setActiveFrameworkId: (state, action) => {
+      const activeFrameworkId = action.payload;
+      const { frameworks } = state.entities;
+      const activeFramework = frameworks[activeFrameworkId];
+      const activeFrameworkNode = activeFramework.frameworkNodes[0];
+      const activeRubricRow = activeFrameworkNode.rubricRows[0];
       return {
         ...state,
         ids: {
           ...state.ids,
-          activeFrameworkId: action.payload,
+          activeFrameworkId: activeFrameworkId,
+          activeFrameworkNodeId: activeFrameworkNode.id,
+          activeRubricRowId: activeRubricRow.id
         },
       };
     },
@@ -165,6 +176,24 @@ const userContextSlice = createSlice({
         ids: {
           ...state.ids,
           activeDistrictViewerEvaluatorId: action.payload,
+        },
+      };
+    },
+    setActiveFrameworkNodeId: (state, action) => {
+      return {
+        ...state,
+        ids: {
+          ...state.ids,
+          activeFrameworkNodeId: action.payload,
+        },
+      };
+    },
+    setActiveRubricRowId: (state, action) => {
+      return {
+        ...state,
+        ids: {
+          ...state.ids,
+          activeRubricRowId: action.payload,
         },
       };
     },
@@ -218,41 +247,44 @@ const getCurrentUser = (state) => {
   return currentUser;
 }
 
+const getEntities = (state) => (state.stateEval.userContext.entities);
+const getIds = (state) => (state.stateEval.userContext.ids);
+
 export const selectCurrentUser = createSelector([getCurrentUser], (user) => {
   return user;
 });
 
 const getWorkAreaContextsAll = (state) => {
-  const { workAreaContexts } = state.stateEval.userContext.entities;
+  const { workAreaContexts } = getEntities(state);
   return Object.entries(workAreaContexts).map((x) => x[1]);
 };
 
 const getActiveWorkAreaContext = (state) => {
-  const { activeWorkAreaContextId } = state.stateEval.userContext.ids;
-  const { workAreaContexts } = state.stateEval.userContext.entities;
+  const { activeWorkAreaContextId } = getIds(state);
+  const { workAreaContexts } = getEntities(state);
   return workAreaContexts[activeWorkAreaContextId];
 };
 
 const getActiveWorkAreaContextId = (state) => {
-  const { activeWorkAreaContextId } = state.stateEval.userContext.ids;
+  const { activeWorkAreaContextId } = getIds(state);
   return activeWorkAreaContextId;
 };
 
 const getActiveFramework = (state) => {
-  const { activeFrameworkId } = state.stateEval.userContext.ids;
-  const { frameworks } = state.stateEval.userContext.entities;
+  const { activeFrameworkId } = getIds(state);
+  const { frameworks } = getEntities(state);
   return frameworks[activeFrameworkId];
 };
 
 const getStateFramework = (state) => {
-  const { stateFrameworkId } = state.stateEval.userContext.ids;
-  const { frameworks } = state.stateEval.userContext.entities;
+  const { stateFrameworkId } = getIds(state);
+  const { frameworks } = getEntities(state);
   return frameworks[stateFrameworkId];
 };
 
 const getInstructionalFramework = (state) => {
-  const { instructionalFrameworkId } = state.stateEval.userContext.ids;
-  const { frameworks } = state.stateEval.userContext.entities;
+  const { instructionalFrameworkId } = getIds(state);
+  const { frameworks } = getEntities(state);
   return frameworks[instructionalFrameworkId];
 };
 
@@ -310,7 +342,7 @@ export const selectPageTitle = createSelector(
 });
 
 const getActiveEvaluation = (state) => {
-  const { activeEvaluation } = state.stateEval.userContext.entities;
+  const { activeEvaluation } = getEntities(state);
   return activeEvaluation;
 };
 
@@ -319,7 +351,7 @@ export const selectActiveEvaluation = createSelector(
   return evaluation;
 });
 const getActiveEvaluationId = (state) => {
-  const { activeEvaluationId } = state.stateEval.userContext.ids;
+  const { activeEvaluationId } = getIds(state);
   return activeEvaluationId;
 };
 
@@ -329,7 +361,7 @@ export const selectActiveEvaluationId = createSelector(
 });
 
 const getActiveDistrictViewerSchoolCode = (state) => {
-  const { activeDistrictViewerSchoolCode } = state.stateEval.userContext.ids;
+  const { activeDistrictViewerSchoolCode } = getIds(state);
   return activeDistrictViewerSchoolCode;
 };
 
@@ -339,12 +371,63 @@ export const selectActiveDistrictViewerSchoolCode = createSelector(
 });
 
 const getActiveDistrictViewerEvaluatorId = (state) => {
-  const { activeDistrictViewerEvaluatorId } = state.stateEval.userContext.ids;
+  const { activeDistrictViewerEvaluatorId } =  getIds(state);
   return activeDistrictViewerEvaluatorId;
 };
 
 export const selectActiveDistrictViewerEvaluatorId = createSelector(
   [getActiveDistrictViewerEvaluatorId], (id) => {
+  return id;
+});
+
+/*** Rubric Navigator ***/
+const getActiveFrameworkNode = (state) => {
+  const { activeFrameworkNodeId } = getIds(state);
+  if (!activeFrameworkNodeId) return null;
+  const { activeFrameworkId } = getIds(state);
+  const { frameworks } = getEntities(state);
+  const framework = frameworks[activeFrameworkId];
+  return framework.frameworkNodes.find(x=>x.id===activeFrameworkNodeId);
+};
+
+export const selectActiveFrameworkNode = createSelector(
+  [getActiveFrameworkNode], (frameworkNode) => {
+  return frameworkNode;
+});
+
+export const selectActiveFrameworkNodeId = createSelector(
+  [getActiveFrameworkNode], (frameworkNode) => {
+  return frameworkNode?.id;
+});
+
+const getActiveRubricRow = (state) => {
+  const { activeFrameworkNodeId, activeRubricRowId } = getIds(state);
+  if (!activeFrameworkNodeId || !activeRubricRowId) return null;
+  const { activeFrameworkId } = getIds(state);
+  const { frameworks } = getEntities(state);
+  const framework = frameworks[activeFrameworkId];
+  let frameworkNode = framework.frameworkNodes.find(x=>x.id===activeFrameworkNodeId);
+  if (frameworkNode) {
+    return frameworkNode.rubricRows.find(x=>x.id===activeRubricRowId);
+  }
+  else {
+    frameworkNode = framework.frameworkNodes[0];
+    return frameworkNode.rubricRows[0];
+  }
+};
+
+export const selectActiveRubricRow = createSelector(
+  [getActiveRubricRow], (rubricRow) => {
+  return rubricRow;
+});
+
+const getActiveRubricRowId = (state) => {
+  const { activeRubricRowId } = getIds(state);
+  return activeRubricRowId;
+};
+
+export const selectActiveRubricRowId = createSelector(
+  [getActiveRubricRowId], (id) => {
   return id;
 });
 
@@ -354,6 +437,8 @@ export const {
   setActiveDistrictViewerSchoolCode,
   setActiveDistrictViewerEvaluatorId,
   setPageTitle,
+  setActiveFrameworkNodeId, 
+  setActiveRubricRowId, 
 } = userContextSlice.actions;
 
 export default userContextSlice.reducer;

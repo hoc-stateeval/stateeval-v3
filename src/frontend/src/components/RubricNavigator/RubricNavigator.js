@@ -7,14 +7,11 @@ import {
 
 import {
   selectActiveFramework,
-} from "@user-context-slice";
-
-import {
   setActiveFrameworkNodeId,
   setActiveRubricRowId,
   selectActiveRubricRowId,
   selectActiveFrameworkNodeId
-} from "@rubric-navigator-slice";
+} from "@user-context-slice";
 
 import './rubric-helper.css';
 

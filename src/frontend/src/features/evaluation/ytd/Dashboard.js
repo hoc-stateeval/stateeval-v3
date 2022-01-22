@@ -6,8 +6,9 @@ import {
   AccordionSummary,
   Box,
   Button,
+  Checkbox,
   Divider,
-  Paper,
+  FormControlLabel,
   Stack,
   TextField,
   Typography 
@@ -23,17 +24,14 @@ import {
   setPageTitle, 
   selectActiveEvaluationId, 
   selectCurrentUser,
+  selectActiveFrameworkNode,
+  selectActiveRubricRow,
 } from "@user-context-slice";
 
 import { 
   useCreateEvidenceItemMutation, 
   useGetYearToDateEvidenceItemsQuery,
  } from "@api-slice";
-
-import {
-  selectActiveFrameworkNode,
-  selectActiveRubricRow,
-} from "@rubric-navigator-slice";
 
 import { RubricNavigator } from '@components';
 
@@ -52,6 +50,8 @@ const Dashboard = () => {
   const pageTitle = "DA TR Dashboard";
 
   const [evidenceText, setEvidenceText] = useState('');
+  const [hidePackagedEvidenceChecked, toggleHidePackagedEvidenceChecked] = useState(true);
+  const [showOtherEvidenceInputArea, toggleShowOtherEvidenceInputArea] = useState(false);
 
   const activeFrameworkNode = useSelector(selectActiveFrameworkNode);
   const activeRubricRow = useSelector(selectActiveRubricRow);
@@ -89,18 +89,33 @@ const Dashboard = () => {
 
   return (
     <>
-      <Typography variant="h2">{pageTitle}</Typography>
+      {/* <Typography variant="h2">{pageTitle}</Typography> */}
       
-      <Box sx={{display:'grid', gap: '20px', gridTemplateColumns:'auto 300px'}}>
+      <Box sx={{display:'grid', gap: '20px', mt: 5, gridTemplateColumns:'auto 300px'}}>
         <Box>
-          <Typography variant="h2" >
-            {activeFrameworkNode?.shortName} - {activeFrameworkNode?.title}
-          </Typography>
-          <Typography variant="h2">
+          <Typography variant="h5" sx={{ mb:4}}>
             {activeRubricRow?.shortName} - {activeRubricRow?.title}
           </Typography>
+
+          <Box sx={{mb:2}}>
+            <Typography variant="body1"><strong>Collected Evidence</strong></Typography>
+            <Divider/>
+            <FormControlLabel 
+              control={<Checkbox onChange={()=> { toggleHidePackagedEvidenceChecked((prev)=>!prev);}} />} 
+              label="Hide evidence you have already included in packages" 
+            />
+            {hidePackagedEvidenceChecked && <Typography variant="body1">
             
-          {evidenceItems && evidenceItems.map(x=>(
+              Below is all of the evidence collected for this rubric component and not yet included in an evidence package. To start the process of creating an Evidence Package, click each evidence item you want to include in the package and you will be guided through the process. Click here for more information on how to package evidence.
+              </Typography>
+            }
+            {!hidePackagedEvidenceChecked && <Typography variant="body1">
+            Below is all of the evidence collected for this rubric component. To start the process of creating an Evidence Package, click each evidence item you want to include in the package and you will be guided through the process. Click here for more information on how to package evidence.
+            </Typography>
+          }
+          </Box>
+            
+          {evidenceItems && evidenceItems.filter(x=>x.rubricRowId===activeRubricRow.id).map(x=>(
             <Accordion  key={x.id} sx={{...evidenceItemStyles}}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                   <Stack direction="row" spacing={2}>
@@ -123,25 +138,52 @@ const Dashboard = () => {
                 </AccordionDetails>
             </Accordion>))
           }
-          <Box
-            component="form"
-            noValidate
-            autoComplete="off"
-          >
-            <Stack spacing={3}>
-              <TextField
-                id="standard-multiline-flexible"
-                label="Multiline"
-                multiline
-                maxRows={4}
-                onChange={(e)=>setEvidenceText(e.target.value)}
-                value={evidenceText}
-                variant="standard"
-              />
-              <Button variant="contained" onClick={onClickAddOtherEvidence}>Add Other Evidence</Button>
-            </Stack>
+
+          {showOtherEvidenceInputArea && 
+          <Box sx={{...evidenceItemStyles, p:2, mt: 2}}>
+            <Box
+              component="form"
+              sx={{
+                '& .MuiTextField-root': { backgroundColor: 'white'},
+              }}
+              noValidate
+              autoComplete="off"
+            >
+              <Typography variant="body1" sx={{mb:1}}>
+                <strong>Provide Evidence:</strong>
+              </Typography>
+              <TextField sx={{mb:1}}
+                  label="Input evidence here"
+                  variant="outlined"
+                  multiline
+                  fullWidth
+                  rows={4}
+                />
+                <Stack direction="row" spacing={1} sx={{justifyContent:'flex-end'}}>
+                  <Button 
+                    variant="contained" 
+                    color="background" 
+                    size="small"
+                    onClick={()=> { toggleShowOtherEvidenceInputArea((prev)=>!prev);}}
+                  >Cancel</Button>
+                  <Button 
+                    variant="contained" 
+                    color="secondary" 
+                    size="small"
+                    onClick={()=> { toggleShowOtherEvidenceInputArea((prev)=>!prev);}}
+                  >Done</Button>
+                </Stack>
+            </Box>
           </Box>
-  
+          }
+          {!showOtherEvidenceInputArea && <Button 
+            variant="contained" 
+            color="secondary" 
+            size="small"
+            onClick={toggleShowOtherEvidenceInputArea}
+          >Add Other Evidence</Button>
+          }
+
         </Box>
         <RubricNavigator/>
       </Box>
