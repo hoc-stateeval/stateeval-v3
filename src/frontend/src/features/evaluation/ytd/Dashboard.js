@@ -9,14 +9,14 @@ import {
   Checkbox,
   Divider,
   FormControlLabel,
+  IconButton,
   Stack,
   TextField,
   Typography 
 } from "@mui/material";
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
-import { styled, useTheme } from '@mui/material/styles';
+import ClearIcon from '@mui/icons-material/Clear';
 
 import { EvidenceCollectionType, EvidenceType } from "@lib/enums"
 
@@ -24,7 +24,6 @@ import {
   setPageTitle, 
   selectActiveEvaluationId, 
   selectCurrentUser,
-  selectActiveFrameworkNode,
   selectActiveRubricRow,
 } from "@user-context-slice";
 
@@ -36,8 +35,6 @@ import {
 import { RubricNavigator } from '@components';
 
 const Dashboard = () => {
-
-  const theme = useTheme();
 
   const evidenceItemStyles = { 
     backgroundColor: `#f2f2f2`,
@@ -53,7 +50,6 @@ const Dashboard = () => {
   const [hidePackagedEvidenceChecked, toggleHidePackagedEvidenceChecked] = useState(true);
   const [showOtherEvidenceInputArea, toggleShowOtherEvidenceInputArea] = useState(false);
 
-  const activeFrameworkNode = useSelector(selectActiveFrameworkNode);
   const activeRubricRow = useSelector(selectActiveRubricRow);
   const activeEvaluationId = useSelector(selectActiveEvaluationId);
   const currentUser = useSelector(selectCurrentUser);
@@ -84,6 +80,7 @@ const Dashboard = () => {
       codedEvidenceClientId: null,
       userPromptResponseId: null
     }
+    toggleShowOtherEvidenceInputArea((prev)=>!prev);
     createEvidenceItem(data);
   }
 
@@ -115,7 +112,7 @@ const Dashboard = () => {
           }
           </Box>
             
-          {evidenceItems && evidenceItems.filter(x=>x.rubricRowId===activeRubricRow.id).map(x=>(
+          {evidenceItems && activeRubricRow && evidenceItems.filter(x=>x.rubricRowId===activeRubricRow.id).map(x=>(
             <Accordion  key={x.id} sx={{...evidenceItemStyles}}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                   <Stack direction="row" spacing={2}>
@@ -134,7 +131,12 @@ const Dashboard = () => {
                   </Stack>
                 </AccordionSummary>
                 <AccordionDetails>
-                  {x.evidenceText}
+                  <Stack direction="row" sx={{justifyContent:'space-between'}}>
+                    <div>{x.evidenceText}</div>
+                    <div>
+                      <IconButton><ClearIcon sx={{backgroundColor:'red', color:'white', borderRadius:'50%'}} /></IconButton>
+                    </div>
+                  </Stack>
                 </AccordionDetails>
             </Accordion>))
           }
@@ -155,8 +157,10 @@ const Dashboard = () => {
               <TextField sx={{mb:1}}
                   label="Input evidence here"
                   variant="outlined"
+                  value={evidenceText}
                   multiline
                   fullWidth
+                  onChange={(e)=>setEvidenceText(e.target.value)}
                   rows={4}
                 />
                 <Stack direction="row" spacing={1} sx={{justifyContent:'flex-end'}}>
@@ -170,7 +174,7 @@ const Dashboard = () => {
                     variant="contained" 
                     color="secondary" 
                     size="small"
-                    onClick={()=> { toggleShowOtherEvidenceInputArea((prev)=>!prev);}}
+                    onClick={onClickAddOtherEvidence}
                   >Done</Button>
                 </Stack>
             </Box>
