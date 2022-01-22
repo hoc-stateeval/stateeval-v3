@@ -83,9 +83,8 @@ const RubricNavigator = () => {
         <Box className="framework-highlight well">
           <Typography className="row" variant="h4">Rubric Navigator</Typography>
           {activeFramework.frameworkNodes.map((x)=> (
-            <Box className="section">
+            <Box className="section" key={x.id} >
                 <RubricNavigatorFrameworkNode 
-                  key={x.id} 
                   frameworkNode={x} 
                   expanded={x.id===activeFrameworkNodeId}
                 />

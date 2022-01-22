@@ -98,7 +98,7 @@ const AssignmentsDetail = () => {
         {workAreaContext.evaluateeTermLC}s.
       </PageHeader>
 
-      <Stack direction="row" sx={{ alignItems: "center", mb: 3 }} spacing={3}>
+      <Stack direction="row" sx={{alignItems: "center", mb: 3 }} spacing={3}>
         <Item>
           <strong>{workAreaContext.evaluateeTerm}s:&nbsp;</strong>
           {totalCount}

@@ -8,11 +8,20 @@ import {
   Typography 
 } from "@mui/material";
 
+import { styled, useTheme } from '@mui/material/styles';
+
 import { EvidenceCollectionType, EvidenceType } from "@lib/enums"
 
-import { setPageTitle, selectActiveEvaluationId, selectCurrentUser } from "@user-context-slice";
+import { 
+  setPageTitle, 
+  selectActiveEvaluationId, 
+  selectCurrentUser,
+} from "@user-context-slice";
 
-import { useCreateEvidenceItemMutation } from "@api-slice";
+import { 
+  useCreateEvidenceItemMutation, 
+  useGetYearToDateEvidenceItemsQuery,
+ } from "@api-slice";
 
 import {
   selectActiveFrameworkNode,
@@ -22,6 +31,17 @@ import {
 import { RubricNavigator } from '@components';
 
 const Dashboard = () => {
+
+  const theme = useTheme();
+
+  const evidenceItemStyles = { 
+    backgroundColor: `#f2f2f2`,
+    color: '#676a6c',
+    padding: '18px',
+    margin: '10px 0',
+    cursor: 'pointer',
+  };
+
   const dispatch = useDispatch();
   const pageTitle = "DA TR Dashboard";
 
@@ -33,6 +53,11 @@ const Dashboard = () => {
   const currentUser = useSelector(selectCurrentUser);
 
   const [createEvidenceItem] = useCreateEvidenceItemMutation();
+  const { data: evidenceItems } = useGetYearToDateEvidenceItemsQuery(
+    {
+      evaluationId: activeEvaluationId
+    }
+  );
 
   useEffect(() => {
     dispatch(setPageTitle(pageTitle));
@@ -42,9 +67,9 @@ const Dashboard = () => {
 
   const onClickAddOtherEvidence = () => {
     let data = {
-      evidenceCollectionType: EvidenceCollectionType.OTHER_EVIDENCE,
+      collectionType: EvidenceCollectionType.OTHER_EVIDENCE,
       evidenceType: EvidenceType.RUBRIC_ROW_NOTE,
-      evidenceCollectionObjectId: activeEvaluationId,
+      collectionObjectId: activeEvaluationId,
       evaluationId: activeEvaluationId,
       rubricRowId: activeRubricRow.id,
       createdByUserId: currentUser.id,
@@ -69,6 +94,15 @@ const Dashboard = () => {
             {activeRubricRow?.shortName} - {activeRubricRow?.title}
           </Typography>
 
+          <Stack spacing={3}>
+            {evidenceItems && evidenceItems.map(x=>(
+              <Box key={x.id}
+                sx={{...evidenceItemStyles}}>
+                {x.evidenceText}
+              </Box>
+            ))}
+
+          </Stack>
           <Box
             component="form"
             noValidate

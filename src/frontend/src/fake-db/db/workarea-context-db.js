@@ -398,3 +398,4 @@ mock.onGet(/\/users\/\d+\/workarea-contexts/).reply((config) => {
   const response = workAreaContextsDB.workAreaContexts.filter((x) => x.userId === id);
   return [200, response];
 });
+

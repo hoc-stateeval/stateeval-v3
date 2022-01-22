@@ -72,11 +72,14 @@ export const apiSlice = createApi({
   endpoints: builder => ({
 
     // evidenceItems
+    getYearToDateEvidenceItems: builder.query({
+      query: (data) => ({url: `evidence-items/${data.evaluationId}`, method: 'get'})
+    }),
     getEvidenceItemsForCollection: builder.query({
-      query: (data) => ({url: `evidence-items/${data.evidenceCollectionType}/${data.evidenceCollectionObjectId}`, method: 'get'})
+      query: (data) => ({url: `evidence-items/${data.collectionType}/${data.collectionObjectId}`, method: 'get'})
     }),
     createEvidenceItem: builder.mutation({
-      query: (data) => ({url: `evidence-items/${data.evidenceCollectionType}/${data.evidenceCollectionObjectId}`, method: 'post', data: data}) 
+      query: (data) => ({url: `evidence-items/${data.collectionType}/${data.collectionObjectId}`, method: 'post', data: data}) 
     }),
 
     // evaluations
@@ -183,4 +186,5 @@ export const {
   useLoginUserMutation,
   useGetEvidenceItemsForCollectionQuery,
   useCreateEvidenceItemMutation,
+  useGetYearToDateEvidenceItemsQuery
 } = apiSlice
