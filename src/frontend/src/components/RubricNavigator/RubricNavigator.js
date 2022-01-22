@@ -28,7 +28,7 @@ const RubricNavigatorRubricRow = ({rubricRow, selected}) => {
   return (
     <Box className={`section-row rubric-row ${selected ? "selected" : ""}`} onClick={()=>onClickRubricRow()} >
         <Box className="row-name cell-1">{rubricRow?.shortName} </Box>
-        <Box className="cell-2">{rubricRow.title}</Box>
+        <Box className="cell-2">{rubricRow?.title}</Box>
         <Box className="cell-3"></Box>
     </Box>
   )
@@ -55,7 +55,7 @@ const RubricNavigatorFrameworkNode = ({frameworkNode, expanded}) => {
     <>
       <Box  className={`section-row node-row ${expanded ? "rr-expand" : ""}`}>
         <div className="node-name cell-1" onClick={()=>onClickFrameworkNodeShortName()}>{frameworkNode?.shortName} </div>
-        <div className="cell-2" onClick={()=>onClickFrameworkNodeTitle()}>{frameworkNode.title}</div>
+        <div className="cell-2" onClick={()=>onClickFrameworkNodeTitle()}>{frameworkNode?.title}</div>
         <div className="cell-3"></div>
       </Box>
 

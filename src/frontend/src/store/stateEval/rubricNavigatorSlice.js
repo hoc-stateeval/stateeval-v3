@@ -57,8 +57,14 @@ const getActiveRubricRow = (state) => {
   const { activeFrameworkId } = state.stateEval.userContext.ids;
   const { frameworks } = state.stateEval.userContext.entities;
   const framework = frameworks[activeFrameworkId];
-  const frameworkNode = framework.frameworkNodes.find(x=>x.id===activeFrameworkNodeId);
-  return frameworkNode.rubricRows.find(x=>x.id===activeRubricRowId);
+  let frameworkNode = framework.frameworkNodes.find(x=>x.id===activeFrameworkNodeId);
+  if (frameworkNode) {
+    return frameworkNode.rubricRows.find(x=>x.id===activeRubricRowId);
+  }
+  else {
+    frameworkNode = framework.frameworkNodes[0];
+    return frameworkNode.rubricRows[0];
+  }
 };
 
 export const selectActiveRubricRow = createSelector(

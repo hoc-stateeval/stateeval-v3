@@ -13,6 +13,8 @@ import {
   Typography 
 } from "@mui/material";
 
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 import { styled, useTheme } from '@mui/material/styles';
 
 import { EvidenceCollectionType, EvidenceType } from "@lib/enums"
@@ -42,9 +44,8 @@ const Dashboard = () => {
   const evidenceItemStyles = { 
     backgroundColor: `#f2f2f2`,
     color: '#676a6c',
-    padding: '18px',
     margin: '10px 0',
-    cursor: 'pointer',
+    fontSize:'11px'
   };
 
   const dispatch = useDispatch();
@@ -98,41 +99,30 @@ const Dashboard = () => {
           <Typography variant="h2">
             {activeRubricRow?.shortName} - {activeRubricRow?.title}
           </Typography>
-
-          <Stack spacing={3}>
-            {evidenceItems && evidenceItems.map(x=>(
-              <Stack key={x.id}
-                sx={{...evidenceItemStyles}}>
-                <Stack direction="row" sx={{mb:2}}  spacing={2}>
-                  <Box>
-                    <Stack>
-                      <Box>
-                        <strong>Created:&nbsp;</strong>
-                        {x.creationDateDisplayString}
-                      </Box>
-                      <Box>
-                        <strong>Created By:&nbsp;</strong>
-                        {x.createdByDisplayName}
-                      </Box>
-                    </Stack>
-                  </Box>
-                  <Box>
-                    <strong>Source:&nbsp;</strong>
-                    {x.evidenceCollectionDisplayName}
-                  </Box>
-                  <Box>
-                    <strong>Type:&nbsp;</strong>
-                    {x.evidenceTypeDisplayName}
-                  </Box>
-                </Stack>
-                <Divider/>
-                <Box sx={{mt:2}}>
+            
+          {evidenceItems && evidenceItems.map(x=>(
+            <Accordion  key={x.id} sx={{...evidenceItemStyles}}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Stack direction="row" spacing={2}>
+                    <Box>
+                          <strong>Created:&nbsp;</strong>
+                          {`${x.creationDateDisplayString} : ${x.createdByDisplayName}`}
+                    </Box>
+                    <Box>
+                      <strong>Source:&nbsp;</strong>
+                      {x.evidenceCollectionDisplayName}
+                    </Box>
+                    <Box>
+                      <strong>Type:&nbsp;</strong>
+                      {x.evidenceTypeDisplayName}
+                    </Box>
+                  </Stack>
+                </AccordionSummary>
+                <AccordionDetails>
                   {x.evidenceText}
-                </Box>
-              </Stack>
-            ))}
-
-          </Stack>
+                </AccordionDetails>
+            </Accordion>))
+          }
           <Box
             component="form"
             noValidate
