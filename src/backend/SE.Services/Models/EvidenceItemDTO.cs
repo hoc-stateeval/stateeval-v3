@@ -12,6 +12,7 @@ namespace SE.Core.Models
         public long Id { get; set; }
 
         public DateTime CreationDateTime { get; set; }
+        public string CreationDateDisplayString { get; set; }
 
         public long CreatedByUserId { get; set; }
         public string CreatedByDisplayName { get; set; }

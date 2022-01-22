@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { 
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
   Button,
+  Divider,
   Paper,
   Stack,
   TextField,
@@ -97,23 +101,35 @@ const Dashboard = () => {
 
           <Stack spacing={3}>
             {evidenceItems && evidenceItems.map(x=>(
-              <Box key={x.id}
+              <Stack key={x.id}
                 sx={{...evidenceItemStyles}}>
-                  <Stack direction="row" sx={{}} spacing={2}>
-                    <Box>
-                      <strong>Source:&nbsp;</strong>
-                      {x.evidenceCollectionDisplayName}
-                    </Box>
-                    <Box>
-                      <strong>Type:&nbsp;</strong>
-                      {x.evidenceTypeDisplayName}
-                    </Box>
-                    <Box>
-
-                    </Box>
-                  </Stack>
-                {x.evidenceText}
-              </Box>
+                <Stack direction="row" sx={{mb:2}}  spacing={2}>
+                  <Box>
+                    <Stack>
+                      <Box>
+                        <strong>Created:&nbsp;</strong>
+                        {x.creationDateDisplayString}
+                      </Box>
+                      <Box>
+                        <strong>Created By:&nbsp;</strong>
+                        {x.createdByDisplayName}
+                      </Box>
+                    </Stack>
+                  </Box>
+                  <Box>
+                    <strong>Source:&nbsp;</strong>
+                    {x.evidenceCollectionDisplayName}
+                  </Box>
+                  <Box>
+                    <strong>Type:&nbsp;</strong>
+                    {x.evidenceTypeDisplayName}
+                  </Box>
+                </Stack>
+                <Divider/>
+                <Box sx={{mt:2}}>
+                  {x.evidenceText}
+                </Box>
+              </Stack>
             ))}
 
           </Stack>

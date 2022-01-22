@@ -74,6 +74,7 @@ namespace SE.Core.Commands.EvidenceCollections
                 EvidenceText = request.EvidenceText,
                 CodedEvidenceClientId = request.CodedEvidenceClientId,
                 UserPromptResponseId = request.UserPromptReponseId,
+                CreationDateTime = DateTime.Now,
                 Public = request.Public,
             };
 

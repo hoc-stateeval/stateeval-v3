@@ -23,6 +23,7 @@ namespace SE.Core.Mappers
             target.EvidenceCollectionDisplayName = EnumUtils.MapEvidenceCollectionTypeToDisplayName(source);
             target.EvidenceType = source.EvidenceType;
             target.CreationDateTime = source.CreationDateTime;
+            target.CreationDateDisplayString = source.CreationDateTime.ToShortDateString();
             target.CreatedByUserId = source.CreatedByUserId;
             target.RubricRowId = source.RubricRowId;
 
