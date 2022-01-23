@@ -36,16 +36,12 @@ const RubricNavigatorFrameworkNode = ({frameworkNode, expanded}) => {
   const dispatch = useDispatch();
   const activeRubricRowId = useSelector(selectActiveRubricRowId);
 
-  const clickRow = () => {
-    dispatch(setActiveFrameworkNodeId(frameworkNode.id));
-    dispatch(setActiveRubricRowId(frameworkNode.rubricRows[0].id))
-  }
   const onClickFrameworkNodeShortName = () => {
-    clickRow();
+    dispatch(setActiveFrameworkNodeId(frameworkNode.id));
   }
 
   const onClickFrameworkNodeTitle = () => {
-    clickRow();
+    dispatch(setActiveFrameworkNodeId(frameworkNode.id));
   }
 
   return (
@@ -53,7 +49,9 @@ const RubricNavigatorFrameworkNode = ({frameworkNode, expanded}) => {
       <Box  className={`section-row node-row ${expanded ? "rr-expand" : ""}`}>
         <div className="node-name cell-1" onClick={()=>onClickFrameworkNodeShortName()}>{frameworkNode?.shortName} </div>
         <div className="cell-2" onClick={()=>onClickFrameworkNodeTitle()}>{frameworkNode?.title}</div>
-        <div className="cell-3"></div>
+        <div className="cell-3">
+          
+        </div>
       </Box>
 
       <Box className={`${expanded ? "expand" : "collapse"}`}>

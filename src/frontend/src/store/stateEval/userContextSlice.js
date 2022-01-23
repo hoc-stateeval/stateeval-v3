@@ -101,6 +101,7 @@ export const setCurrentUser = createAsyncThunk(
 const initialState = {
   currentUser: null,
   pageTitle: '',
+  ecViewMode: 'node',
   ids: {
     activeWorkAreaContextId: null,
     activeFrameworkId: null,
@@ -182,15 +183,18 @@ const userContextSlice = createSlice({
     setActiveFrameworkNodeId: (state, action) => {
       return {
         ...state,
+        ecViewMode: 'node',
         ids: {
           ...state.ids,
           activeFrameworkNodeId: action.payload,
+          activeRubricRowId: null,
         },
       };
     },
     setActiveRubricRowId: (state, action) => {
       return {
         ...state,
+        ecViewMode: 'row',
         ids: {
           ...state.ids,
           activeRubricRowId: action.payload,
@@ -390,6 +394,17 @@ const getActiveFrameworkNode = (state) => {
   return framework.frameworkNodes.find(x=>x.id===activeFrameworkNodeId);
 };
 
+const getEvidenceCollectionViewMode = (state) => {
+  const {ecViewMode } = state.stateEval.userContext;
+  return ecViewMode;
+}
+
+export const selectEvidenceCollectionViewMode = createSelector(
+  [getEvidenceCollectionViewMode], (ecViewMode) => {
+    return ecViewMode;
+  }
+)
+
 export const selectActiveFrameworkNode = createSelector(
   [getActiveFrameworkNode], (frameworkNode) => {
   return frameworkNode;
@@ -439,6 +454,7 @@ export const {
   setPageTitle,
   setActiveFrameworkNodeId, 
   setActiveRubricRowId, 
+  setEvidenceCollectionViewMode,
 } = userContextSlice.actions;
 
 export default userContextSlice.reducer;

@@ -64,9 +64,9 @@ const WorkAreaLayout = (props) => {
               sx={{
                 minHeight: "100vh",
                 width: "95%",
-                padding: "0px 10px 40px 10px",
+                padding: "20px 10px",
                 borderTop: "solid 5px #e7eaec",
-                margin: "0 20px 0 20px",
+                margin: "20 20px 0 20px",
                 backgroundColor: "#FFF",
               }}
             >
