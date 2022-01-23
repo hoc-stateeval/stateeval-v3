@@ -1,27 +1,24 @@
 import { WorkArea } from '@lib/enums';
 import { adminPaths, evaluationPaths, districtViewerPaths, trainingPaths } from '@routes/paths';
 
-import ArtifactsIcon  from '@mui/icons-material/Article';
-import SGGIcon from '@mui/icons-material/Face';
-import GridViewIcon from '@mui/icons-material/GridView';
-import YTDIcon from '@mui/icons-material/VerticalSplit';
-import ObservationsIcon from '@mui/icons-material/Visibility';
-import SelfAssessmentsIcon from '@mui/icons-material/LocalCafe';
-import SummativeEvalIcon from '@mui/icons-material/Summarize';
-import ReportArchivesIcon from '@mui/icons-material/Summarize';
-import SettingsIcon from '@mui/icons-material/SettingsApplications';
+import { GridViewOutlined as GridView, HelpCenterOutlined as HelpCenter, 
+  AssignmentIndOutlined as Assignments, SettingsOutlined as Settings,
+  OndemandVideoOutlined as Video, SummarizeOutlined as Summary,
+  PostAddOutlined as PostAdd, AccessibilityNewOutlined as Student,
+  EmojiFoodBeverageOutlined as Coffee, 
+  SwitchAccountOutlined as Observation } from '@mui/icons-material';
 
 const trainingSection = {
     title: 'Training',
     items: [
       {
         title: 'Dashboard',
-        icon: <ArtifactsIcon fontSize="small" />,
+        icon: <GridView fontSize="small" />,
         path: trainingPaths.root,
       },
       {
         title: 'Videos',
-        icon: <SettingsIcon fontSize="small" />,
+        icon: <Video fontSize="small" />,
         path: trainingPaths.videos,
         children: [
           {
@@ -40,47 +37,47 @@ const trainingSection = {
 const evaluationSharedNavItems = {
   artifacts: {
     title: 'Artifacts',
-    icon: <ArtifactsIcon fontSize="small" />,
+    icon: <PostAdd fontSize="small" />,
     path: evaluationPaths.artifacts,
   },
   ytdEvidence: {
     title: 'YTD Evidence',
-    icon: <YTDIcon fontSize="small" />,
+    icon: <Summary fontSize="small" />,
     path: evaluationPaths.ytdEvidence,
   },
   studentGrowth: {
     title: 'Student Growth',
-    icon: <SGGIcon fontSize="small" />,
+    icon: <Student fontSize="small" />,
     path: evaluationPaths.studentGrowth,
   },
   observations: {
     title: 'Observations',
-    icon: <ObservationsIcon fontSize="small" />,
+    icon: <Observation fontSize="small" />,
     path: evaluationPaths.observations,
   },
   selfAssessments: {
     title: 'Self-Assessments',
-    icon: <SelfAssessmentsIcon fontSize="small" />,
+    icon: <Coffee fontSize="small" />,
     path: evaluationPaths.selfAssessments,
   },
   midYearEvaluation: {
     title: 'Mid-year Evaluation',
-    icon: <SummativeEvalIcon fontSize="small" />,
+    icon: <Summary fontSize="small" />,
     path: evaluationPaths.midYearEvaluation,
   },
   summativeEvaluation: {
     title: 'Summative Evaluation',
-    icon: <SummativeEvalIcon fontSize="small" />,
+    icon: <Summary fontSize="small" />,
     path: evaluationPaths.summativeEvaluation,
   },
   reportArchives: {
     title: 'Report Archives',
-    icon: <ReportArchivesIcon fontSize="small" />,
+    icon: <Summary fontSize="small" />,
     path: evaluationPaths.reportArchives,
   },
   resources: {
     title: 'Resources',
-    icon: <SummativeEvalIcon fontSize="small" />,
+    icon: <HelpCenter fontSize="small" />,
     path: evaluationPaths.resources,
   },
 };
@@ -109,7 +106,7 @@ const nestedAssignmentsDistrictDetailNavItem = {
 
 const nestedAssignmentsSchoolDetailNavItem = {
   title: 'Assignments',
-  icon: <GridViewIcon fontSize="small" />,
+  icon: <Assignments fontSize="small" />,
   path: adminPaths.assignmentsSchoolDetailRoot,
 };
 
@@ -129,7 +126,7 @@ const routes_PR_ME = {
       items: [
         {
           title: 'Dashboard',
-          icon: <GridViewIcon fontSize="small" />,
+          icon: <GridView fontSize="small" />,
           path: evaluationPaths.prMeDashboard,
         },
         ...evaluationCoreNavItems,
@@ -147,7 +144,7 @@ const routes_TR_ME = {
       items: [
         {
           title: 'Dashboard',
-          icon: <GridViewIcon fontSize="small" />,
+          icon: <GridView fontSize="small" />,
           path: evaluationPaths.trMeDashboard,
         },
         ...evaluationCoreNavItems,
@@ -168,13 +165,13 @@ const routes_PR_PR = {
       items: [
         {
           title: 'Dashboard',
-          icon: <GridViewIcon fontSize="small" />,
+          icon: <GridView fontSize="small" />,
           path: evaluationPaths.prPrDashboard,
         },
         ...evaluationCoreNavItems,
         {
           title: 'Settings',
-          icon: <SettingsIcon fontSize="small" />,
+          icon: <Settings fontSize="small" />,
           path: evaluationPaths.settingsRoot,
           children: [
             nestedPromptBankNavItem,
@@ -196,13 +193,13 @@ const routes_PR_TR = {
       items: [
         {
           title: 'Dashboard',
-          icon: <GridViewIcon fontSize="small" />,
+          icon: <GridView fontSize="small" />,
           path: evaluationPaths.prTrDashboard,
         },
         ...evaluationCoreNavItems,
         {
           title: 'Admin',
-          icon: <SettingsIcon fontSize="small" />,
+          icon: <Settings fontSize="small" />,
           path: evaluationPaths.settingsRoot,
           children: [
             nestedPromptBankNavItem,
@@ -224,13 +221,13 @@ const routes_DE = {
       items: [
         {
           title: 'Dashboard',
-          icon: <GridViewIcon fontSize="small" />,
+          icon: <GridView fontSize="small" />,
           path: evaluationPaths.deDashboard,
         },
         ...evaluationCoreNavItems,
         {
           title: 'Admin',
-          icon: <SettingsIcon fontSize="small" />,
+          icon: <Settings fontSize="small" />,
           path: evaluationPaths.settingsRoot,
           children: [
             nestedPromptBankNavItem,
@@ -252,13 +249,13 @@ const routes_DTE = {
       items: [
         {
           title: 'Dashboard',
-          icon: <GridViewIcon fontSize="small" />,
+          icon: <GridView fontSize="small" />,
           path: evaluationPaths.dteDashboard,
         },
         ...evaluationCoreNavItems,
         {
           title: 'Settings',
-          icon: <SettingsIcon fontSize="small" />,
+          icon: <Settings fontSize="small" />,
           path: evaluationPaths.settingsRoot,
           children: [
             nestedPromptBankNavItem,
@@ -280,7 +277,7 @@ const routes_CT = {
       items: [
         {
           title: 'Dashboard',
-          icon: <GridViewIcon fontSize="small" />,
+          icon: <GridView fontSize="small" />,
           path: evaluationPaths.ctDashboard,
         },
         evaluationSharedNavItems.artifacts,
@@ -288,7 +285,7 @@ const routes_CT = {
         evaluationSharedNavItems.observations,
         {
           title: 'Mid-Year',
-          icon: <GridViewIcon fontSize="small" />,
+          icon: <GridView fontSize="small" />,
           path: evaluationPaths.midYearEvaluation,
         },
         evaluationSharedNavItems.summativeEvaluation,
@@ -303,37 +300,37 @@ const routes_CT = {
  */
 const adminRoutePromptBank = {
     title: 'Prompt Bank',
-    icon: <ArtifactsIcon fontSize="small" />,
+    icon: <HelpCenter fontSize="small" />,
     path: adminPaths.promptBankRoot,
 };
 
 const adminRouteReports = {
   title: 'Reports',
-  icon: <ArtifactsIcon fontSize="small" />,
+  icon: <Summary fontSize="small" />,
   path: adminPaths.reports,
 };
 
 const adminRouteResources = {
   title: 'Resources',
-  icon: <ArtifactsIcon fontSize="small" />,
+  icon: <HelpCenter fontSize="small" />,
   path: adminPaths.resources,
 };
 
 const adminRouteDvSetup = {
   title: 'District Viewer Setup',
-  icon: <ArtifactsIcon fontSize="small" />,
+  icon: <Settings fontSize="small" />,
   path: adminPaths.dvSetup,
 };
 
 const adminRouteDteSetup = {
   title: 'DTE Setup',
-  icon: <ArtifactsIcon fontSize="small" />,
+  icon: <Settings fontSize="small" />,
   path: adminPaths.dteSetup,
 };
 
 const adminRouteSettings = {
   title: 'Settings',
-  icon: <ArtifactsIcon fontSize="small" />,
+  icon: <Settings fontSize="small" />,
   path: adminPaths.settingsRoot,
   children: [
     {
@@ -349,7 +346,7 @@ const adminRouteSettings = {
 
 const schoolAdminReportSettings = {
   title: 'Report Settings',
-  icon: <ArtifactsIcon fontSize="small" />,
+  icon: <Settings fontSize="small" />,
   path: adminPaths.settingsReports,
 }
 
@@ -361,13 +358,13 @@ const routes_DA_PR = {
       items: [
         {
           title: 'Dashboard',
-          icon: <GridViewIcon fontSize="small" />,
+          icon: <GridView fontSize="small" />,
           path: adminPaths.daPrDashboard,
         },
         adminRoutePromptBank,
         {
           title: 'Assignments',
-          icon: <ArtifactsIcon fontSize="small" />,
+          icon: <Assignments fontSize="small" />,
           path: adminPaths.assignmentsDistrictDetail,
         },
         adminRouteDvSetup,
@@ -388,7 +385,7 @@ const routes_DAM_PR = {
       items: [
         {
           title: 'Assignments',
-          icon: <ArtifactsIcon fontSize="small" />,
+          icon: <Assignments fontSize="small" />,
           path: adminPaths.assignmentsDistrictDetail,
         },
         adminRouteDvSetup,
@@ -405,13 +402,13 @@ const routes_DA_TR = {
       items: [
         {
           title: 'Dashboard',
-          icon: <GridViewIcon fontSize="small" />,
+          icon: <GridView fontSize="small" />,
           path: adminPaths.daTrDashboard,
         },
         adminRoutePromptBank,
         {
           title: 'Assignments',
-          icon: <ArtifactsIcon fontSize="small" />,
+          icon: <Assignments fontSize="small" />,
           path: adminPaths.assignmentsDistrictSummary,
         },
         adminRouteDteSetup,
@@ -433,7 +430,7 @@ const routes_DAM_TR = {
       items: [
         {
           title: 'Assignments',
-          icon: <ArtifactsIcon fontSize="small" />,
+          icon: <Assignments fontSize="small" />,
           path: adminPaths.assignmentsDistrictSummary,
         },
         adminRouteDteSetup,
@@ -451,13 +448,13 @@ const routes_SA_PR = {
       items: [
         {
           title: 'Dashboard',
-          icon: <GridViewIcon fontSize="small" />,
+          icon: <GridView fontSize="small" />,
           path: adminPaths.saPrDashboard,
         },
         adminRoutePromptBank,
         {
           title: 'Assignments',
-          icon: <ArtifactsIcon fontSize="small" />,
+          icon: <Assignments fontSize="small" />,
           path: adminPaths.assignmentsSchoolDetailRoot,
         },
         schoolAdminReportSettings,
@@ -478,13 +475,13 @@ const routes_SA_TR = {
       items: [
         {
           title: 'Dashboard',
-          icon: <GridViewIcon fontSize="small" />,
+          icon: <GridView fontSize="small" />,
           path: adminPaths.saTrDashboard,
         },
         adminRoutePromptBank,
         {
           title: 'Assignments',
-          icon: <ArtifactsIcon fontSize="small" />,
+          icon: <Assignments fontSize="small" />,
           path: adminPaths.assignmentsSchoolDetailRoot,
         },
         schoolAdminReportSettings,
@@ -509,7 +506,7 @@ const routes_DV_PR_PR = {
       items: [
         {
           title: 'Dashboard',
-          icon: <GridViewIcon fontSize="small" />,
+          icon: <GridView fontSize="small" />,
           path: districtViewerPaths.prPrDashboard,
         }
       ]
@@ -526,7 +523,7 @@ const routes_DV_PR_TR = {
       items: [
         {
           title: 'Dashboard',
-          icon: <GridViewIcon fontSize="small" />,
+          icon: <GridView fontSize="small" />,
           path: districtViewerPaths.prTrDashboard
         }
       ]
@@ -543,7 +540,7 @@ const routes_DV_DTE = {
       items: [
         {
           title: 'Dashboard',
-          icon: <GridViewIcon fontSize="small" />,
+          icon: <GridView fontSize="small" />,
           path: districtViewerPaths.dteDashboard,
         },
       ]
@@ -560,7 +557,7 @@ const routes_DV_DE = {
       items: [
         {
           title: 'Dashboard',
-          icon: <GridViewIcon fontSize="small" />,
+          icon: <GridView fontSize="small" />,
           path: districtViewerPaths.deDashboard,
         },
       ]
@@ -577,7 +574,7 @@ const routes_DV_CT = {
       items: [
         {
           title: 'Dashboard',
-          icon: <GridViewIcon fontSize="small" />,
+          icon: <GridView fontSize="small" />,
           path: districtViewerPaths.ctDashboard,
         },
       ]
