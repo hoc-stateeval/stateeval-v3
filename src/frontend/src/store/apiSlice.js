@@ -73,11 +73,20 @@ export const apiSlice = createApi({
 
     // evidenceItems
     getYearToDateEvidenceItems: builder.query({
-      query: (data) => ({url: `evidence-items/${data.evaluationId}`, method: 'get'})
+      query: (data) => ({url: `evidence-items/${data.evaluationId}/`, method: 'get'}),
+      transformResponse: (response) => {
+        const map = response.reduce((acc,next)=> {
+          const rubricRowId = next.rubricRowId;
+          if (!acc[rubricRowId]) acc[rubricRowId] = [];
+          acc[rubricRowId].push(next);
+          return acc;
+        }, {});
+        return map;
+      }
     }),
-    getEvidenceItemsForCollection: builder.query({
-      query: (data) => ({url: `evidence-items/${data.collectionType}/${data.collectionObjectId}`, method: 'get'})
-    }),
+    // getEvidenceItemsForCollection: builder.query({
+    //   query: (data) => ({url: `evidence-items/${data.collectionType}/${data.collectionObjectId}`, method: 'get'})
+    // }),
     createEvidenceItem: builder.mutation({
       query: (data) => ({url: `evidence-items/${data.collectionType}/${data.collectionObjectId}`, method: 'post', data: data}) 
     }),
@@ -184,7 +193,7 @@ export const {
   useGetEvaluationsForDistrictViewerQuery,
   useGetEvaluatorsForDistrictViewerQuery,
   useLoginUserMutation,
-  useGetEvidenceItemsForCollectionQuery,
+  // useGetEvidenceItemsForCollectionQuery,
   useCreateEvidenceItemMutation,
   useGetYearToDateEvidenceItemsQuery
 } = apiSlice

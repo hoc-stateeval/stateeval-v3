@@ -97,7 +97,7 @@ import {
         }
         </Box>
           
-        {evidenceItems && activeRubricRow && evidenceItems.filter(x=>x.rubricRowId===activeRubricRow.id).map(x=>(
+        {evidenceItems && evidenceItems[activeRubricRow.id] && evidenceItems[activeRubricRow.id].map(x=>(
           <Accordion  key={x.id} sx={{...evidenceItemStyles}}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Stack direction="row" spacing={2}>

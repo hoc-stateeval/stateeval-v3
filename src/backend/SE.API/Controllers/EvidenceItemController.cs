@@ -25,15 +25,15 @@ namespace SE.API.Controllers
             return Ok(items);
         }
 
-        [HttpGet("{collectionType}/{collectionObjectId}")]
-        public async Task<IActionResult> GetEvidenceItemsForCollection(
-            EvidenceCollectionType collectionType, 
-            long collectionObjectId)
-        {
-            CancellationToken cancelationToken =  HttpContext.RequestAborted;
-            var items = await _mediator.Send(new GetEvidenceItemsForEvidenceCollectionQuery(collectionType, collectionObjectId), cancelationToken);
-            return Ok(items);
-        }
+        //[HttpGet("{collectionType}/{collectionObjectId}")]
+        //public async Task<IActionResult> GetEvidenceItemsForCollection(
+        //    EvidenceCollectionType collectionType, 
+        //    long collectionObjectId)
+        //{
+        //    CancellationToken cancelationToken =  HttpContext.RequestAborted;
+        //    var items = await _mediator.Send(new GetEvidenceItemsForEvidenceCollectionQuery(collectionType, collectionObjectId), cancelationToken);
+        //    return Ok(items);
+        //}
 
         [HttpPost("{collectionType}/{collectionObjectId}")]
         public async Task<IActionResult> CreateEvidenceItem(

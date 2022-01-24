@@ -6,12 +6,17 @@ import {
 } from "@mui/material";
 
 import {
+  selectActiveEvaluationId,
   selectActiveFramework,
   setActiveFrameworkNodeId,
   setActiveRubricRowId,
   selectActiveRubricRowId,
-  selectActiveFrameworkNodeId
+  selectActiveFrameworkNodeId,
 } from "@user-context-slice";
+
+import { 
+  useGetYearToDateEvidenceItemsQuery,
+ } from "@api-slice";
 
 import './rubric-helper.css';
 
@@ -22,11 +27,19 @@ const RubricNavigatorRubricRow = ({rubricRow, selected}) => {
     dispatch(setActiveRubricRowId(rubricRow.id));
   }
 
+  const activeRubricRowId = useSelector(selectActiveRubricRowId);
+  const activeEvaluationId = useSelector(selectActiveEvaluationId);
+  const { data: evidenceItems } = useGetYearToDateEvidenceItemsQuery(
+    {
+      evaluationId: activeEvaluationId,
+      rubricRowId: activeRubricRowId
+    });
+
   return (
     <Box className={`section-row rubric-row ${selected ? "selected" : ""}`} onClick={()=>onClickRubricRow()} >
         <Box className="row-name cell-1">{rubricRow?.shortName} </Box>
         <Box className="cell-2">{rubricRow?.title}</Box>
-        <Box className="cell-3"></Box>
+        <Box className="cell-3">{evidenceItems && evidenceItems.length}</Box>
     </Box>
   )
 };
