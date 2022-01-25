@@ -103,6 +103,7 @@ const RubricNavigator = () => {
 
   const { data: evidenceItems } = useGetYearToDateEvidenceItemsQuery({ evaluationId: activeEvaluationId });
   
+  
   return (
     <>
       <Box className="rubric-helper">

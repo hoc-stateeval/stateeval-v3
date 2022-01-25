@@ -23,22 +23,36 @@ const CollectedEvidenceList = ({evidenceItems, rubricRowId}) => {
   const dispatch = useDispatch();
 
   const selectedEvidenceItems = useSelector(selectSelectedEvidenceItems);
+  // if (evidenceItems) {
+  //   const initialState = evidenceItems[rubricRowId].map(x=>({evidenceItem: x, selected: false}));
+  //   dispatch(updateSelectedEvidenceItems(initialState));
+  // }
 
   if (!evidenceItems || !evidenceItems[rubricRowId]) {
     return (<></>);
   }
 
-  const toggleSelection = (id) => {
-    if (selectedEvidenceItems.includes(id)) {
-      dispatch(updateSelectedEvidenceItems(selectedEvidenceItems.filter(x=>x.id)));
+  const toggleSelection = (evidenceItem) => {
+    if (selectedEvidenceItems.length===0) {
+      const initialState = evidenceItems[rubricRowId].map(x=>{
+        return {evidenceItem: x, selected: (x.id===evidenceItem.id)}
+      });
+      dispatch(updateSelectedEvidenceItems(initialState));
+      return;
     }
-    else {
-      dispatch(updateSelectedEvidenceItems([...selectedEvidenceItems, id]));
-    }
+
+    const itemState = selectedEvidenceItems.find(x=>x.evidenceItem.id===evidenceItem.id);
+
+    const selected = itemState.selected;
+    const newItems = selectedEvidenceItems.map(x=>{
+      if (x.evidenceItem.id===evidenceItem.id) return {evidenceItem: x.evidenceItem, selected: !selected}
+      else return x;
+    })
+    dispatch(updateSelectedEvidenceItems(newItems));
   }
 
-  const getEvidenceStyles = (id) => {
-    const selected = selectedEvidenceItems.includes(id);
+  const getEvidenceStyles = (evidenceItem) => {
+    const selected = selectedEvidenceItems.find(x=>x.evidenceItem.id===evidenceItem.id)?.selected;
     return {
       backgroundColor: selected?theme.palette.primary.main:'#f2f2f2',
       color: selected?'white': theme.palette.text.primary,
@@ -47,10 +61,10 @@ const CollectedEvidenceList = ({evidenceItems, rubricRowId}) => {
 
   return (
     <>
-    {evidenceItems[rubricRowId].map(x=>(
-      <Paper direction="column"
-        onClick={()=> {toggleSelection(x.id)}}
-        sx={{mb:2, p:2, ...getEvidenceStyles(x.id)}}>
+    {evidenceItems[rubricRowId].map((x, i)=>(
+      <Paper direction="column" key={i}
+        onClick={()=> {toggleSelection(x)}}
+        sx={{mb:2, p:2, ...getEvidenceStyles(x)}}>
         <Stack direction="row" sx={{justifyContent:'space-between'}}>
           <Stack direction="column" spacing={0}>
             <Box>
@@ -66,12 +80,13 @@ const CollectedEvidenceList = ({evidenceItems, rubricRowId}) => {
               {x.evidenceTypeDisplayName}
             </Box>
           </Stack>
-          {!selectedEvidenceItems.includes(x.id) &&  
-          <Box>
-          <Tooltip title="Delete">
-            <IconButton><DeleteRoundedIcon fontSize="small" sx={{}} /></IconButton>
-          </Tooltip>
-          </Box>
+          {selectedEvidenceItems.find(y=>y.evidenceItem.id === x.id).selected ?
+          (<>{selectedEvidenceItems.findIndex((y)=>y.evidenceItem.id===x.id)+1}</>) :
+          (<Box>
+            <Tooltip title="Delete">
+              <IconButton><DeleteRoundedIcon fontSize="small" sx={{}} /></IconButton>
+            </Tooltip>
+            </Box>)
           } 
         </Stack>
        

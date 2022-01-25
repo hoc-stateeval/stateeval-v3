@@ -180,6 +180,12 @@ const userContextSlice = createSlice({
         },
       };
     },
+    setEvidenceCollectionViewMode: (state, action) => {
+      return {
+        ...state,
+        ecViewMode: 'node',
+      };
+    },
     setActiveFrameworkNodeId: (state, action) => {
       return {
         ...state,
