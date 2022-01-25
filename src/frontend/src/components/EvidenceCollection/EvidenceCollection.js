@@ -25,7 +25,7 @@ const EvidenceCollection = () => {
         {ecViewMode === 'node' && <FrameworkNodeView />}
       </Grid>
       <Grid item xs={4}>
-          <RubricNavigator/>
+          <RubricNavigator />
       </Grid>
     </Grid>
     </>

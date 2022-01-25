@@ -14,6 +14,7 @@ module.exports = function override(config) {
     "@images": "src/images",
     "@api-slice": "src/store/apiSlice",
     "@user-context-slice": "src/store/stateEval/userContextSlice",
+    "@evidence-collection-slice": "src/store/stateEval/evidenceCollectionSlice",
   })(config);
 
   return config;

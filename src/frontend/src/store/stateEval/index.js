@@ -1,8 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import userContext from './userContextSlice';
+import evidenceCollection from './evidenceCollectionSlice';
 
 const stateEvalReducers = combineReducers({
-  userContext
+  userContext,
+  evidenceCollection
 });
 
 export default stateEvalReducers;
