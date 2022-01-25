@@ -20,13 +20,13 @@ const evidenceItemStyles = {
   margin: '10px 0',
   fontSize:'11px'
 };
-const AddOtherEvidence = () => {
+const AddOtherEvidence = ({evaluationId, rubricRowId, userId}) => {
 
   const [evidenceText, setEvidenceText] = useState('');
   const [showOtherEvidenceInputArea, toggleShowOtherEvidenceInputArea] = useState(false);
   const [createEvidenceItem] = useCreateEvidenceItemMutation();
 
-  const onClickAddOtherEvidence = ({evaluationId, rubricRowId, userId}) => {
+  const onClickAddOtherEvidence = () => {
     let data = {
       collectionType: EvidenceCollectionType.OTHER_EVIDENCE,
       evidenceType: EvidenceType.RUBRIC_ROW_NOTE,

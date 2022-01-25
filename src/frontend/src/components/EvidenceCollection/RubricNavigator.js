@@ -20,31 +20,31 @@ import {
 
 import './rubric-helper.css';
 
-const RubricNavigatorRubricRow = ({rubricRow, selected}) => {
+const RubricNavigatorRubricRow = ({rubricRow, evidenceItems, selected}) => {
   const dispatch = useDispatch();
 
   const onClickRubricRow = () => {
     dispatch(setActiveRubricRowId(rubricRow.id));
   }
 
-  const activeRubricRowId = useSelector(selectActiveRubricRowId);
-  const activeEvaluationId = useSelector(selectActiveEvaluationId);
-  const { data: evidenceItems } = useGetYearToDateEvidenceItemsQuery(
-    {
-      evaluationId: activeEvaluationId,
-      rubricRowId: activeRubricRowId
-    });
+  const evidenceItemCount = evidenceItems && evidenceItems[rubricRow.id]?.length;
 
   return (
     <Box className={`section-row rubric-row ${selected ? "selected" : ""}`} onClick={()=>onClickRubricRow()} >
         <Box className="row-name cell-1">{rubricRow?.shortName} </Box>
         <Box className="cell-2">{rubricRow?.title}</Box>
-        <Box className="cell-3">{evidenceItems && evidenceItems.length}</Box>
+        <Box className="cell-3">
+          <div className="helper-switch">
+            <div className={`node-score ${(!evidenceItemCount) ?"node-score-inactive" : ""}`}>
+              {evidenceItemCount}
+            </div>
+          </div>
+        </Box>
     </Box>
   )
 };
 
-const RubricNavigatorFrameworkNode = ({frameworkNode, expanded}) => {
+const RubricNavigatorFrameworkNode = ({frameworkNode, evidenceItems, expanded}) => {
 
   const dispatch = useDispatch();
   const activeRubricRowId = useSelector(selectActiveRubricRowId);
@@ -57,13 +57,27 @@ const RubricNavigatorFrameworkNode = ({frameworkNode, expanded}) => {
     dispatch(setActiveFrameworkNodeId(frameworkNode.id));
   }
 
+  let evidenceItemCount = frameworkNode.rubricRows.reduce((acc, rubricRow)=> {
+    if (evidenceItems) {
+      const rrEvidenceItems = evidenceItems[rubricRow.id];
+      if (rrEvidenceItems) {
+        acc+=rrEvidenceItems.length;
+      }
+    }
+   return acc;
+ }, 0);
+
   return (
     <>
       <Box  className={`section-row node-row ${expanded ? "rr-expand" : ""}`}>
         <div className="node-name cell-1" onClick={()=>onClickFrameworkNodeShortName()}>{frameworkNode?.shortName} </div>
         <div className="cell-2" onClick={()=>onClickFrameworkNodeTitle()}>{frameworkNode?.title}</div>
         <div className="cell-3">
-          
+          <div className="helper-switch">
+            <div className={`node-score ${(!evidenceItemCount) ?"node-score-inactive" : ""}`}>
+              {evidenceItemCount>0 && evidenceItemCount}
+            </div>
+          </div>
         </div>
       </Box>
 
@@ -72,6 +86,7 @@ const RubricNavigatorFrameworkNode = ({frameworkNode, expanded}) => {
           return (<RubricNavigatorRubricRow 
                     key={x.id} 
                     rubricRow={x} 
+                    evidenceItems={evidenceItems}
                     selected={x.id===activeRubricRowId}
                     />);
         })}
@@ -82,9 +97,12 @@ const RubricNavigatorFrameworkNode = ({frameworkNode, expanded}) => {
 
 const RubricNavigator = () => {
 
+  const activeEvaluationId = useSelector(selectActiveEvaluationId);
   const activeFramework = useSelector(selectActiveFramework);
   const activeFrameworkNodeId = useSelector(selectActiveFrameworkNodeId);
 
+  const { data: evidenceItems } = useGetYearToDateEvidenceItemsQuery({ evaluationId: activeEvaluationId });
+  
   return (
     <>
       <Box className="rubric-helper">
@@ -94,6 +112,7 @@ const RubricNavigator = () => {
             <Box className="section" key={x.id} >
                 <RubricNavigatorFrameworkNode 
                   frameworkNode={x} 
+                  evidenceItems={evidenceItems}
                   expanded={x.id===activeFrameworkNodeId}
                 />
             </Box>
