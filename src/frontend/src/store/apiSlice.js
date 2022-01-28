@@ -71,6 +71,11 @@ export const apiSlice = createApi({
   tagTypes: [],
   endpoints: builder => ({
 
+    // perception surveys
+    getPerceptionSurveyById: builder.query({
+      query: (id) => ({ url: `perception-surveys/${id}`, method: 'get' }),
+    }),
+
     // evidenceItems
     getYearToDateEvidenceItems: builder.query({
       query: (data) => ({url: `evidence-items/${data.evaluationId}/`, method: 'get'}),
@@ -195,5 +200,6 @@ export const {
   useLoginUserMutation,
   // useGetEvidenceItemsForCollectionQuery,
   useCreateEvidenceItemMutation,
-  useGetYearToDateEvidenceItemsQuery
+  useGetYearToDateEvidenceItemsQuery,
+  useGetPerceptionSurveyByIdQuery,
 } = apiSlice

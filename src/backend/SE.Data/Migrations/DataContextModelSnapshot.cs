@@ -720,6 +720,68 @@ namespace SE.Data.Migrations
                     b.ToTable("Observation", "dbo");
                 });
 
+            modelBuilder.Entity("SE.Domain.Entities.PerceptionSurvey", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<DateTime?>("CompletionDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("EvaluationId")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SchoolCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("TinyURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PerceptionSurvey", "dbo");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.PerceptionSurveyStatement", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("FrameworkTagName")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<long>("RubricRowId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RubricRowId");
+
+                    b.ToTable("PerceptionSurveyStatement", "dbo");
+                });
+
             modelBuilder.Entity("SE.Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<long>("Id")
@@ -1577,6 +1639,17 @@ namespace SE.Data.Migrations
                     b.Navigation("Evaluation");
 
                     b.Navigation("Evaluator");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.PerceptionSurveyStatement", b =>
+                {
+                    b.HasOne("SE.Domain.Entities.RubricRow", "RubricRow")
+                        .WithMany()
+                        .HasForeignKey("RubricRowId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RubricRow");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.RefreshToken", b =>

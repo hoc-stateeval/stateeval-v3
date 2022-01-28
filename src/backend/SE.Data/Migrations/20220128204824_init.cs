@@ -47,6 +47,25 @@ namespace SE.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PerceptionSurvey",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EvaluationId = table.Column<long>(type: "bigint", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    SchoolCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    CompletionDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TinyURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PerceptionSurvey", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Role",
                 schema: "dbo",
                 columns: table => new
@@ -254,6 +273,29 @@ namespace SE.Data.Migrations
                         principalSchema: "dbo",
                         principalTable: "Role",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PerceptionSurveyStatement",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FrameworkTagName = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RubricRowId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PerceptionSurveyStatement", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PerceptionSurveyStatement_RubricRow_RubricRowId",
+                        column: x => x.RubricRowId,
+                        principalSchema: "dbo",
+                        principalTable: "RubricRow",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -1146,6 +1188,12 @@ namespace SE.Data.Migrations
                 column: "EvaluatorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PerceptionSurveyStatement_RubricRowId",
+                schema: "dbo",
+                table: "PerceptionSurveyStatement",
+                column: "RubricRowId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_UserId",
                 schema: "dbo",
                 table: "RefreshTokens",
@@ -1292,6 +1340,14 @@ namespace SE.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "FrameworkNodeRubricRow",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "PerceptionSurvey",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "PerceptionSurveyStatement",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

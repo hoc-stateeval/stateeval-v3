@@ -15,6 +15,7 @@
     <None Remove="SeedData\Core\00004_CEL_TR_2021.sql" />
     <None Remove="SeedData\Core\00005_MAR_PR_2021.sql" />
     <None Remove="SeedData\Core\00007_initWorkAreas.sql" />
+    <None Remove="SeedData\Core\00008_init_perception_surveys.sql" />
     <None Remove="SeedData\Development\00009_initBuildings.sql" />
     <None Remove="SeedData\Development\00010_initFrameworksToLoad.sql" />
     <None Remove="SeedData\Development\00011_loadTestData.sql" />
@@ -23,6 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="SeedData\Core\00008_init_perception_surveys.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="SeedData\Core\00001_LEADER_2021.sql" />
     <EmbeddedResource Include="SeedData\Core\00002_DAN_TR_2021.sql" />
     <EmbeddedResource Include="SeedData\Core\00003_MAR_TR_2021.sql" />
