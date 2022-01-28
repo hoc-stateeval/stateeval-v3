@@ -1,7 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
 
 import { 
+  Button,
   IconButton,
+  Stack,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -43,6 +45,20 @@ const EvidencePackageBuilder = () => {
               </li>
             )
           })}
+          <Typography variant="subhead">Relevant Rubric Alignment</Typography>
+          <Button variant="contained" color="secondary" size="small">Go to Rubric</Button> and select the relevant rubric text
+          <Stack direction="row" spacing={1} sx={{justifyContent:'flex-end'}}>
+                <Button 
+                  variant="contained" 
+                  color="background" 
+                  size="small"
+                >Cancel</Button>
+                <Button 
+                  variant="contained" 
+                  color="secondary" 
+                  size="small"
+                >Create</Button>
+              </Stack>
       </ul>
       </div>
     </>

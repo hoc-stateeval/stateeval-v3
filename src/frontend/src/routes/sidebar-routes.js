@@ -148,6 +148,11 @@ const routes_TR_ME = {
           path: evaluationPaths.trMeDashboard,
         },
         ...evaluationCoreNavItems,
+        {
+          title: 'Perception Surveys',
+          icon: <GridView fontSize="small" />,
+          path: evaluationPaths.trMePerceptionSurveys,
+        },
       ],
     },
     trainingSection,

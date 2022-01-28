@@ -89,6 +89,7 @@ export const evaluationPaths = {
   summativeEvaluation: `${evaluationRoot}/summative-eval`,
   reportArchives: `${evaluationRoot}/report-archives`,
   resources:  `${evaluationRoot}/resources`,
+  trMePerceptionSurveys: `${evaluationRoot}/perceptionSurveys`,
 
   settingsRoot: `${evalSettingsRoot}`,
   settingsGeneral: `${evalSettingsRoot}/general`,
