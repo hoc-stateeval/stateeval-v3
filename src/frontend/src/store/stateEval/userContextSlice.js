@@ -101,7 +101,6 @@ export const setCurrentUser = createAsyncThunk(
 const initialState = {
   currentUser: null,
   pageTitle: '',
-  ecViewMode: 'node',
   ids: {
     activeWorkAreaContextId: null,
     activeFrameworkId: null,
@@ -111,8 +110,6 @@ const initialState = {
     activeEvaluationId: '0',
     activeDistrictViewerSchoolCode: '0',
     activeDistrictViewerEvaluatorId: '0',
-    activeFrameworkNodeId: null,
-    activeRubricRowId: null,
   },
   entities: {
     workAreaContexts: {},
@@ -177,33 +174,6 @@ const userContextSlice = createSlice({
         ids: {
           ...state.ids,
           activeDistrictViewerEvaluatorId: action.payload,
-        },
-      };
-    },
-    setEvidenceCollectionViewMode: (state, action) => {
-      return {
-        ...state,
-        ecViewMode: 'node',
-      };
-    },
-    setActiveFrameworkNodeId: (state, action) => {
-      return {
-        ...state,
-        ecViewMode: 'node',
-        ids: {
-          ...state.ids,
-          activeFrameworkNodeId: action.payload,
-          activeRubricRowId: null,
-        },
-      };
-    },
-    setActiveRubricRowId: (state, action) => {
-      return {
-        ...state,
-        ecViewMode: 'row',
-        ids: {
-          ...state.ids,
-          activeRubricRowId: action.payload,
         },
       };
     },
@@ -390,77 +360,12 @@ export const selectActiveDistrictViewerEvaluatorId = createSelector(
   return id;
 });
 
-/*** Rubric Navigator ***/
-const getActiveFrameworkNode = (state) => {
-  const { activeFrameworkNodeId } = getIds(state);
-  if (!activeFrameworkNodeId) return null;
-  const { activeFrameworkId } = getIds(state);
-  const { frameworks } = getEntities(state);
-  const framework = frameworks[activeFrameworkId];
-  return framework.frameworkNodes.find(x=>x.id===activeFrameworkNodeId);
-};
-
-const getEvidenceCollectionViewMode = (state) => {
-  const {ecViewMode } = state.stateEval.userContext;
-  return ecViewMode;
-}
-
-export const selectEvidenceCollectionViewMode = createSelector(
-  [getEvidenceCollectionViewMode], (ecViewMode) => {
-    return ecViewMode;
-  }
-)
-
-export const selectActiveFrameworkNode = createSelector(
-  [getActiveFrameworkNode], (frameworkNode) => {
-  return frameworkNode;
-});
-
-export const selectActiveFrameworkNodeId = createSelector(
-  [getActiveFrameworkNode], (frameworkNode) => {
-  return frameworkNode?.id;
-});
-
-const getActiveRubricRow = (state) => {
-  const { activeFrameworkNodeId, activeRubricRowId } = getIds(state);
-  if (!activeFrameworkNodeId || !activeRubricRowId) return null;
-  const { activeFrameworkId } = getIds(state);
-  const { frameworks } = getEntities(state);
-  const framework = frameworks[activeFrameworkId];
-  let frameworkNode = framework.frameworkNodes.find(x=>x.id===activeFrameworkNodeId);
-  if (frameworkNode) {
-    return frameworkNode.rubricRows.find(x=>x.id===activeRubricRowId);
-  }
-  else {
-    frameworkNode = framework.frameworkNodes[0];
-    return frameworkNode.rubricRows[0];
-  }
-};
-
-export const selectActiveRubricRow = createSelector(
-  [getActiveRubricRow], (rubricRow) => {
-  return rubricRow;
-});
-
-const getActiveRubricRowId = (state) => {
-  const { activeRubricRowId } = getIds(state);
-  return activeRubricRowId;
-};
-
-export const selectActiveRubricRowId = createSelector(
-  [getActiveRubricRowId], (id) => {
-  return id;
-});
-
 export const { 
   setActiveFrameworkId, 
   setActiveEvaluation,
   setActiveDistrictViewerSchoolCode,
   setActiveDistrictViewerEvaluatorId,
   setPageTitle,
-  setActiveFrameworkNodeId, 
-  setActiveRubricRowId, 
-  setEvidenceCollectionViewMode,
 } = userContextSlice.actions;
 
 export default userContextSlice.reducer;

@@ -1,10 +1,8 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { 
   Typography,
 } from "@mui/material";
-
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 import {
   selectSelectedEvidenceItems,

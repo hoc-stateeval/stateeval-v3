@@ -8,11 +8,14 @@ import {
 import {
   selectActiveEvaluationId,
   selectActiveFramework,
+} from "@user-context-slice";
+
+import {
   setActiveFrameworkNodeId,
   setActiveRubricRowId,
   selectActiveRubricRowId,
   selectActiveFrameworkNodeId,
-} from "@user-context-slice";
+} from "@evidence-collection-slice";
 
 import { 
   useGetYearToDateEvidenceItemsQuery,
@@ -24,7 +27,7 @@ const RubricNavigatorRubricRow = ({rubricRow, evidenceItems, selected}) => {
   const dispatch = useDispatch();
 
   const onClickRubricRow = () => {
-    dispatch(setActiveRubricRowId(rubricRow.id));
+    dispatch(setActiveRubricRowId({ evidenceItems, rubricRowId: rubricRow.id} ));
   }
 
   const evidenceItemCount = evidenceItems && evidenceItems[rubricRow.id]?.length;
@@ -103,7 +106,10 @@ const RubricNavigator = () => {
 
   const { data: evidenceItems } = useGetYearToDateEvidenceItemsQuery({ evaluationId: activeEvaluationId });
   
-  
+  if (!evidenceItems) {
+    return (<></>);
+  }
+
   return (
     <>
       <Box className="rubric-helper">

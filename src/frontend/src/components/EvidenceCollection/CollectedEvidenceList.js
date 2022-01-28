@@ -12,7 +12,7 @@ import { useTheme } from '@mui/material/styles';
 
 import {
   selectSelectedEvidenceItems,
-  updateSelectedEvidenceItems
+  setSelectedEvidenceItems
 } from "@evidence-collection-slice";
 
 
@@ -23,40 +23,41 @@ const CollectedEvidenceList = ({evidenceItems, rubricRowId}) => {
   const dispatch = useDispatch();
 
   const selectedEvidenceItems = useSelector(selectSelectedEvidenceItems);
-  // if (evidenceItems) {
-  //   const initialState = evidenceItems[rubricRowId].map(x=>({evidenceItem: x, selected: false}));
-  //   dispatch(updateSelectedEvidenceItems(initialState));
-  // }
-
-  if (!evidenceItems || !evidenceItems[rubricRowId]) {
-    return (<></>);
-  }
 
   const toggleSelection = (evidenceItem) => {
-    if (selectedEvidenceItems.length===0) {
-      const initialState = evidenceItems[rubricRowId].map(x=>{
-        return {evidenceItem: x, selected: (x.id===evidenceItem.id)}
-      });
-      dispatch(updateSelectedEvidenceItems(initialState));
-      return;
-    }
-
     const itemState = selectedEvidenceItems.find(x=>x.evidenceItem.id===evidenceItem.id);
 
     const selected = itemState.selected;
     const newItems = selectedEvidenceItems.map(x=>{
       if (x.evidenceItem.id===evidenceItem.id) return {evidenceItem: x.evidenceItem, selected: !selected}
       else return x;
-    })
-    dispatch(updateSelectedEvidenceItems(newItems));
+    });
+    dispatch(setSelectedEvidenceItems(newItems));
+  }
+
+  const evidenceItemIsSelected = (evidenceItem) => {
+    return selectedEvidenceItems.find(x=>x.evidenceItem.id===evidenceItem.id)?.selected;
   }
 
   const getEvidenceStyles = (evidenceItem) => {
-    const selected = selectedEvidenceItems.find(x=>x.evidenceItem.id===evidenceItem.id)?.selected;
+    const selected = evidenceItemIsSelected(evidenceItem);
     return {
-      backgroundColor: selected?theme.palette.primary.main:'#f2f2f2',
-      color: selected?'white': theme.palette.text.primary,
+      backgroundColor: selected ? theme.palette.primary.main : '#f2f2f2',
+      color: selected  ?'white' : theme.palette.text.primary,
     };
+  }
+
+  const getSelectedEvidenceItemPosition = (evidenceItem) => {
+    return selectedEvidenceItems.findIndex((y)=>y.evidenceItem.id===evidenceItem.id) + 1;
+  }
+
+  const deSelectEvidence = (evidenceItem) => {
+    dispatch(setSelectedEvidenceItems(selectedEvidenceItems
+      .map(x=>(x.id===evidenceItem.id?{...x, selected: false} : x))))
+  };
+
+  if (!evidenceItems || !evidenceItems[rubricRowId]) {
+    return (<></>);
   }
 
   return (
@@ -80,11 +81,11 @@ const CollectedEvidenceList = ({evidenceItems, rubricRowId}) => {
               {x.evidenceTypeDisplayName}
             </Box>
           </Stack>
-          {selectedEvidenceItems.find(y=>y.evidenceItem.id === x.id).selected ?
-          (<>{selectedEvidenceItems.findIndex((y)=>y.evidenceItem.id===x.id)+1}</>) :
+          {evidenceItemIsSelected(x) ?
+          (<>{getSelectedEvidenceItemPosition(x)}</>) :
           (<Box>
             <Tooltip title="Delete">
-              <IconButton><DeleteRoundedIcon fontSize="small" sx={{}} /></IconButton>
+              <IconButton><DeleteRoundedIcon onClick={()=>{ deSelectEvidence(x)}} fontSize="small" sx={{}} /></IconButton>
             </Tooltip>
             </Box>)
           } 

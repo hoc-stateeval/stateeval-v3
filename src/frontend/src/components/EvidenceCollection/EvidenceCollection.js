@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { 
   Grid
@@ -7,13 +6,7 @@ import {
 
 import {
   selectEvidenceCollectionViewMode,
-  setEvidenceCollectionViewMode
-} from "@user-context-slice";
-
-
-import {
   selectSelectedEvidenceItems,
-  updateSelectedEvidenceItems,
 } from "@evidence-collection-slice";
 
 
@@ -23,18 +16,14 @@ import FrameworkNodeView from './FrameworkNodeView';
 import EvidencePackageBuilder from "./EvidencePackageBuilder";
 
 const EvidenceCollection = () => {
-  const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   const initializeEvidenceCollectionState = () => {
-  //     dispatch(setEvidenceCollectionViewMode('node'));
-  //     dispatch(updateSelectedEvidenceItems([]));
-  //   }
-  //   return initializeEvidenceCollectionState;
-  // });
   
   const ecViewMode = useSelector(selectEvidenceCollectionViewMode);
   const selectedEvidenceItems = useSelector(selectSelectedEvidenceItems);
+
+  let showRubricNavigator = true;
+  for (const next of selectedEvidenceItems) {
+    if (next.selected) showRubricNavigator = false;
+  }
 
   return (
     <>
@@ -44,8 +33,8 @@ const EvidenceCollection = () => {
         {ecViewMode === 'node' && <FrameworkNodeView />}
       </Grid>
       <Grid item xs={4}>
-          {selectedEvidenceItems.length===0 && <RubricNavigator />}
-          {selectedEvidenceItems.length>0 && <EvidencePackageBuilder />}
+          {showRubricNavigator && <RubricNavigator /> }
+          {!showRubricNavigator && <EvidencePackageBuilder />}
       </Grid>
     </Grid>
     </>

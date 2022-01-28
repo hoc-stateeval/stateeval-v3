@@ -11,8 +11,11 @@ import {
 import { 
   selectActiveEvaluationId, 
   selectCurrentUser,
-  selectActiveRubricRow,
 } from "@user-context-slice";
+
+import { 
+  selectActiveRubricRow,
+} from "@evidence-collection-slice";
 
 import { 
   useGetYearToDateEvidenceItemsQuery,

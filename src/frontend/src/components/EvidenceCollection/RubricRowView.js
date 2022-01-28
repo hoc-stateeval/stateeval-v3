@@ -8,7 +8,7 @@ import CollectedEvidenceSection from "./CollectedEvidenceSection";
 
 import { 
   selectActiveRubricRow,
-} from "@user-context-slice";
+} from "@evidence-collection-slice";
 
  const RubricRowView = (selectedEvidence, setSelectedEvidence) => {
   const activeRubricRow = useSelector(selectActiveRubricRow);
