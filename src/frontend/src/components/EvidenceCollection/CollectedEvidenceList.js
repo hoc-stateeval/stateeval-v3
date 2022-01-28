@@ -53,7 +53,7 @@ const CollectedEvidenceList = ({evidenceItems, rubricRowId}) => {
 
   const deSelectEvidence = (evidenceItem) => {
     dispatch(setSelectedEvidenceItems(selectedEvidenceItems
-      .map(x=>(x.id===evidenceItem.id?{...x, selected: false} : x))))
+      .map(x=>(x.evidenceItem.id===evidenceItem.id?{...x, selected: false} : x))))
   };
 
   if (!evidenceItems || !evidenceItems[rubricRowId]) {

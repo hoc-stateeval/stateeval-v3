@@ -1,16 +1,28 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { 
+  IconButton,
+  Tooltip,
   Typography,
 } from "@mui/material";
 
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+
 import {
   selectSelectedEvidenceItems,
+  setSelectedEvidenceItems,
 } from "@evidence-collection-slice";
 
 import './evidence-package-builder.css';
 
 const EvidencePackageBuilder = () => {
+  const dispatch = useDispatch();
+
+  const deSelectEvidenceItem = (selectedEvidenceItem) => {
+    const newState = selectedEvidenceItems
+          .map(x=>(x.evidenceItem.id===selectedEvidenceItem.evidenceItem.id?{...x, selected: false} : x));
+    dispatch(setSelectedEvidenceItems(newState));
+    };
 
   const selectedEvidenceItems = useSelector(selectSelectedEvidenceItems);
   return (
@@ -25,6 +37,9 @@ const EvidencePackageBuilder = () => {
               <li className="item-row">
                 <div class="index">{i+1}</div>
                 <div>{next.evidenceItem.evidenceTypeDisplayName}</div>
+                <Tooltip title="Delete">
+                  <IconButton><DeleteRoundedIcon onClick={()=>{ deSelectEvidenceItem(next)}} fontSize="small" sx={{}} /></IconButton>
+                </Tooltip>
               </li>
             )
           })}
