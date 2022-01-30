@@ -1,10 +1,12 @@
 import { useSelector } from "react-redux";
 import { 
-  Box,
+  Stack,
   Typography 
 } from "@mui/material";
 
 import CollectedEvidenceSection from "./CollectedEvidenceSection";
+import RubricAlignmentSection from "./RubricAlignmentSection";
+import PageHeader from "@components/PageHeader";
 
 import { 
   selectActiveRubricRow,
@@ -15,12 +17,11 @@ import {
 
   return (
     <>
-      <Box>
-        <Typography variant="h5" sx={{ mb:4}}>
-          {activeRubricRow?.shortName} - {activeRubricRow?.title}
-        </Typography>
-        <CollectedEvidenceSection />
-      </Box>
+      <PageHeader title={`${activeRubricRow?.shortName} - ${activeRubricRow?.title}`} />
+      <Stack spacing={4}>
+         <CollectedEvidenceSection />
+        <RubricAlignmentSection />
+      </Stack>
     </>
   );
 };

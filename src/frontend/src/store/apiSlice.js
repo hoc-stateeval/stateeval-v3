@@ -76,22 +76,7 @@ export const apiSlice = createApi({
       query: (id) => ({ url: `perception-surveys/${id}`, method: 'get' }),
     }),
 
-    // evidenceItems
-    getYearToDateEvidenceItems: builder.query({
-      query: (data) => ({url: `evidence-items/${data.evaluationId}/`, method: 'get'}),
-      transformResponse: (response) => {
-        const map = response.reduce((acc,next)=> {
-          const rubricRowId = next.rubricRowId;
-          if (!acc[rubricRowId]) acc[rubricRowId] = [];
-          acc[rubricRowId].push(next);
-          return acc;
-        }, {});
-        return map;
-      }
-    }),
-    // getEvidenceItemsForCollection: builder.query({
-    //   query: (data) => ({url: `evidence-items/${data.collectionType}/${data.collectionObjectId}`, method: 'get'})
-    // }),
+    // evidence collections
     createEvidenceItem: builder.mutation({
       query: (data) => ({url: `evidence-items/${data.collectionType}/${data.collectionObjectId}`, method: 'post', data: data}) 
     }),

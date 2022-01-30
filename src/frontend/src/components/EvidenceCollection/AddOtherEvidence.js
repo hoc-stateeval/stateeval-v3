@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 import { 
   Box,
@@ -12,6 +13,15 @@ import {
   useCreateEvidenceItemMutation, 
  } from "@api-slice";
 
+ import { 
+  selectActiveEvaluationId, 
+  selectCurrentUser,
+} from "@user-context-slice";
+
+import { 
+  selectActiveRubricRow,
+} from "@evidence-collection-slice";
+
 import { EvidenceCollectionType, EvidenceType } from "@lib/enums"
 
 const evidenceItemStyles = { 
@@ -20,11 +30,15 @@ const evidenceItemStyles = {
   margin: '10px 0',
   fontSize:'11px'
 };
-const AddOtherEvidence = ({evaluationId, rubricRowId, userId}) => {
+const AddOtherEvidence = () => {
 
   const [evidenceText, setEvidenceText] = useState('');
   const [showOtherEvidenceInputArea, toggleShowOtherEvidenceInputArea] = useState(false);
   const [createEvidenceItem] = useCreateEvidenceItemMutation();
+
+  const activeRubricRow = useSelector(selectActiveRubricRow);
+  const evaluationId = useSelector(selectActiveEvaluationId);
+  const currentUser = useSelector(selectCurrentUser);
 
   const onClickAddOtherEvidence = () => {
     let data = {
@@ -32,8 +46,8 @@ const AddOtherEvidence = ({evaluationId, rubricRowId, userId}) => {
       evidenceType: EvidenceType.RUBRIC_ROW_NOTE,
       collectionObjectId: evaluationId,
       evaluationId: evaluationId,
-      rubricRowId: rubricRowId,
-      createdByUserId: userId,
+      rubricRowId: activeRubricRow.id,
+      createdByUserId: currentUser.id,
       evidenceText: evidenceText,
       public: true, 
       codedEvidenceClientId: null,
@@ -45,7 +59,7 @@ const AddOtherEvidence = ({evaluationId, rubricRowId, userId}) => {
 
   return (
     <>
-            {showOtherEvidenceInputArea && 
+        {showOtherEvidenceInputArea && 
         <Box sx={{...evidenceItemStyles, p:2, mt: 2}}>
           <Box
             component="form"

@@ -11,7 +11,6 @@ import {
 import { useTheme } from '@mui/material/styles';
 
 import {
-  selectActiveRubricRow,
   selectEvidenceItemsForActiveRubricRow,
   selectSelectedEvidenceItems,
   setSelectedEvidenceItems

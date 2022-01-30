@@ -4,12 +4,12 @@ import {
   Typography,
 } from '@mui/material';
 
-const PageHeader = (props) => {
+const PageHeader = ({title, children}) => {
   return (
     <Box sx={{mb:5}}>
-      <Typography variant="h2">{props.title}</Typography>
+      <Typography variant="h5">{title}</Typography>
       <Typography variant="subtitle1">
-        {props.children}
+        {children}
       </Typography>
     </Box>
   );
