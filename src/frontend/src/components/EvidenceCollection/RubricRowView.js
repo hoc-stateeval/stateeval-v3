@@ -10,7 +10,7 @@ import {
   selectActiveRubricRow,
 } from "@evidence-collection-slice";
 
- const RubricRowView = (selectedEvidence, setSelectedEvidence) => {
+ const RubricRowView = () => {
   const activeRubricRow = useSelector(selectActiveRubricRow);
 
   return (
@@ -19,7 +19,7 @@ import {
         <Typography variant="h5" sx={{ mb:4}}>
           {activeRubricRow?.shortName} - {activeRubricRow?.title}
         </Typography>
-        <CollectedEvidenceSection selectedEvidence={selectedEvidence} setSelectedEvidence={setSelectedEvidence} />
+        <CollectedEvidenceSection />
       </Box>
     </>
   );

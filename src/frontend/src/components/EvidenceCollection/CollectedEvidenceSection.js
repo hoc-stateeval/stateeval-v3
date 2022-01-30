@@ -15,11 +15,8 @@ import {
 
 import { 
   selectActiveRubricRow,
+  selectEvidenceItemsForActiveRubricRow,
 } from "@evidence-collection-slice";
-
-import { 
-  useGetYearToDateEvidenceItemsQuery,
- } from "@api-slice";
 
 import CollectedEvidenceList from './CollectedEvidenceList';
 import AddOtherEvidence from "./AddOtherEvidence";
@@ -32,7 +29,7 @@ import AddOtherEvidence from "./AddOtherEvidence";
   const activeRubricRow = useSelector(selectActiveRubricRow);
   const activeEvaluationId = useSelector(selectActiveEvaluationId);
   const currentUser = useSelector(selectCurrentUser);
-  const { data: evidenceItems } = useGetYearToDateEvidenceItemsQuery({evaluationId: activeEvaluationId});
+  const evidenceItems = useSelector(selectEvidenceItemsForActiveRubricRow);
 
   return (
     <>
@@ -45,10 +42,10 @@ import AddOtherEvidence from "./AddOtherEvidence";
             label="Hide evidence you have already included in packages" 
           />
           <Typography variant="body1">
-            {hidePackagedEvidenceChecked?unPackagedEvidenceVisibleMessage:allEvidenceVisibleMessage}
+            {hidePackagedEvidenceChecked ? unPackagedEvidenceVisibleMessage : allEvidenceVisibleMessage}
           </Typography>
         </Box>
-        <CollectedEvidenceList evidenceItems={evidenceItems} rubricRowId={activeRubricRow.id} />
+        <CollectedEvidenceList />
         <AddOtherEvidence evaluationId={activeEvaluationId}  rubricRowId={activeRubricRow.id} userId={currentUser.id}/>
       </Box>
     </>

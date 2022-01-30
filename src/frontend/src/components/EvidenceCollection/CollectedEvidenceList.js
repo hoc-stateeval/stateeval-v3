@@ -11,6 +11,8 @@ import {
 import { useTheme } from '@mui/material/styles';
 
 import {
+  selectActiveRubricRow,
+  selectEvidenceItemsForActiveRubricRow,
   selectSelectedEvidenceItems,
   setSelectedEvidenceItems
 } from "@evidence-collection-slice";
@@ -18,15 +20,15 @@ import {
 
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
-const CollectedEvidenceList = ({evidenceItems, rubricRowId}) => {
+const CollectedEvidenceList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
   const selectedEvidenceItems = useSelector(selectSelectedEvidenceItems);
+  const evidenceItems = useSelector(selectEvidenceItemsForActiveRubricRow);
 
   const toggleSelection = (evidenceItem) => {
     const itemState = selectedEvidenceItems.find(x=>x.evidenceItem.id===evidenceItem.id);
-
     const selected = itemState.selected;
     const newItems = selectedEvidenceItems.map(x=>{
       if (x.evidenceItem.id===evidenceItem.id) return {evidenceItem: x.evidenceItem, selected: !selected}
@@ -56,13 +58,13 @@ const CollectedEvidenceList = ({evidenceItems, rubricRowId}) => {
       .map(x=>(x.evidenceItem.id===evidenceItem.id?{...x, selected: false} : x))))
   };
 
-  if (!evidenceItems || !evidenceItems[rubricRowId]) {
+  if (!evidenceItems) {
     return (<></>);
   }
 
   return (
     <>
-    {evidenceItems[rubricRowId].map((x, i)=>(
+    {evidenceItems.map((x, i)=>(
       <Paper direction="column" key={i}
         onClick={()=> {toggleSelection(x)}}
         sx={{mb:2, p:2, ...getEvidenceStyles(x)}}>

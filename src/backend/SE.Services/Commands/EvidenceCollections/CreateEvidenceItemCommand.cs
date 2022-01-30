@@ -79,7 +79,7 @@ namespace SE.Core.Commands.EvidenceCollections
             };
 
             _dataContext.EvidenceItems.Add(evidenceItem);
-            _dataContext.SaveChanges();
+            await _dataContext.SaveChangesAsync();
 
             return Response.Success(Unit.Value);
         }

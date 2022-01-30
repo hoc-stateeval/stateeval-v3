@@ -1,16 +1,56 @@
 
 import { createSelector, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { ThunkState } from '@lib/enums';
+import { get } from '@lib/api';
+
+ const getEvidenceItemsForCollection = async (evaluationId) => {
+  const response = await get( `evidence-items/${evaluationId}/`);
+  const data = await response.data.data;
+  return data;
+};
+
+export const initializeEvidenceCollectionState = createAsyncThunk(
+  'evidenceCollection/initializeEvidenceCollectionState',
+  async (rubricRowId, { dispatch, getState }) => {
+
+    const { evidenceCollection: state } = getState().stateEval;
+    const { activeEvaluationId } = getState().stateEval.userContext.ids;
+
+    const evidenceItems = await getEvidenceItemsForCollection(activeEvaluationId);
+    const evidenceItemMap = evidenceItems.reduce((acc,next)=> {
+      const rubricRowId = next.rubricRowId;
+      if (!acc[rubricRowId]) acc[rubricRowId] = [];
+      acc[rubricRowId].push(next);
+      return acc;
+    }, {});
+  
+    const newState = {
+      ...state,
+      viewMode: 'node',
+      evidenceItems: evidenceItemMap,
+      selectedEvidenceItems: [],
+      ids: {
+        ...state.ids,
+        activeRubricRowId: rubricRowId,
+      },
+    };
+
+    return newState;
+  }
+);
 
 export const setActiveRubricRowId = createAsyncThunk(
   'evidenceCollection/setActiveRubricRow',
-  async ({evidenceItems, rubricRowId }, { dispatch, getState }) => {
+  async (rubricRowId, { dispatch, getState }) => {
 
     const { evidenceCollection: state } = getState().stateEval;
 
-    const selectedEvidenceItems = evidenceItems[rubricRowId].map(x=>{
-      return {evidenceItem: x, selected: (x.id===rubricRowId)}
-    });
+    let selectedEvidenceItems = [];
+    if (state.evidenceItems[rubricRowId]) {
+      selectedEvidenceItems = state.evidenceItems[rubricRowId].map(x=>{
+        return {evidenceItem: x, selected: false}
+      });
+    }
 
     return {
       ...state,
@@ -57,6 +97,7 @@ const evidenceCollectionSlice = createSlice({
     },
     // collectedEvidenceItems: [],
     // packagedEvidenceItems: [],
+    evidenceItems: null,
     selectedEvidenceItems: []
   },
   reducers: {
@@ -67,7 +108,22 @@ const evidenceCollectionSlice = createSlice({
       };
     },
   },
+
+
   extraReducers: {
+    [initializeEvidenceCollectionState.pending]: (state, action) => ({
+      ...state,
+      thunkState: ThunkState.RUNNING,
+    }),
+    [initializeEvidenceCollectionState.fulfilled]: (state, action) => ({
+      ...action.payload,
+      thunkState: ThunkState.COMPLETE,
+    }),
+    [initializeEvidenceCollectionState.rejected]: (state, action) => ({
+      ...state,
+      thunkState: ThunkState.FAILED,
+      errorMessage: action.payload,
+    }),
     [setActiveFrameworkNodeId.pending]: (state, action) => ({
       ...state,
       thunkState: ThunkState.RUNNING,
@@ -164,6 +220,29 @@ export const selectActiveRubricRowId = createSelector(
   return id;
 });
 
+const getEvidenceItems = (state) => {
+  return state.stateEval.evidenceCollection.evidenceItems;
+}
+
+export const selectEvidenceItems = createSelector(
+  getEvidenceItems,
+  (evidenceItems) => {
+    return evidenceItems;
+  }
+);
+
+const getEvidenceItemsForActiveRubricRow = (state) => {
+  const { activeRubricRowId } = getIds(state);
+  const evidenceItems = state.stateEval.evidenceCollection.evidenceItems[activeRubricRowId];
+  return evidenceItems;
+}
+
+export const selectEvidenceItemsForActiveRubricRow = createSelector(
+  getEvidenceItemsForActiveRubricRow,
+  (evidenceItems) => {
+    return evidenceItems;
+  }
+);
 
 const getSelectedEvidenceItems = (state) => {
   return state.stateEval.evidenceCollection.selectedEvidenceItems;

@@ -5,13 +5,13 @@ import {
 } from "@mui/material";
 
 import { 
-  selectActiveEvaluationId,
   setPageTitle, 
 } from "@user-context-slice";
 
-import { 
-  useGetYearToDateEvidenceItemsQuery,
- } from "@api-slice";
+ import {
+  initializeEvidenceCollectionState,
+  selectEvidenceItems,
+} from "@evidence-collection-slice";
 
 import { EvidenceCollection } from '@components';
 
@@ -19,14 +19,15 @@ const Dashboard = () => {
 
   const dispatch = useDispatch();
   const pageTitle = "DA TR Dashboard";
-
-  const activeEvaluationId = useSelector(selectActiveEvaluationId);
-  const { data: evidenceItems } = useGetYearToDateEvidenceItemsQuery({ evaluationId: activeEvaluationId });
- 
+  const evidenceItems = useSelector(selectEvidenceItems);
+   
   useEffect(() => {
     dispatch(setPageTitle(pageTitle));
-    // throw Error("something happened");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+ 
+  useEffect(()=> {
+    dispatch(initializeEvidenceCollectionState());
   }, []);
 
   if (!evidenceItems) {

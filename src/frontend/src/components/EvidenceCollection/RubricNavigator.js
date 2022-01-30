@@ -6,7 +6,6 @@ import {
 } from "@mui/material";
 
 import {
-  selectActiveEvaluationId,
   selectActiveFramework,
 } from "@user-context-slice";
 
@@ -17,17 +16,13 @@ import {
   selectActiveFrameworkNodeId,
 } from "@evidence-collection-slice";
 
-import { 
-  useGetYearToDateEvidenceItemsQuery,
- } from "@api-slice";
-
 import './rubric-helper.css';
 
 const RubricNavigatorRubricRow = ({rubricRow, evidenceItems, selected}) => {
   const dispatch = useDispatch();
 
   const onClickRubricRow = () => {
-    dispatch(setActiveRubricRowId({ evidenceItems, rubricRowId: rubricRow.id} ));
+    dispatch(setActiveRubricRowId(rubricRow.id));
   }
 
   const evidenceItemCount = evidenceItems && evidenceItems[rubricRow.id]?.length;
@@ -98,17 +93,10 @@ const RubricNavigatorFrameworkNode = ({frameworkNode, evidenceItems, expanded}) 
   )
 };
 
-const RubricNavigator = () => {
+const RubricNavigator = ({ evidenceItems }) => {
 
-  const activeEvaluationId = useSelector(selectActiveEvaluationId);
   const activeFramework = useSelector(selectActiveFramework);
   const activeFrameworkNodeId = useSelector(selectActiveFrameworkNodeId);
-
-  const { data: evidenceItems } = useGetYearToDateEvidenceItemsQuery({ evaluationId: activeEvaluationId });
-  
-  if (!evidenceItems) {
-    return (<></>);
-  }
 
   return (
     <>
