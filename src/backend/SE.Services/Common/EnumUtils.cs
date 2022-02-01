@@ -196,6 +196,21 @@ namespace SE.Core.Common
             return displayName;
         }
 
+        public static string MapEvidenceCollectionTypeToDisplayName(EvidencePackage evidencePackage)
+        {
+            var displayName = evidencePackage.EvidenceCollectionType switch
+            {
+                EvidenceCollectionType.OTHER_EVIDENCE => "Other Evidence",
+                EvidenceCollectionType.UNDEFINED => "N/A",
+                EvidenceCollectionType.SUMMATIVE => "Summative",
+                EvidenceCollectionType.OBSERVATION => $"Observation - {evidencePackage.Observation.Title}",
+                //  EvidenceCollectionType.SELF_ASSESSMENT => $"Self Assessment - {evidencePackage.SelfAssessment.Title}",
+                EvidenceCollectionType.STUDENT_GROWTH => "Student Growth",
+                _ => throw new Exception($"MapEvidenceCollectionTypeToDisplayName: Unknown mapping: {evidencePackage.EvidenceCollectionType}")
+            };
+            return displayName;
+        }
+
         public static string MapEvidenceCollectionTypeToDisplayName(EvidenceItem evidenceItem)
         {
             var displayName = evidenceItem.EvidenceCollectionType switch
@@ -204,7 +219,7 @@ namespace SE.Core.Common
                 EvidenceCollectionType.UNDEFINED => "N/A",
                 EvidenceCollectionType.SUMMATIVE => "Summative",
                 EvidenceCollectionType.OBSERVATION => $"Observation - {evidenceItem.Observation.Title}",
-                EvidenceCollectionType.SELF_ASSESSMENT => "Self Assessment",
+              //  EvidenceCollectionType.SELF_ASSESSMENT => $"Self Assessment - {evidenceItem.SelfAssessment.Title}",
                 EvidenceCollectionType.STUDENT_GROWTH => "Student Growth",
                 _ => throw new Exception($"MapEvidenceCollectionTypeToDisplayName: Unknown mapping: {evidenceItem.EvidenceCollectionType}")
             };

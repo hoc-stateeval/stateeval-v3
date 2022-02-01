@@ -1,9 +1,7 @@
 import { useState } from "react";
 
 import { 
-  Box,
   Checkbox,
-  Divider,
   FormControlLabel,
   Stack,
   Typography 

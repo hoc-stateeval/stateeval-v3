@@ -10,26 +10,26 @@ using SE.Core.Commands.EvidenceCollections;
 
 namespace SE.API.Controllers
 {
-    [Route("evidence-items")]
-    public class EvidenceItemController : ApiControllerBase
+    [Route("evidence-packages")]
+    public class EvidencePackagesController : ApiControllerBase
     {
-        public EvidenceItemController(IMediator mediator) : base(mediator)
+        public EvidencePackagesController(IMediator mediator) : base(mediator)
         {
         }
 
         [HttpGet("{evaluationId}")]
-        public async Task<IActionResult> GetYearToDateEvidence(long evaluationId)
+        public async Task<IActionResult> GetYearToDatePacakages(long evaluationId)
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;
-            var items = await _mediator.Send(new GetYearToDateEvidenceItemsQuery(evaluationId), cancelationToken);
+            var items = await _mediator.Send(new GetYearToDateEvidencePackagesQuery(evaluationId), cancelationToken);
             return Ok(items);
         }
 
-        [HttpPost("{collectionType}/{collectionObjectId}")]
-        public async Task<IActionResult> CreateEvidenceItem(
+        [HttpPost("{evaluationId}")]
+        public async Task<IActionResult> CreateEvidencePackage(
             EvidenceCollectionType collectionType, 
             long collectionObjectId, 
-            [FromBody] CreateEvidenceItemCommand command)
+            [FromBody] CreateEvidencePackageCommand command)
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;
             await _mediator.Send(command, cancelationToken);

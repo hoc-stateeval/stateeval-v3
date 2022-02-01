@@ -11,11 +11,11 @@ namespace SE.Domain.Entities
     public class EvidencePackageEvidenceItem
     {
         [ForeignKey("EvidencePackage")]
-        public long EvidencePackageId { get; }
+        public long EvidencePackageId { get; set; }
         public virtual EvidencePackage EvidencePackage { get; }
 
         [ForeignKey("EvidenceItem")]
-        public long EvidenceItemId { get; }
+        public long EvidenceItemId { get; set; }
         public virtual EvidenceItem EvidenceItem { get; }
 
         public int Sequence { get; }

@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import { 
   Stack,
-  Typography 
 } from "@mui/material";
 
 import CollectedEvidenceSection from "./CollectedEvidenceSection";

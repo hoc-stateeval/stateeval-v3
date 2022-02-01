@@ -43,10 +43,12 @@ namespace SE.Core.Queries.EvidenceCollections
 
             public async Task<IResponse<List<EvidenceItemDTO>>> Handle(GetYearToDateEvidenceItemsQuery request, CancellationToken cancellationToken)
             {
-                var evidenceItems = _dataContext.EvidenceItems
-                    .Include(x=>x.CreatedByUser)
-                    .Include(x=>x.Observation)
-                    .Where(x => x.EvaluationId == request.EvaluationId);
+                var evidenceItems = await _dataContext.EvidenceItems
+                    .Include(x => x.CreatedByUser)
+                    .Include(x => x.Observation)
+                    .Where(x => x.EvaluationId == request.EvaluationId &&
+                                x.Public)
+                    .ToListAsync();
 
                 return Response.Success(evidenceItems.Select(x => x.MapToEvidenceItemDTO()).ToList());
             }

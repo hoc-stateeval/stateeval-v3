@@ -86,7 +86,9 @@ const CollectedEvidenceList = () => {
           (<>{getSelectedEvidenceItemPosition(x)}</>) :
           (<Box>
             <Tooltip title="Delete">
-              <IconButton><DeleteRoundedIcon onClick={()=>{ deSelectEvidence(x)}} fontSize="small" sx={{}} /></IconButton>
+              <IconButton onClick={()=>{ deSelectEvidence(x)}} >
+                <DeleteRoundedIcon fontSize="small" sx={{}} />
+              </IconButton>
             </Tooltip>
             </Box>)
           } 

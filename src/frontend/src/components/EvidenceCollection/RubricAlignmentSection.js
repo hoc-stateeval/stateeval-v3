@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { 
   Paper,
   Stack,
@@ -12,15 +12,37 @@ import {
 
 import { 
   selectActiveRubricRow,
+  selectBuildingEvidencePackage,
+  setEvidencePackageRubricAlignment,
 } from "@evidence-collection-slice";
+
+import { PerformanceLevel } from '@lib/enums';
 
 import { PageSectionHeader } from "@components";
 
 
 
 const RubricAlignmentSection = () => {
+  const dispatch = useDispatch();
 
   const activeRubricRow = useSelector(selectActiveRubricRow);
+  const buildingEvidencePackage = useSelector(selectBuildingEvidencePackage);
+
+  const getSelectedText = () => {
+    if (window.getSelection) {
+        return window.getSelection().toString();
+    } else if (document.getSelection) {
+        return document.getSelection().toString();
+    }
+    else return '';
+  }
+
+  const onSelectEvidencePackageText = (performanceLevel) => {
+    if (buildingEvidencePackage) {
+      const text = getSelectedText();
+      dispatch(setEvidencePackageRubricAlignment({rubricStatement: text, performanceLevel: performanceLevel}));
+    }
+  }
 
   return (
     <>
@@ -39,10 +61,10 @@ const RubricAlignmentSection = () => {
             </TableHead>
             <TableBody>
               <TableRow style={{verticalAlign:'top'}}>
-                <TableCell  dangerouslySetInnerHTML={{__html: `${activeRubricRow.pL1Descriptor}`}}></TableCell>
-                <TableCell dangerouslySetInnerHTML={{__html: `${activeRubricRow.pL2Descriptor}`}}></TableCell>
-                <TableCell dangerouslySetInnerHTML={{__html: `${activeRubricRow.pL3Descriptor}`}}></TableCell>
-                <TableCell dangerouslySetInnerHTML={{__html: `${activeRubricRow.pL4Descriptor}`}}></TableCell>
+                <TableCell onMouseUp={()=> {onSelectEvidencePackageText(PerformanceLevel.UNS);}} dangerouslySetInnerHTML={{__html: `${activeRubricRow.pL1Descriptor}`}}></TableCell>
+                <TableCell onMouseUp={()=> {onSelectEvidencePackageText(PerformanceLevel.BAS);}} dangerouslySetInnerHTML={{__html: `${activeRubricRow.pL2Descriptor}`}}></TableCell>
+                <TableCell onMouseUp={()=> {onSelectEvidencePackageText(PerformanceLevel.PRO);}} dangerouslySetInnerHTML={{__html: `${activeRubricRow.pL3Descriptor}`}}></TableCell>
+                <TableCell onMouseUp={()=> {onSelectEvidencePackageText(PerformanceLevel.DIS);}} dangerouslySetInnerHTML={{__html: `${activeRubricRow.pL4Descriptor}`}}></TableCell>
               </TableRow>
 
             </TableBody>

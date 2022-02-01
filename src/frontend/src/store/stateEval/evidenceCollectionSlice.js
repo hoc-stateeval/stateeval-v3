@@ -27,7 +27,9 @@ export const initializeEvidenceCollectionState = createAsyncThunk(
     const newState = {
       ...state,
       viewMode: 'node',
+      evidencePackageRubricAlignment: null,
       evidenceItems: evidenceItemMap,
+      buildingEvidencePackage: false,
       selectedEvidenceItems: [],
       ids: {
         ...state.ids,
@@ -55,6 +57,8 @@ export const setActiveRubricRowId = createAsyncThunk(
     return {
       ...state,
       viewMode: 'row',
+      evidencePackageRubricAlignment: null,
+      buildingEvidencePackage: false,
       selectedEvidenceItems: selectedEvidenceItems,
       ids: {
         ...state.ids,
@@ -74,6 +78,8 @@ export const setActiveFrameworkNodeId = createAsyncThunk(
     const newState = {
       ...state,
       viewMode: 'node',
+      evidencePackageRubricAlignment: null,
+      buildingEvidencePackage: false,
       selectedEvidenceItems: selectedEvidenceItems,
       ids: {
         ...state.ids,
@@ -91,12 +97,14 @@ const evidenceCollectionSlice = createSlice({
   name: 'evidenceCollection',
   initialState: {
     viewMode: 'node',
+    evidencePackageRubricAlignment: null,
     ids: {
       activeFrameworkNodeId: null,
       activeRubricRowId: null,
     },
     // collectedEvidenceItems: [],
     // packagedEvidenceItems: [],
+    buildingEvidencePackage: false,
     evidenceItems: null,
     selectedEvidenceItems: []
   },
@@ -104,12 +112,17 @@ const evidenceCollectionSlice = createSlice({
     setSelectedEvidenceItems: (state, action) => {
       return {
         ...state,
+        buildingEvidencePackage: true,
         selectedEvidenceItems: action.payload
       };
     },
+    setEvidencePackageRubricAlignment: (state, action) => {
+      return {
+        ...state,
+        evidencePackageRubricAlignment: action.payload,
+      }
+    }
   },
-
-
   extraReducers: {
     [initializeEvidenceCollectionState.pending]: (state, action) => ({
       ...state,
@@ -167,6 +180,28 @@ const getActiveFrameworkNode = (state) => {
   const framework = frameworks[activeFrameworkId];
   return framework.frameworkNodes.find(x=>x.id===activeFrameworkNodeId);
 };
+
+
+const getEvidencePackageRubricAlignment = (state) => {
+  const {evidencePackageRubricAlignment } = state.stateEval.evidenceCollection;
+  return evidencePackageRubricAlignment;
+}
+
+export const selectEvidencePackageRubricAlignment = createSelector(
+  [getEvidencePackageRubricAlignment], (rubricAlignment) => {
+    return rubricAlignment;
+  }
+)
+const getBuildingEvidencePackage = (state) => {
+  const {buildingEvidencePackage } = state.stateEval.evidenceCollection;
+  return buildingEvidencePackage;
+}
+
+export const selectBuildingEvidencePackage = createSelector(
+  [getBuildingEvidencePackage], (building) => {
+    return building;
+  }
+)
 
 const getEvidenceCollectionViewMode = (state) => {
   const {viewMode } = state.stateEval.evidenceCollection;
@@ -257,6 +292,7 @@ export const selectSelectedEvidenceItems = createSelector(
 
 export const { 
   setSelectedEvidenceItems,
+  setEvidencePackageRubricAlignment,
 } = evidenceCollectionSlice.actions;
 
 export default evidenceCollectionSlice.reducer;

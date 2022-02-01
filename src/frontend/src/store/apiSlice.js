@@ -71,6 +71,11 @@ export const apiSlice = createApi({
   tagTypes: [],
   endpoints: builder => ({
 
+    // evidence packages
+    createEvidencePackage: builder.mutation({
+      query: (data) => ({url: `evidence-packages/${data.evaluationId}`, method: 'post', data: data}) 
+    }),
+
     // perception surveys
     getPerceptionSurveyById: builder.query({
       query: (id) => ({ url: `perception-surveys/${id}`, method: 'get' }),
@@ -187,4 +192,5 @@ export const {
   useCreateEvidenceItemMutation,
   useGetYearToDateEvidenceItemsQuery,
   useGetPerceptionSurveyByIdQuery,
+  useCreateEvidencePackageMutation,
 } = apiSlice

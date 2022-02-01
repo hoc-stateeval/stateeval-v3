@@ -1,12 +1,12 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { 
   Grid
 } from "@mui/material";
 
 import {
+  selectBuildingEvidencePackage,
   selectEvidenceCollectionViewMode,
-  selectSelectedEvidenceItems,
 } from "@evidence-collection-slice";
 
 
@@ -19,18 +19,10 @@ import EvidencePackageBuilder from "./EvidencePackageBuilder";
 const EvidenceCollection = ({evidenceItems}) => {
   
   const ecViewMode = useSelector(selectEvidenceCollectionViewMode);
-  const selectedEvidenceItems = useSelector(selectSelectedEvidenceItems);
+  const buildingEvidencePackage = useSelector(selectBuildingEvidencePackage);
 
   if (!evidenceItems) {
     return (<></>);
-  }
-
-  let showRubricNavigator = true;
-  for (const next of selectedEvidenceItems) {
-    if (next.selected) {
-      showRubricNavigator = false;
-      break;
-    }
   }
 
   return (
@@ -41,8 +33,8 @@ const EvidenceCollection = ({evidenceItems}) => {
         {ecViewMode === 'node' && <FrameworkNodeView />}
       </Grid>
       <Grid item xs={4}>
-          {showRubricNavigator && <RubricNavigator evidenceItems={evidenceItems} /> }
-          {!showRubricNavigator && <EvidencePackageBuilder />}
+          {!buildingEvidencePackage && <RubricNavigator evidenceItems={evidenceItems} /> }
+          {buildingEvidencePackage && <EvidencePackageBuilder />}
       </Grid>
     </Grid>
     </>
