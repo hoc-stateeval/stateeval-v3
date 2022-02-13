@@ -1,6 +1,6 @@
 
 import { lazy } from 'react';
-import { Navigate, useRoutes} from 'react-router-dom';
+import { Navigate, useRoutes, useLocation} from 'react-router-dom';
 
 import { PrivateRoute, WorkAreaLayout } from '@components';
 
@@ -30,6 +30,9 @@ const buildNavRoutesForWorkArea = (workArea) => {
 
 const WorkAreaRoutes = ({activeWorkAreaContext}) => {
 
+  const location = useLocation();
+  console.log(location);
+  
   const activeWorkAreaNavRoutes = buildNavRoutesForWorkArea(activeWorkAreaContext);
 
   const routes = useRoutes(

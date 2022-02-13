@@ -108,13 +108,10 @@ const SidebarWorkAreaContext = () => {
     const workAreaContext = workAreaContexts.find((x) => x.id === id);
     setSelectedWorkAreaContextId(workAreaContext.id);
     await dispatch(setActiveWorkAreaContext(workAreaContext));
-  };
 
-  useEffect(() => {
     const defaultPath = getDefaultPathForWorkAreaContext(activeWorkAreaContext);
     navigate(defaultPath);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeWorkAreaContext]);
+  };
 
   // show settings section for those work areas that have extra configuration
   // for example, PR_TR has the EvaluatingDropdown to select the teacher

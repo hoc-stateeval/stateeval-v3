@@ -53,11 +53,11 @@ const EvidencePackageBuilder = () => {
       public: true, 
       performanceLevel: rubricAlignment.performanceLevel,
       evidenceItemIds: selectedEvidenceItems.reduce((acc, next)=> {
-        acc.push(next.id);
+        acc.push(next.evidenceItem.id);
         return acc;
       }, [])
     }
-    
+
     await createEvidencePackageAPI(data);
 
     const newState = deSelectAllEvidenceItems();
