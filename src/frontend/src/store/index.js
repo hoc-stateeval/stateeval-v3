@@ -10,8 +10,6 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import { combineReducers } from '@reduxjs/toolkit';
-import { debounce } from 'debounce';
-import { saveState } from '@lib/persist';
 import stateEval from './stateEval';
 import { apiSlice } from './apiSlice';
 
@@ -22,8 +20,6 @@ if (process.env.NODE_ENV === 'development') {
   const logger = createLogger({ collapsed: (getState, action, logEntry) => !logEntry.error });
   middleware.push(logger);
 }
-
-middleware.push(apiSlice.middleware);
 
 const persistConfig = {
   key: 'root',
@@ -38,20 +34,12 @@ const persistedReducer = persistReducer(persistConfig, combineReducers({
 
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: getDefaultMiddleware =>
+  middleware: (getDefaultMiddleware) =>
   getDefaultMiddleware({
     serializableCheck: {
       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
     },
-  })
+  }).concat(apiSlice.middleware)
 });
-
-// store.subscribe(
-//   // we use debounce to save the state once each 800ms
-//   // for better performances in case multiple changes occur in a short time
-//   debounce(() => {
-//     saveState(store.getState());
-//   }, 800)
-// );
 
 export default store;

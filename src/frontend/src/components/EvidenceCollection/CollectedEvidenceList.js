@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { 
@@ -11,10 +12,13 @@ import {
 import { useTheme } from '@mui/material/styles';
 
 import {
-  selectEvidenceItemsForActiveRubricRow,
   selectSelectedEvidenceItems,
-  setSelectedEvidenceItems
+  setSelectedEvidenceItems,
+  selectActiveRubricRowId,
+  selectCollectionParams,
 } from "@evidence-collection-slice";
+
+import { useGetEvidenceItemsQuery } from "@api-slice";
 
 
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
@@ -24,8 +28,15 @@ const CollectedEvidenceList = () => {
   const dispatch = useDispatch();
 
   const selectedEvidenceItems = useSelector(selectSelectedEvidenceItems);
-  const evidenceItems = useSelector(selectEvidenceItemsForActiveRubricRow);
+  const activeRubricRowId = useSelector(selectActiveRubricRowId);
+  const collectionParams = useSelector(selectCollectionParams);
 
+  const { data: evidenceItems } = useGetEvidenceItemsQuery(collectionParams, {
+    selectFromResult: ({ data }) => ({
+      data: data[activeRubricRowId]?data[activeRubricRowId]:[]
+    })
+  })
+ 
   const toggleSelection = (evidenceItem) => {
     const itemState = selectedEvidenceItems.find(x=>x.evidenceItem.id===evidenceItem.id);
     const selected = itemState.selected;
@@ -58,7 +69,7 @@ const CollectedEvidenceList = () => {
   };
 
   if (!evidenceItems) {
-    return (<></>);
+    return (<></>)
   }
 
   return (

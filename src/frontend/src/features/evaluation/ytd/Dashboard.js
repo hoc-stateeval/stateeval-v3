@@ -1,42 +1,61 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { 
 } from "@mui/material";
 
 import { 
   setPageTitle, 
+  selectActiveWorkAreaContext,
+  selectActiveEvaluationId
 } from "@user-context-slice";
 
  import {
   initializeEvidenceCollectionState,
-  selectEvidenceItems,
 } from "@evidence-collection-slice";
+
+import { EvidenceCollectionType } from '@lib/enums';
 
 import { EvidenceCollection } from '@components';
 
 const Dashboard = () => {
 
   const dispatch = useDispatch();
-  const pageTitle = "DA TR Dashboard";
-  const evidenceItems = useSelector(selectEvidenceItems);
-   
+  const pageTitle = "YTD Dashboard";
+
+  const [initialized, setInitialized] = useState(false);
+  const evaluationId = useSelector(selectActiveEvaluationId);
+  const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
+  
   useEffect(() => {
     dispatch(setPageTitle(pageTitle));
   }, []);
 
  
   useEffect(()=> {
-    dispatch(initializeEvidenceCollectionState());
+    const initializeEvidenceCollection = async () => {
+      await dispatch(initializeEvidenceCollectionState(
+        {
+          workAreaContext: activeWorkAreaContext,
+          collectionType: EvidenceCollectionType.YTD,
+          collectionObjectId: evaluationId,
+          evaluationId: evaluationId
+        }));
+
+        setInitialized(true);
+    }
+
+    initializeEvidenceCollection();
+   
   }, []);
 
-  if (!evidenceItems) {
+  if (!initialized) {
     return (<></>);
   }
 
   return (
     <>
       {/* <Typography variant="h2">{pageTitle}</Typography> */}
-      <EvidenceCollection evidenceItems={evidenceItems} />
+      <EvidenceCollection  />
     </>
   );
 };

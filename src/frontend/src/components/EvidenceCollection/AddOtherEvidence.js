@@ -19,10 +19,11 @@ import {
 } from "@user-context-slice";
 
 import { 
-  selectActiveRubricRow,
+  selectActiveRubricRowId,
+  selectCollectionParams,
 } from "@evidence-collection-slice";
 
-import { EvidenceCollectionType, EvidenceType } from "@lib/enums"
+import { EvidenceType } from "@lib/enums"
 
 const evidenceItemStyles = { 
   backgroundColor: `#f2f2f2`,
@@ -36,17 +37,18 @@ const AddOtherEvidence = () => {
   const [showOtherEvidenceInputArea, toggleShowOtherEvidenceInputArea] = useState(false);
   const [createEvidenceItem] = useCreateEvidenceItemMutation();
 
-  const activeRubricRow = useSelector(selectActiveRubricRow);
+  const activeRubricRowId = useSelector(selectActiveRubricRowId);
   const evaluationId = useSelector(selectActiveEvaluationId);
   const currentUser = useSelector(selectCurrentUser);
+  const collectionParams = useSelector(selectCollectionParams);
 
   const onClickAddOtherEvidence = () => {
     let data = {
-      collectionType: EvidenceCollectionType.OTHER_EVIDENCE,
-      evidenceType: EvidenceType.RUBRIC_ROW_NOTE,
-      collectionObjectId: evaluationId,
+      collectionType: collectionParams.collectionType,
+      collectionObjectId: collectionParams.collectionObjectId,
       evaluationId: evaluationId,
-      rubricRowId: activeRubricRow.id,
+      evidenceType: EvidenceType.RUBRIC_ROW_NOTE,
+      rubricRowId: activeRubricRowId,
       createdByUserId: currentUser.id,
       evidenceText: evidenceText,
       public: true, 

@@ -29,9 +29,6 @@ const buildNavRoutesForWorkArea = (workArea) => {
 }
 
 const WorkAreaRoutes = ({activeWorkAreaContext}) => {
-
-  const location = useLocation();
-  console.log(location);
   
   const activeWorkAreaNavRoutes = buildNavRoutesForWorkArea(activeWorkAreaContext);
 

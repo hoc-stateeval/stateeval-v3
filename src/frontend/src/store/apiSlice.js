@@ -71,20 +71,34 @@ export const apiSlice = createApi({
   tagTypes: [],
   endpoints: builder => ({
 
-    // evidence packages
-    createEvidencePackage: builder.mutation({
-      query: (data) => ({url: `evidence-packages/${data.evaluationId}`, method: 'post', data: data}) 
-    }),
-
     // perception surveys
     getPerceptionSurveyById: builder.query({
       query: (id) => ({ url: `perception-surveys/${id}`, method: 'get' }),
     }),
 
     // evidence collections
-    createEvidenceItem: builder.mutation({
-      query: (data) => ({url: `evidence-items/${data.collectionType}/${data.collectionObjectId}`, method: 'post', data: data}) 
+    getEvidenceItems: builder.query({
+      query: (collectionParams) => ({ url: `evidence-items/${collectionParams.evaluationId}`, method: 'get' }),
+      transformResponse: responseData => {
+        const evidenceItemMap = responseData.reduce((acc,next)=> {
+          const rubricRowId = next.rubricRowId;
+          if (!acc[rubricRowId]) acc[rubricRowId] = [];
+          acc[rubricRowId].push(next);
+          return acc;
+        }, {});
+        return evidenceItemMap;
+      }
     }),
+    createEvidenceItem: builder.mutation({
+      query: (collectionParams) => ({url: `evidence-items/${collectionParams.collectionType}/${collectionParams.collectionObjectId}`, method: 'post', data: {
+        
+      }}) 
+    }),
+
+       // evidence packages
+       createEvidencePackage: builder.mutation({
+        query: (data) => ({url: `evidence-packages/${data.evaluationId}`, method: 'post', data: data}) 
+      }),  
 
     // evaluations
     updateEvaluationSetEvaluator: builder.mutation({
@@ -188,9 +202,8 @@ export const {
   useGetEvaluationsForDistrictViewerQuery,
   useGetEvaluatorsForDistrictViewerQuery,
   useLoginUserMutation,
-  // useGetEvidenceItemsForCollectionQuery,
+  useGetEvidenceItemsQuery,
   useCreateEvidenceItemMutation,
-  useGetYearToDateEvidenceItemsQuery,
   useGetPerceptionSurveyByIdQuery,
   useCreateEvidencePackageMutation,
 } = apiSlice

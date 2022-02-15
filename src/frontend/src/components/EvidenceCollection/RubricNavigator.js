@@ -14,15 +14,24 @@ import {
   setActiveRubricRowId,
   selectActiveRubricRowId,
   selectActiveFrameworkNodeId,
+  selectCollectionParams,
 } from "@evidence-collection-slice";
+
+import { useGetEvidenceItemsQuery } from "@api-slice";
 
 import './rubric-helper.css';
 
-const RubricNavigatorRubricRow = ({rubricRow, evidenceItems, selected}) => {
+const RubricNavigatorRubricRow = ({rubricRow, selected}) => {
   const dispatch = useDispatch();
 
+  const collectionParams = useSelector(selectCollectionParams);
+  const { data: evidenceItems } = useGetEvidenceItemsQuery(collectionParams);
+
   const onClickRubricRow = () => {
-    dispatch(setActiveRubricRowId(rubricRow.id));
+    dispatch(setActiveRubricRowId({
+      rubricRowId: rubricRow.id, 
+      evidenceItems: evidenceItems[rubricRow.id]
+    }));
   }
 
   const evidenceItemCount = evidenceItems && evidenceItems[rubricRow.id]?.length;
