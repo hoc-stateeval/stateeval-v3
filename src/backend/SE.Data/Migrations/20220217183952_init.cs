@@ -299,32 +299,6 @@ namespace SE.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EvidencePackage",
-                schema: "dbo",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedByUserId = table.Column<long>(type: "bigint", nullable: false),
-                    PerformanceLevel = table.Column<int>(type: "int", nullable: false),
-                    RubricStatement = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AdditionalInput = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RubricRowId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EvidencePackage", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_EvidencePackage_User_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalSchema: "dbo",
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "RefreshTokens",
                 schema: "dbo",
                 columns: table => new
@@ -927,6 +901,51 @@ namespace SE.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EvidencePackage",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Public = table.Column<bool>(type: "bit", nullable: false),
+                    EvidenceType = table.Column<int>(type: "int", nullable: false),
+                    CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedByUserId = table.Column<long>(type: "bigint", nullable: false),
+                    RubricRowId = table.Column<long>(type: "bigint", nullable: false),
+                    EvaluationId = table.Column<long>(type: "bigint", nullable: false),
+                    EvidenceCollectionObjectId = table.Column<long>(type: "bigint", nullable: false),
+                    EvidenceCollectionType = table.Column<int>(type: "int", nullable: false),
+                    PerformanceLevel = table.Column<int>(type: "int", nullable: false),
+                    RubricStatement = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AdditionalInput = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ObservationId = table.Column<long>(type: "bigint", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EvidencePackage", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EvidencePackage_Observation_ObservationId",
+                        column: x => x.ObservationId,
+                        principalSchema: "dbo",
+                        principalTable: "Observation",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_EvidencePackage_RubricRow_RubricRowId",
+                        column: x => x.RubricRowId,
+                        principalSchema: "dbo",
+                        principalTable: "RubricRow",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EvidencePackage_User_CreatedByUserId",
+                        column: x => x.CreatedByUserId,
+                        principalSchema: "dbo",
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "StudentGrowthGoal",
                 schema: "dbo",
                 columns: table => new
@@ -1095,6 +1114,18 @@ namespace SE.Data.Migrations
                 schema: "dbo",
                 table: "EvidencePackage",
                 column: "CreatedByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EvidencePackage_ObservationId",
+                schema: "dbo",
+                table: "EvidencePackage",
+                column: "ObservationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EvidencePackage_RubricRowId",
+                schema: "dbo",
+                table: "EvidencePackage",
+                column: "RubricRowId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EvidencePackageEvidenceItem_EvidenceItemId",
@@ -1403,6 +1434,10 @@ namespace SE.Data.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
+                name: "UserPromptResponses",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
                 name: "Observation",
                 schema: "dbo");
 
@@ -1411,15 +1446,11 @@ namespace SE.Data.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "UserPromptResponses",
+                name: "UserPrompts",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
                 name: "Evaluation",
-                schema: "dbo");
-
-            migrationBuilder.DropTable(
-                name: "UserPrompts",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

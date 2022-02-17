@@ -76,27 +76,27 @@ export const apiSlice = createApi({
     }),
 
     // evidence collections
-    getEvidenceItems: builder.query({
-      query: (collectionParams) => ({ url: `evidence-items/${collectionParams.evaluationId}`, method: 'get' }),
-      transformResponse: responseData => {
-        const evidenceItemMap = responseData.reduce((acc,next)=> {
-          const rubricRowId = next.rubricRowId;
-          if (!acc[rubricRowId]) acc[rubricRowId] = [];
-          acc[rubricRowId].push(next);
-          return acc;
-        }, {});
-        return evidenceItemMap;
-      },
-    }),
-    createEvidenceItem: builder.mutation({
-      query: (data) => ({url: `evidence-items/${data.collectionType}/${data.collectionObjectId}`, method: 'post', data: data}),
+    // getEvidenceItems: builder.query({
+    //   query: (collectionParams) => ({ url: `evidence-items/${collectionParams.evaluationId}`, method: 'get' }),
+    //   transformResponse: responseData => {
+    //     const evidenceItemMap = responseData.reduce((acc,next)=> {
+    //       const rubricRowId = next.rubricRowId;
+    //       if (!acc[rubricRowId]) acc[rubricRowId] = [];
+    //       acc[rubricRowId].push(next);
+    //       return acc;
+    //     }, {});
+    //     return evidenceItemMap;
+    //   },
+    // }),
+    // createEvidenceItem: builder.mutation({
+    //   query: (data) => ({url: `evidence-items/${data.collectionType}/${data.collectionObjectId}`, method: 'post', data: data}),
       
-    }),
+    // }),
 
        // evidence packages
-       createEvidencePackage: builder.mutation({
-        query: (data) => ({url: `evidence-packages/${data.evaluationId}`, method: 'post', data: data}) 
-      }),  
+      //  createEvidencePackage: builder.mutation({
+      //   query: (data) => ({url: `evidence-packages/${data.evaluationId}`, method: 'post', data: data}) 
+      // }),  
 
     // evaluations
     updateEvaluationSetEvaluator: builder.mutation({

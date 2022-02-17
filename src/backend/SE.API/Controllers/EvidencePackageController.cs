@@ -17,14 +17,6 @@ namespace SE.API.Controllers
         {
         }
 
-        [HttpGet("{evaluationId}")]
-        public async Task<IActionResult> GetYearToDatePacakages(long evaluationId)
-        {
-            CancellationToken cancelationToken = HttpContext.RequestAborted;
-            var items = await _mediator.Send(new GetYearToDateEvidencePackagesQuery(evaluationId), cancelationToken);
-            return Ok(items);
-        }
-
         [HttpPost("{evaluationId}")]
         public async Task<IActionResult> CreateEvidencePackage(
             EvidenceCollectionType collectionType, 
@@ -32,8 +24,8 @@ namespace SE.API.Controllers
             [FromBody] CreateEvidencePackageCommand command)
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;
-            await _mediator.Send(command, cancelationToken);
-            return Ok(Unit.Value);
+            var dto = await _mediator.Send(command, cancelationToken);
+            return Ok(dto);
         }
     }
 }

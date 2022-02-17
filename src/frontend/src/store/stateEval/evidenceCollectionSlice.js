@@ -3,12 +3,42 @@ import { createSelector, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { ThunkState, EvidenceCollectionType } from '@lib/enums';
 import { get, post } from '@lib/api';
 
-const createEvidenceItem = async (evidenceItem) => {
+const createEvidenceItemAPI = async (evidenceItem) => {
   const url = `evidence-items/${evidenceItem.collectionType}/${evidenceItem.collectionObjectId}`;
   const response = await post(url, evidenceItem);
   const data = await response.data.data;
   return data;
 }
+
+const createEvidencePackageAPI = async (evidencePackage) => {
+  const url = `evidence-packages/${evidencePackage.evaluationId}`;
+  const response = await post(url, evidencePackage);
+  const data = await response.data.data;
+  return data;
+}
+
+export const createEvidencePackage = createAsyncThunk(
+  'evidenceCollection/createEvidencePackage',
+  async (data, {dispatch, getState}) => {
+
+    const { evidenceCollection : ecState, userContext: ucState } = getState().stateEval;
+
+    const isPublic = ecState.collectionType === EvidenceCollectionType.YEAR_TO_DATE;
+    const evidencePackage = await createEvidencePackageAPI({
+      collectionType: ecState.createdEvidenceCollectionType,
+      collectionObjectId: ecState.collectionObjectId,
+      evaluationId: ucState.ids.activeEvaluationId,
+      createdByUserId: ucState.currentUser.id,
+      rubricRowId: ecState.ids.activeRubricRowId,
+      rubricStatement: data.rubricStatement,
+      performanceLevel: data.performanceLevel,
+      evidenceItemIds: data.evidenceItemIds,
+      public: isPublic,
+    });
+
+    return evidencePackage;
+  }
+);
 
 export const addOtherEvidence = createAsyncThunk(
   'evidenceCollection/addOtherEvidence',
@@ -17,7 +47,7 @@ export const addOtherEvidence = createAsyncThunk(
     const { evidenceCollection : ecState, userContext: ucState } = getState().stateEval;
 
     const isPublic = ecState.collectionType === EvidenceCollectionType.YEAR_TO_DATE;
-    const evidenceItem = await createEvidenceItem({
+    const evidenceItem = await createEvidenceItemAPI({
       ...data,
       collectionType: ecState.createdEvidenceCollectionType,
       collectionObjectId: ecState.collectionObjectId,
@@ -33,7 +63,7 @@ export const addOtherEvidence = createAsyncThunk(
   }
 );
 
-const getYearToDateEvidenceCollection = async (evaluationId) => {
+const getYearToDateEvidenceCollectionAPI = async (evaluationId) => {
   const response = await get(`evidence-collections/ytd/${evaluationId}`);
   const data = await response.data.data;
   return data;
@@ -48,8 +78,15 @@ export const initYearToDateEC = createAsyncThunk(
     const activeFramework = ucState.entities.frameworks[ucState.ids.activeFrameworkId];
     const activeFrameworkNodeId = activeFramework.frameworkNodes[0].id;
 
-    const evidenceCollection = await getYearToDateEvidenceCollection(activeEvaluationId);
+    const evidenceCollection = await getYearToDateEvidenceCollectionAPI(activeEvaluationId);
     const evidenceItemMap = evidenceCollection.evidenceItems.reduce((acc,next)=> {
+      const rubricRowId = next.rubricRowId;
+      if (!acc[rubricRowId]) acc[rubricRowId] = [];
+      acc[rubricRowId].push(next);
+      return acc;
+    }, {});
+
+    const evidencePackageMap = evidenceCollection.evidencePackages.reduce((acc,next)=> {
       const rubricRowId = next.rubricRowId;
       if (!acc[rubricRowId]) acc[rubricRowId] = [];
       acc[rubricRowId].push(next);
@@ -62,6 +99,7 @@ export const initYearToDateEC = createAsyncThunk(
       activeEvaluationId,
       activeFrameworkNodeId,
       evidenceItemMap,
+      evidencePackageMap
     }
   }
 );
@@ -70,7 +108,8 @@ const evidenceCollectionSlice = createSlice({
   name: 'evidenceCollection',
   initialState: {
     viewMode: 'node',
-    evidenceItemMap: [],
+    evidenceItemMap: {},
+    evidencePackageMap: {},
     collectionType: EvidenceCollectionType.UNDEFINED,
     collectionObjectId: null,
     evidencePackageRubricAlignment: null,
@@ -153,9 +192,29 @@ const evidenceCollectionSlice = createSlice({
       else {
         state.evidenceItemMap[evidenceItem.rubricRowId].push(evidenceItem);
       }
+
+      state.selectedEvidenceItems.push({evidenceItem: evidenceItem, selected: false});
       state.thunkState = ThunkState.COMPLETE;
     })
     .addCase(addOtherEvidence.rejected, (state, action) => {
+      state.thunkState = ThunkState.FAILED;
+      state.errorMessage = action.payload;
+    })
+    .addCase(createEvidencePackage.pending, (state, action) => {
+      state.thunkState = ThunkState.PENDING;
+    })
+    .addCase(createEvidencePackage.fulfilled, (state, action) => {
+      const evidencePackage = action.payload;
+  
+      if (!state.evidencePackageMap[evidencePackage.rubricRowId]) {
+        state.evidencePackageMap[evidencePackage.rubricRowId] = [evidencePackage];
+      }
+      else {
+        state.evidencePackageMap[evidencePackage.rubricRowId].push(evidencePackage);
+      }
+      state.thunkState = ThunkState.COMPLETE;
+    })
+    .addCase(createEvidencePackage.rejected, (state, action) => {
       state.thunkState = ThunkState.FAILED;
       state.errorMessage = action.payload;
     })
@@ -173,6 +232,7 @@ const evidenceCollectionSlice = createSlice({
       state.collectionType = action.payload.collectionType;
       state.collectionObjectId = action.payload.activeEvaluationId;
       state.evidenceItemMap = action.payload.evidenceItemMap;
+      state.evidencePackageMap = action.payload.evidencePackageMap;
       state.evidencePackageRubricAlignment = null;
       state.buildingEvidencePackage = false;
       state.selectedEvidenceItems = [];
@@ -294,6 +354,18 @@ export const selectEvidenceItemMap = createSelector(
   getEvidenceItemMap,
   (evidenceItemMap) => {
     return evidenceItemMap;
+  }
+);
+
+const getEvidencePackageMap = (state) => {
+  const evidencePackageMap = state.stateEval.evidenceCollection.evidencePackageMap;
+  return evidencePackageMap;
+}
+
+export const selectEvidencePackageMap = createSelector(
+  getEvidencePackageMap,
+  (evidencePackageMap) => {
+    return evidencePackageMap;
   }
 );
 

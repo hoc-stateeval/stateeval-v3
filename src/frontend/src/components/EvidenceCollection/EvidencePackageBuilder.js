@@ -16,16 +16,13 @@ import {
   selectSelectedEvidenceItems,
   setSelectedEvidenceItems,
   selectEvidencePackageRubricAlignment,
+  createEvidencePackage,
 } from "@evidence-collection-slice";
 
 import { 
   selectActiveEvaluationId, 
   selectCurrentUser,
 } from "@user-context-slice";
-
-import {
-  useCreateEvidencePackageMutation,
-} from "@api-slice";
 
 import { EvidenceCollectionType } from "@lib/enums";
 
@@ -35,13 +32,12 @@ const EvidencePackageBuilder = () => {
   const dispatch = useDispatch();
 
   const rubricAlignment = useSelector(selectEvidencePackageRubricAlignment);
-  const [ createEvidencePackageAPI ] = useCreateEvidencePackageMutation();
-  const evaluationId = useSelector(selectActiveEvaluationId);
+   const evaluationId = useSelector(selectActiveEvaluationId);
   const rubricRowId = useSelector(selectActiveRubricRowId);
   const currentUser = useSelector(selectCurrentUser);
   const selectedEvidenceItems = useSelector(selectSelectedEvidenceItems);
 
-  const createEvidencePackage = async () => {
+  const onClickCreateEvidencePackage = async () => {
 
     let data = {
       collectionType: EvidenceCollectionType.OTHER_EVIDENCE,
@@ -58,13 +54,8 @@ const EvidencePackageBuilder = () => {
       }, [])
     }
 
-    await createEvidencePackageAPI(data);
+    await dispatch(createEvidencePackage(data));
 
-    const newState = deSelectAllEvidenceItems();
-    dispatch(setSelectedEvidenceItems(newState));
-  }
-
-  const deSelectAllEvidenceItems = () => {
     const newState = selectedEvidenceItems
           .map(x=>({...x, selected: false}));
     dispatch(setSelectedEvidenceItems(newState));
@@ -105,7 +96,7 @@ const EvidencePackageBuilder = () => {
                   color="background" 
                   size="small"
                 >Cancel</Button>
-                <Button onClick={createEvidencePackage}
+                <Button onClick={onClickCreateEvidencePackage}
                   variant="contained" 
                   color="secondary" 
                   size="small"

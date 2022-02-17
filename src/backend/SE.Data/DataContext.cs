@@ -16,6 +16,7 @@ namespace SE.Data
         public DbSet<Evaluation> Evaluations { get; set; }
         public DbSet<EvidenceItem> EvidenceItems { get; set; }
         public DbSet<EvidencePackage> EvidencePackages { get; set; }
+        public DbSet<EvidencePackageEvidenceItem> EvidencePackageEvidenceItems { get; set; }
         public DbSet<Framework> Frameworks { get; set; }
         public DbSet<FrameworkContext> FrameworkContexts { get; set; }
         public DbSet<Observation> Observations { get; set; }

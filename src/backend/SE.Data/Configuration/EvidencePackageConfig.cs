@@ -20,7 +20,7 @@ namespace SE.Data.Configuration
             base.Configure(builder);
 
             builder
-                .HasMany<EvidencePackageEvidenceItem>(s => s.EvidencePackageEvidenceItems)
+                .HasMany<EvidencePackageEvidenceItem>(x => x.EvidencePackageEvidenceItems)
                 .WithOne(x=>x.EvidencePackage)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.NoAction);

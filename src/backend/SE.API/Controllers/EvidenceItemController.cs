@@ -17,14 +17,6 @@ namespace SE.API.Controllers
         {
         }
 
-        [HttpGet("{evaluationId}")]
-        public async Task<IActionResult> GetYearToDateEvidence(long evaluationId)
-        {
-            CancellationToken cancelationToken = HttpContext.RequestAborted;
-            var items = await _mediator.Send(new GetYearToDateEvidenceItemsQuery(evaluationId), cancelationToken);
-            return Ok(items);
-        }
-
         [HttpPost("{collectionType}/{collectionObjectId}")]
         public async Task<IActionResult> CreateEvidenceItem(
             EvidenceCollectionType collectionType, 

@@ -52,15 +52,16 @@ namespace SE.Core.Queries.EvidenceCollections
                                 x.Public)
                     .ToListAsync();
 
-                //var evidencePackages = await _dataContext.EvidencePackages
-                //    .Where(x => x.EvaluationId == request.EvaluationId &&
-                //                x.Public)
-                //    .ToListAsync();
+                var evidencePackages = await _dataContext.EvidencePackages
+                    .Include(x => x.CreatedByUser)
+                    .Where(x => x.EvaluationId == request.EvaluationId &&
+                                x.Public)
+                    .ToListAsync();
 
                 var dto = new YearToDateEvidenceCollectionDTO()
                 {
                     EvidenceItems = evidenceItems.Select(x => x.MapToEvidenceItemDTO()).ToList(),
-                 //   EvidencePackages = evidencePackages.Select(x => x.MapToEvidencePackageDTO()).ToList()
+                    EvidencePackages = evidencePackages.Select(x => x.MapToEvidencePackageDTO()).ToList()
                 };
 
                 return Response.Success(dto);

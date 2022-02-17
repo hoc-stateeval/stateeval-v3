@@ -31,7 +31,7 @@ namespace SE.Core.Commands.EvidenceCollections
             RuleFor(x => x.RubricStatement).NotEmpty();
         }
     }
-    public sealed class CreateEvidencePackageCommand : IRequest<IResponse<Unit>>
+    public sealed class CreateEvidencePackageCommand : IRequest<IResponse<EvidencePackage>>
     {
         public CreateEvidencePackageCommand() { }
         public long CollectionObjectId { get; set; }
@@ -48,7 +48,7 @@ namespace SE.Core.Commands.EvidenceCollections
     }
 
     public class CreateEvidencePackageCommandHandler :
-    IRequestHandler<CreateEvidencePackageCommand, IResponse<Unit>>
+    IRequestHandler<CreateEvidencePackageCommand, IResponse<EvidencePackage>>
     {
         private readonly DataContext _dataContext;
          public CreateEvidencePackageCommandHandler(DataContext dataContext)
@@ -56,7 +56,7 @@ namespace SE.Core.Commands.EvidenceCollections
             _dataContext = dataContext;
         }
 
-        public async Task<IResponse<Unit>> Handle(CreateEvidencePackageCommand request, CancellationToken cancellationToken)
+        public async Task<IResponse<EvidencePackage>> Handle(CreateEvidencePackageCommand request, CancellationToken cancellationToken)
         {
             var evidencePackage = new EvidencePackage()
             {
@@ -75,18 +75,30 @@ namespace SE.Core.Commands.EvidenceCollections
             var evidenceItems = await _dataContext.EvidenceItems
                                .Where(x => request.EvidenceItemIds.Contains(x.Id))
                                .ToListAsync();
+    
+            await _dataContext.SaveChangesAsync();
+
+            evidencePackage = await _dataContext.EvidencePackages
+                .Include(x => x.CreatedByUser)
+                .Include(x => x.EvidencePackageEvidenceItems)
+                .Where(x => x.Id == evidencePackage.Id)
+                .FirstOrDefaultAsync();
+
 
             var evidencePackageEvidenceItems = evidenceItems.Select(x => new EvidencePackageEvidenceItem
             {
                 EvidenceItemId = x.Id,
                 EvidencePackageId = evidencePackage.Id
-            });
+            }).ToList();
 
-            evidencePackage.EvidencePackageEvidenceItems.AddRange(evidencePackageEvidenceItems);
-   
+            _dataContext.EvidencePackageEvidenceItems.AddRange(evidencePackageEvidenceItems);
+
+            //     await _dataContext.EvidencePackageEvidenceItems.AddRangeAsync(evidencePackageEvidenceItems);
+
             await _dataContext.SaveChangesAsync();
 
-            return Response.Success(Unit.Value);
+
+            return Response.Success(evidencePackage);
         }
     }
 }

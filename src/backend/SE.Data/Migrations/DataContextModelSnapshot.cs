@@ -444,8 +444,26 @@ namespace SE.Data.Migrations
                     b.Property<DateTime>("CreationDateTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<long>("EvaluationId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("EvidenceCollectionObjectId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("EvidenceCollectionType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EvidenceType")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("ObservationId")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("PerformanceLevel")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Public")
+                        .HasColumnType("bit");
 
                     b.Property<long>("RubricRowId")
                         .HasColumnType("bigint");
@@ -456,6 +474,10 @@ namespace SE.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("ObservationId");
+
+                    b.HasIndex("RubricRowId");
 
                     b.ToTable("EvidencePackage", "dbo");
                 });
@@ -1490,7 +1512,21 @@ namespace SE.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SE.Domain.Entities.Observation", "Observation")
+                        .WithMany()
+                        .HasForeignKey("ObservationId");
+
+                    b.HasOne("SE.Domain.Entities.RubricRow", "RubricRow")
+                        .WithMany()
+                        .HasForeignKey("RubricRowId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("CreatedByUser");
+
+                    b.Navigation("Observation");
+
+                    b.Navigation("RubricRow");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.EvidencePackageEvidenceItem", b =>
