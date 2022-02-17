@@ -1,103 +1,130 @@
 
 import { createSelector, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { ThunkState } from '@lib/enums';
-import { get } from '@lib/api';
+import { ThunkState, EvidenceCollectionType } from '@lib/enums';
+import { get, post } from '@lib/api';
 
-//  const getEvidenceItemsForCollection = async (evaluationId) => {
-//   const response = await get( `evidence-items/${evaluationId}/`);
-//   const data = await response.data.data;
-//   return data;
-// };
+const createEvidenceItem = async (evidenceItem) => {
+  const url = `evidence-items/${evidenceItem.collectionType}/${evidenceItem.collectionObjectId}`;
+  const response = await post(url, evidenceItem);
+  const data = await response.data.data;
+  return data;
+}
 
-export const initializeEvidenceCollectionState = createAsyncThunk(
-  'evidenceCollection/initializeEvidenceCollectionState',
-  async (collectionParams, { dispatch, getState }) => {
+export const addOtherEvidence = createAsyncThunk(
+  'evidenceCollection/addOtherEvidence',
+  async (data, {dispatch, getState}) => {
 
-    const { evidenceCollection: state } = getState().stateEval;
-    // const { activeEvaluationId } = getState().stateEval.userContext.ids;
+    const { evidenceCollection : ecState, userContext: ucState } = getState().stateEval;
 
-    // const evidenceItems = await getEvidenceItemsForCollection(activeEvaluationId);
-    // const evidenceItemMap = evidenceItems.reduce((acc,next)=> {
-    //   const rubricRowId = next.rubricRowId;
-    //   if (!acc[rubricRowId]) acc[rubricRowId] = [];
-    //   acc[rubricRowId].push(next);
-    //   return acc;
-    // }, {});
-  
-    const newState = {
-      ...state,
-      viewMode: 'node',
-      evidencePackageRubricAlignment: null,
-      buildingEvidencePackage: false,
-      selectedEvidenceItems: [],
-      collectionParams: collectionParams,
-      ids: {
-        ...state.ids,
-        activeRubricRowId: null,
-        activeFrameworkNodeId: null,
-      },
-    };
+    const isPublic = ecState.collectionType === EvidenceCollectionType.YEAR_TO_DATE;
+    const evidenceItem = await createEvidenceItem({
+      ...data,
+      collectionType: ecState.createdEvidenceCollectionType,
+      collectionObjectId: ecState.collectionObjectId,
+      evaluationId: ucState.ids.activeEvaluationId,
+      createdByUserId: ucState.currentUser.id,
+      rubricRowId: ecState.ids.activeRubricRowId,
+      codedEvidenceClientId: null,
+      userPromptResponseId: null,
+      public: isPublic,
+    });
 
-    return newState;
+    return evidenceItem;
   }
 );
 
-export const setActiveRubricRowId = createAsyncThunk(
-  'evidenceCollection/setActiveRubricRow',
-  async (data, { dispatch, getState }) => {
+const getYearToDateEvidenceCollection = async (evaluationId) => {
+  const response = await get(`evidence-collections/ytd/${evaluationId}`);
+  const data = await response.data.data;
+  return data;
+};
 
-    const { evidenceCollection: state } = getState().stateEval;
+export const initYearToDateEC = createAsyncThunk(
+  'evidenceCollection/initYearToDateEC',
+  async (_, { dispatch, getState }) => {
 
-    let selectedEvidenceItems = [];
-    if (data.evidenceItems) {
-      selectedEvidenceItems = data.evidenceItems.map(x=>{
-        return {evidenceItem: x, selected: false}
-      });
-    }
+    const { userContext : ucState } = getState().stateEval;
+    const activeEvaluationId = ucState.ids.activeEvaluationId;
+    const activeFramework = ucState.entities.frameworks[ucState.ids.activeFrameworkId];
+    const activeFrameworkNodeId = activeFramework.frameworkNodes[0].id;
+
+    const evidenceCollection = await getYearToDateEvidenceCollection(activeEvaluationId);
+    const evidenceItemMap = evidenceCollection.evidenceItems.reduce((acc,next)=> {
+      const rubricRowId = next.rubricRowId;
+      if (!acc[rubricRowId]) acc[rubricRowId] = [];
+      acc[rubricRowId].push(next);
+      return acc;
+    }, {});
 
     return {
-      ...state,
-      viewMode: 'row',
-      evidencePackageRubricAlignment: null,
-      buildingEvidencePackage: false,
-      selectedEvidenceItems: selectedEvidenceItems,
-      ids: {
-        ...state.ids,
-        activeRubricRowId: data.rubricRowId,
-      },
-    };
+      createdEvidenceCollectionType: EvidenceCollectionType.OTHER_EVIDENCE,
+      collectionType: EvidenceCollectionType.YEAR_TO_DATE,
+      activeEvaluationId,
+      activeFrameworkNodeId,
+      evidenceItemMap,
+    }
   }
 );
 
-export const setActiveFrameworkNodeId = createAsyncThunk(
-  'evidenceCollection/setActiveFrameworkNodeId',
-  async (frameworkNodeId, { dispatch, getState }) => {
+// export const setActiveRubricRowId = createAsyncThunk(
+//   'evidenceCollection/setActiveRubricRow',
+//   async (rubricRowId, { dispatch, getState }) => {
 
-    const { evidenceCollection: state } = getState().stateEval;
-    const selectedEvidenceItems = [];
+//     const { evidenceCollection: state } = getState().stateEval;
 
-    const newState = {
-      ...state,
-      viewMode: 'node',
-      evidencePackageRubricAlignment: null,
-      buildingEvidencePackage: false,
-      selectedEvidenceItems: selectedEvidenceItems,
-      ids: {
-        ...state.ids,
-        activeFrameworkNodeId: frameworkNodeId,
-        activeRubricRowId: null,
-      },
-    };
+//     let selectedEvidenceItems = [];
+//     const evidenceItems = state.evidenceItemMap[rubricRowId];
+//     if (evidenceItems) {
+//       selectedEvidenceItems = evidenceItems.map(x=>{
+//         return {evidenceItem: x, selected: false}
+//       });
+//     }
 
-    return newState;
-  }
-);
+//     return {
+//       ...state,
+//       viewMode: 'row',
+//       evidencePackageRubricAlignment: null,
+//       buildingEvidencePackage: false,
+//       selectedEvidenceItems: selectedEvidenceItems,
+//       ids: {
+//         ...state.ids,
+//         activeRubricRowId: rubricRowId,
+//       },
+//     };
+//   }
+// );
+
+// export const setActiveFrameworkNodeId = createAsyncThunk(
+//   'evidenceCollection/setActiveFrameworkNodeId',
+//   async (frameworkNodeId, { dispatch, getState }) => {
+
+//     const { evidenceCollection: state } = getState().stateEval;
+ 
+//     const newState = {
+//       ...state,
+//       viewMode: 'node',
+//       evidencePackageRubricAlignment: null,
+//       buildingEvidencePackage: false,
+//       selectedEvidenceItems: [],
+//       ids: {
+//         ...state.ids,
+//         activeFrameworkNodeId: frameworkNodeId,
+//         activeRubricRowId: null,
+//       },
+//     };
+
+//     return newState;
+//   }
+// );
 
 
 const evidenceCollectionSlice = createSlice({
   name: 'evidenceCollection',
   initialState: {
     viewMode: 'node',
+    evidenceItemMap: [],
+    collectionType: EvidenceCollectionType.UNDEFINED,
+    collectionObjectId: null,
     evidencePackageRubricAlignment: null,
     ids: {
       activeFrameworkNodeId: null,
@@ -123,55 +150,118 @@ const evidenceCollectionSlice = createSlice({
         ...state,
         evidencePackageRubricAlignment: action.payload,
       }
+    },
+    setActiveRubricRowId: (state, action) => {
+
+      const rubricRowId = action.payload;
+      let selectedEvidenceItems = [];
+      const evidenceItems = state.evidenceItemMap[rubricRowId];
+      if (evidenceItems) {
+        selectedEvidenceItems = evidenceItems.map(x=>{
+          return {evidenceItem: x, selected: false}
+        });
+      }
+  
+      return {
+        ...state,
+        viewMode: 'row',
+        evidencePackageRubricAlignment: null,
+        buildingEvidencePackage: false,
+        selectedEvidenceItems: selectedEvidenceItems,
+        ids: {
+          ...state.ids,
+          activeRubricRowId: rubricRowId,
+        },
+      };
+    },
+    setActiveFrameworkNodeId: (state, action) => {
+   
+      return {
+        ...state,
+        viewMode: 'node',
+        evidencePackageRubricAlignment: null,
+        buildingEvidencePackage: false,
+        selectedEvidenceItems: [],
+        ids: {
+          ...state.ids,
+          activeFrameworkNodeId: action.payload,
+          activeRubricRowId: null,
+        },
+      };
     }
   },
-  extraReducers: {
-    [initializeEvidenceCollectionState.pending]: (state, action) => ({
-      ...state,
-      thunkState: ThunkState.RUNNING,
-    }),
-    [initializeEvidenceCollectionState.fulfilled]: (state, action) => ({
-      ...action.payload,
-      thunkState: ThunkState.COMPLETE,
-    }),
-    [initializeEvidenceCollectionState.rejected]: (state, action) => ({
-      ...state,
-      thunkState: ThunkState.FAILED,
-      errorMessage: action.payload,
-    }),
-    [setActiveFrameworkNodeId.pending]: (state, action) => ({
-      ...state,
-      thunkState: ThunkState.RUNNING,
-    }),
-    [setActiveFrameworkNodeId.fulfilled]: (state, action) => ({
-      ...action.payload,
-      thunkState: ThunkState.COMPLETE,
-    }),
-    [setActiveFrameworkNodeId.rejected]: (state, action) => ({
-      ...state,
-      thunkState: ThunkState.FAILED,
-      errorMessage: action.payload,
-    }),
-    [setActiveRubricRowId.pending]: (state, action) => ({
-      ...state,
-      thunkState: ThunkState.RUNNING,
-    }),
-    [setActiveRubricRowId.fulfilled]: (state, action) => ({
-      ...action.payload,
-      thunkState: ThunkState.COMPLETE,
-    }),
-    [setActiveRubricRowId.rejected]: (state, action) => ({
-      ...state,
-      thunkState: ThunkState.FAILED,
-      errorMessage: action.payload,
-    }),
+  extraReducers: (builder) => {
+    builder
+    .addCase(addOtherEvidence.pending, (state, action) => {
+      state.thunkState = ThunkState.PENDING;
+    })
+    .addCase(addOtherEvidence.fulfilled, (state, action) => {
+      const evidenceItem = action.payload;
+  
+      if (!state.evidenceItemMap[evidenceItem.rubricRowId]) {
+        state.evidenceItemMap[evidenceItem.rubricRowId] = [evidenceItem];
+      }
+      else {
+        state.evidenceItemMap[evidenceItem.rubricRowId].push(evidenceItem);
+      }
+      state.thunkState = ThunkState.COMPLETE;
+    })
+    .addCase(addOtherEvidence.rejected, (state, action) => {
+      state.thunkState = ThunkState.FAILED;
+      state.errorMessage = action.payload;
+    })
+    .addCase(initYearToDateEC.pending, (state, action) => {
+      state.thunkState = ThunkState.PENDING;
+    })
+    .addCase(initYearToDateEC.rejected, (state, action) => {
+      state.thunkState = ThunkState.FAILED;
+      state.errorMessage = action.payload;
+    })
+    .addCase(initYearToDateEC.fulfilled, (state, action) => {
+
+      state.viewMode = 'node';
+      state.createdEvidenceCollectionType = action.payload.createdEvidenceCollectionType;
+      state.collectionType = action.payload.collectionType;
+      state.collectionObjectId = action.payload.activeEvaluationId;
+      state.evidenceItemMap = action.payload.evidenceItemMap;
+      state.evidencePackageRubricAlignment = null;
+      state.buildingEvidencePackage = false;
+      state.selectedEvidenceItems = [];
+      state.ids = {
+          ...state.ids,
+          activeRubricRowId: null,
+          activeFrameworkNodeId: action.payload.activeFrameworkNodeId,
+      };
+      state.thunkState = ThunkState.COMPLETE;
+    })
+    // .addCase(setActiveFrameworkNodeId.pending, (state, action) => {
+    //   state.thunkState = ThunkState.PENDING;
+    // })
+    // .addCase(setActiveFrameworkNodeId.rejected, (state, action) => {
+    //   state.thunkState = ThunkState.FAILED;
+    //   state.errorMessage = action.payload;
+    // })
+    // .addCase(setActiveFrameworkNodeId.fulfilled, (state, action) => {
+    //   state = action.payload;
+    //   state.thunkState = ThunkState.COMPLETE;
+    // })
+    // .addCase(setActiveRubricRowId.pending, (state, action) => {
+    //   state.thunkState = ThunkState.PENDING;
+    // })
+    // .addCase(setActiveRubricRowId.rejected, (state, action) => {
+    //   state.thunkState = ThunkState.FAILED;
+    //   state.errorMessage = action.payload;
+    // })
+    // .addCase(setActiveRubricRowId.fulfilled, (state, action) => {
+    //   state = action.payload;
+    //   state.thunkState = ThunkState.COMPLETE;
+    // })
   }
 });
 
 const getUserContextEntities = (state) => (state.stateEval.userContext.entities);
 const getUserContextIds = (state) => (state.stateEval.userContext.ids);
 
-const getEntities = (state) => (state.stateEval.evidenceCollection.entities);
 const getIds = (state) => (state.stateEval.evidenceCollection.ids);
 
 const getActiveFrameworkNode = (state) => {
@@ -268,20 +358,36 @@ export const selectSelectedEvidenceItems = createSelector(
   }
 );
 
-const getCollectionParams = (state) => {
-  const {collectionParams } = state.stateEval.evidenceCollection;
-  return collectionParams;
+const getEvidenceItemMap = (state) => {
+  const evidenceItemMap = state.stateEval.evidenceCollection.evidenceItemMap;
+  return evidenceItemMap;
 }
 
-export const selectCollectionParams = createSelector(
-  [getCollectionParams], (params) => {
-    return params;
+export const selectEvidenceItemMap = createSelector(
+  getEvidenceItemMap,
+  (evidenceItemMap) => {
+    return evidenceItemMap;
   }
-)
+);
+
+const getEvidenceItemsForActiveRubricRow = (state) => {
+  const { activeRubricRowId } = getIds(state);
+  const evidenceItems = state.stateEval.evidenceCollection.evidenceItemMap[activeRubricRowId];
+  return evidenceItems?evidenceItems:[];
+}
+
+export const selectEvidenceItemsForActiveRubricRow = createSelector(
+  getEvidenceItemsForActiveRubricRow,
+  (evidenceItems) => {
+    return evidenceItems;
+  }
+);
 
 export const { 
   setSelectedEvidenceItems,
   setEvidencePackageRubricAlignment,
+  setActiveFrameworkNodeId,
+  setActiveRubricRowId,
 } = evidenceCollectionSlice.actions;
 
 export default evidenceCollectionSlice.reducer;

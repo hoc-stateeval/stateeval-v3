@@ -196,8 +196,8 @@ namespace SE.Domain.Entities
         LEARNING_WALK_SUMMATIVE,
         PRACTICE_SESSION_OBS,
         PRACTICE_SESSION_SUMMATIVE,
-        YEAR_TO_DATE = 10,
         */
+        YEAR_TO_DATE = 10,
         CALIBRATION_EXERCISE = 11
     }
 

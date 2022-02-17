@@ -25,7 +25,7 @@ export const EvidenceCollectionType = {
   'SELF_ASSESSMENT': 3,
   'STUDENT_GROWTH': 4,
   'SUMMATIVE': 5,
-  'YTD': 10,
+  'YEAR_TO_DATE': 10,
   'CALIBRATION_EXERCISE': 11
 };
 

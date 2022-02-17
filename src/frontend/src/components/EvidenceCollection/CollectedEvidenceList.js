@@ -14,12 +14,8 @@ import { useTheme } from '@mui/material/styles';
 import {
   selectSelectedEvidenceItems,
   setSelectedEvidenceItems,
-  selectActiveRubricRowId,
-  selectCollectionParams,
+  selectEvidenceItemsForActiveRubricRow,
 } from "@evidence-collection-slice";
-
-import { useGetEvidenceItemsQuery } from "@api-slice";
-
 
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
@@ -28,14 +24,7 @@ const CollectedEvidenceList = () => {
   const dispatch = useDispatch();
 
   const selectedEvidenceItems = useSelector(selectSelectedEvidenceItems);
-  const activeRubricRowId = useSelector(selectActiveRubricRowId);
-  const collectionParams = useSelector(selectCollectionParams);
-
-  const { data: evidenceItems } = useGetEvidenceItemsQuery(collectionParams, {
-    selectFromResult: ({ data }) => ({
-      data: data[activeRubricRowId]?data[activeRubricRowId]:[]
-    })
-  })
+  const evidenceItems = useSelector(selectEvidenceItemsForActiveRubricRow);
  
   const toggleSelection = (evidenceItem) => {
     const itemState = selectedEvidenceItems.find(x=>x.evidenceItem.id===evidenceItem.id);

@@ -1,19 +1,15 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { 
 } from "@mui/material";
 
 import { 
   setPageTitle, 
-  selectActiveWorkAreaContext,
-  selectActiveEvaluationId
 } from "@user-context-slice";
 
  import {
-  initializeEvidenceCollectionState,
+  initYearToDateEC,
 } from "@evidence-collection-slice";
-
-import { EvidenceCollectionType } from '@lib/enums';
 
 import { EvidenceCollection } from '@components';
 
@@ -23,8 +19,6 @@ const Dashboard = () => {
   const pageTitle = "YTD Dashboard";
 
   const [initialized, setInitialized] = useState(false);
-  const evaluationId = useSelector(selectActiveEvaluationId);
-  const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
   
   useEffect(() => {
     dispatch(setPageTitle(pageTitle));
@@ -32,19 +26,12 @@ const Dashboard = () => {
 
  
   useEffect(()=> {
-    const initializeEvidenceCollection = async () => {
-      await dispatch(initializeEvidenceCollectionState(
-        {
-          workAreaContext: activeWorkAreaContext,
-          collectionType: EvidenceCollectionType.YTD,
-          collectionObjectId: evaluationId,
-          evaluationId: evaluationId
-        }));
-
-        setInitialized(true);
+    const initEvidenceCollection = async () => {
+      await dispatch(initYearToDateEC());
+      setInitialized(true);
     }
 
-    initializeEvidenceCollection();
+    initEvidenceCollection();
    
   }, []);
 

@@ -110,7 +110,7 @@ app.UseCors();
 app.UseMiddleware<ErrorHandlerMiddleware>();
 
 // custom jwt auth middleware
-app.UseMiddleware<JwtMiddleware>();
+ app.UseMiddleware<JwtMiddleware>();
 
 app.MapControllers();
 

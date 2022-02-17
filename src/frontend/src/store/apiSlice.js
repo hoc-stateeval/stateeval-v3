@@ -68,7 +68,6 @@ const baseUrl = `${config.API_URL}/`;
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: axiosBaseQuery({ baseUrl: baseUrl }),
-  tagTypes: [],
   endpoints: builder => ({
 
     // perception surveys
@@ -87,12 +86,11 @@ export const apiSlice = createApi({
           return acc;
         }, {});
         return evidenceItemMap;
-      }
+      },
     }),
     createEvidenceItem: builder.mutation({
-      query: (collectionParams) => ({url: `evidence-items/${collectionParams.collectionType}/${collectionParams.collectionObjectId}`, method: 'post', data: {
-        
-      }}) 
+      query: (data) => ({url: `evidence-items/${data.collectionType}/${data.collectionObjectId}`, method: 'post', data: data}),
+      
     }),
 
        // evidence packages

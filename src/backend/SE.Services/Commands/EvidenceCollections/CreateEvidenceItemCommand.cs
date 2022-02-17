@@ -37,7 +37,7 @@ namespace SE.Core.Commands.EvidenceCollections
                  .When(x => Enum.GetName(typeof(EvidenceType), x.EvidenceType).Contains("CODED"));
         }
     }
-    public sealed class CreateEvidenceItemCommand : IRequest<IResponse<Unit>>
+    public sealed class CreateEvidenceItemCommand : IRequest<IResponse<EvidenceItemDTO>>
     {
         public CreateEvidenceItemCommand() { }
         public long CollectionObjectId { get; set; }
@@ -49,11 +49,11 @@ namespace SE.Core.Commands.EvidenceCollections
         public string EvidenceText { get; set; } = string.Empty;
         public Guid? CodedEvidenceClientId { get; set; }
         public long? UserPromptReponseId { get; set; }
-        public bool Public { get; }
+        public bool Public { get; set; }
     }
 
     public class CreateEvidenceItemCommandHandler :
-    IRequestHandler<CreateEvidenceItemCommand, IResponse<Unit>>
+    IRequestHandler<CreateEvidenceItemCommand, IResponse<EvidenceItemDTO>>
     {
         private readonly DataContext _dataContext;
          public CreateEvidenceItemCommandHandler(DataContext dataContext)
@@ -61,7 +61,7 @@ namespace SE.Core.Commands.EvidenceCollections
             _dataContext = dataContext;
         }
 
-        public async Task<IResponse<Unit>> Handle(CreateEvidenceItemCommand request, CancellationToken cancellationToken)
+        public async Task<IResponse<EvidenceItemDTO>> Handle(CreateEvidenceItemCommand request, CancellationToken cancellationToken)
         {
             var evidenceItem = new EvidenceItem()
             {
@@ -81,7 +81,12 @@ namespace SE.Core.Commands.EvidenceCollections
             _dataContext.EvidenceItems.Add(evidenceItem);
             await _dataContext.SaveChangesAsync();
 
-            return Response.Success(Unit.Value);
+            evidenceItem = await _dataContext.EvidenceItems
+                .Include(x => x.CreatedByUser)
+                .Where(x => x.Id == evidenceItem.Id)
+                .FirstOrDefaultAsync();
+
+            return Response.Success(evidenceItem.MapToEvidenceItemDTO());
         }
     }
 }

@@ -14,27 +14,19 @@ import {
   setActiveRubricRowId,
   selectActiveRubricRowId,
   selectActiveFrameworkNodeId,
-  selectCollectionParams,
+  selectEvidenceItemMap,
 } from "@evidence-collection-slice";
-
-import { useGetEvidenceItemsQuery } from "@api-slice";
 
 import './rubric-helper.css';
 
-const RubricNavigatorRubricRow = ({rubricRow, selected}) => {
+const RubricNavigatorRubricRow = ({rubricRow, evidenceItems, selected}) => {
   const dispatch = useDispatch();
 
-  const collectionParams = useSelector(selectCollectionParams);
-  const { data: evidenceItems } = useGetEvidenceItemsQuery(collectionParams);
-
   const onClickRubricRow = () => {
-    dispatch(setActiveRubricRowId({
-      rubricRowId: rubricRow.id, 
-      evidenceItems: evidenceItems[rubricRow.id]
-    }));
+    dispatch(setActiveRubricRowId(rubricRow.id));
   }
 
-  const evidenceItemCount = evidenceItems && evidenceItems[rubricRow.id]?.length;
+  const evidenceItemCount =evidenceItems?.length;
 
   return (
     <Box className={`section-row rubric-row ${selected ? "selected" : ""}`} onClick={()=>onClickRubricRow()} >
@@ -51,7 +43,7 @@ const RubricNavigatorRubricRow = ({rubricRow, selected}) => {
   )
 };
 
-const RubricNavigatorFrameworkNode = ({frameworkNode, evidenceItems, expanded}) => {
+const RubricNavigatorFrameworkNode = ({frameworkNode, evidenceItemMap, expanded}) => {
 
   const dispatch = useDispatch();
   const activeRubricRowId = useSelector(selectActiveRubricRowId);
@@ -65,11 +57,9 @@ const RubricNavigatorFrameworkNode = ({frameworkNode, evidenceItems, expanded}) 
   }
 
   let evidenceItemCount = frameworkNode.rubricRows.reduce((acc, rubricRow)=> {
-    if (evidenceItems) {
-      const rrEvidenceItems = evidenceItems[rubricRow.id];
-      if (rrEvidenceItems) {
-        acc+=rrEvidenceItems.length;
-      }
+    const rrEvidenceItems = evidenceItemMap[rubricRow.id];
+    if (rrEvidenceItems) {
+      acc+=rrEvidenceItems.length;
     }
    return acc;
  }, 0);
@@ -93,7 +83,7 @@ const RubricNavigatorFrameworkNode = ({frameworkNode, evidenceItems, expanded}) 
           return (<RubricNavigatorRubricRow 
                     key={x.id} 
                     rubricRow={x} 
-                    evidenceItems={evidenceItems}
+                    evidenceItems={evidenceItemMap[x.id]}
                     selected={x.id===activeRubricRowId}
                     />);
         })}
@@ -102,11 +92,12 @@ const RubricNavigatorFrameworkNode = ({frameworkNode, evidenceItems, expanded}) 
   )
 };
 
-const RubricNavigator = ({ evidenceItems }) => {
+const RubricNavigator = () => {
 
   const activeFramework = useSelector(selectActiveFramework);
   const activeFrameworkNodeId = useSelector(selectActiveFrameworkNodeId);
 
+  const evidenceItemMap = useSelector(selectEvidenceItemMap);
   return (
     <>
       <Box className="rubric-helper">
@@ -116,7 +107,7 @@ const RubricNavigator = ({ evidenceItems }) => {
             <Box className="section" key={x.id} >
                 <RubricNavigatorFrameworkNode 
                   frameworkNode={x} 
-                  evidenceItems={evidenceItems}
+                  evidenceItemMap={evidenceItemMap}
                   expanded={x.id===activeFrameworkNodeId}
                 />
             </Box>

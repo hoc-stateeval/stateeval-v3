@@ -32,8 +32,8 @@ namespace SE.API.Controllers
             [FromBody] CreateEvidenceItemCommand command)
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;
-            await _mediator.Send(command, cancelationToken);
-            return Ok(Unit.Value);
+            var dto = await _mediator.Send(command, cancelationToken);
+            return Ok(dto);
         }
     }
 }
