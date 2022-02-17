@@ -66,58 +66,6 @@ export const initYearToDateEC = createAsyncThunk(
   }
 );
 
-// export const setActiveRubricRowId = createAsyncThunk(
-//   'evidenceCollection/setActiveRubricRow',
-//   async (rubricRowId, { dispatch, getState }) => {
-
-//     const { evidenceCollection: state } = getState().stateEval;
-
-//     let selectedEvidenceItems = [];
-//     const evidenceItems = state.evidenceItemMap[rubricRowId];
-//     if (evidenceItems) {
-//       selectedEvidenceItems = evidenceItems.map(x=>{
-//         return {evidenceItem: x, selected: false}
-//       });
-//     }
-
-//     return {
-//       ...state,
-//       viewMode: 'row',
-//       evidencePackageRubricAlignment: null,
-//       buildingEvidencePackage: false,
-//       selectedEvidenceItems: selectedEvidenceItems,
-//       ids: {
-//         ...state.ids,
-//         activeRubricRowId: rubricRowId,
-//       },
-//     };
-//   }
-// );
-
-// export const setActiveFrameworkNodeId = createAsyncThunk(
-//   'evidenceCollection/setActiveFrameworkNodeId',
-//   async (frameworkNodeId, { dispatch, getState }) => {
-
-//     const { evidenceCollection: state } = getState().stateEval;
- 
-//     const newState = {
-//       ...state,
-//       viewMode: 'node',
-//       evidencePackageRubricAlignment: null,
-//       buildingEvidencePackage: false,
-//       selectedEvidenceItems: [],
-//       ids: {
-//         ...state.ids,
-//         activeFrameworkNodeId: frameworkNodeId,
-//         activeRubricRowId: null,
-//       },
-//     };
-
-//     return newState;
-//   }
-// );
-
-
 const evidenceCollectionSlice = createSlice({
   name: 'evidenceCollection',
   initialState: {
@@ -138,7 +86,8 @@ const evidenceCollectionSlice = createSlice({
       const selectedEvidence = action.payload.reduce((selected, next)=> {
         if (next.selected) selected = true;
         return selected;
-      }, false)
+      }, false);
+
       return {
         ...state,
         buildingEvidencePackage: selectedEvidence,
@@ -234,28 +183,6 @@ const evidenceCollectionSlice = createSlice({
       };
       state.thunkState = ThunkState.COMPLETE;
     })
-    // .addCase(setActiveFrameworkNodeId.pending, (state, action) => {
-    //   state.thunkState = ThunkState.PENDING;
-    // })
-    // .addCase(setActiveFrameworkNodeId.rejected, (state, action) => {
-    //   state.thunkState = ThunkState.FAILED;
-    //   state.errorMessage = action.payload;
-    // })
-    // .addCase(setActiveFrameworkNodeId.fulfilled, (state, action) => {
-    //   state = action.payload;
-    //   state.thunkState = ThunkState.COMPLETE;
-    // })
-    // .addCase(setActiveRubricRowId.pending, (state, action) => {
-    //   state.thunkState = ThunkState.PENDING;
-    // })
-    // .addCase(setActiveRubricRowId.rejected, (state, action) => {
-    //   state.thunkState = ThunkState.FAILED;
-    //   state.errorMessage = action.payload;
-    // })
-    // .addCase(setActiveRubricRowId.fulfilled, (state, action) => {
-    //   state = action.payload;
-    //   state.thunkState = ThunkState.COMPLETE;
-    // })
   }
 });
 
