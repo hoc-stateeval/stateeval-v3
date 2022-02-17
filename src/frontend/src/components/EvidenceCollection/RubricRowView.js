@@ -6,6 +6,7 @@ import {
 import CollectedEvidenceSection from "./CollectedEvidenceSection";
 import RubricAlignmentSection from "./RubricAlignmentSection";
 import PageHeader from "@components/PageHeader";
+import PackagedEvidenceSection from "./PackagedEvidenceSection";
 
 import { 
   selectActiveRubricRow,
@@ -20,6 +21,7 @@ import {
       <Stack spacing={4}>
          <CollectedEvidenceSection />
         <RubricAlignmentSection />
+        <PackagedEvidenceSection/>
       </Stack>
     </>
   );

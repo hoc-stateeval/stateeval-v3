@@ -382,6 +382,19 @@ export const selectEvidenceItemsForActiveRubricRow = createSelector(
   }
 );
 
+const getEvidencePackagesForActiveRubricRow = (state) => {
+  const { activeRubricRowId } = getIds(state);
+  const evidencePackages = state.stateEval.evidenceCollection.evidencePackageMap[activeRubricRowId];
+  return evidencePackages?evidencePackages:[];
+}
+
+export const selectEvidencePackagesForActiveRubricRow = createSelector(
+  getEvidencePackagesForActiveRubricRow,
+  (evidencePackages) => {
+    return evidencePackages;
+  }
+);
+
 export const { 
   setSelectedEvidenceItems,
   setEvidencePackageRubricAlignment,
