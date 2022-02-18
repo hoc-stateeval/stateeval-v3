@@ -44,7 +44,7 @@ namespace SE.Core.Commands.EvidenceCollections
         public RubricPerformanceLevel PerformanceLevel { get; set; }
 
         public List<long> EvidenceItemIds { get; set; }
-        public bool Public { get; }
+        public bool Public { get; set; }
     }
 
     public class CreateEvidencePackageCommandHandler :
@@ -67,6 +67,7 @@ namespace SE.Core.Commands.EvidenceCollections
                 CreatedByUserId = request.CreatedByUserId,
                 RubricStatement = request.RubricStatement,
                 CreationDateTime = DateTime.Now,
+                PerformanceLevel = request.PerformanceLevel,
                 Public = request.Public,
             };
 

@@ -19,6 +19,7 @@ namespace SE.Core.Mappers
             target.EvidenceCollectionObjectId = source.EvidenceCollectionObjectId;
             target.RubricStatement = source.RubricStatement;
             target.PerformanceLevel = source.PerformanceLevel;
+            target.PerformanceLevelDisplayName = EnumUtils.MapPerformanceLevelToDisplayName(source.PerformanceLevel);
             target.CreatedByDisplayName = $"{source.CreatedByUser.FirstName} {source.CreatedByUser.LastName}";
             target.EvidenceCollectionDisplayName = EnumUtils.MapEvidenceCollectionTypeToDisplayName(source);
             target.CreationDateTime = source.CreationDateTime;
@@ -26,6 +27,8 @@ namespace SE.Core.Mappers
             target.CreatedByUserId = source.CreatedByUserId;
             target.RubricRowId = source.RubricRowId;
             target.EvaluationId = source.EvaluationId;
+
+            target.EvidenceItemIds = source.EvidencePackageEvidenceItems.Select(x=>x.EvidenceItemId).ToList();
     
             return target;
         }

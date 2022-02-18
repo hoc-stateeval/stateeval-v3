@@ -54,6 +54,7 @@ namespace SE.Core.Queries.EvidenceCollections
 
                 var evidencePackages = await _dataContext.EvidencePackages
                     .Include(x => x.CreatedByUser)
+                    .Include(x => x.EvidencePackageEvidenceItems)
                     .Where(x => x.EvaluationId == request.EvaluationId &&
                                 x.Public)
                     .ToListAsync();

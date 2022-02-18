@@ -12,10 +12,10 @@ namespace SE.Core.Models
         public long Id { get; set; }
 
         public DateTime CreationDateTime { get; set; }
-        public string CreationDateDisplayString { get; set; }
+        public string CreationDateDisplayString { get; set; } = "";
 
         public long CreatedByUserId { get; set; }
-        public string CreatedByDisplayName { get; set; }
+        public string CreatedByDisplayName { get; set; } = "";
 
         public long RubricRowId { get; set; }
 
@@ -23,11 +23,14 @@ namespace SE.Core.Models
 
         public long EvidenceCollectionObjectId { get; set; }
 
-        public string RubricStatement { get; set; }
+        public string RubricStatement { get; set; } = "";
         public RubricPerformanceLevel PerformanceLevel { get; set; }
+        public string PerformanceLevelDisplayName { get; set; } = "";
 
         public EvidenceCollectionType EvidenceCollectionType { get; set; }
 
-        public string EvidenceCollectionDisplayName { get; set; }
+        public string EvidenceCollectionDisplayName { get; set; } = "";
+
+        public List<long> EvidenceItemIds { get; set; }
     }
 }
