@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+</head>
+<body>
+  <script>
+      const  getSelectedHtml = () => {
+      let html = "";
+      let sel = window.getSelection();
+      if (sel.rangeCount) {
+          var container = document.createElement("div");
+          for (var i = 0, len = sel.rangeCount; i < len; ++i) {
+              container.appendChild(sel.getRangeAt(i).cloneContents());
+          }
+          html = container.innerHTML;
+      }
+      return html;
+    }
+  </script>
+  <div id="test">
+    <p>paragraph1</p>
+    <p>paragraph2</p>
+    <p>paragraph3</p>
+  </div>
+  <script>
+    const test = document.getElementById('test');
+     test.addEventListener("mouseup", (e)=> {
+      let selectedText= getSelectedHtml();
+      console.log(selectedText);
+     });
+  </script>
+</body>
+</html>

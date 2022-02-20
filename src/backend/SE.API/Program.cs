@@ -81,6 +81,7 @@ builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
         options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Include;
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
     });
 
 builder.Services.AddMediatR(typeof(BaseService).GetTypeInfo().Assembly);

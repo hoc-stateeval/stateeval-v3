@@ -55,8 +55,9 @@ const PackagedEvidenceList = () => {
                 x.evidenceItemIds.map((evidenceItemId, i) => {
                   const evidenceItem = evidenceItems.find(x=>x.id===evidenceItemId);
                   return (
-                    <Stack direction="row" sx={{justifyContent:'space-between'}}>
-                      <Stack direction="column" spacing={0}>
+                    <Stack direction="row" 
+                      spacing={2}>
+                      <Stack direction="column" spacing={0} sx={{p:2}}>
                         <Box>
                               <strong>Created:&nbsp;</strong>
                               {`${evidenceItem.creationDateDisplayString} : ${evidenceItem.createdByDisplayName}`}
