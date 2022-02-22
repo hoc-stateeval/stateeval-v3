@@ -3,7 +3,7 @@ import {
 } from '@mui/material';
 
 import { PlanType } from '@lib/enums';
-import { PerformanceLevelShortNameMapper, SchoolYearMapper } from "@lib/eval-helpers";
+import { mapPerformanceLevelToShortName, SchoolYearMapper } from "@lib/eval-helpers";
 
 const PlanTypeDisplay = ({evaluation}) => {
  
@@ -13,7 +13,7 @@ const PlanTypeDisplay = ({evaluation}) => {
     return <Typography variant="body1">{planTypeDisplayName}: C1-C8</Typography>
   }
 
-  const performanceLevel = PerformanceLevelShortNameMapper[evaluation.carryForwardPerformanceLevel];
+  const performanceLevelShortName = mapPerformanceLevelToShortName(evaluation.carryForwardPerformanceLevel);
   const schoolYear = SchoolYearMapper[evaluation.carryForwardSchoolYear];
 
    if (evaluation.planType === PlanType.FOCUSED) {
@@ -25,7 +25,7 @@ const PlanTypeDisplay = ({evaluation}) => {
           {/* </Typography>
           <Typography variant="body1"> */}
             {/* Carry-forward: <strong>{performanceLevel} {schoolYear}</strong> */}
-            &nbsp;&nbsp;<strong>{performanceLevel} - {schoolYear}</strong>
+            &nbsp;&nbsp;<strong>{performanceLevelShortName} - {schoolYear}</strong>
           </Typography>
           </>
   }
@@ -35,7 +35,7 @@ const PlanTypeDisplay = ({evaluation}) => {
     const fnSG = evaluation.focusedSGFrameworkNodeDisplayName;
     return <Typography variant="body1">
               <strong>{fn1}, {fn2}, {fnSG}</strong> 
-              Carry-forward: <strong>{performanceLevel} {schoolYear}</strong>
+              Carry-forward: <strong>{performanceLevelShortName} {schoolYear}</strong>
             </Typography>
   }
   else {

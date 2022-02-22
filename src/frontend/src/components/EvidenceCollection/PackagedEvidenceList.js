@@ -1,18 +1,13 @@
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import "./evidence-package.css";
 
 import { 
   Box,
-  Divider,
-  IconButton,
   Paper,
   Stack,
-  Tooltip,
-  Typography
 } from "@mui/material";
-import { useTheme } from '@mui/material/styles';
 
 import {
   selectEvidencePackagesForActiveRubricRow,
@@ -55,7 +50,7 @@ const PackagedEvidenceList = () => {
                 x.evidenceItemIds.map((evidenceItemId, i) => {
                   const evidenceItem = evidenceItems.find(x=>x.id===evidenceItemId);
                   return (
-                    <Stack direction="row" 
+                    <Stack direction="row" key={i}
                       spacing={2}>
                       <Stack direction="column" spacing={0} sx={{p:2}}>
                         <Box>

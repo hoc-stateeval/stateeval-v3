@@ -12,6 +12,8 @@ import storage from 'redux-persist/lib/storage'
 import { combineReducers } from '@reduxjs/toolkit';
 import stateEval from './stateEval';
 import { apiSlice } from './apiSlice';
+import { clearTokens } from '../lib/tokenService';
+import { persistStore } from 'redux-persist';
 
 const middleware = [];
 
@@ -32,8 +34,20 @@ const persistedReducer = persistReducer(persistConfig, combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer
 }))
 
+const rootReducer = (state, action) => {
+  if (action.type === 'userContext/logout') { 
+    state = undefined;
+    localStorage.removeItem('persist:root');
+    clearTokens();
+    window.location.replace("/login")
+    return persistedReducer( state, action);
+  }
+  return persistedReducer(state, action);
+};
+
+
 const store = configureStore({
-  reducer: persistedReducer,
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
   getDefaultMiddleware({
     serializableCheck: {

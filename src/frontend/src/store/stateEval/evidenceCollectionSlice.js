@@ -6,14 +6,14 @@ import { get, post } from '@lib/api';
 const createEvidenceItemAPI = async (evidenceItem) => {
   const url = `evidence-items/${evidenceItem.collectionType}/${evidenceItem.collectionObjectId}`;
   const response = await post(url, evidenceItem);
-  const data = await response.data.data;
+  const data = await response.data;
   return data;
 }
 
 const createEvidencePackageAPI = async (evidencePackage) => {
   const url = `evidence-packages/${evidencePackage.evaluationId}`;
   const response = await post(url, evidencePackage);
-  const data = await response.data.data;
+  const data = await response.data;
   return data;
 }
 

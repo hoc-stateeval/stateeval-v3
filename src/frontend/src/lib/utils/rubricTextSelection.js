@@ -82,20 +82,18 @@ function removeLeadingTrailingParagraphs(selectionText) {
   return selected;
 }
 
-function createHighlightedDescriptorHtml(descriptorText, selection1Text, selection2Text) {
+function createHighlightedDescriptorHtml(descriptorText, selections) {
  
-  // because getSelectedText always adds a starting <p> and ending </p>, we need to check to
-  // see if the starting <p> and ending </p> contains the entire paragraph contents and if
-  // not remove them prior to coding the string.
+  // because getSelectedText always adds a starting <p> and ending </p>, we need to 
+  // remove them prior to coding the string.
 
   let descriptor = removeLeadingTrailingParagraphs(descriptorText);
-  let selected1 = removeLeadingTrailingParagraphs(selection1Text);
-  let selected2 = removeLeadingTrailingParagraphs(selection2Text);
-
   let codedText = Array(descriptor.length).fill(0);
 
-  updateCodedText(codedText, descriptor, selected1, 1);
-  updateCodedText(codedText, descriptor, selected2, 2);
+  for (const selection of selections) {
+    let selectionText = removeLeadingTrailingParagraphs(selection.text);
+    updateCodedText(codedText, descriptor, selectionText, selection.code);
+  }
 
   return highlightDescriptor(codedText, descriptor);
 }

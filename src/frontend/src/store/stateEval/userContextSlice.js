@@ -2,11 +2,11 @@ import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit'
 import { get } from '@lib/api';
 import { ThunkState } from '@lib/enums';
 import convertArrayToHashMap from '@lib/convertArrayToHashMap';
-import { clearState } from '@lib/persist';
+import { clearState } from '../../lib/persist';
 
 const getFramework = async (frameworkId) => {
   const response = await get(`frameworks/${frameworkId}`);
-  const data = await response.data.data;
+  const data = await response.data;
   return data;
 };
 
@@ -59,14 +59,6 @@ export const setActiveWorkAreaContext = createAsyncThunk(
     const { userContext: state } = getState().stateEval;
     const newState = await createWorkAreaContextState(state, workAreaContext);
     return newState;
-  }
-);
-
-export const logout = createAsyncThunk(
-  'userContext/logout',
-  async (user, { dispatch, getState }) => {
-    clearState();
-    return initialState;
   }
 );
 
@@ -124,6 +116,9 @@ const userContextSlice = createSlice({
   name: 'userContext',
   initialState,
   reducers: {
+    logout: (state) => {
+      // handled by the root reducer
+    },
     setPageTitle: (state, action) => {
       return {
         ...state,
@@ -179,20 +174,6 @@ const userContextSlice = createSlice({
     },
   },
   extraReducers: {
-    [logout.pending]: (state, action) => ({
-      ...state,
-      thunkState: ThunkState.RUNNING,
-    }),
-    [logout.fulfilled]: (state, action) => ({
-      ...action.payload,
-      thunkState: ThunkState.COMPLETE,
-    }),
-    [logout.rejected]: (state, action) => ({
-      ...state,
-      thunkState: ThunkState.FAILED,
-      errorMessage: action.payload,
-    }),
-
     [setCurrentUser.pending]: (state, action) => ({
       ...state,
       thunkState: ThunkState.RUNNING,
@@ -361,6 +342,7 @@ export const selectActiveDistrictViewerEvaluatorId = createSelector(
 });
 
 export const { 
+  logout,
   setActiveFrameworkId, 
   setActiveEvaluation,
   setActiveDistrictViewerSchoolCode,

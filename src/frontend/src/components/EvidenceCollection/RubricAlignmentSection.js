@@ -14,59 +14,88 @@ import {
   selectActiveRubricRow,
   selectBuildingEvidencePackage,
   setEvidencePackageRubricAlignment,
+  selectEvidencePackagesForActiveRubricRow,
+  selectEvidencePackageRubricAlignment
 } from "@evidence-collection-slice";
 
-import { PerformanceLevel } from '@lib/enums';
+import { 
+  PerformanceLevels,
+  mapPerformanceLevelToRubricDescriptor
+ } from '@lib/eval-helpers';
+import { createHighlightedDescriptorHtml, getSelectedHtml } from '@lib/utils';
 
 import { PageSectionHeader } from "@components";
 
+const buildRubricDescriptorTextWithSelections = (descriptor, evidencePackages) => {
+  const selections = evidencePackages.map(x=> {
+    return {
+      text: x.rubricStatement, 
+      code:1
+    }
+  });
 
+  return createHighlightedDescriptorHtml(descriptor, selections);
 
-const RubricAlignmentSection = () => {
+}
+const RubricDescriptor = ({rubricRow, performanceLevel}) => {
   const dispatch = useDispatch();
 
-  const activeRubricRow = useSelector(selectActiveRubricRow);
   const buildingEvidencePackage = useSelector(selectBuildingEvidencePackage);
-
-  const getSelectedText = () => {
-    if (window.getSelection) {
-        return window.getSelection().toString();
-    } else if (document.getSelection) {
-        return document.getSelection().toString();
-    }
-    else return '';
-  }
+  const evidencePackages = useSelector(selectEvidencePackagesForActiveRubricRow);
+  const rubricAlignment = useSelector(selectEvidencePackageRubricAlignment);
 
   const onSelectEvidencePackageText = (performanceLevel) => {
     if (buildingEvidencePackage) {
-      const text = getSelectedText();
-      dispatch(setEvidencePackageRubricAlignment({rubricStatement: text, performanceLevel: performanceLevel}));
+      const html = getSelectedHtml();
+      dispatch(setEvidencePackageRubricAlignment({rubricStatement: html, performanceLevel: performanceLevel.value}));
     }
   }
+
+  const descriptor =  mapPerformanceLevelToRubricDescriptor(rubricRow, performanceLevel.value);
+  let selections = evidencePackages.map(x=>{
+    return {
+      text: x.rubricStatement,
+      code: 1,
+    }
+  })
+  if (buildingEvidencePackage && rubricAlignment) {
+    selections = [...selections, {text: rubricAlignment.rubricStatement, code: 1}]
+  }
+
+  const descriptorWithHighlights = buildRubricDescriptorTextWithSelections(descriptor, selections);
+
+  return (
+    <TableCell className="descriptor"
+      onMouseUp={()=> {onSelectEvidencePackageText(performanceLevel)}} 
+      dangerouslySetInnerHTML={{__html: `${descriptorWithHighlights}`}}>
+      </TableCell>
+  )
+}
+
+const RubricAlignmentSection = () => {
+
+  const activeRubricRow = useSelector(selectActiveRubricRow);
 
   return (
     <>
       <Stack spacing={2}>
         <PageSectionHeader title={"Rubric Alignment"}></PageSectionHeader>
-
         <TableContainer component={Paper}>
-          <Table size="small" aria-label="simple table">
+          <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell>UNS</TableCell>
-                <TableCell>BAS</TableCell>
-                <TableCell>PRO</TableCell>
-                <TableCell>DIS</TableCell>
+                {PerformanceLevels.map((next, i)=>(
+                  <TableCell key={i}>{next.shortName}</TableCell>
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>
               <TableRow style={{verticalAlign:'top'}}>
-                <TableCell onMouseUp={()=> {onSelectEvidencePackageText(PerformanceLevel.UNS);}} dangerouslySetInnerHTML={{__html: `${activeRubricRow.pL1Descriptor}`}}></TableCell>
-                <TableCell onMouseUp={()=> {onSelectEvidencePackageText(PerformanceLevel.BAS);}} dangerouslySetInnerHTML={{__html: `${activeRubricRow.pL2Descriptor}`}}></TableCell>
-                <TableCell onMouseUp={()=> {onSelectEvidencePackageText(PerformanceLevel.PRO);}} dangerouslySetInnerHTML={{__html: `${activeRubricRow.pL3Descriptor}`}}></TableCell>
-                <TableCell onMouseUp={()=> {onSelectEvidencePackageText(PerformanceLevel.DIS);}} dangerouslySetInnerHTML={{__html: `${activeRubricRow.pL4Descriptor}`}}></TableCell>
-              </TableRow>
-
+                {PerformanceLevels.map((next, i)=>(
+                  <RubricDescriptor key={i} rubricRow={activeRubricRow} performanceLevel={next} />
+                ))
+                }
+             </TableRow>
             </TableBody>
           </Table>
         </TableContainer>

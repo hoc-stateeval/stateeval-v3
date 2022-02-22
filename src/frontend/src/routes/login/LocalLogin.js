@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ErrorBoundary } from "react-error-boundary";
+import { ErrorBoundary, useErrorHandler } from "react-error-boundary";
 import { useDispatch } from "react-redux";
 import {
   Alert,

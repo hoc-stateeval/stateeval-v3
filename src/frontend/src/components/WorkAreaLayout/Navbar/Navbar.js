@@ -4,8 +4,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { AppBar, Box, Button, IconButton, Stack, Toolbar } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import LogoutIcon from "@mui/icons-material/Logout";
-
 import { logout } from "@user-context-slice";
+
 import FrameworkSwitcher from "./FrameworkSwitcher";
 import { unAuthenticatedPaths } from "@routes/paths";
 
@@ -24,7 +24,7 @@ const Navbar = (props) => {
   const { onOpenSidebar, sidebarWidth, ...other } = props;
 
   const onClickLogout = async () => {
-    await dispatch(logout());
+    dispatch(logout());
     navigate(unAuthenticatedPaths.login, true);
   };
 

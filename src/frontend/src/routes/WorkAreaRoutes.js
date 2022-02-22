@@ -1,6 +1,6 @@
 
 import { lazy } from 'react';
-import { Navigate, useRoutes, useLocation} from 'react-router-dom';
+import { Navigate, useRoutes } from 'react-router-dom';
 
 import { PrivateRoute, WorkAreaLayout } from '@components';
 

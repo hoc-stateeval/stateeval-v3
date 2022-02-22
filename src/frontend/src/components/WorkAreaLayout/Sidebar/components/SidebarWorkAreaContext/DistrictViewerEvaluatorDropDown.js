@@ -14,7 +14,6 @@ import {
   setActiveDistrictViewerEvaluatorId,
   selectActiveWorkAreaContext,
   selectActiveDistrictViewerEvaluatorId,
-  selectActiveDistrictViewerSchoolCode,
 } from "@user-context-slice";
 
 const buildEvaluatorLabel = (tagName) => {

@@ -12,7 +12,7 @@ using SE.Data;
 namespace SE.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220217183952_init")]
+    [Migration("20220222011209_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -377,6 +377,19 @@
   background-color: #18a689 !important;
 }
 
+
+.descriptor .primary {
+  background-color: #ffea8c;
+}
+
+.descriptor .secondary {
+  background-color: #cce6ff;
+}
+
+.descriptor .merged {
+  background-color: #82ffc9;
+}
+
 @media (min-width: 1200px) and (max-width: 1380px) {
   .sub-heading .pull-left h4 {
     width: 70px;

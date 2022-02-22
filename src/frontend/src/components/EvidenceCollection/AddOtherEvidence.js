@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { 
   Box,
@@ -31,7 +31,12 @@ const AddOtherEvidence = () => {
       evidenceText: evidenceText,
     }
     toggleShowOtherEvidenceInputArea((prev)=>!prev);
-    dispatch(addOtherEvidence(data));
+    dispatch(addOtherEvidence(data)).then(
+      ()=>{},
+      (error)=>{
+        console.log(error);
+      }
+    )
   }
 
   return (

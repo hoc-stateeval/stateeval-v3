@@ -46,50 +46,6 @@ const buildSuggestedPlanTypeDisplayString = (evaluation) => {
   }
 }
 
-// const buildCarryForwardDisplayString = (evaluation) => {
-//   const performanceLevel = PerformanceLevelShortNameMapper[evaluation.carryForwardPerformanceLevel];
-//   const schoolYear = SchoolYearMapper[evaluation.carryForwardSchoolYear];
-//   return <Typography>Carry-forward: <strong>{performanceLevel} {schoolYear}</strong></Typography>;
-// }
-
-// const buildPlanTypeDisplayString = (evaluation) => {
-
-//   let html = '';
-//   const planTypeDisplayName = evaluation.planTypeDisplayName;
-//   if (evaluation.planType === PlanType.FOCUSED) {
-//     const focusedFrameworkNodeShortName = evaluation.focusedFrameworkNodeShortName;
-//     const focusedSGFrameworkNodeShortName = evaluation.focusedSGFrameworkNodeShortName;
-//     html = focusedFrameworkNodeShortName;
-//     if (focusedSGFrameworkNodeShortName && focusedSGFrameworkNodeShortName !== focusedFrameworkNodeShortName) {
-//       html = `${html}, ${focusedSGFrameworkNodeShortName} (SG)`;
-//     }
-
-//     if (evaluation.comprehensiveCarryForward) {
-//       html = `${html}: ${buildCarryForwardDisplayString(evaluation)}`;
-//     }
-//     return html;
-//   }
-//   else if (evaluation.planType === PlanType.MODIFIED_COMP_2021) {
-//     const fn1 = evaluation.focusedFrameworkNodeDisplayName;
-//     const fn2 = evaluation.modifiedCompFocusedFrameworkNode2DisplayName;
-//     const fnSG = evaluation.focusedSGFrameworkNodeDisplayName;
-//     let html = `<strong>${fn1}, ${fn2}, ${fnSG}<strong>`;
-//     if (evaluation.comprehensiveCarryForward) {
-//       html = `${html}: ${buildCarryForwardDisplayString(evaluation)}`;
-//     }
-//     return html;
-//   }
-//   else if (evaluation.planType === PlanType.COMPREHENSIVE) {
-//     return `${planTypeDisplayName}: C1-C8`;
-//   }
-//   else {
-//     return `Unknown plan type: ${evaluation.evaluationType}`;
-//   }
-// }
-
-
-
-
 export {
   buildLastYearPlanTypeDisplayString,
   buildSuggestedPlanTypeDisplayString

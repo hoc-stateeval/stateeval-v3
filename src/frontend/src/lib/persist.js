@@ -23,5 +23,6 @@ export const saveState = (state) => {
 
 export const clearState = () => {
   localStorage.setItem(KEY, null);
+  localStorage.setItem('persist:root', null);
   clearTokens();
 }
