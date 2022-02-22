@@ -3,13 +3,15 @@ import { useSelector } from "react-redux";
 import { ErrorBoundary } from "react-error-boundary";
 
 import { styled } from "@mui/material/styles";
-import { Alert, Box, Container, Typography } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 
 import { selectPageTitle } from "@user-context-slice";
 
 import ActiveEvaluationProfile from "./ActiveEvaluationProfile";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
+
+import ErrorFallback from "@routes/errors/ErrorFallback";
 
 const sidebarWidth = 220;
 
@@ -23,10 +25,6 @@ const LayoutRoot = styled("div")(({ theme }) => ({
     paddingLeft: `${sidebarWidth}px`,
   },
 }));
-
-const ErrorFallback = ({ error }) => {
-  return <Alert severity="error">Something went wrong:{error.message}</Alert>;
-};
 
 const WorkAreaLayout = (props) => {
   const pageTitle = useSelector(selectPageTitle);

@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit'
 import { get } from '@lib/api';
 import { ThunkState } from '@lib/enums';
 import convertArrayToHashMap from '@lib/convertArrayToHashMap';
-import { clearState } from '../../lib/persist';
 
 const getFramework = async (frameworkId) => {
   const response = await get(`frameworks/${frameworkId}`);

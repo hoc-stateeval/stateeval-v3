@@ -11,17 +11,24 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(
-  (config) => {
+  (request) => {
     const { accessToken } = getTokens();
     if (accessToken) {
-      config.headers["Authorization"] = 'Bearer ' + accessToken;  
+      request.headers["Authorization"] = 'Bearer ' + accessToken;  
     }
-    return config;
+    return request;
   },
   (error) => {
     return Promise.reject(error);
   }
 );
+
+// axiosInstance.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
 
 const executeRequest = async ({url, method, data}) => {
   try {
@@ -42,7 +49,7 @@ const executeRequest = async ({url, method, data}) => {
   catch (axiosError) {
     if (axiosError.response.status === 401) {
       try {
-        const token = localStorage.getItem('refreshToken');
+        const { refreshToken: token } = getTokens();
         const rs = await axiosInstance({
           method: 'POST',
           url: `${baseUrl}users/refresh-token`,
@@ -57,7 +64,7 @@ const executeRequest = async ({url, method, data}) => {
         return Promise.reject(_error);
       }
     }
-    throw new Error(`status: ${axiosError.response?.status}, data: ${axiosError.response?.data.ErrorMessage}`)
+    throw new Error(`api-error:${axiosError.response?.status}:${axiosError.response?.data.ErrorMessage}`)
   }
 }
 

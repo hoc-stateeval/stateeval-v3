@@ -9,6 +9,7 @@ import {
 } from '@routes/routes';
 
 const NotFound = lazy(() => import('@routes/errors/NotFound'));
+const ServerError = lazy(() => import('@routes/errors/ServerError'));
 
 const buildNavRoutesForWorkArea = (workArea) => {
 
@@ -35,6 +36,7 @@ const WorkAreaRoutes = ({activeWorkAreaContext}) => {
   const routes = useRoutes(
     [ ...activeWorkAreaNavRoutes,
       { path: "404", element: <NotFound /> },
+      { path: "server-error", element: <ServerError /> },
       { path: "*", element: <Navigate to="/404" /> }
     ]);
 

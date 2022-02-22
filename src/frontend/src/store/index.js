@@ -13,7 +13,6 @@ import { combineReducers } from '@reduxjs/toolkit';
 import stateEval from './stateEval';
 import { apiSlice } from './apiSlice';
 import { clearTokens } from '../lib/tokenService';
-import { persistStore } from 'redux-persist';
 
 const middleware = [];
 

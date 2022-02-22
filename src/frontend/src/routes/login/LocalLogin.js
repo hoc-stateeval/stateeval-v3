@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { ErrorBoundary, useErrorHandler } from "react-error-boundary";
 import { useDispatch } from "react-redux";
 import {
-  Alert,
   Button,
   Card,
   Grid,
@@ -23,24 +22,23 @@ import {
 
 import { getDefaultPathForWorkAreaContext } from "@lib/eval-helpers";
 
-const ErrorFallback = ({ error }) => {
-  return <Alert severity="error">Something went wrong:{error.message}</Alert>;
-};
+import ErrorFallback from "@routes/errors/ErrorFallback";
 
-const LocalLogin = () => {
+const LocalLoginInner = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const errorHandler = useErrorHandler();
 
   const [districtCode, setDistrictCode] = useState("");
   const [userId, setUserId] = useState("");
 
   const [loginUser] = useLoginUserMutation();
 
-  const { data: districts } = useGetLocalLoginDistrictsQuery();
+  const { data: districts, error: error1 } = useGetLocalLoginDistrictsQuery();
+  if (error1) errorHandler(error1);
 
-  const { data: users } = useGetLocalLoginUsersForDistrictQuery(districtCode, {
-    skip: districtCode === "",
-  });
+  const { data: users, error: error2 } = useGetLocalLoginUsersForDistrictQuery(districtCode, {skip: districtCode === ""});
+  if (error2) errorHandler(error2);
 
   useEffect(() => {
     if (districts) {
@@ -102,85 +100,91 @@ const LocalLogin = () => {
   };
 
   return (
-    <>
-      <ErrorBoundary FallbackComponent={ErrorFallback}>
-        <Grid
-          container
-          spacing={0}
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-          style={{ minHeight: "100vh" }}
+    <Grid
+      container
+      spacing={0}
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+      style={{ minHeight: "100vh" }}
+    >
+      <Grid item xs={3}>
+        <Card
+          elevation={16}
+          sx={{
+            p: 4,
+            minWidth: "400px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            alignContent: "center",
+          }}
         >
-          <Grid item xs={3}>
-            <Card
-              elevation={16}
-              sx={{
-                p: 4,
-                minWidth: "400px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                alignContent: "center",
-              }}
-            >
-              <Stack spacing={3}>
-                <Typography variant="h4" sx={{ textAlign: "center" }}>
-                  Log in
-                </Typography>
-                {districts && users ? (
-                  <>
-                    <TextField
-                      label="District"
-                      sx={{ minWidth: "200px" }}
-                      select
-                      value={districtCode}
-                      onChange={(e) => {
-                        setDistrictCode(e.target.value);
-                      }}
-                    >
-                      {districts.map((x) => (
-                        <MenuItem key={x.districtCode} value={x.districtCode}>
-                          {x.name}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                    <TextField
-                      label="User"
-                      sx={{ minWidth: "200px" }}
-                      select
-                      value={userId}
-                      onChange={(e) => {
-                        setUserId(parseInt(e.target.value, 10));
-                      }}
-                    >
-                      {users.map((x) => (
-                        <MenuItem
-                          key={`${x.displayName} ${x.roleName}`}
-                          value={x.id}
-                        >
-                          {x.displayName} ({x.roleName})
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </>
-                ) : (
-                  <div>Loading...</div>
-                )}
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={onClickLogin}
+          <Stack spacing={3}>
+            <Typography variant="h4" sx={{ textAlign: "center" }}>
+              Log in
+            </Typography>
+            {districts && users ? (
+              <>
+                <TextField
+                  label="District"
+                  sx={{ minWidth: "200px" }}
+                  select
+                  value={districtCode}
+                  onChange={(e) => {
+                    setDistrictCode(e.target.value);
+                  }}
                 >
-                  Login
-                </Button>
-              </Stack>
-            </Card>
-          </Grid>
-        </Grid>
-      </ErrorBoundary>
-    </>
+                  {districts.map((x) => (
+                    <MenuItem key={x.districtCode} value={x.districtCode}>
+                      {x.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                <TextField
+                  label="User"
+                  sx={{ minWidth: "200px" }}
+                  select
+                  value={userId}
+                  onChange={(e) => {
+                    setUserId(parseInt(e.target.value, 10));
+                  }}
+                >
+                  {users.map((x) => (
+                    <MenuItem
+                      key={`${x.displayName} ${x.roleName}`}
+                      value={x.id}
+                    >
+                      {x.displayName} ({x.roleName})
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </>
+            ) : (
+              <div>Loading...</div>
+            )}
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={onClickLogin}
+            >
+              Login
+            </Button>
+          </Stack>
+        </Card>
+      </Grid>
+    </Grid>
   );
 };
+const LocalLogin = () => {
+
+  return (
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <LocalLoginInner />
+    </ErrorBoundary>
+  )
+
+}
+
 
 export default LocalLogin;

@@ -13,6 +13,7 @@ const baseUrl = `${config.API_URL}/`;
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: axiosBaseQuery({ baseUrl: baseUrl }),
+  keepUnusedDataFor: 0,
   endpoints: builder => ({
 
     // perception surveys

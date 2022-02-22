@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { styled } from "@mui/material/styles";
+import { useErrorHandler } from 'react-error-boundary';
 import {
   Alert,
   Button,
@@ -48,6 +49,7 @@ const getEvaluationSetupDelegatedToAllSchools = (schoolConfigs) => {
 
 const AssignmentsDistrictSummary = () => {
   const dispatch = useDispatch();
+  const handleError = useErrorHandler();
 
   const workAreaContext = useSelector(selectActiveWorkAreaContext);
   const pageTitle = `Assignments for ${workAreaContext.evaluateeTerm} Evaluations`;
@@ -57,13 +59,23 @@ const AssignmentsDistrictSummary = () => {
   const [setupDelegatedToAllSchools, setSetupDelegatedToAllSchools] =
     useState(false);
 
-  const { data: schoolConfigs } =
+  const { data: schoolConfigs, error: error1 } =
     useGetSchoolConfigurationsForFrameworkContextQuery(
       workAreaContext.frameworkContextId
     );
-  const { data: summaries } = useGetAssignmentsSummaryForDistrictQuery(
+
+  if (error1) {
+    handleError(error1);
+  }
+
+  const { data: summaries, error: error2 } = useGetAssignmentsSummaryForDistrictQuery(
     workAreaContext.frameworkContextId
   );
+
+  if (error2) {
+    handleError(error2);
+  }
+
   const [updateSchoolConfiguration] = useUpdateSchoolConfigurationMutation();
   const [batchUpdateEvaluationSetupDelegation] =
     useUpdateSchoolConfigurationBatchEvaluationSetupDelegationMutation();
