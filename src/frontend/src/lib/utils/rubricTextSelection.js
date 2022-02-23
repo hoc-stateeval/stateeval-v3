@@ -7,6 +7,9 @@ const  getSelectedHtml = () => {
           container.appendChild(sel.getRangeAt(i).cloneContents());
       }
       html = container.innerHTML;
+      if (html.indexOf("<p>")===-1) {
+        html = `<p>${html}</p>`
+      }
   }
   return html;
 }

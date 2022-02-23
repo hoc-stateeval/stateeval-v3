@@ -39,8 +39,7 @@ const PackagedEvidenceList = () => {
                 {x.performanceLevelDisplayName[0]}
               </Box>
               <Stack className="statement" direction="column">
-                <Box>
-                  {x.rubricStatement}
+                <Box dangerouslySetInnerHTML={{__html: `${x.rubricStatement}`}}>
                 </Box>
               </Stack>
             </Stack>

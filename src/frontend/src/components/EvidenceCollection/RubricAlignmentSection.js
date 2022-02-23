@@ -26,17 +26,6 @@ import { createHighlightedDescriptorHtml, getSelectedHtml } from '@lib/utils';
 
 import { PageSectionHeader } from "@components";
 
-const buildRubricDescriptorTextWithSelections = (descriptor, evidencePackages) => {
-  const selections = evidencePackages.map(x=> {
-    return {
-      text: x.rubricStatement, 
-      code:1
-    }
-  });
-
-  return createHighlightedDescriptorHtml(descriptor, selections);
-
-}
 const RubricDescriptor = ({rubricRow, performanceLevel}) => {
   const dispatch = useDispatch();
 
@@ -55,14 +44,15 @@ const RubricDescriptor = ({rubricRow, performanceLevel}) => {
   let selections = evidencePackages.map(x=>{
     return {
       text: x.rubricStatement,
+      performanceLevel: x.performanceLevel,
       code: 1,
     }
-  })
-  if (buildingEvidencePackage && rubricAlignment) {
-    selections = [...selections, {text: rubricAlignment.rubricStatement, code: 1}]
+  }).filter(x=>x.performanceLevel === performanceLevel.value)
+  if (buildingEvidencePackage && rubricAlignment && rubricAlignment.performanceLevel === performanceLevel.value) {
+    selections = [...selections, {text: rubricAlignment.rubricStatement, performanceLevel: performanceLevel.value, code: 1}]
   }
 
-  const descriptorWithHighlights = buildRubricDescriptorTextWithSelections(descriptor, selections);
+  const descriptorWithHighlights = createHighlightedDescriptorHtml(descriptor, selections);
 
   return (
     <TableCell className="descriptor"

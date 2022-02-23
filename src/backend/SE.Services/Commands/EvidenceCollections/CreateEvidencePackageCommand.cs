@@ -31,7 +31,7 @@ namespace SE.Core.Commands.EvidenceCollections
             RuleFor(x => x.RubricStatement).NotEmpty();
         }
     }
-    public sealed class CreateEvidencePackageCommand : IRequest<IResponse<EvidencePackage>>
+    public sealed class CreateEvidencePackageCommand : IRequest<IResponse<EvidencePackageDTO>>
     {
         public CreateEvidencePackageCommand() { }
         public long CollectionObjectId { get; set; }
@@ -48,7 +48,7 @@ namespace SE.Core.Commands.EvidenceCollections
     }
 
     public class CreateEvidencePackageCommandHandler :
-    IRequestHandler<CreateEvidencePackageCommand, IResponse<EvidencePackage>>
+    IRequestHandler<CreateEvidencePackageCommand, IResponse<EvidencePackageDTO>>
     {
         private readonly DataContext _dataContext;
          public CreateEvidencePackageCommandHandler(DataContext dataContext)
@@ -56,7 +56,7 @@ namespace SE.Core.Commands.EvidenceCollections
             _dataContext = dataContext;
         }
 
-        public async Task<IResponse<EvidencePackage>> Handle(CreateEvidencePackageCommand request, CancellationToken cancellationToken)
+        public async Task<IResponse<EvidencePackageDTO>> Handle(CreateEvidencePackageCommand request, CancellationToken cancellationToken)
         {
             var evidencePackage = new EvidencePackage()
             {
@@ -99,7 +99,7 @@ namespace SE.Core.Commands.EvidenceCollections
             await _dataContext.SaveChangesAsync();
 
 
-            return Response.Success(evidencePackage);
+            return Response.Success(evidencePackage.MapToEvidencePackageDTO());
         }
     }
 }
