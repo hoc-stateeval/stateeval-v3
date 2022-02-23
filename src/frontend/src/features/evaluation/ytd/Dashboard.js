@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useErrorHandler } from 'react-error-boundary';
 import { 
 } from "@mui/material";
 
@@ -16,6 +17,8 @@ import { EvidenceCollection } from '@components';
 const Dashboard = () => {
 
   const dispatch = useDispatch();
+  const errorHandler = useErrorHandler();
+
   const pageTitle = "YTD Dashboard";
 
   const [initialized, setInitialized] = useState(false);
@@ -27,7 +30,7 @@ const Dashboard = () => {
  
   useEffect(()=> {
     const initEvidenceCollection = async () => {
-      await dispatch(initYearToDateEC());
+      await dispatch(initYearToDateEC({errorHandler}));
       setInitialized(true);
     }
 

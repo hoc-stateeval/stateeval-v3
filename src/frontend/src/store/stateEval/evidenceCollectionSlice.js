@@ -24,19 +24,25 @@ export const createEvidencePackage = createAsyncThunk(
     const { evidenceCollection : ecState, userContext: ucState } = getState().stateEval;
 
     const isPublic = ecState.collectionType === EvidenceCollectionType.YEAR_TO_DATE;
-    const evidencePackage = await createEvidencePackageAPI({
-      collectionType: ecState.createdEvidenceCollectionType,
-      collectionObjectId: ecState.collectionObjectId,
-      evaluationId: ucState.ids.activeEvaluationId,
-      createdByUserId: ucState.currentUser.id,
-      rubricRowId: ecState.ids.activeRubricRowId,
-      rubricStatement: data.rubricStatement,
-      performanceLevel: data.performanceLevel,
-      evidenceItemIds: data.evidenceItemIds,
-      public: isPublic,
-    });
 
-    return evidencePackage;
+    try {
+      const evidencePackage = await createEvidencePackageAPI({
+        collectionType: ecState.createdEvidenceCollectionType,
+        collectionObjectId: ecState.collectionObjectId,
+        evaluationId: ucState.ids.activeEvaluationId,
+        createdByUserId: ucState.currentUser.id,
+        rubricRowId: ecState.ids.activeRubricRowId,
+        rubricStatement: data.rubricStatement,
+        performanceLevel: data.performanceLevel,
+        evidenceItemIds: data.evidenceItemIds,
+        public: isPublic,
+      });
+
+      return evidencePackage;
+    } catch (err) {
+      data.errorHandler(err);
+      throw err;
+    }
   }
 );
 
@@ -47,59 +53,69 @@ export const addOtherEvidence = createAsyncThunk(
     const { evidenceCollection : ecState, userContext: ucState } = getState().stateEval;
 
     const isPublic = ecState.collectionType === EvidenceCollectionType.YEAR_TO_DATE;
-    const evidenceItem = await createEvidenceItemAPI({
-      ...data,
-      collectionType: ecState.createdEvidenceCollectionType,
-      collectionObjectId: ecState.collectionObjectId,
-      evaluationId: ucState.ids.activeEvaluationId,
-      createdByUserId: ucState.currentUser.id,
-      rubricRowId: ecState.ids.activeRubricRowId,
-      codedEvidenceClientId: null,
-      userPromptResponseId: null,
-      public: isPublic,
-    });
-
-    return evidenceItem;
+    try {
+      const evidenceItem = await createEvidenceItemAPI({
+        evidenceType: data.evidenceType,
+        evidenceText: data.evidenceText,
+        collectionType: ecState.createdEvidenceCollectionType,
+        collectionObjectId: ecState.collectionObjectId,
+        evaluationId: ucState.ids.activeEvaluationId,
+        createdByUserId: ucState.currentUser.id,
+        rubricRowId: ecState.ids.activeRubricRowId,
+        codedEvidenceClientId: null,
+        userPromptResponseId: null,
+        public: isPublic,
+      });
+      return evidenceItem;
+    } catch (err) {
+      data.errorHandler(err);
+      throw err;
+    }
   }
 );
 
 const getYearToDateEvidenceCollectionAPI = async (evaluationId) => {
   const response = await get(`evidence-collections/ytd/${evaluationId}`);
-  const data = await response.data.data;
+  const data = await response.data;
   return data;
 };
 
 export const initYearToDateEC = createAsyncThunk(
   'evidenceCollection/initYearToDateEC',
-  async (_, { dispatch, getState }) => {
+  async (data, { dispatch, getState }) => {
 
     const { userContext : ucState } = getState().stateEval;
     const activeEvaluationId = ucState.ids.activeEvaluationId;
     const activeFramework = ucState.entities.frameworks[ucState.ids.activeFrameworkId];
     const activeFrameworkNodeId = activeFramework.frameworkNodes[0].id;
 
-    const evidenceCollection = await getYearToDateEvidenceCollectionAPI(activeEvaluationId);
-    const evidenceItemMap = evidenceCollection.evidenceItems.reduce((acc,next)=> {
-      const rubricRowId = next.rubricRowId;
-      if (!acc[rubricRowId]) acc[rubricRowId] = [];
-      acc[rubricRowId].push(next);
-      return acc;
-    }, {});
-
-    const evidencePackageMap = evidenceCollection.evidencePackages.reduce((acc,next)=> {
-      const rubricRowId = next.rubricRowId;
-      if (!acc[rubricRowId]) acc[rubricRowId] = [];
-      acc[rubricRowId].push(next);
-      return acc;
-    }, {});
-
-    return {
-      createdEvidenceCollectionType: EvidenceCollectionType.OTHER_EVIDENCE,
-      collectionType: EvidenceCollectionType.YEAR_TO_DATE,
-      activeEvaluationId,
-      activeFrameworkNodeId,
-      evidenceItemMap,
-      evidencePackageMap
+    try {
+      const evidenceCollection = await getYearToDateEvidenceCollectionAPI(activeEvaluationId);
+      const evidenceItemMap = evidenceCollection.evidenceItems.reduce((acc,next)=> {
+        const rubricRowId = next.rubricRowId;
+        if (!acc[rubricRowId]) acc[rubricRowId] = [];
+        acc[rubricRowId].push(next);
+        return acc;
+      }, {});
+  
+      const evidencePackageMap = evidenceCollection.evidencePackages.reduce((acc,next)=> {
+        const rubricRowId = next.rubricRowId;
+        if (!acc[rubricRowId]) acc[rubricRowId] = [];
+        acc[rubricRowId].push(next);
+        return acc;
+      }, {});
+  
+      return {
+        createdEvidenceCollectionType: EvidenceCollectionType.OTHER_EVIDENCE,
+        collectionType: EvidenceCollectionType.YEAR_TO_DATE,
+        activeEvaluationId,
+        activeFrameworkNodeId,
+        evidenceItemMap,
+        evidencePackageMap
+      }
+    }catch (err) {
+      data.errorHandler(err);
+      throw err;
     }
   }
 );
@@ -110,6 +126,7 @@ const evidenceCollectionSlice = createSlice({
     viewMode: 'node',
     evidenceItemMap: {},
     evidencePackageMap: {},
+    createdEvidenceCollectionType: null,
     collectionType: EvidenceCollectionType.UNDEFINED,
     collectionObjectId: null,
     evidencePackageRubricAlignment: null,

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useErrorHandler } from 'react-error-boundary';
 
 import { 
   Box,
@@ -22,6 +23,8 @@ const evidenceItemStyles = {
 const AddOtherEvidence = () => {
 
   const dispatch = useDispatch();
+  const errorHandler = useErrorHandler();
+
   const [evidenceText, setEvidenceText] = useState('');
   const [showOtherEvidenceInputArea, toggleShowOtherEvidenceInputArea] = useState(false);
  
@@ -29,14 +32,10 @@ const AddOtherEvidence = () => {
     let data = {
       evidenceType: EvidenceType.RUBRIC_ROW_NOTE,
       evidenceText: evidenceText,
+      errorHandler,
     }
     toggleShowOtherEvidenceInputArea((prev)=>!prev);
-    dispatch(addOtherEvidence(data)).then(
-      ()=>{},
-      (error)=>{
-        console.log(error);
-      }
-    )
+    dispatch(addOtherEvidence(data));
   }
 
   return (

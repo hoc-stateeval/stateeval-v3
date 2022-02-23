@@ -18,6 +18,10 @@ const ServerError = ({error}) => {
     title = "Page not found!"
     details = "The page you are looking for might have been removed had its name changed or is temporarily unavailable."
   }
+  else if (error.status === '400') {
+    title = "Bad server request!"
+    details = "We apologize for the inconvenience. The error has been logged and will be investigated shortly.";
+  }
   else {
     title = "Unknown error";
   }

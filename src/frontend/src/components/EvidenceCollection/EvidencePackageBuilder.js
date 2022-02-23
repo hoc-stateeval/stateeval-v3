@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
+import { useErrorHandler } from 'react-error-boundary';
 
 import { 
   Button,
@@ -12,41 +13,26 @@ import {
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 import {
-  selectActiveRubricRowId,
   selectSelectedEvidenceItems,
   setSelectedEvidenceItems,
   selectEvidencePackageRubricAlignment,
   createEvidencePackage,
 } from "@evidence-collection-slice";
 
-import { 
-  selectActiveEvaluationId, 
-  selectCurrentUser,
-} from "@user-context-slice";
-
-import { EvidenceCollectionType } from "@lib/enums";
-
 import './evidence-package-builder.css';
 
 const EvidencePackageBuilder = () => {
   const dispatch = useDispatch();
+  const errorHandler = useErrorHandler();
 
   const rubricAlignment = useSelector(selectEvidencePackageRubricAlignment);
-   const evaluationId = useSelector(selectActiveEvaluationId);
-  const rubricRowId = useSelector(selectActiveRubricRowId);
-  const currentUser = useSelector(selectCurrentUser);
   const selectedEvidenceItems = useSelector(selectSelectedEvidenceItems);
 
   const onClickCreateEvidencePackage = async () => {
 
     let data = {
-      collectionType: EvidenceCollectionType.OTHER_EVIDENCE,
-      collectionObjectId: evaluationId,
-      evaluationId: evaluationId,
-      rubricRowId: rubricRowId,
-      createdByUserId: currentUser.id,
+      errorHandler,
       rubricStatement: rubricAlignment.rubricStatement,
-      public: true, 
       performanceLevel: rubricAlignment.performanceLevel,
       evidenceItemIds: selectedEvidenceItems.reduce((acc, next)=> {
         acc.push(next.evidenceItem.id);
