@@ -17,8 +17,16 @@ export const apiSlice = createApi({
   endpoints: builder => ({
 
     // perception surveys
+    getPerceptionSurveysForEvaluation: builder.query({
+      query: (data) => ({ url: `perception-surveys/evaluation/${data.evaluationId}`, method: 'get' }),
+    }),
+
     getPerceptionSurveyById: builder.query({
-      query: (id) => ({ url: `perception-surveys/${id}`, method: 'get' }),
+      query: (data) => ({ url: `perception-surveys/${data.id}}`, method: 'get' }),
+    }),
+
+    createPerceptionSurvey: builder.mutation({
+      query: (data) => ({ url: `perception-surveys/evaluation/${data.evaluationId}`, method: 'post', data: data }),
     }),
 
     // evaluations
@@ -127,4 +135,6 @@ export const {
   useCreateEvidenceItemMutation,
   useGetPerceptionSurveyByIdQuery,
   useCreateEvidencePackageMutation,
+  useGetPerceptionSurveysForEvaluationQuery,
+  useCreatePerceptionSurveyMutation
 } = apiSlice

@@ -5,4 +5,5 @@ export { default as PrivateRoute  } from './PrivateRoute';
 export { default as Scrollbar } from './Scrollbar/Scrollbar';
 export { default as WorkAreaLayout } from './WorkAreaLayout';
 export { default as EvidenceCollection } from './EvidenceCollection';
+export { default } from './TabPanel';
 

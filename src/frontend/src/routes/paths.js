@@ -70,6 +70,7 @@ export const adminPaths = {
 const evaluationRoot = '/evaluation';
 const evalDashboardsRoot = `${evaluationRoot}/dashboards`
 const evalSettingsRoot = `${evaluationRoot}/settings`;
+const evalPerceptionSurveysRoot =  `${evaluationRoot}/perceptionSurveys`
 
 export const evaluationPaths = {
   prTrDashboard: `${evalDashboardsRoot}/pr-tr`,
@@ -89,7 +90,8 @@ export const evaluationPaths = {
   summativeEvaluation: `${evaluationRoot}/summative-eval`,
   reportArchives: `${evaluationRoot}/report-archives`,
   resources:  `${evaluationRoot}/resources`,
-  trMePerceptionSurveys: `${evaluationRoot}/perceptionSurveys`,
+  trMePerceptionSurveys: evalPerceptionSurveysRoot,
+  trMePerceptionSurveyById: `${evalPerceptionSurveysRoot}/:id`,
 
   settingsRoot: `${evalSettingsRoot}`,
   settingsGeneral: `${evalSettingsRoot}/general`,
