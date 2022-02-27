@@ -43,7 +43,6 @@ function a11yProps(index) {
 }
 
 const Dashboard = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const errorHandler = useErrorHandler();
   const evaluationId = useSelector(selectActiveEvaluationId);
@@ -53,18 +52,16 @@ const Dashboard = () => {
 
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
-   const { data: surveys, error: error1 } = useGetPerceptionSurveysForEvaluationQuery({
-    evaluationId: evaluationId, 
-    errorHandler
-  });
-
-  if (error1) {
-    errorHandler(error1);
+  const { data: surveys, error: getPerceptionSurveysError } = 
+    useGetPerceptionSurveysForEvaluationQuery(evaluationId);
+  if (getPerceptionSurveysError) {
+    errorHandler(getPerceptionSurveysError);
   }
 
-  const [createSurvey, {error: error2}] = useCreatePerceptionSurveyMutation();
-  if (error2) {
-    errorHandler(error2);
+  const [createSurvey, {error: createSurveyError}] = 
+    useCreatePerceptionSurveyMutation();
+  if (createSurveyError) {
+    errorHandler(createSurveyError);
   }
 
   const onChangeActiveTab = (event, activeTabIndex) => {
@@ -75,7 +72,8 @@ const Dashboard = () => {
     const survey = await createSurvey(
       {
         evaluationId: evaluationId,
-        schoolCode: activeWorkAreaContext.schoolCode
+        schoolCode: activeWorkAreaContext.schoolCode,
+        locationOrigin: window.location.origin.toLowerCase()
       }
     ).unwrap();
     const path = `${evaluationPaths.trMePerceptionSurveys}/${survey.id}`

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useErrorHandler } from "react-error-boundary";
 import { MenuItem, TextField } from "@mui/material";
 
 import {
   setActiveWorkAreaContext,
-  selectActiveWorkAreaContext,
-  selectWorkAreaContextsAll,
+  selectActiveWorkAreaContext,  
 } from "@user-context-slice";
 
 import {
@@ -14,29 +14,37 @@ import {
   getDefaultPathForWorkAreaContext,
 } from "@lib/eval-helpers";
 
+import {
+  useGetWorkAreaContextsForUserQuery
+} from "@api-slice";
+
 const SidebarSwitchAdminWorkAreaDropdown = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const errorHandler = useErrorHandler();
 
-  const workAreaContexts = useSelector(selectWorkAreaContextsAll);
   const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
+  const [selectedWorkAreaContextId, setSelectedWorkAreaContextId] = useState(activeWorkAreaContext.id);
 
-  const districtAdminWorkAreaContexts = workAreaContexts.filter(
-    (x) =>
-      x.districtCode === activeWorkAreaContext.districtCode &&
-      DistrictAdminWorkAreas.includes(x.tagName)
-  );
+  const { data: workAreaContexts, isSuccess: getWorkAreaContextsIsSuccess, error: getWorkAreaContextsError } = 
+    useGetWorkAreaContextsForUserQuery(activeWorkAreaContext.userId);
+  if (getWorkAreaContextsError) errorHandler(getWorkAreaContextsError);
 
-  const [selectedWorkAreaContextId, setSelectedWorkAreaContextId] = useState(
-    activeWorkAreaContext.id
-  );
+  const districtAdminWorkAreaContexts = [];
+  if (getWorkAreaContextsIsSuccess) {
+      workAreaContexts.filter(
+      (x) =>
+        x.districtCode === activeWorkAreaContext.districtCode &&
+        DistrictAdminWorkAreas.includes(x.tagName)
+    );
+  }
 
   const changeActiveWorkAreaContext = async (e) => {
     const contextId = parseInt(e.target.value, 10);
     setSelectedWorkAreaContextId(contextId);
     const workArea = workAreaContexts.find((x) => x.id === contextId);
     await dispatch(setActiveWorkAreaContext(workArea));
-    navigate(getDefaultPathForWorkAreaContext(activeWorkAreaContext), true);
+    navigate(getDefaultPathForWorkAreaContext(workArea), true);
   };
 
   return (

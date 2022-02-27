@@ -1,25 +1,37 @@
 import { useSelector } from "react-redux";
+import { useErrorHandler } from "react-error-boundary";
+
 import { Avatar, Box, Typography } from "@mui/material";
 
-import { selectActiveEvaluation } from "@user-context-slice";
+import { selectActiveEvaluationId } from "@user-context-slice";
+
+import {
+  useGetEvaluationByIdQuery
+} from "@api-slice";
 
 import blankProfile from "@images/blank-profile-48x48.png";
 
 import { PlanTypeDisplay } from "@components";
 
 const ActiveEvaluationProfile = () => {
-  const activeEvaluation = useSelector(selectActiveEvaluation);
+  const errorHandler = useErrorHandler();
 
-  if (!activeEvaluation) {
-    return <></>;
+  const activeEvaluationId = useSelector(selectActiveEvaluationId);
+
+  const { data: evaluation, isSuccess: getEvaluationSuccess, error: getEvaluationError } = 
+    useGetEvaluationByIdQuery(activeEvaluationId);
+  if (getEvaluationError) errorHandler(getEvaluationError);
+
+  if (!getEvaluationSuccess) {
+    return (<></>);
   }
 
   return (
     <>
       <Box sx={{ display: "flex" }}>
         <Box sx={{ pr: 1 }}>
-          <PlanTypeDisplay evaluation={activeEvaluation} />
-          <Typography>{activeEvaluation.evaluateeDisplayName}</Typography>
+          <PlanTypeDisplay evaluation={evaluation} />
+          <Typography>{evaluation.evaluateeDisplayName}</Typography>
         </Box>
         <Box
           sx={{
@@ -31,8 +43,8 @@ const ActiveEvaluationProfile = () => {
           <Avatar
             alt="profile image"
             src={
-              activeEvaluation.profileImageUrl
-                ? activeEvaluation.profileImageUrl
+              evaluation.profileImageUrl
+                ? evaluation.profileImageUrl
                 : blankProfile
             }
           />

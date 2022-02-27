@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useErrorHandler } from "react-error-boundary";
 
 import { MenuItem, TextField } from "@mui/material";
-
 import { useTheme } from "@mui/material/styles";
 
 import { getSelectStyles } from "./styles/selectItemStyles";
@@ -13,27 +13,26 @@ import {
   setActiveDistrictViewerSchoolCode,
   selectActiveDistrictViewerSchoolCode,
   setActiveDistrictViewerEvaluatorId,
-  setActiveEvaluation,
+  setActiveEvaluationId,
 } from "@user-context-slice";
 
 const DistrictViewerSchoolDropDown = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const errorHandler = useErrorHandler();
 
   const workAreaContext = useSelector(selectActiveWorkAreaContext);
 
-  const activeDistrictViewerSchoolCode = useSelector(
-    selectActiveDistrictViewerSchoolCode
-  );
+  const activeDistrictViewerSchoolCode = useSelector(selectActiveDistrictViewerSchoolCode);
 
-  const { data: schools } = useGetSchoolsInDistrictQuery(
-    workAreaContext.districtCode
-  );
+  const { data: schools, error: getSchoolsError } = 
+    useGetSchoolsInDistrictQuery(workAreaContext.districtCode);
+  if (getSchoolsError) errorHandler(getSchoolsError);
 
   const changeDistrictViewerSchool = async (schoolCode) => {
     dispatch(setActiveDistrictViewerSchoolCode(schoolCode));
     dispatch(setActiveDistrictViewerEvaluatorId("0"));
-    dispatch(setActiveEvaluation(null));
+    dispatch(setActiveEvaluationId(null));
   };
 
   return (

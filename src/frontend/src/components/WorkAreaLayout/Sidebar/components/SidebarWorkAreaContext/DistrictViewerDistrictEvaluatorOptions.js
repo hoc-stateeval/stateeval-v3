@@ -1,6 +1,8 @@
 import { useSelector } from "react-redux";
 
-import { useGetEvaluationsForDistrictViewerQuery } from "@api-slice";
+import { 
+  useGetEvaluationsForDistrictViewerQuery 
+} from "@api-slice";
 
 import {
   selectActiveWorkAreaContext,
@@ -11,6 +13,7 @@ import DistrictViewerEvaluatorDropDown from "./DistrictViewerEvaluatorDropDown";
 import EvaluatingDropDown from "./EvaluatingDropDown";
 
 const DistrictViewerDistrictEvaluatorOptions = () => {
+  
   const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
   const activeDistrictViewerEvaluatorId = useSelector(
     selectActiveDistrictViewerEvaluatorId

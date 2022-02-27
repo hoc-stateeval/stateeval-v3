@@ -1,12 +1,17 @@
 
 import { useSelector, useDispatch } from "react-redux";
+import { useErrorHandler } from "react-error-boundary";
 import {
   Box,
   Typography,
 } from "@mui/material";
 
 import {
-  selectActiveFramework,
+  useGetFrameworkByIdQuery
+} from "@api-slice";
+
+import {
+  selectActiveFrameworkId,
 } from "@user-context-slice";
 
 import {
@@ -93,9 +98,14 @@ const RubricNavigatorFrameworkNode = ({frameworkNode, evidenceItemMap, expanded}
 };
 
 const RubricNavigator = () => {
+  const errorHandler = useErrorHandler();
 
-  const activeFramework = useSelector(selectActiveFramework);
+  const activeFrameworkId = useSelector(selectActiveFrameworkId);
   const activeFrameworkNodeId = useSelector(selectActiveFrameworkNodeId);
+
+  const { data: activeFramework, error: getFrameworkError } = 
+    useGetFrameworkByIdQuery(activeFrameworkId);
+  if (getFrameworkError) errorHandler(getFrameworkError);
 
   const evidenceItemMap = useSelector(selectEvidenceItemMap);
   return (

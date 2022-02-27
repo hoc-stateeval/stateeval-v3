@@ -4,7 +4,8 @@
     "evaluatee",
     "POSTCONF",
     "PRECONF",
-    "SGBUNDLE"
+    "SGBUNDLE",
+    "workarea"
   ],
   "liveSassCompile.settings.formats": [
     {
@@ -20,9 +21,6 @@
   ],
   "liveSassCompile.settings.excludeList": ["**/node_modules/**", ".vscode/**"],
   "liveSassCompile.settings.generateMap": true,
-  "liveSassCompile.settings.autoprefix": [
-    "> 1%",
-    "last 2 versions"
-  ],
+  "liveSassCompile.settings.autoprefix": ["> 1%", "last 2 versions"],
   "liveServer.settings.port": 5501
 }

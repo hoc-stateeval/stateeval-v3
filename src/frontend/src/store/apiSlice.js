@@ -16,9 +16,19 @@ export const apiSlice = createApi({
   keepUnusedDataFor: 0,
   endpoints: builder => ({
 
+    // work area contexts
+    getWorkAreaContextsForUser: builder.query({
+      query: (userId) =>({url: `workarea-contexts/user/${userId}`, method: 'get'}),
+    }),
+
+    // frameworks
+    getFrameworkById: builder.query({
+      query: (id) => ({ url: `frameworks/${id}`, method: 'get' }),
+    }),
+    
     // perception surveys
     getPerceptionSurveysForEvaluation: builder.query({
-      query: (data) => ({ url: `perception-surveys/evaluation/${data.evaluationId}`, method: 'get' }),
+      query: (evaluationId) => ({ url: `perception-surveys/evaluation/${evaluationId}`, method: 'get' }),
     }),
 
     getPerceptionSurveyById: builder.query({
@@ -30,6 +40,9 @@ export const apiSlice = createApi({
     }),
 
     // evaluations
+    getEvaluationById: builder.query({
+      query: (evaluationId) => ({url: `evaluations/${evaluationId}`, method: 'get'})
+    }),
     updateEvaluationSetEvaluator: builder.mutation({
       query: (data) => ({url: `evaluations/${data.id}/update-evaluator`, method: 'put', data: data}) 
     }),
@@ -136,5 +149,8 @@ export const {
   useGetPerceptionSurveyByIdQuery,
   useCreateEvidencePackageMutation,
   useGetPerceptionSurveysForEvaluationQuery,
-  useCreatePerceptionSurveyMutation
+  useCreatePerceptionSurveyMutation,
+  useGetWorkAreaContextsForUserQuery,
+  useGetEvaluationByIdQuery,
+  useGetFrameworkByIdQuery
 } = apiSlice

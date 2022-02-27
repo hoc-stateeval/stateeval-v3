@@ -152,7 +152,7 @@ const routes_TR_ME = {
           title: 'Perception Surveys',
           icon: <GridView fontSize="small" />,
           path: evaluationPaths.trMePerceptionSurveys,
-        },
+        }
       ],
     },
     trainingSection,

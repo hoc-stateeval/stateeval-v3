@@ -1,9 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-
 import { MenuItem, TextField } from "@mui/material";
 
 import {
-  setActiveEvaluation,
+  setActiveEvaluationId,
   selectActiveEvaluationId,
   selectActiveWorkAreaContext,
 } from "@user-context-slice";
@@ -11,7 +10,7 @@ import {
 import { useTheme } from "@mui/material/styles";
 import { getSelectStyles } from "./styles/selectItemStyles";
 
-const EvaluatingDropDown = ({ evaluations }) => {
+const EvaluatingDropDown = ({ evaluatees }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -19,12 +18,12 @@ const EvaluatingDropDown = ({ evaluations }) => {
   const activeEvaluationId = useSelector(selectActiveEvaluationId);
 
   const changeEvaluation = async (id) => {
-    const evaluation = evaluations.find((x) => x.id === id);
-    dispatch(setActiveEvaluation(evaluation));
+    const evaluation = evaluatees.find((x) => x.id === id);
+    dispatch(setActiveEvaluationId(evaluation.id));
   };
   return (
     <>
-      {evaluations && (
+      {evaluatees && (
         <TextField
           label="Evaluating"
           sx={{
@@ -44,9 +43,9 @@ const EvaluatingDropDown = ({ evaluations }) => {
               Select a {workAreaContext.evaluateeTerm}
             </MenuItem>
           )}
-          {evaluations.map((x) => (
+          {evaluatees.map((x) => (
             <MenuItem key={`evaluation-${x.id}`} value={x.id}>
-              {x.evaluateeDisplayName}
+              {x.displayName}
             </MenuItem>
           ))}
         </TextField>

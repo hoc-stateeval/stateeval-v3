@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useErrorHandler } from "react-error-boundary";
 import { useNavigate } from "react-router-dom";
 
 import { List, ListSubheader, MenuItem, Stack, TextField } from "@mui/material";
@@ -7,10 +8,13 @@ import { List, ListSubheader, MenuItem, Stack, TextField } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
 import {
-  selectWorkAreaContextsAll,
-  setActiveWorkAreaContext,
   selectActiveWorkAreaContext,
+  setActiveWorkAreaContext,
 } from "@user-context-slice";
+
+import {
+  useGetWorkAreaContextsForUserQuery
+} from "@api-slice";
 
 import {
   DistrictViewerSchoolEvaluatorWorkAreas,
@@ -21,7 +25,7 @@ import {
 
 import DistrictViewerDistrictEvaluatorOptions from "./DistrictViewerDistrictEvaluatorOptions";
 import DistrictViewerSchoolEvaluatorOptions from "./DistrictViewerSchoolEvaluatorOptions";
-import EvaluatorOptions from "./EvaluatorOptions";
+import EvaluatingDropDown from "./EvaluatingDropDown";
 
 import { getListSubheaderStyles } from "./styles/listItemStyles";
 import { getSelectStyles } from "./styles/selectItemStyles";
@@ -61,29 +65,34 @@ const getFilteredWorkAreaContexts = (workAreaContexts, schoolCode) => {
 const SidebarWorkAreaContext = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const errorHandler = useErrorHandler();
   const navigate = useNavigate();
 
-  const workAreaContexts = useSelector(selectWorkAreaContextsAll);
   const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
+ 
+  const [selectedDistrictCode, setSelectedDistrictCode] = useState(activeWorkAreaContext.districtCode);
+  const [selectedSchoolCode, setSelectedSchoolCode] = useState(activeWorkAreaContext.schoolCode);
+  const [selectedWorkAreaContextId, setSelectedWorkAreaContextId] = useState(activeWorkAreaContext.id);
+  const [districts, setDistricts] = useState([]);
+  const [schools, setSchools] = useState([]);
+  const [filteredWorkAreaContexts, setFilteredWorkAreaContexts] = useState([]);
 
-  const districts = initDistricts(workAreaContexts);
+  const { data: workAreaContexts, error: getWorkAreaContextsError } = 
+    useGetWorkAreaContextsForUserQuery(activeWorkAreaContext.userId);
+  if (getWorkAreaContextsError) errorHandler(getWorkAreaContextsError);
 
-  const [selectedDistrictCode, setSelectedDistrictCode] = useState(
-    activeWorkAreaContext.districtCode
-  );
-  const [schools, setSchools] = useState(
-    getSchoolsForDistrict(workAreaContexts, selectedDistrictCode)
-  );
-  const [selectedSchoolCode, setSelectedSchoolCode] = useState(
-    activeWorkAreaContext.schoolCode
-  );
+  useEffect(()=> {
+    if (!workAreaContexts) return;
 
-  const [filteredWorkAreaContexts, setFilteredWorkAreaContexts] = useState(
-    getFilteredWorkAreaContexts(workAreaContexts, selectedSchoolCode)
-  );
-  const [selectedWorkAreaContextId, setSelectedWorkAreaContextId] = useState(
-    activeWorkAreaContext.id
-  );
+    setSchools(getSchoolsForDistrict(workAreaContexts, selectedDistrictCode));
+    setDistricts(initDistricts(workAreaContexts));
+  }, [workAreaContexts, selectedDistrictCode]);
+
+  useEffect(()=> {
+    if (!workAreaContexts) return;
+
+    setFilteredWorkAreaContexts(getFilteredWorkAreaContexts(workAreaContexts, selectedSchoolCode));
+  }, [workAreaContexts, selectedSchoolCode]);
 
   const changeDistrict = (districtCode) => {
     setSelectedDistrictCode(districtCode);
@@ -109,7 +118,7 @@ const SidebarWorkAreaContext = () => {
     setSelectedWorkAreaContextId(workAreaContext.id);
     await dispatch(setActiveWorkAreaContext(workAreaContext));
 
-    const defaultPath = getDefaultPathForWorkAreaContext(activeWorkAreaContext);
+    const defaultPath = getDefaultPathForWorkAreaContext(workAreaContext);
     navigate(defaultPath);
   };
 
@@ -124,6 +133,10 @@ const SidebarWorkAreaContext = () => {
       activeWorkAreaContext.tagName
     ) ||
     EvaluatorWorkAreas.includes(activeWorkAreaContext.tagName);
+
+  if (districts.length===0 || schools.length===0) {
+    return (<></>)
+  }
 
   return (
     <>
@@ -163,8 +176,7 @@ const SidebarWorkAreaContext = () => {
             ))}
           </TextField>
 
-          {selectedSchoolCode && (
-            <TextField
+          <TextField
               label="School"
               sx={{ ...getSelectStyles(theme) }}
               select
@@ -181,8 +193,7 @@ const SidebarWorkAreaContext = () => {
                   {x.schoolName}
                 </MenuItem>
               ))}
-            </TextField>
-          )}
+          </TextField>
           <TextField
             label="Work Area"
             sx={{ ...getSelectStyles(theme, "white") }}
@@ -234,7 +245,7 @@ const SidebarWorkAreaContext = () => {
               />
             )}
             {EvaluatorWorkAreas.includes(activeWorkAreaContext.tagName) && (
-              <EvaluatorOptions workAreaContext={activeWorkAreaContext} />
+              <EvaluatingDropDown evaluatees={activeWorkAreaContext.evaluatees} />
             )}
           </Stack>
         </List>

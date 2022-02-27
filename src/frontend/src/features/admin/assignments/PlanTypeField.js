@@ -28,13 +28,13 @@ import {
   useUpdateEvaluationSetPlanTypeMutation,
 } from "@api-slice";
 
-import { selectStateFramework } from "@user-context-slice";
+import { selectActiveWorkAreaContext } from "@user-context-slice";
 import { PlanType, PerformanceLevel } from "@lib/enums";
 
 import { PlanTypeDisplay } from "@components";
 
 const PlanTypeField = (props) => {
-  const stateFramework = useSelector(selectStateFramework);
+  const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
 
   const [evalSummary, setEvalSummary] = useState(props.evalSummary);
   const [dlgOpen, setDlgOpen] = useState(false);
@@ -63,13 +63,13 @@ const PlanTypeField = (props) => {
 
   useEffect(() => {
     const allFieldsComplete = () => {
-      const focusNode = stateFramework.frameworkNodes.find(
+      const focusNode = activeWorkAreaContext.stateFramework.frameworkNodes.find(
         (x) => x.id === selectedFocusFrameworkNodeId
       );
       if (!focusNode) return false;
 
       if (!focusNode.isStudentGrowthAligned) {
-        const sgFocusNode = stateFramework.frameworkNodes.find(
+        const sgFocusNode = activeWorkAreaContext.stateFramework.frameworkNodes.find(
           (x) => x.id === selectedFocusSGFrameworkNodeId
         );
         if (!sgFocusNode) return false;
@@ -90,7 +90,7 @@ const PlanTypeField = (props) => {
     selectedCarryForwardSchoolYear,
     selectedFocusFrameworkNodeId,
     selectedFocusSGFrameworkNodeId,
-    stateFramework.frameworkNodes,
+    activeWorkAreaContext.stateFramework.frameworkNodes,
   ]);
 
   useEffect(() => {
@@ -143,7 +143,7 @@ const PlanTypeField = (props) => {
   };
 
   const handleSelectFocusFrameworkNode = (id) => {
-    const node = stateFramework.frameworkNodes.find((x) => x.id === id);
+    const node = activeWorkAreaContext.stateFramework.frameworkNodes.find((x) => x.id === id);
     if (node.isStudentGrowthAligned) setSelectedSGFrameworkNodeId(null);
     setShowStudentGrowthSelect(!node || !node.isStudentGrowthAligned);
     setSelectedFocusFrameworkNodeId(id);
@@ -215,7 +215,7 @@ const PlanTypeField = (props) => {
                 }}
               >
                 <MenuItem value="0">Not Set</MenuItem>
-                {stateFramework.frameworkNodes.map((x) => (
+                {activeWorkAreaContext.stateFramework.frameworkNodes.map((x) => (
                   <MenuItem key={x.id} value={x.id}>
                     {x.shortName}
                   </MenuItem>
@@ -241,7 +241,7 @@ const PlanTypeField = (props) => {
                     }}
                   >
                     <MenuItem value="0">Not Set</MenuItem>
-                    {stateFramework.frameworkNodes
+                    {activeWorkAreaContext.stateFramework.frameworkNodes
                       .filter((x) => x.isStudentGrowthAligned)
                       .map((x) => (
                         <MenuItem key={x.id} value={x.id}>

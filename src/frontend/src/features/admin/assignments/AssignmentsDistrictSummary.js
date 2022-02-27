@@ -51,8 +51,8 @@ const AssignmentsDistrictSummary = () => {
   const dispatch = useDispatch();
   const handleError = useErrorHandler();
 
-  const workAreaContext = useSelector(selectActiveWorkAreaContext);
-  const pageTitle = `Assignments for ${workAreaContext.evaluateeTerm} Evaluations`;
+  const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
+  const pageTitle = `Assignments for ${activeWorkAreaContext.evaluateeTerm} Evaluations`;
 
   const [totalCount, setTotalCount] = useState(0);
   const [assignedCount, setAssignedCount] = useState(0);
@@ -61,7 +61,7 @@ const AssignmentsDistrictSummary = () => {
 
   const { data: schoolConfigs, error: error1 } =
     useGetSchoolConfigurationsForFrameworkContextQuery(
-      workAreaContext.frameworkContextId
+      activeWorkAreaContext.frameworkContextId
     );
 
   if (error1) {
@@ -69,7 +69,7 @@ const AssignmentsDistrictSummary = () => {
   }
 
   const { data: summaries, error: error2 } = useGetAssignmentsSummaryForDistrictQuery(
-    workAreaContext.frameworkContextId
+    activeWorkAreaContext.frameworkContextId
   );
 
   if (error2) {
@@ -122,7 +122,7 @@ const AssignmentsDistrictSummary = () => {
 
   const handleClickDelegateToAllSchools = () => {
     batchUpdateEvaluationSetupDelegation({
-      frameworkContextId: workAreaContext.frameworkContextId,
+      frameworkContextId: activeWorkAreaContext.frameworkContextId,
       delegateEvalSetup: true,
     }).then(() => {
       setSetupDelegatedToAllSchools(true);
@@ -132,13 +132,13 @@ const AssignmentsDistrictSummary = () => {
   return (
     <>
       <PageHeader title="Assignments Summary">
-        Summary of {workAreaContext.evaluateeTerm}'s assignments across the
+        Summary of {activeWorkAreaContext.evaluateeTerm}'s assignments across the
         entire district.
       </PageHeader>
 
       <Typography sx={{ mb: 3 }} variant="body1">
         By default, the district is responsible for assigning evaluators and
-        choosing the evaluation plan type for {workAreaContext.evaluateeTermLC}{" "}
+        choosing the evaluation plan type for {activeWorkAreaContext.evaluateeTermLC}{" "}
         evaluations. Districts can choose to allow school admins and principals
         to perform these tasks. Click the delegate to all schools button, or
         check the column for individual schools, to allow schools to perform
@@ -166,12 +166,12 @@ const AssignmentsDistrictSummary = () => {
           {summaries?.length || "...loading"}
         </Item>
         <Item>
-          <strong>{workAreaContext.evaluateeTerm}s Assigned:&nbsp;</strong>
+          <strong>{activeWorkAreaContext.evaluateeTerm}s Assigned:&nbsp;</strong>
           {assignedCount}
         </Item>
         <Item>
           <strong>
-            {workAreaContext.evaluateeTerm}s Awaiting Assignment:&nbsp;
+            {activeWorkAreaContext.evaluateeTerm}s Awaiting Assignment:&nbsp;
           </strong>
           {totalCount - assignedCount}
         </Item>
@@ -185,11 +185,11 @@ const AssignmentsDistrictSummary = () => {
               <TableCell align="center">School</TableCell>
               <TableCell align="center">Evaluators</TableCell>
               <TableCell align="center">
-                {workAreaContext.evaluateeTerm}s
+                {activeWorkAreaContext.evaluateeTerm}s
               </TableCell>
               <TableCell align="center">Assigned</TableCell>
               <TableCell align="center">
-                {workAreaContext.evaluateeTerm}s Awaiting Assignment
+                {activeWorkAreaContext.evaluateeTerm}s Awaiting Assignment
               </TableCell>
               <TableCell align="center">Action</TableCell>
             </TableRow>

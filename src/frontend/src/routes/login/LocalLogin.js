@@ -12,12 +12,16 @@ import {
   Typography,
 } from "@mui/material";
 
-import { setCurrentUser } from "@user-context-slice";
+import { 
+  setActiveWorkAreaContext,
+  setCurrentUser,
+ } from "@user-context-slice";
 
 import {
   useGetLocalLoginUsersForDistrictQuery,
   useGetLocalLoginDistrictsQuery,
   useLoginUserMutation,
+  useGetWorkAreaContextsForUserQuery
 } from "@api-slice";
 
 import { getDefaultPathForWorkAreaContext } from "@lib/eval-helpers";
@@ -32,13 +36,21 @@ const LocalLoginInner = () => {
   const [districtCode, setDistrictCode] = useState("");
   const [userId, setUserId] = useState("");
 
-  const [loginUser] = useLoginUserMutation();
+  const { data: districts, error: getDistrictError } = 
+    useGetLocalLoginDistrictsQuery();
+  if (getDistrictError) errorHandler(getDistrictError);
 
-  const { data: districts, error: error1 } = useGetLocalLoginDistrictsQuery();
-  if (error1) errorHandler(error1);
+  const { data: users, error: getUsersError } = 
+    useGetLocalLoginUsersForDistrictQuery(districtCode, {skip: !districtCode});
+  if (getUsersError) errorHandler(getUsersError);
 
-  const { data: users, error: error2 } = useGetLocalLoginUsersForDistrictQuery(districtCode, {skip: districtCode === ""});
-  if (error2) errorHandler(error2);
+  const [loginUser, {error: loginError}] = 
+    useLoginUserMutation();
+  if (loginError) errorHandler(loginError);
+
+  const { data: workAreaContexts, error: getWorkAreaContextsError } = 
+    useGetWorkAreaContextsForUserQuery(userId, {skip: !userId});
+  if (getWorkAreaContextsError) errorHandler(getWorkAreaContextsError);
 
   useEffect(() => {
     if (districts) {
@@ -53,50 +65,23 @@ const LocalLoginInner = () => {
   }, [users]);
 
   const onClickLogin = async (e) => {
+
     const user = users.find((x) => x.id === userId);
-    const data = await loginUser({
+    const userData = await loginUser({
       grant_type: "password",
       userName: user.userName,
       password: "password",
       client_id: "ngSEAuthApp",
     }).unwrap();
 
-    const authenticatedUser = data.user;
-    const workAreaContexts = data.workAreaContexts;
-    const defaultWorkAreaContextId = data.defaultWorkAreaContextId;
-    const defaultWorkArea = workAreaContexts.find(
-      (x) => x.id === defaultWorkAreaContextId
-    );
-    dispatch(
-      setCurrentUser({
-        user: authenticatedUser,
-        workAreaContexts: workAreaContexts,
-      })
-    ).then(() => {
-      const defaultPath = getDefaultPathForWorkAreaContext(defaultWorkArea);
-      navigate(defaultPath);
-    });
+    if (workAreaContexts) {
+      const activeWorkAreaContext = workAreaContexts[0];
+      await dispatch(setCurrentUser(userData.user));
+      await dispatch(setActiveWorkAreaContext(activeWorkAreaContext));
 
-    // loginUser({
-    //     grant_type: 'password',
-    //     userName: user.userName,
-    //     password: 'password',
-    //     client_id: 'ngSEAuthApp',
-    // }).then((response) => {
-    //   const authenticatedUser = response.data.data.user;
-    //   const workAreaContexts = response.data.data.workAreaContexts;
-    //   const defaultWorkAreaContextId = response.data.data.defaultWorkAreaContextId;
-    //   const defaultWorkArea = workAreaContexts.find(x => x.id === defaultWorkAreaContextId);
-    //   dispatch(setCurrentUser({
-    //     user: authenticatedUser,
-    //     workAreaContexts: workAreaContexts,
-    //   })).then(()=> {
-    //     const defaultPath = getDefaultPathForWorkAreaContext(defaultWorkArea);
-    //     navigate(defaultPath);
-    //   }).catch((error)=> {
-    //     throw new Error(error);
-    //   })
-    // });
+      const defaultPath = getDefaultPathForWorkAreaContext(activeWorkAreaContext);
+      navigate(defaultPath);
+    }
   };
 
   return (
@@ -176,6 +161,7 @@ const LocalLoginInner = () => {
     </Grid>
   );
 };
+
 const LocalLogin = () => {
 
   return (

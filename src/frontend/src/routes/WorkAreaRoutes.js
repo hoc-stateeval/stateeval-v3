@@ -30,7 +30,7 @@ const buildNavRoutesForWorkArea = (workArea) => {
 }
 
 const WorkAreaRoutes = ({activeWorkAreaContext}) => {
-  
+
   const activeWorkAreaNavRoutes = buildNavRoutesForWorkArea(activeWorkAreaContext);
 
   const routes = useRoutes(

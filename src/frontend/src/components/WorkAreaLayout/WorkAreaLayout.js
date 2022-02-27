@@ -7,6 +7,8 @@ import { Box, Container, Typography } from "@mui/material";
 
 import { selectPageTitle } from "@user-context-slice";
 
+import { selectActiveEvaluationId } from "@user-context-slice";
+
 import ActiveEvaluationProfile from "./ActiveEvaluationProfile";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
@@ -28,6 +30,8 @@ const LayoutRoot = styled("div")(({ theme }) => ({
 
 const WorkAreaLayout = (props) => {
   const pageTitle = useSelector(selectPageTitle);
+  const activeEvaluationId = useSelector(selectActiveEvaluationId);
+
   const { children } = props;
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   return (
@@ -53,7 +57,7 @@ const WorkAreaLayout = (props) => {
             <Container sx={{ display: "flex", alignItems: "center" }}>
               <Typography variant="h2">{pageTitle}</Typography>
               <Box sx={{ flexGrow: 1 }} />
-              <ActiveEvaluationProfile />
+              {activeEvaluationId && <ActiveEvaluationProfile />}
             </Container>
           </Box>
 
