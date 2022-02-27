@@ -17,18 +17,19 @@ import EvidencePackageBuilder from "./EvidencePackageBuilder";
 const EvidenceCollection = () => {
   
   const ecViewMode = useSelector(selectEvidenceCollectionViewMode);
-  const buildingEvidencePackage = useSelector(selectBuildingEvidencePackage);
+  // const buildingEvidencePackage = useSelector(selectBuildingEvidencePackage);
  
   return (
     <>
     <Grid container spacing={3}>
       <Grid item xs>
-        {ecViewMode === 'row' && <RubricRowView />}
+        {ecViewMode === 'row' && <RubricRowView />}  
         {ecViewMode === 'node' && <FrameworkNodeView />}
       </Grid>
       <Grid item xs={4}>
-          {!buildingEvidencePackage && <RubricNavigator /> }
-          {buildingEvidencePackage && <EvidencePackageBuilder />}
+          <RubricNavigator />
+          {/* {!buildingEvidencePackage && <RubricNavigator /> } */}
+          {/* {buildingEvidencePackage && <EvidencePackageBuilder />} */}
       </Grid>
     </Grid>
     </>

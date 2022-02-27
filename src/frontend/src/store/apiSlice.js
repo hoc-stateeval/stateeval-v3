@@ -16,6 +16,32 @@ export const apiSlice = createApi({
   keepUnusedDataFor: 0,
   endpoints: builder => ({
 
+    // evidence collections
+    getEvidenceItemsForCollection: builder.query({
+      query: (data) =>({url: `evidence-items/${data.collectionType}/${data.collectionObjectId}`, method: 'get'}),
+      transformResponse: (response) => {
+        const evidenceItemMap = response.reduce((acc,next)=> {
+          const rubricRowId = next.rubricRowId;
+          if (!acc[rubricRowId]) acc[rubricRowId] = [];
+          acc[rubricRowId].push(next);
+          return acc;
+        }, {});
+        return evidenceItemMap;
+      }
+    }),
+    getEvidencePackagesForCollection: builder.query({
+      query: (data) =>({url: `evidence-packages/${data.collectionType}/${data.collectionObjectId}`, method: 'get'}),
+      transformResponse: (response) => {
+        const evidencePackageMap = response.reduce((acc,next)=> {
+          const rubricRowId = next.rubricRowId;
+          if (!acc[rubricRowId]) acc[rubricRowId] = [];
+          acc[rubricRowId].push(next);
+          return acc;
+        }, {});
+        return evidencePackageMap;
+      },
+    }),
+
     // work area contexts
     getWorkAreaContextsForUser: builder.query({
       query: (userId) =>({url: `workarea-contexts/user/${userId}`, method: 'get'}),
@@ -144,7 +170,6 @@ export const {
   useGetEvaluationsForDistrictViewerQuery,
   useGetEvaluatorsForDistrictViewerQuery,
   useLoginUserMutation,
-  useGetEvidenceItemsQuery,
   useCreateEvidenceItemMutation,
   useGetPerceptionSurveyByIdQuery,
   useCreateEvidencePackageMutation,
@@ -152,5 +177,7 @@ export const {
   useCreatePerceptionSurveyMutation,
   useGetWorkAreaContextsForUserQuery,
   useGetEvaluationByIdQuery,
-  useGetFrameworkByIdQuery
+  useGetFrameworkByIdQuery,
+  useGetEvidenceItemsForCollectionQuery,
+  useGetEvidencePackagesForCollectionQuery
 } = apiSlice

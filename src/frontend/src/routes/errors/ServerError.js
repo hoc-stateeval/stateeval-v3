@@ -23,7 +23,8 @@ const ServerError = ({error}) => {
     details = "We apologize for the inconvenience. The error has been logged and will be investigated shortly.";
   }
   else {
-    title = "Unknown error";
+    title = "Unexpected server error";
+    details = error.message;
   }
   return (
     <>

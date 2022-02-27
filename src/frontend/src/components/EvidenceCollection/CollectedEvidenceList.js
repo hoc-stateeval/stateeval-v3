@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useErrorHandler } from 'react-error-boundary';
 
 import { 
   Box,
@@ -11,19 +13,43 @@ import {
 import { useTheme } from '@mui/material/styles';
 
 import {
+  selectActiveRubricRowId,
   selectSelectedEvidenceItems,
   setSelectedEvidenceItems,
-  selectEvidenceItemsForActiveRubricRow,
+  selectCollectionType,
+  selectCollectionObjectId
 } from "@evidence-collection-slice";
+
+import {
+  useGetEvidenceItemsForCollectionQuery
+} from "@api-slice";
 
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 const CollectedEvidenceList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const errorHandler = useErrorHandler();
+
+  const [evidenceItems, setEvidenceItems] = useState([]);
 
   const selectedEvidenceItems = useSelector(selectSelectedEvidenceItems);
-  const evidenceItems = useSelector(selectEvidenceItemsForActiveRubricRow);
+  const activeRubricRowId = useSelector(selectActiveRubricRowId);
+  const collectionType = useSelector(selectCollectionType);
+  const collectionObjectId = useSelector(selectCollectionObjectId);
+
+  const { data: evidenceItemMap, error: getEvidenceItemMapError } = 
+    useGetEvidenceItemsForCollectionQuery({
+      collectionType,
+      collectionObjectId
+    });
+  if (getEvidenceItemMapError) errorHandler(getEvidenceItemMapError);
+
+  useEffect(()=> {
+    if (!evidenceItemMap) return;
+    setEvidenceItems(evidenceItemMap[activeRubricRowId]);
+  }, [evidenceItemMap, activeRubricRowId])
+
  
   const toggleSelection = (evidenceItem) => {
     const itemState = selectedEvidenceItems.find(x=>x.evidenceItem.id===evidenceItem.id);

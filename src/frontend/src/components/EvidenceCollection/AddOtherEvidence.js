@@ -35,7 +35,7 @@ const AddOtherEvidence = () => {
       errorHandler,
     }
     toggleShowOtherEvidenceInputArea((prev)=>!prev);
-    dispatch(addOtherEvidence(data));
+   // dispatch(addOtherEvidence(data));
   }
 
   return (

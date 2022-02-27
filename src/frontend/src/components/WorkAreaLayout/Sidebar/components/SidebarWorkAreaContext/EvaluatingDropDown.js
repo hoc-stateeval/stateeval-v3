@@ -17,9 +17,9 @@ const EvaluatingDropDown = ({ evaluatees }) => {
   const workAreaContext = useSelector(selectActiveWorkAreaContext);
   const activeEvaluationId = useSelector(selectActiveEvaluationId);
 
-  const changeEvaluation = async (id) => {
-    const evaluation = evaluatees.find((x) => x.id === id);
-    dispatch(setActiveEvaluationId(evaluation.id));
+  const changeEvaluation = async (evaluationId) => {
+    const evaluatee = evaluatees.find((x) => x.evaluationId === evaluationId);
+    dispatch(setActiveEvaluationId(evaluatee.evaluationId));
   };
   return (
     <>
@@ -43,8 +43,8 @@ const EvaluatingDropDown = ({ evaluatees }) => {
               Select a {workAreaContext.evaluateeTerm}
             </MenuItem>
           )}
-          {evaluatees.map((x) => (
-            <MenuItem key={`evaluation-${x.id}`} value={x.id}>
+          {evaluatees.map((x, i) => (
+            <MenuItem key={i} value={x.evaluationId}>
               {x.displayName}
             </MenuItem>
           ))}

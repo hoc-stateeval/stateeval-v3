@@ -44,7 +44,7 @@ const userContextSlice = createSlice({
         ids: {
           ...state.ids,
           activeFrameworkId: activeWorkAreaContext.defaultFrameworkId,
-          activeEvaluationId: isEvaluateeWorkArea? activeWorkAreaContext.evaluateeEvaluationId:null
+          activeEvaluationId: isEvaluateeWorkArea? activeWorkAreaContext.evaluateeEvaluationId:'0'
         }
       };
     },
@@ -62,7 +62,7 @@ const userContextSlice = createSlice({
         ...state,
         ids: {
           ...state.ids,
-          activeEvaluationId: action.payload?action.payload.id:"0",
+          activeEvaluationId: action.payload
         }
       };
     },

@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 
 import {
+  useGetEvidenceItemsForCollectionQuery,
   useGetFrameworkByIdQuery
 } from "@api-slice";
 
@@ -19,7 +20,8 @@ import {
   setActiveRubricRowId,
   selectActiveRubricRowId,
   selectActiveFrameworkNodeId,
-  selectEvidenceItemMap,
+  selectCollectionType,
+  selectCollectionObjectId
 } from "@evidence-collection-slice";
 
 import './rubric-helper.css';
@@ -102,12 +104,22 @@ const RubricNavigator = () => {
 
   const activeFrameworkId = useSelector(selectActiveFrameworkId);
   const activeFrameworkNodeId = useSelector(selectActiveFrameworkNodeId);
+  const collectionType = useSelector(selectCollectionType);
+  const collectionObjectId = useSelector(selectCollectionObjectId);
 
   const { data: activeFramework, error: getFrameworkError } = 
     useGetFrameworkByIdQuery(activeFrameworkId);
   if (getFrameworkError) errorHandler(getFrameworkError);
 
-  const evidenceItemMap = useSelector(selectEvidenceItemMap);
+  const { data: evidenceItemMap, error: getEvidenceItemMapError } = 
+    useGetEvidenceItemsForCollectionQuery({
+      collectionType,
+      collectionObjectId
+    });
+  if (getEvidenceItemMapError) errorHandler(getEvidenceItemMapError);
+
+  if (!evidenceItemMap) return (<></>);
+  
   return (
     <>
       <Box className="rubric-helper">

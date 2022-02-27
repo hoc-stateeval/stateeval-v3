@@ -1,4 +1,7 @@
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
+import { useErrorHandler } from 'react-error-boundary';
+
 import { 
   Paper,
   Stack,
@@ -8,30 +11,86 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography
 } from "@mui/material";
 
+import {
+  useGetFrameworkByIdQuery,
+  useGetEvidencePackagesForCollectionQuery
+} from "@api-slice";
+
+import {
+  selectActiveFrameworkId
+} from "@user-context-slice";
+
 import { 
-  selectActiveRubricRow,
+  selectActiveFrameworkNodeId,
+  selectActiveRubricRowId,
+  selectCollectionType,
+  selectCollectionObjectId,
   selectBuildingEvidencePackage,
   setEvidencePackageRubricAlignment,
-  selectEvidencePackagesForActiveRubricRow,
   selectEvidencePackageRubricAlignment
 } from "@evidence-collection-slice";
 
 import { 
   PerformanceLevels,
-  mapPerformanceLevelToRubricDescriptor
+  mapPerformanceLevelToRubricDescriptor,
+  getRubricRow
  } from '@lib/eval-helpers';
+
 import { createHighlightedDescriptorHtml, getSelectedHtml } from '@lib/utils';
 
 import { PageSectionHeader } from "@components";
 
-const RubricDescriptor = ({rubricRow, performanceLevel}) => {
+const RubricDescriptor = ({performanceLevel}) => {
   const dispatch = useDispatch();
+  const errorHandler = useErrorHandler();
 
+  const [descriptorWithHighlights, setDescriptorWithHighlights] = useState(null);
+
+  const activeFrameworkId = useSelector(selectActiveFrameworkId);
+  const activeFrameworkNodeId = useSelector(selectActiveFrameworkNodeId);
+  const activeRubricRowId = useSelector(selectActiveRubricRowId);
+  const collectionType = useSelector(selectCollectionType);
+  const collectionObjectId = useSelector(selectCollectionObjectId);
   const buildingEvidencePackage = useSelector(selectBuildingEvidencePackage);
-  const evidencePackages = useSelector(selectEvidencePackagesForActiveRubricRow);
   const rubricAlignment = useSelector(selectEvidencePackageRubricAlignment);
+
+  const { data: activeFramework, error: getFrameworkError } = 
+    useGetFrameworkByIdQuery(activeFrameworkId);
+  if (getFrameworkError) errorHandler(getFrameworkError);
+
+  const { data: evidencePackageMap, error: getEvidencePackageMapError } = 
+    useGetEvidencePackagesForCollectionQuery({
+      collectionType,
+      collectionObjectId
+    });
+  if (getEvidencePackageMapError) errorHandler(getEvidencePackageMapError);
+
+  useEffect(()=> {
+    if (!activeFramework || !evidencePackageMap) return;
+
+    const activeRubricRow = getRubricRow(activeFramework, activeFrameworkNodeId, activeRubricRowId);
+    const descriptor = mapPerformanceLevelToRubricDescriptor(activeRubricRow, performanceLevel.value);
+    let evidencePackages = evidencePackageMap[activeRubricRowId];
+    if (!evidencePackages) evidencePackages = [];
+
+    let selections = evidencePackages.map(x=>{
+      return {
+        text: x.rubricStatement,
+        performanceLevel: x.performanceLevel,
+        code: 1,
+      }
+    }).filter(x=>x.performanceLevel === performanceLevel.value);
+    
+    if (buildingEvidencePackage && rubricAlignment && rubricAlignment.performanceLevel === performanceLevel.value) {
+      selections = [...selections, {text: rubricAlignment.rubricStatement, performanceLevel: performanceLevel.value, code: 1}]
+    }
+  
+    setDescriptorWithHighlights(createHighlightedDescriptorHtml(descriptor, selections));
+
+  }, [activeFramework, evidencePackageMap, rubricAlignment, activeFrameworkNodeId, activeRubricRowId, performanceLevel, buildingEvidencePackage])
 
   const onSelectEvidencePackageText = (performanceLevel) => {
     if (buildingEvidencePackage) {
@@ -39,20 +98,6 @@ const RubricDescriptor = ({rubricRow, performanceLevel}) => {
       dispatch(setEvidencePackageRubricAlignment({rubricStatement: html, performanceLevel: performanceLevel.value}));
     }
   }
-
-  const descriptor =  mapPerformanceLevelToRubricDescriptor(rubricRow, performanceLevel.value);
-  let selections = evidencePackages.map(x=>{
-    return {
-      text: x.rubricStatement,
-      performanceLevel: x.performanceLevel,
-      code: 1,
-    }
-  }).filter(x=>x.performanceLevel === performanceLevel.value)
-  if (buildingEvidencePackage && rubricAlignment && rubricAlignment.performanceLevel === performanceLevel.value) {
-    selections = [...selections, {text: rubricAlignment.rubricStatement, performanceLevel: performanceLevel.value, code: 1}]
-  }
-
-  const descriptorWithHighlights = createHighlightedDescriptorHtml(descriptor, selections);
 
   return (
     <TableCell className="descriptor"
@@ -63,8 +108,6 @@ const RubricDescriptor = ({rubricRow, performanceLevel}) => {
 }
 
 const RubricAlignmentSection = () => {
-
-  const activeRubricRow = useSelector(selectActiveRubricRow);
 
   return (
     <>
@@ -82,7 +125,7 @@ const RubricAlignmentSection = () => {
             <TableBody>
               <TableRow style={{verticalAlign:'top'}}>
                 {PerformanceLevels.map((next, i)=>(
-                  <RubricDescriptor key={i} rubricRow={activeRubricRow} performanceLevel={next} />
+                  <RubricDescriptor key={i} performanceLevel={next} />
                 ))
                 }
              </TableRow>

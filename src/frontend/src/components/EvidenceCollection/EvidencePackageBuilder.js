@@ -16,7 +16,7 @@ import {
   selectSelectedEvidenceItems,
   setSelectedEvidenceItems,
   selectEvidencePackageRubricAlignment,
-  createEvidencePackage,
+ // createEvidencePackage,
 } from "@evidence-collection-slice";
 
 import './evidence-package-builder.css';
@@ -40,7 +40,7 @@ const EvidencePackageBuilder = () => {
       }, [])
     }
 
-    await dispatch(createEvidencePackage(data));
+  //  await dispatch(createEvidencePackage(data));
 
     const newState = selectedEvidenceItems
           .map(x=>({...x, selected: false}));

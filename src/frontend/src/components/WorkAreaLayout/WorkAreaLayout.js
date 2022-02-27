@@ -57,7 +57,7 @@ const WorkAreaLayout = (props) => {
             <Container sx={{ display: "flex", alignItems: "center" }}>
               <Typography variant="h2">{pageTitle}</Typography>
               <Box sx={{ flexGrow: 1 }} />
-              {activeEvaluationId && <ActiveEvaluationProfile />}
+              {activeEvaluationId!=="0" && <ActiveEvaluationProfile />}
             </Container>
           </Box>
 

@@ -47,6 +47,9 @@ const executeRequest = async ({url, method, data}) => {
     return {data: result.data.data};
   }
   catch (axiosError) {
+    if (!axiosError.response) {
+      throw new Error(`api-error:unknown:${axiosError.message}`);
+    }
     if (axiosError.response.status === 401) {
       try {
         const { refreshToken: token } = getTokens();

@@ -10,14 +10,14 @@ import {
 } from "@mui/material";
 
 import {
-  selectEvidencePackagesForActiveRubricRow,
-  selectEvidenceItemsForActiveRubricRow,
+  //selectEvidencePackagesForActiveRubricRow,
+  //selectEvidenceItemsForActiveRubricRow,
 } from "@evidence-collection-slice";
 
 const PackagedEvidenceList = () => {
 
-  const evidencePackages = useSelector(selectEvidencePackagesForActiveRubricRow);
-  const evidenceItems = useSelector(selectEvidenceItemsForActiveRubricRow);
+  const evidencePackages = []; // useSelector(selectEvidencePackagesForActiveRubricRow);
+  const evidenceItems = []; // useSelector(selectEvidenceItemsForActiveRubricRow);
 
   return (
     <>
