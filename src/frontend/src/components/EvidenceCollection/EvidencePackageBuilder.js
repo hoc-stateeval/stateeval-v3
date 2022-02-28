@@ -13,11 +13,22 @@ import {
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 import {
+  selectActiveEvaluationId,
+  selectCurrentUser
+} from "@user-context-slice";
+
+import {
+  selectActiveRubricRowId,
+  selectCollectionType,
+  selectCollectionObjectId,
   selectSelectedEvidenceItems,
   setSelectedEvidenceItems,
   selectEvidencePackageRubricAlignment,
- // createEvidencePackage,
 } from "@evidence-collection-slice";
+
+import {
+  useCreateEvidencePackageMutation
+} from "@api-slice";
 
 import './evidence-package-builder.css';
 
@@ -25,22 +36,34 @@ const EvidencePackageBuilder = () => {
   const dispatch = useDispatch();
   const errorHandler = useErrorHandler();
 
+  const currentUser = useSelector(selectCurrentUser);
+  const activeEvaluationId = useSelector(selectActiveEvaluationId);
+  const activeRubricRowId = useSelector(selectActiveRubricRowId);
+  const collectionType = useSelector(selectCollectionType);
+  const collectionObjectId = useSelector(selectCollectionObjectId);
+
   const rubricAlignment = useSelector(selectEvidencePackageRubricAlignment);
   const selectedEvidenceItems = useSelector(selectSelectedEvidenceItems);
 
+  const [createEvidencePackage, {error: createEvidencePackageError}] = useCreateEvidencePackageMutation();
+  if (createEvidencePackageError) errorHandler(createEvidencePackageError);
+
   const onClickCreateEvidencePackage = async () => {
 
-    let data = {
-      errorHandler,
+    await createEvidencePackage({
+      collectionType: collectionType,
+      collectionObjectId: collectionObjectId,
+      evaluationId: activeEvaluationId,
+      createdByUserId: currentUser.id,
+      rubricRowId: activeRubricRowId,
+
       rubricStatement: rubricAlignment.rubricStatement,
       performanceLevel: rubricAlignment.performanceLevel,
       evidenceItemIds: selectedEvidenceItems.reduce((acc, next)=> {
         acc.push(next.evidenceItem.id);
         return acc;
       }, [])
-    }
-
-  //  await dispatch(createEvidencePackage(data));
+    });
 
     const newState = selectedEvidenceItems
           .map(x=>({...x, selected: false}));

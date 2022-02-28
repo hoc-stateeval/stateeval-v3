@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 
 import { 
-  useAddOtherEvidenceMutation 
+  useCreateOtherEvidenceItemMutation 
 } from "@api-slice";
 
 import {
@@ -21,7 +21,6 @@ import {
 
 import {
   selectActiveRubricRowId,
-  selectActiveFrameworkNodeId,
   selectCollectionType,
   selectCollectionObjectId
 } from "@evidence-collection-slice";
@@ -47,7 +46,7 @@ const AddOtherEvidence = () => {
   const [evidenceText, setEvidenceText] = useState('');
   const [showOtherEvidenceInputArea, toggleShowOtherEvidenceInputArea] = useState(false);
 
-  const [addOtherEvidence, {error: addOtherEvidenceError}] = useAddOtherEvidenceMutation();
+  const [addOtherEvidence, {error: addOtherEvidenceError}] = useCreateOtherEvidenceItemMutation();
   if (addOtherEvidenceError) errorHandler(addOtherEvidenceError);
  
   const onClickAddOtherEvidence = () => {

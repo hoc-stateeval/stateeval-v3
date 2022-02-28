@@ -17,7 +17,7 @@ import EvidencePackageBuilder from "./EvidencePackageBuilder";
 const EvidenceCollection = () => {
   
   const ecViewMode = useSelector(selectEvidenceCollectionViewMode);
-  // const buildingEvidencePackage = useSelector(selectBuildingEvidencePackage);
+  const buildingEvidencePackage = useSelector(selectBuildingEvidencePackage);
  
   return (
     <>
@@ -27,9 +27,8 @@ const EvidenceCollection = () => {
         {ecViewMode === 'node' && <FrameworkNodeView />}
       </Grid>
       <Grid item xs={4}>
-          <RubricNavigator />
-          {/* {!buildingEvidencePackage && <RubricNavigator /> } */}
-          {/* {buildingEvidencePackage && <EvidencePackageBuilder />} */}
+          {!buildingEvidencePackage && <RubricNavigator /> }
+          {buildingEvidencePackage && <EvidencePackageBuilder />}
       </Grid>
     </Grid>
     </>

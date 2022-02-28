@@ -1,56 +1,10 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { EvidenceCollectionType } from '@lib/enums';
 
-// const createEvidenceItemAPI = async (evidenceItem) => {
-//   const url = `evidence-items/${evidenceItem.collectionType}/${evidenceItem.collectionObjectId}`;
-//   const response = await post(url, evidenceItem);
-//   const data = await response.data;
-//   return data;
-// }
-
-// const createEvidencePackageAPI = async (evidencePackage) => {
-//   const url = `evidence-packages/${evidencePackage.evaluationId}`;
-//   const response = await post(url, evidencePackage);
-//   const data = await response.data;
-//   return data;
-// }
-
-// export const createEvidencePackage = createAsyncThunk(
-//   'evidenceCollection/createEvidencePackage',
-//   async (data, {dispatch, getState}) => {
-
-//     const { evidenceCollection : ecState, userContext: ucState } = getState().stateEval;
-
-//     const isPublic = ecState.collectionType === EvidenceCollectionType.YEAR_TO_DATE;
-
-//     try {
-//       const evidencePackage = await createEvidencePackageAPI({
-//         collectionType: ecState.createdEvidenceCollectionType,
-//         collectionObjectId: ecState.collectionObjectId,
-//         evaluationId: ucState.ids.activeEvaluationId,
-//         createdByUserId: ucState.currentUser.id,
-//         rubricRowId: ecState.ids.activeRubricRowId,
-//         rubricStatement: data.rubricStatement,
-//         performanceLevel: data.performanceLevel,
-//         evidenceItemIds: data.evidenceItemIds,
-//         public: isPublic,
-//       });
-
-//       return evidencePackage;
-//     } catch (err) {
-//       data.errorHandler(err);
-//       throw err;
-//     }
-//   }
-// );
-
 const evidenceCollectionSlice = createSlice({
   name: 'evidenceCollection',
   initialState: {
     viewMode: 'node',
-    evidenceItemMap: {},
-    evidencePackageMap: {},
-    createdEvidenceCollectionType: null,
     collectionType: EvidenceCollectionType.UNDEFINED,
     collectionObjectId: null,
     evidencePackageRubricAlignment: null,

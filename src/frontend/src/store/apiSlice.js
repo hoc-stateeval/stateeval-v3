@@ -23,7 +23,7 @@ export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: axiosBaseQuery({ baseUrl: baseUrl }),
   keepUnusedDataFor: 0,
-  tagTypes: ['EvidenceItem'],
+  tagTypes: ['EvidenceItem', 'EvidencePackage'],
   endpoints: builder => ({
 
     // evidence collections
@@ -39,10 +39,15 @@ export const apiSlice = createApi({
       transformResponse: (response) => {
         return convertToRubricRowIdMap(response);
       },
+      providesTags: ['EvidencePackage'],
     }),
-    addOtherEvidence: builder.mutation({
+    createOtherEvidenceItem: builder.mutation({
       query: (data) => ({ url: `evidence-items/${data.evaluationId}/${data.collectionType}/${data.collectionObjectId}`, method: 'post', data: data }),
       invalidatesTags: ['EvidenceItem'],
+    }),
+    createEvidencePackage: builder.mutation({
+      query: (data) => ({ url: `evidence-packages/${data.evaluationId}/${data.collectionType}/${data.collectionObjectId}`, method: 'post', data: data }),
+      invalidatesTags: ['EvidencePackage'],
     }),
 
     // work area contexts
@@ -183,5 +188,5 @@ export const {
   useGetFrameworkByIdQuery,
   useGetEvidenceItemsForCollectionQuery,
   useGetEvidencePackagesForCollectionQuery,
-  useAddOtherEvidenceMutation
+  useCreateOtherEvidenceItemMutation,
 } = apiSlice

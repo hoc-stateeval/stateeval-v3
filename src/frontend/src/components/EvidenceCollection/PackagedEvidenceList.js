@@ -1,5 +1,6 @@
-
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useErrorHandler } from 'react-error-boundary';
 
 import "./evidence-package.css";
 
@@ -10,14 +11,60 @@ import {
 } from "@mui/material";
 
 import {
-  //selectEvidencePackagesForActiveRubricRow,
-  //selectEvidenceItemsForActiveRubricRow,
+  selectActiveEvaluationId
+} from "@user-context-slice";
+
+import {
+  selectActiveRubricRowId,
+  selectCollectionType,
+  selectCollectionObjectId
 } from "@evidence-collection-slice";
+
+import {
+  useGetEvidenceItemsForCollectionQuery,
+  useGetEvidencePackagesForCollectionQuery
+} from "@api-slice";
 
 const PackagedEvidenceList = () => {
 
-  const evidencePackages = []; // useSelector(selectEvidencePackagesForActiveRubricRow);
-  const evidenceItems = []; // useSelector(selectEvidenceItemsForActiveRubricRow);
+  const errorHandler = useErrorHandler();
+
+  const [evidencePackages, setEvidencePackages] = useState([]);
+  const [evidenceItems, setEvidenceItems] = useState([]);
+
+  const activeEvaluationId = useSelector(selectActiveEvaluationId);
+  const activeRubricRowId = useSelector(selectActiveRubricRowId);
+  const collectionType = useSelector(selectCollectionType);
+  const collectionObjectId = useSelector(selectCollectionObjectId);
+
+  const { data: evidenceItemMap, error: getEvidenceItemMapError } = 
+    useGetEvidenceItemsForCollectionQuery({
+      collectionType,
+      collectionObjectId,
+      evaluationId: activeEvaluationId
+    });
+  if (getEvidenceItemMapError) errorHandler(getEvidenceItemMapError);
+
+  const { data: evidencePackageMap, error: getEvidencePackageMapError } = 
+    useGetEvidencePackagesForCollectionQuery({
+      collectionType,
+      collectionObjectId,
+      evaluationId: activeEvaluationId
+    });
+  if (getEvidencePackageMapError) errorHandler(getEvidencePackageMapError);
+
+  useEffect(()=> {
+    if (!evidencePackageMap || !evidenceItemMap) return;
+
+    let evidenceItems = evidenceItemMap[activeRubricRowId];
+    if (!evidenceItems) evidenceItems = [];
+    setEvidenceItems(evidenceItems);
+
+    let evidencePackages = evidencePackageMap[activeRubricRowId];
+    if (!evidencePackages) evidencePackages = [];
+    setEvidencePackages(evidencePackages);
+
+  }, [evidencePackageMap, evidenceItemMap, activeRubricRowId])
 
   return (
     <>

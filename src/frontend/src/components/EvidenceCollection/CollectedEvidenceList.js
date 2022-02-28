@@ -53,7 +53,9 @@ const CollectedEvidenceList = () => {
 
   useEffect(()=> {
     if (!evidenceItemMap) return;
-    setEvidenceItems(evidenceItemMap[activeRubricRowId]);
+    let evidenceItems = evidenceItemMap[activeRubricRowId];
+    if (!evidenceItems) evidenceItems = [];
+    setEvidenceItems(evidenceItems);
   }, [evidenceItemMap, activeRubricRowId])
 
  
