@@ -21,12 +21,13 @@ import {
   selectActiveRubricRowId,
   selectCollectionType,
   selectCollectionObjectId,
-  selectSelectedEvidenceItems,
-  setSelectedEvidenceItems,
+  selectSelectedEvidenceItemIds,
+  setSelectedEvidenceItemIds,
   selectEvidencePackageRubricAlignment,
 } from "@evidence-collection-slice";
 
 import {
+  useGetEvidenceItemsForCollectionQuery,
   useCreateEvidencePackageMutation
 } from "@api-slice";
 
@@ -43,13 +44,20 @@ const EvidencePackageBuilder = () => {
   const collectionObjectId = useSelector(selectCollectionObjectId);
 
   const rubricAlignment = useSelector(selectEvidencePackageRubricAlignment);
-  const selectedEvidenceItems = useSelector(selectSelectedEvidenceItems);
+  const selectedEvidenceItemIds = useSelector(selectSelectedEvidenceItemIds);
+
+  const { data: evidenceItemMap, error: getEvidenceItemMapError } = 
+    useGetEvidenceItemsForCollectionQuery({
+      collectionType,
+      collectionObjectId,
+      evaluationId: activeEvaluationId
+    });
+  if (getEvidenceItemMapError) errorHandler(getEvidenceItemMapError);
 
   const [createEvidencePackage, {error: createEvidencePackageError}] = useCreateEvidencePackageMutation();
   if (createEvidencePackageError) errorHandler(createEvidencePackageError);
 
   const onClickCreateEvidencePackage = async () => {
-
     await createEvidencePackage({
       collectionType: collectionType,
       collectionObjectId: collectionObjectId,
@@ -59,21 +67,13 @@ const EvidencePackageBuilder = () => {
 
       rubricStatement: rubricAlignment.rubricStatement,
       performanceLevel: rubricAlignment.performanceLevel,
-      evidenceItemIds: selectedEvidenceItems.reduce((acc, next)=> {
-        acc.push(next.evidenceItem.id);
-        return acc;
-      }, [])
+      evidenceItemIds: selectedEvidenceItemIds
     });
-
-    const newState = selectedEvidenceItems
-          .map(x=>({...x, selected: false}));
-    dispatch(setSelectedEvidenceItems(newState));
+    dispatch(setSelectedEvidenceItemIds([]));
   }
 
-  const deSelectEvidenceItem = (selectedEvidenceItem) => {
-    const newState = selectedEvidenceItems
-          .map(x=>(x.evidenceItem.id===selectedEvidenceItem.evidenceItem.id?{...x, selected: false} : x));
-    dispatch(setSelectedEvidenceItems(newState));
+  const deSelectEvidenceItem = (evidenceItemId) => {
+    dispatch(setSelectedEvidenceItemIds(selectedEvidenceItemIds.filter(x=>x===evidenceItemId)));
   };
 
   return (
@@ -83,11 +83,12 @@ const EvidencePackageBuilder = () => {
         <Divider/>
         <div className="subhead"><strong>Evidence demonstrating the claim</strong></div>
         <ul className="selected-evidence">
-          {selectedEvidenceItems.filter(x=>x.selected).map((next, i)=> {
+          {evidenceItemMap && selectedEvidenceItemIds.map((next, i)=> {
+            const evidenceItem = evidenceItemMap[activeRubricRowId].find(x=>x.id===next);
             return (
               <li key={i} className="item-row">
                 <div className="index">{i+1}</div>
-                <div>{next.evidenceItem.evidenceTypeDisplayName}</div>
+                <div>{evidenceItem.evidenceTypeDisplayName}</div>
                 <Tooltip title="Delete">
                   <IconButton onClick={()=>{ deSelectEvidenceItem(next)}}>
                     <DeleteRoundedIcon fontSize="small" sx={{}} />

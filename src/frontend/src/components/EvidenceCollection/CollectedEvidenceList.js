@@ -18,8 +18,8 @@ import {
 
 import {
   selectActiveRubricRowId,
-  selectSelectedEvidenceItems,
-  setSelectedEvidenceItems,
+  selectSelectedEvidenceItemIds,
+  setSelectedEvidenceItemIds,
   selectCollectionType,
   selectCollectionObjectId
 } from "@evidence-collection-slice";
@@ -38,7 +38,7 @@ const CollectedEvidenceList = () => {
   const [evidenceItems, setEvidenceItems] = useState([]);
 
   const activeEvaluationId = useSelector(selectActiveEvaluationId);
-  const selectedEvidenceItems = useSelector(selectSelectedEvidenceItems);
+  const selectedEvidenceItemIds = useSelector(selectSelectedEvidenceItemIds);
   const activeRubricRowId = useSelector(selectActiveRubricRowId);
   const collectionType = useSelector(selectCollectionType);
   const collectionObjectId = useSelector(selectCollectionObjectId);
@@ -58,19 +58,18 @@ const CollectedEvidenceList = () => {
     setEvidenceItems(evidenceItems);
   }, [evidenceItemMap, activeRubricRowId])
 
- 
-  const toggleSelection = (evidenceItem) => {
-    const itemState = selectedEvidenceItems.find(x=>x.evidenceItem.id===evidenceItem.id);
-    const selected = itemState.selected;
-    const newItems = selectedEvidenceItems.map(x=>{
-      if (x.evidenceItem.id===evidenceItem.id) return {evidenceItem: x.evidenceItem, selected: !selected}
-      else return x;
-    });
-    dispatch(setSelectedEvidenceItems(newItems));
+  const evidenceItemIsSelected = (evidenceItem) => {
+    return selectedEvidenceItemIds.find(x=>x===evidenceItem.id);
   }
 
-  const evidenceItemIsSelected = (evidenceItem) => {
-    return selectedEvidenceItems.find(x=>x.evidenceItem.id===evidenceItem.id)?.selected;
+  const toggleSelection = (evidenceItem) => {
+    const selected = evidenceItemIsSelected(evidenceItem);
+    if (selected) {
+      dispatch(setSelectedEvidenceItemIds(selectedEvidenceItemIds.filter(x=>x!==evidenceItem.id)));
+    }
+    else {
+      dispatch(setSelectedEvidenceItemIds([...selectedEvidenceItemIds, evidenceItem.id]));
+    }
   }
 
   const getEvidenceStyles = (evidenceItem) => {
@@ -82,12 +81,12 @@ const CollectedEvidenceList = () => {
   }
 
   const getSelectedEvidenceItemPosition = (evidenceItem) => {
-    return selectedEvidenceItems.findIndex((y)=>y.evidenceItem.id===evidenceItem.id) + 1;
+    return selectedEvidenceItemIds.findIndex(x=>x===evidenceItem.id) + 1;
   }
 
-  const deSelectEvidence = (evidenceItem) => {
-    dispatch(setSelectedEvidenceItems(selectedEvidenceItems
-      .map(x=>(x.evidenceItem.id===evidenceItem.id?{...x, selected: false} : x))))
+  const deleteEvidence = (evidenceItem) => {
+    // TODO
+    // dispatch(setSelectedEvidenceItemIds(selectedEvidenceItemIds.filter(x=>x===evidenceItem.id)));
   };
 
   if (!evidenceItems) {
@@ -119,7 +118,7 @@ const CollectedEvidenceList = () => {
           (<>{getSelectedEvidenceItemPosition(x)}</>) :
           (<Box>
             <Tooltip title="Delete">
-              <IconButton onClick={()=>{ deSelectEvidence(x)}} >
+              <IconButton onClick={()=>{ deleteEvidence(x)}} >
                 <DeleteRoundedIcon fontSize="small" sx={{}} />
               </IconButton>
             </Tooltip>

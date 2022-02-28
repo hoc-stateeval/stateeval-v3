@@ -13,7 +13,7 @@ const evidenceCollectionSlice = createSlice({
       activeRubricRowId: null,
     },
     buildingEvidencePackage: false,
-    selectedEvidenceItems: []
+    selectedEvidenceItemIds: []
   },
   reducers: {
     setActiveCollection: (state, action) => {
@@ -24,7 +24,7 @@ const evidenceCollectionSlice = createSlice({
         collectionObjectId: action.payload.collectionObjectId,
         evidencePackageRubricAlignment: null,
         buildingEvidencePackage: false,
-        selectedEvidenceItems: [],
+        selectedEvidenceItemIds: [],
         ids: {
           ...state.ids,
           activeFrameworkNodeId: action.payload.activeFrameworkNodeId,
@@ -32,16 +32,11 @@ const evidenceCollectionSlice = createSlice({
         }
       }
     },
-    setSelectedEvidenceItems: (state, action) => {
-      const selectedEvidence = action.payload.reduce((selected, next)=> {
-        if (next.selected) selected = true;
-        return selected;
-      }, false);
-
+    setSelectedEvidenceItemIds: (state, action) => {
       return {
         ...state,
-        buildingEvidencePackage: selectedEvidence,
-        selectedEvidenceItems: action.payload
+        buildingEvidencePackage: action.payload.length>0,
+        selectedEvidenceItemIds: action.payload
       };
     },
     setEvidencePackageRubricAlignment: (state, action) => {
@@ -52,19 +47,12 @@ const evidenceCollectionSlice = createSlice({
     },
     setActiveRubricRowId: (state, action) => {
       const rubricRowId = action.payload;
-      let selectedEvidenceItems = [];
-      const evidenceItems = state.evidenceItemMap[rubricRowId];
-      if (evidenceItems) {
-        selectedEvidenceItems = evidenceItems.map(x=>{
-          return {evidenceItem: x, selected: false}
-        });
-      }
       return {
         ...state,
         viewMode: 'row',
         evidencePackageRubricAlignment: null,
         buildingEvidencePackage: false,
-        selectedEvidenceItems: selectedEvidenceItems,
+        selectedEvidenceItemIds: [],
         ids: {
           ...state.ids,
           activeRubricRowId: rubricRowId,
@@ -77,7 +65,7 @@ const evidenceCollectionSlice = createSlice({
         viewMode: 'node',
         evidencePackageRubricAlignment: null,
         buildingEvidencePackage: false,
-        selectedEvidenceItems: [],
+        selectedEvidenceItemIds: [],
         ids: {
           ...state.ids,
           activeFrameworkNodeId: action.payload,
@@ -133,12 +121,12 @@ export const selectActiveRubricRowId = createSelector(
   return id;
 });
 
-export const selectSelectedEvidenceItems = createSelector(
+export const selectSelectedEvidenceItemIds = createSelector(
   (state) => {
-    return state.stateEval.evidenceCollection.selectedEvidenceItems;
+    return state.stateEval.evidenceCollection.selectedEvidenceItemIds;
   },
-  (selectedEvidenceItems) => {
-    return selectedEvidenceItems;
+  (selectedEvidenceItemIds) => {
+    return selectedEvidenceItemIds;
   }
 );
 
@@ -160,7 +148,7 @@ export const selectCollectionObjectId = createSelector(
 
 export const { 
   setActiveCollection,
-  setSelectedEvidenceItems,
+  setSelectedEvidenceItemIds,
   setEvidencePackageRubricAlignment,
   setActiveFrameworkNodeId,
   setActiveRubricRowId,
