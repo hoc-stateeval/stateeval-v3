@@ -20,6 +20,7 @@ import {
 } from "@api-slice";
 
 import {
+  selectActiveEvaluationId,
   selectActiveFrameworkId
 } from "@user-context-slice";
 
@@ -49,6 +50,7 @@ const RubricDescriptor = ({performanceLevel}) => {
 
   const [descriptorWithHighlights, setDescriptorWithHighlights] = useState(null);
 
+  const activeEvaluationId = useSelector(selectActiveEvaluationId);
   const activeFrameworkId = useSelector(selectActiveFrameworkId);
   const activeFrameworkNodeId = useSelector(selectActiveFrameworkNodeId);
   const activeRubricRowId = useSelector(selectActiveRubricRowId);
@@ -64,7 +66,8 @@ const RubricDescriptor = ({performanceLevel}) => {
   const { data: evidencePackageMap, error: getEvidencePackageMapError } = 
     useGetEvidencePackagesForCollectionQuery({
       collectionType,
-      collectionObjectId
+      collectionObjectId,
+      evaluationId: activeEvaluationId
     });
   if (getEvidencePackageMapError) errorHandler(getEvidencePackageMapError);
 

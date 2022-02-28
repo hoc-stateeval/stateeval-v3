@@ -12,6 +12,7 @@ import {
 } from "@api-slice";
 
 import {
+  selectActiveEvaluationId,
   selectActiveFrameworkId,
 } from "@user-context-slice";
 
@@ -102,6 +103,7 @@ const RubricNavigatorFrameworkNode = ({frameworkNode, evidenceItemMap, expanded}
 const RubricNavigator = () => {
   const errorHandler = useErrorHandler();
 
+  const activeEvaluationId = useSelector(selectActiveEvaluationId);
   const activeFrameworkId = useSelector(selectActiveFrameworkId);
   const activeFrameworkNodeId = useSelector(selectActiveFrameworkNodeId);
   const collectionType = useSelector(selectCollectionType);
@@ -114,7 +116,8 @@ const RubricNavigator = () => {
   const { data: evidenceItemMap, error: getEvidenceItemMapError } = 
     useGetEvidenceItemsForCollectionQuery({
       collectionType,
-      collectionObjectId
+      collectionObjectId,
+      evaluationId: activeEvaluationId
     });
   if (getEvidenceItemMapError) errorHandler(getEvidenceItemMapError);
 

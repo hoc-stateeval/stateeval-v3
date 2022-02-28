@@ -10,36 +10,39 @@ const axiosBaseQuery =
 
 const baseUrl = `${config.API_URL}/`;
 
+const convertToRubricRowIdMap = (response) => {
+  const map = response.reduce((acc,next)=> {
+    const rubricRowId = next.rubricRowId;
+    if (!acc[rubricRowId]) acc[rubricRowId] = [];
+    acc[rubricRowId].push(next);
+    return acc;
+  }, {});
+  return map;
+}
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: axiosBaseQuery({ baseUrl: baseUrl }),
   keepUnusedDataFor: 0,
+  tagTypes: ['EvidenceItem'],
   endpoints: builder => ({
 
     // evidence collections
     getEvidenceItemsForCollection: builder.query({
-      query: (data) =>({url: `evidence-items/${data.collectionType}/${data.collectionObjectId}`, method: 'get'}),
+    query: (data) =>({url: `evidence-items/${data.evaluationId}/${data.collectionType}/${data.collectionObjectId}`, method: 'get'}),
       transformResponse: (response) => {
-        const evidenceItemMap = response.reduce((acc,next)=> {
-          const rubricRowId = next.rubricRowId;
-          if (!acc[rubricRowId]) acc[rubricRowId] = [];
-          acc[rubricRowId].push(next);
-          return acc;
-        }, {});
-        return evidenceItemMap;
-      }
+        return convertToRubricRowIdMap(response);
+      },
+      providesTags: ['EvidenceItem'],
     }),
     getEvidencePackagesForCollection: builder.query({
-      query: (data) =>({url: `evidence-packages/${data.collectionType}/${data.collectionObjectId}`, method: 'get'}),
+      query: (data) =>({url: `evidence-packages/${data.evaluationId}/${data.collectionType}/${data.collectionObjectId}`, method: 'get'}),
       transformResponse: (response) => {
-        const evidencePackageMap = response.reduce((acc,next)=> {
-          const rubricRowId = next.rubricRowId;
-          if (!acc[rubricRowId]) acc[rubricRowId] = [];
-          acc[rubricRowId].push(next);
-          return acc;
-        }, {});
-        return evidencePackageMap;
+        return convertToRubricRowIdMap(response);
       },
+    }),
+    addOtherEvidence: builder.mutation({
+      query: (data) => ({ url: `evidence-items/${data.evaluationId}/${data.collectionType}/${data.collectionObjectId}`, method: 'post', data: data }),
+      invalidatesTags: ['EvidenceItem'],
     }),
 
     // work area contexts
@@ -179,5 +182,6 @@ export const {
   useGetEvaluationByIdQuery,
   useGetFrameworkByIdQuery,
   useGetEvidenceItemsForCollectionQuery,
-  useGetEvidencePackagesForCollectionQuery
+  useGetEvidencePackagesForCollectionQuery,
+  useAddOtherEvidenceMutation
 } = apiSlice

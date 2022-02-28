@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useErrorHandler } from "react-error-boundary";
 import {
   Box,
   Button,
@@ -39,11 +40,15 @@ const getDteBuildingRolesInSchools = (user, districtCode) => {
 };
 
 const DteSchoolConfigModal = ({ districtCode, user, setDlgOpen, dlgOpen }) => {
+  const errorHandler = useErrorHandler();
+
   const [buildingRoles, setBuildingRoles] = useState(
     getDteBuildingRolesInSchools(user, districtCode)
   );
   const { data: schools } = useGetSchoolsInDistrictQuery(districtCode);
-  const [updateRoles] = useUpdateDteRoleInSchoolsMutation();
+  const [updateRoles, {error: updateRolesError}] = 
+    useUpdateDteRoleInSchoolsMutation();
+  if (updateRolesError) errorHandler(updateRolesError);
 
   const handleClickDlgCancel = () => {
     setDlgOpen(false);

@@ -13,6 +13,10 @@ import {
 import { useTheme } from '@mui/material/styles';
 
 import {
+  selectActiveEvaluationId
+} from "@user-context-slice";
+
+import {
   selectActiveRubricRowId,
   selectSelectedEvidenceItems,
   setSelectedEvidenceItems,
@@ -33,6 +37,7 @@ const CollectedEvidenceList = () => {
 
   const [evidenceItems, setEvidenceItems] = useState([]);
 
+  const activeEvaluationId = useSelector(selectActiveEvaluationId);
   const selectedEvidenceItems = useSelector(selectSelectedEvidenceItems);
   const activeRubricRowId = useSelector(selectActiveRubricRowId);
   const collectionType = useSelector(selectCollectionType);
@@ -41,7 +46,8 @@ const CollectedEvidenceList = () => {
   const { data: evidenceItemMap, error: getEvidenceItemMapError } = 
     useGetEvidenceItemsForCollectionQuery({
       collectionType,
-      collectionObjectId
+      collectionObjectId,
+      evaluationId: activeEvaluationId
     });
   if (getEvidenceItemMapError) errorHandler(getEvidenceItemMapError);
 

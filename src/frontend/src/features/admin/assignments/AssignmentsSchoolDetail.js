@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useErrorHandler } from "react-error-boundary";
 import { styled } from "@mui/material/styles";
 import {
   Checkbox,
@@ -45,6 +46,7 @@ const AssignmentsSchoolDetail = () => {
   const workAreaContext = useSelector(selectActiveWorkAreaContext);
 
   const dispatch = useDispatch();
+  const errorHandler = useErrorHandler();
 
   const { schoolCode, schoolName } = useParams();
 
@@ -56,7 +58,9 @@ const AssignmentsSchoolDetail = () => {
     frameworkContextId: workAreaContext.frameworkContextId,
     schoolCode: schoolCode?schoolCode:workAreaContext.schoolCode
   });
-  const [updateEvaluator] = useUpdateEvaluationSetEvaluatorMutation();
+  const [updateEvaluator, {error: updateEvaluatorError}] = 
+    useUpdateEvaluationSetEvaluatorMutation();
+  if (updateEvaluatorError) errorHandler(updateEvaluatorError);
 
   const atSchoolName = schoolName ? ` at ${schoolName}` : "";
   const pageTitle = `${workAreaContext.evaluateeTerm} Evaluations ${atSchoolName}`;

@@ -44,34 +44,6 @@ import { EvidenceCollectionType } from '@lib/enums';
 //   }
 // );
 
-// export const addOtherEvidence = createAsyncThunk(
-//   'evidenceCollection/addOtherEvidence',
-//   async (data, {dispatch, getState}) => {
-
-//     const { evidenceCollection : ecState, userContext: ucState } = getState().stateEval;
-
-//     const isPublic = ecState.collectionType === EvidenceCollectionType.YEAR_TO_DATE;
-//     try {
-//       const evidenceItem = await createEvidenceItemAPI({
-//         evidenceType: data.evidenceType,
-//         evidenceText: data.evidenceText,
-//         collectionType: ecState.createdEvidenceCollectionType,
-//         collectionObjectId: ecState.collectionObjectId,
-//         evaluationId: ucState.ids.activeEvaluationId,
-//         createdByUserId: ucState.currentUser.id,
-//         rubricRowId: ecState.ids.activeRubricRowId,
-//         codedEvidenceClientId: null,
-//         userPromptResponseId: null,
-//         public: isPublic,
-//       });
-//       return evidenceItem;
-//     } catch (err) {
-//       data.errorHandler(err);
-//       throw err;
-//     }
-//   }
-// );
-
 const evidenceCollectionSlice = createSlice({
   name: 'evidenceCollection',
   initialState: {
@@ -93,6 +65,7 @@ const evidenceCollectionSlice = createSlice({
     setActiveCollection: (state, action) => {
       return {
         ...state,
+        viewMode:"node",
         collectionType: action.payload.collectionType,
         collectionObjectId: action.payload.collectionObjectId,
         evidencePackageRubricAlignment: null,
@@ -163,15 +136,6 @@ const evidenceCollectionSlice = createSlice({
 
 const getIds = (state) => (state.stateEval.evidenceCollection.ids);
 
-// const getActiveFrameworkNode = (state) => {
-//   const { activeFrameworkNodeId } = getIds(state);
-//   if (!activeFrameworkNodeId) return null;
-//   const { activeFrameworkId } = getUserContextIds(state);
-//   const { frameworks } = getUserContextEntities(state);
-//   const framework = frameworks[activeFrameworkId];
-//   return framework.frameworkNodes.find(x=>x.id===activeFrameworkNodeId);
-// };
-
 export const selectEvidencePackageRubricAlignment = createSelector(
   [(state) => {
     const {evidencePackageRubricAlignment } = state.stateEval.evidenceCollection;
@@ -199,37 +163,6 @@ export const selectEvidenceCollectionViewMode = createSelector(
   }
 )
 
-// export const selectActiveFrameworkNode = createSelector(
-//   [getActiveFrameworkNode], (frameworkNode) => {
-//   return frameworkNode;
-// });
-
-// export const selectActiveFrameworkNodeId = createSelector(
-//   [getActiveFrameworkNode], (frameworkNode) => {
-//   return frameworkNode?.id;
-// });
-
-// const getActiveRubricRow = (state) => {
-//   const { activeFrameworkNodeId, activeRubricRowId } = getIds(state);
-//   if (!activeFrameworkNodeId || !activeRubricRowId) return null;
-//   const { activeFrameworkId } = getUserContextIds(state);
-//   const { frameworks } = getUserContextEntities(state);
-//   const framework = frameworks[activeFrameworkId];
-//   let frameworkNode = framework.frameworkNodes.find(x=>x.id===activeFrameworkNodeId);
-//   if (frameworkNode) {
-//     return frameworkNode.rubricRows.find(x=>x.id===activeRubricRowId);
-//   }
-//   else {
-//     frameworkNode = framework.frameworkNodes[0];
-//     return frameworkNode.rubricRows[0];
-//   }
-// };
-
-// export const selectActiveRubricRow = createSelector(
-//   [getActiveRubricRow], (rubricRow) => {
-//   return rubricRow;
-// });
-
 export const selectActiveFrameworkNodeId = createSelector(
   [(state) => {
     const { activeFrameworkNodeId } = getIds(state);
@@ -254,32 +187,6 @@ export const selectSelectedEvidenceItems = createSelector(
     return selectedEvidenceItems;
   }
 );
-
-// const getEvidenceItemsForActiveRubricRow = (state) => {
-//   const { activeRubricRowId } = getIds(state);
-//   const evidenceItems = state.stateEval.evidenceCollection.evidenceItemMap[activeRubricRowId];
-//   return evidenceItems?evidenceItems:[];
-// }
-
-// export const selectEvidenceItemsForActiveRubricRow = createSelector(
-//   getEvidenceItemsForActiveRubricRow,
-//   (evidenceItems) => {
-//     return evidenceItems;
-//   }
-// );
-
-// const getEvidencePackagesForActiveRubricRow = (state) => {
-//   const { activeRubricRowId } = getIds(state);
-//   const evidencePackages = state.stateEval.evidenceCollection.evidencePackageMap[activeRubricRowId];
-//   return evidencePackages?evidencePackages:[];
-// }
-
-// export const selectEvidencePackagesForActiveRubricRow = createSelector(
-//   getEvidencePackagesForActiveRubricRow,
-//   (evidencePackages) => {
-//     return evidencePackages;
-//   }
-// );
 
 export const selectCollectionType = createSelector(
   [(state) => {

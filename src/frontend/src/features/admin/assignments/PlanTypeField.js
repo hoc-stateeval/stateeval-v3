@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useErrorHandler } from "react-error-boundary";
 import { useSelector } from "react-redux";
 import {
   Alert,
@@ -34,6 +35,8 @@ import { PlanType, PerformanceLevel } from "@lib/enums";
 import { PlanTypeDisplay } from "@components";
 
 const PlanTypeField = (props) => {
+  const errorHandler = useErrorHandler();
+
   const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
 
   const [evalSummary, setEvalSummary] = useState(props.evalSummary);
@@ -59,7 +62,9 @@ const PlanTypeField = (props) => {
   const { data: evaluations } = useGetHistoricalEvaluationsQuery(
     evalSummary.evaluateeId
   );
-  const [updatePlanType] = useUpdateEvaluationSetPlanTypeMutation();
+  const [updatePlanType, {error: updatePlanTypeError}] = 
+    useUpdateEvaluationSetPlanTypeMutation();
+  if (updatePlanTypeError) errorHandler(updatePlanTypeError);
 
   useEffect(() => {
     const allFieldsComplete = () => {

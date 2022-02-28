@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useErrorHandler } from "react-error-boundary";
 import {
   Box,
   Button,
@@ -22,6 +23,7 @@ import {
   useGetSchoolsInDistrictQuery,
   useUpdateDvRoleInSchoolsMutation,
 } from "@api-slice";
+
 import { RoleType } from "@lib/enums";
 
 const getDvBuildingRolesInSchools = (user, districtCode) => {
@@ -39,11 +41,15 @@ const getDvBuildingRolesInSchools = (user, districtCode) => {
 };
 
 const DVSchoolConfigModal = ({ districtCode, user, setDlgOpen, dlgOpen }) => {
+  const errorHandler = useErrorHandler();
+  
   const [buildingRoles, setBuildingRoles] = useState(
     getDvBuildingRolesInSchools(user, districtCode)
   );
   const { data: schools } = useGetSchoolsInDistrictQuery(districtCode);
-  const [updateRoles] = useUpdateDvRoleInSchoolsMutation();
+  const [updateRoles, {error: updateRolesError}] = 
+    useUpdateDvRoleInSchoolsMutation();
+  if (updateRolesError) errorHandler(updateRolesError);
 
   const handleClickDlgCancel = () => {
     setDlgOpen(false);

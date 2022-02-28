@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
+import { useErrorHandler } from "react-error-boundary";
 import { styled } from "@mui/material/styles";
 import {
   Checkbox,
@@ -44,6 +45,7 @@ const AssignmentsDetail = () => {
   const workAreaContext = useSelector(selectActiveWorkAreaContext);
 
   const dispatch = useDispatch();
+  const errorHandler = useErrorHandler();
 
   const [totalCount, setTotalCount] = useState(0);
   const [assignedCount, setAssignedCount] = useState(0);
@@ -53,7 +55,8 @@ const AssignmentsDetail = () => {
     frameworkContextId: workAreaContext.frameworkContextId,
     schoolCode: "",
   });
-  const [updateEvaluator] = useUpdateEvaluationSetEvaluatorMutation();
+  const [updateEvaluator, {error: updateError}] = useUpdateEvaluationSetEvaluatorMutation();
+  if (updateError) errorHandler(updateError);
 
   const pageTitle = `${workAreaContext.evaluateeTerm} Evaluations`;
 

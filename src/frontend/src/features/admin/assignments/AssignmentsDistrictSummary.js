@@ -49,7 +49,7 @@ const getEvaluationSetupDelegatedToAllSchools = (schoolConfigs) => {
 
 const AssignmentsDistrictSummary = () => {
   const dispatch = useDispatch();
-  const handleError = useErrorHandler();
+  const errorHandler = useErrorHandler();
 
   const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
   const pageTitle = `Assignments for ${activeWorkAreaContext.evaluateeTerm} Evaluations`;
@@ -59,26 +59,30 @@ const AssignmentsDistrictSummary = () => {
   const [setupDelegatedToAllSchools, setSetupDelegatedToAllSchools] =
     useState(false);
 
-  const { data: schoolConfigs, error: error1 } =
+  const { data: schoolConfigs, error: getSchoolConfigError } =
     useGetSchoolConfigurationsForFrameworkContextQuery(
       activeWorkAreaContext.frameworkContextId
     );
 
-  if (error1) {
-    handleError(error1);
+  if (getSchoolConfigError) {
+    errorHandler(getSchoolConfigError);
   }
 
-  const { data: summaries, error: error2 } = useGetAssignmentsSummaryForDistrictQuery(
+  const { data: summaries, error: getAssignmentSummaryError } = useGetAssignmentsSummaryForDistrictQuery(
     activeWorkAreaContext.frameworkContextId
   );
 
-  if (error2) {
-    handleError(error2);
+  if (getAssignmentSummaryError) {
+    errorHandler(getAssignmentSummaryError);
   }
 
-  const [updateSchoolConfiguration] = useUpdateSchoolConfigurationMutation();
-  const [batchUpdateEvaluationSetupDelegation] =
+  const [updateSchoolConfiguration, {error: updateSchoolError}] = 
+    useUpdateSchoolConfigurationMutation();
+  if (updateSchoolError) errorHandler(updateSchoolError);
+
+  const [batchUpdateEvaluationSetupDelegation, {error: updateEvaluationError}] =
     useUpdateSchoolConfigurationBatchEvaluationSetupDelegationMutation();
+  if (updateEvaluationError) errorHandler(updateEvaluationError);
 
   useEffect(() => {
     if (schoolConfigs?.length > 0) {

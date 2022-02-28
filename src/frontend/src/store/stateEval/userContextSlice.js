@@ -32,7 +32,7 @@ const userContextSlice = createSlice({
     setCurrentUser: (state, action) => {
       return {
         ...state,
-        currentUser: action.payload.user
+        currentUser: action.payload
       };
     },
     setActiveWorkAreaContext: (state, action) => {

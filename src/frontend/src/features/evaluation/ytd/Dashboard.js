@@ -46,7 +46,7 @@ const Dashboard = () => {
       activeFrameworkNodeId: activeFramework.frameworkNodes[0].id
     }));
     setInitialized(true);
-  }, [activeFramework]);
+  }, [activeFramework, activeEvaluationId]);
 
   if (!initialized) return (<></>);
 

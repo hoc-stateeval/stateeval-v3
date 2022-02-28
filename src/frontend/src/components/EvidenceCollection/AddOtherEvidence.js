@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useErrorHandler } from 'react-error-boundary';
 
 import { 
@@ -10,7 +10,21 @@ import {
   Typography 
 } from "@mui/material";
 
-import { addOtherEvidence } from "@evidence-collection-slice";
+import { 
+  useAddOtherEvidenceMutation 
+} from "@api-slice";
+
+import {
+  selectActiveEvaluationId,
+  selectCurrentUser
+} from "@user-context-slice";
+
+import {
+  selectActiveRubricRowId,
+  selectActiveFrameworkNodeId,
+  selectCollectionType,
+  selectCollectionObjectId
+} from "@evidence-collection-slice";
 
 import { EvidenceType } from "@lib/enums"
 
@@ -22,20 +36,33 @@ const evidenceItemStyles = {
 };
 const AddOtherEvidence = () => {
 
-  const dispatch = useDispatch();
   const errorHandler = useErrorHandler();
+  
+  const currentUser = useSelector(selectCurrentUser);
+  const activeEvaluationId = useSelector(selectActiveEvaluationId);
+  const activeRubricRowId = useSelector(selectActiveRubricRowId);
+  const collectionType = useSelector(selectCollectionType);
+  const collectionObjectId = useSelector(selectCollectionObjectId);
 
   const [evidenceText, setEvidenceText] = useState('');
   const [showOtherEvidenceInputArea, toggleShowOtherEvidenceInputArea] = useState(false);
+
+  const [addOtherEvidence, {error: addOtherEvidenceError}] = useAddOtherEvidenceMutation();
+  if (addOtherEvidenceError) errorHandler(addOtherEvidenceError);
  
   const onClickAddOtherEvidence = () => {
-    let data = {
+    toggleShowOtherEvidenceInputArea((prev)=>!prev);
+    addOtherEvidence({
       evidenceType: EvidenceType.RUBRIC_ROW_NOTE,
       evidenceText: evidenceText,
-      errorHandler,
-    }
-    toggleShowOtherEvidenceInputArea((prev)=>!prev);
-   // dispatch(addOtherEvidence(data));
+      collectionType: collectionType,
+      collectionObjectId: collectionObjectId,
+      evaluationId: activeEvaluationId,
+      createdByUserId: currentUser.id,
+      rubricRowId: activeRubricRowId,
+      codedEvidenceClientId: null,
+      userPromptResponseId: null,
+    });
   }
 
   return (
