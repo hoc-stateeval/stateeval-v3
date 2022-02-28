@@ -196,11 +196,17 @@ namespace SE.Core.Common
             return displayName;
         }
 
+        public static bool AggregateCollection(EvidenceCollectionType collectionType)
+        {
+            return (collectionType == EvidenceCollectionType.YEAR_TO_DATE ||
+                    collectionType == EvidenceCollectionType.SUMMATIVE);
+        }
         public static string MapEvidenceCollectionTypeToDisplayName(EvidencePackage evidencePackage)
         {
             var displayName = evidencePackage.EvidenceCollectionType switch
             {
                 EvidenceCollectionType.OTHER_EVIDENCE => "Other Evidence",
+                EvidenceCollectionType.YEAR_TO_DATE => "Year to Date",
                 EvidenceCollectionType.UNDEFINED => "N/A",
                 EvidenceCollectionType.SUMMATIVE => "Summative",
                 //EvidenceCollectionType.YEAR_TO_DATE => "Year to Date",
@@ -217,6 +223,7 @@ namespace SE.Core.Common
             var displayName = evidenceItem.EvidenceCollectionType switch
             {
                 EvidenceCollectionType.OTHER_EVIDENCE => "Other Evidence",
+                EvidenceCollectionType.YEAR_TO_DATE => "Year to Date",
                 EvidenceCollectionType.UNDEFINED => "N/A",
                 EvidenceCollectionType.SUMMATIVE => "Summative",
                 //EvidenceCollectionType.YEAR_TO_DATE => "Year to Date",

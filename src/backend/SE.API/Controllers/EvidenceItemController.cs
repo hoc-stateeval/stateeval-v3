@@ -17,10 +17,21 @@ namespace SE.API.Controllers
         {
         }
 
-        [HttpPost("{collectionType}/{collectionObjectId}")]
+        [HttpGet("{evaluationId}/{collectionType}/{collectionObjectId}")]
+        public async Task<IActionResult> GetEvidenceItemsForEvidenceCollection(
+            long evaluationId, EvidenceCollectionType collectionType, long collectionObjectId)
+        {
+            CancellationToken cancelationToken = HttpContext.RequestAborted;
+            var evidenceCollection = await _mediator.Send(
+                new GetEvidenceItemsForEvidenceCollectionQuery(evaluationId, collectionType, collectionObjectId), 
+                cancelationToken);
+            return Ok(evidenceCollection);
+        }
+
+        [HttpPost("{evaluationId}/{collectionType}/{collectionObjectId}")]
         public async Task<IActionResult> CreateEvidenceItem(
-            EvidenceCollectionType collectionType, 
-            long collectionObjectId, 
+            long evaluationId, EvidenceCollectionType collectionType, 
+            long? collectionObjectId, 
             [FromBody] CreateEvidenceItemCommand command)
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;

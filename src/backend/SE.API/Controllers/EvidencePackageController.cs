@@ -17,7 +17,18 @@ namespace SE.API.Controllers
         {
         }
 
-        [HttpPost("{evaluationId}")]
+        [HttpGet("{evaluationId}/{collectionType}/{collectionObjectId}")]
+        public async Task<IActionResult> GetEvidencePackagesForEvidenceCollection(
+            long evaluationId, EvidenceCollectionType collectionType, long collectionObjectId)
+        {
+            CancellationToken cancelationToken = HttpContext.RequestAborted;
+            var evidenceCollection = await _mediator.Send(
+                new GetEvidencePackagesForEvidenceCollectionQuery(evaluationId, collectionType, collectionObjectId),
+                cancelationToken);
+            return Ok(evidenceCollection);
+        }
+
+        [HttpPost("{evaluationId}/{collectionType}/{collectionObjectId}")]
         public async Task<IActionResult> CreateEvidencePackage(
             EvidenceCollectionType collectionType, 
             long collectionObjectId, 

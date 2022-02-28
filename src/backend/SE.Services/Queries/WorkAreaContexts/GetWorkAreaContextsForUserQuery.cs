@@ -36,16 +36,54 @@ namespace SE.Core.Queries.WorkAreaContexts
         {
             private readonly DataContext _dataContext;
             private readonly IWorkAreaContextService _workAreaContextService;
-            public GetWorkAreaContextsForUserQueryHandler(DataContext dataContext, IWorkAreaContextService workAreaContextService)
+            private readonly IEvaluationService _evaluationService;
+            public GetWorkAreaContextsForUserQueryHandler(
+                DataContext dataContext, 
+                IWorkAreaContextService workAreaContextService, 
+                IEvaluationService evaluationService)
             {
                 _dataContext = dataContext;
                 _workAreaContextService = workAreaContextService;
+                _evaluationService = evaluationService;
             }
 
             public async Task<IResponse<List<WorkAreaContextDTO>>> Handle(GetWorkAreaContextsForUserQuery request, CancellationToken cancellationToken)
             {
                 var workAreaContexts = await _workAreaContextService
                     .GetWorkAreaContextsForUser(request.UserId);
+
+                workAreaContexts.ForEach(x =>
+                {
+                    if (x.IsEvaluatee)
+                    {
+                        var evaluationId = _dataContext.Evaluations
+                            .Where(y => y.FrameworkContextId == x.FrameworkContextId &&
+                                        y.EvaluateeId == request.UserId)
+                            .Select(y => y.Id)
+                            .FirstOrDefault();
+                        x.EvaluateeEvaluationId = evaluationId;
+
+                    }
+                    else if (x.IsEvaluator)
+                    {
+                        var expr = _evaluationService.GetLambaExpressionForWorkAreaContextEvaluations(
+                                        x.FrameworkContextId, x.UserId, x.SchoolCode,
+                                        x.IsEvaluatee, x.IsEvaluator, x.TagName);
+
+                        var evaluatees = _dataContext.Evaluations
+                              .Include(x => x.Evaluatee)
+                              .OrderBy(x => x.Evaluatee.FirstName).ThenBy(x => x.Evaluatee.LastName)
+                              .Where(expr)
+                              .Select(x => new EvaluateeDTO
+                              {
+                                  EvaluationId = x.Id,
+                                  DisplayName = x.Evaluatee.FirstName + " " + x.Evaluatee.LastName
+                              })
+                              .ToList();
+
+                        x.Evaluatees = evaluatees;
+                    }
+                });
 
                 return Response.Success(workAreaContexts);
             }

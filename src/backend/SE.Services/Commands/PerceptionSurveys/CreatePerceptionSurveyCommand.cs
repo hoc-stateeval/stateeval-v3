@@ -28,7 +28,7 @@ namespace SE.Core.Commands.PerceptionSurveys
         public long EvaluationId { get; set; }
         public string SchoolCode { get; set; }
 
-        public string Title { get; set; }
+        public string LocationOrigin { get; set; }
 
     }
 
@@ -52,9 +52,22 @@ namespace SE.Core.Commands.PerceptionSurveys
             }
 
             PerceptionSurvey survey = new PerceptionSurvey();
-            survey.Title = request.Title;
+            survey.Title = "New Perception Survey";
             survey.SchoolCode = request.SchoolCode;
             survey.EvaluationId = request.EvaluationId;
+
+            Guid guid = Guid.NewGuid();
+            survey.Guid = guid;
+
+            string fullUrl = request.LocationOrigin + "/#/student-perception-survey/" + guid;
+            if (request.LocationOrigin.Contains("localhost"))
+            {
+                survey.TinyURL = fullUrl;
+            }
+            else
+            {
+                survey.TinyURL = WebUtils.MakeTinyUrl(fullUrl);
+            }
 
             _dataContext.PerceptionSurveys.Add(survey);
             await _dataContext.SaveChangesAsync();

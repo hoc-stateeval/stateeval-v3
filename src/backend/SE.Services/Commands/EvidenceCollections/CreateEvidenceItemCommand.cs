@@ -65,7 +65,7 @@ namespace SE.Core.Commands.EvidenceCollections
         {
             var evidenceItem = new EvidenceItem()
             {
-                EvidenceCollectionType = request.CollectionType,
+                EvidenceCollectionType = (request.CollectionType == EvidenceCollectionType.YEAR_TO_DATE) ? EvidenceCollectionType.OTHER_EVIDENCE : request.CollectionType,
                 EvidenceType = request.EvidenceType,
                 EvidenceCollectionObjectId = request.CollectionObjectId,
                 EvaluationId = request.EvaluationId,
@@ -75,7 +75,7 @@ namespace SE.Core.Commands.EvidenceCollections
                 CodedEvidenceClientId = request.CodedEvidenceClientId,
                 UserPromptResponseId = request.UserPromptReponseId,
                 CreationDateTime = DateTime.Now,
-                Public = request.Public,
+                Public = (request.CollectionType == EvidenceCollectionType.YEAR_TO_DATE),
             };
 
             _dataContext.EvidenceItems.Add(evidenceItem);

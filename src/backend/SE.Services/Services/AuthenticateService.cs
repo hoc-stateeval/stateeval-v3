@@ -75,8 +75,6 @@ namespace SE.Core.Services
             {
                 Tokens = new AuthenticatedTokensDTO(accessToken, refreshToken.Token),
                 User = user.MapToUserDTO(),
-                WorkAreaContexts = workAreaContexts,
-                DefaultWorkAreaContextId = workAreaContexts[0].Id,
             };
 
             return dto;

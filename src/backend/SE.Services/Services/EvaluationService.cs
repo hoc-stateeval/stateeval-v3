@@ -18,6 +18,10 @@ namespace SE.Core.Services
         public Task<Evaluation> GetEvaluationById(long id);
         public IQueryable<EvaluationSummaryDTO> ExecuteEvaluationSummaryDTOQuery(System.Linq.Expressions.Expression<System.Func<Evaluation, bool>> expr);
         public Task<List<EvaluationSummaryDTO>> GetEvaluationsForWorkAreaContext(WorkAreaContext workAreaContext);
+
+        public System.Linq.Expressions.Expression<System.Func<Evaluation, bool>>
+          GetLambaExpressionForWorkAreaContextEvaluations(
+              long frameworkContextId, long userId, string schoolCode, bool isEvaluatee, bool isEvaluator, string workAreaTagName);
     }
 
     public class EvaluationService : BaseService, IEvaluationService
@@ -42,21 +46,32 @@ namespace SE.Core.Services
             return evaluation;
         }
 
+        public System.Linq.Expressions.Expression<System.Func<Evaluation, bool>> 
+            GetLambaExpressionForWorkAreaContextEvaluations(
+                long frameworkContextId, long userId, string schoolCode, bool isEvaluatee, bool isEvaluator, string workAreaTagName)
+        {
+            return (
+                x => 
+                    x.IsActive &&
+                    x.FrameworkContextId == frameworkContextId &&
+                    x.SchoolCode == schoolCode &&
+                    (
+                    // Evaluatee - can only see their own evaluation
+                    isEvaluatee && x.EvaluateeId == userId ||
+                    // Evaluator
+                    (isEvaluator &&
+                    // Non-DTE - can see all evaluations at his building
+                    ((workAreaTagName != EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DTE) ||
+                        // DTE - can only see evaluations assigned to him
+                        x.EvaluatorId == userId)))));
+        }
 
         public async Task<List<EvaluationSummaryDTO>> GetEvaluationsForWorkAreaContext(WorkAreaContext workAreaContext)
         {
-            var evaluations = await ExecuteEvaluationSummaryDTOQuery(x => x.IsActive &&
-                               x.FrameworkContextId == workAreaContext.FrameworkContextId &&
-                               x.SchoolCode == workAreaContext.Building.SchoolCode &&
-                               (
-                                // Evaluatee - can only see their own evaluation
-                                workAreaContext.WorkArea.IsEvaluatee && x.EvaluateeId == workAreaContext.UserId ||
-                                // Evaluator
-                                (workAreaContext.WorkArea.IsEvaluator &&
-                                // Non-DTE - can see all evaluations at his building
-                                ((workAreaContext.WorkArea.TagName != EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DTE) ||
-                                 // DTE - can only see evaluations assigned to him
-                                 x.EvaluatorId == workAreaContext.UserId)))))
+            var evaluations = await ExecuteEvaluationSummaryDTOQuery(
+                            GetLambaExpressionForWorkAreaContextEvaluations(
+                                    workAreaContext.FrameworkContextId, workAreaContext.UserId, workAreaContext.Building.SchoolCode,
+                                    workAreaContext.WorkArea.IsEvaluatee, workAreaContext.WorkArea.IsEvaluator, workAreaContext.WorkArea.TagName))
                    .ToListAsync();
 
             return evaluations;

@@ -68,7 +68,7 @@ namespace SE.Core.Commands.EvidenceCollections
                 RubricStatement = request.RubricStatement,
                 CreationDateTime = DateTime.Now,
                 PerformanceLevel = request.PerformanceLevel,
-                Public = request.Public,
+                Public = (request.CollectionType == EvidenceCollectionType.YEAR_TO_DATE),
             };
 
             _dataContext.EvidencePackages.Add(evidencePackage);

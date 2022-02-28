@@ -12,6 +12,16 @@ namespace SE.API.Controllers
         public PerceptionSurveyController(IMediator mediator) : base(mediator)
         {
         }
+
+
+        [HttpGet("evaluation/{id:long}")]
+        public async Task<IActionResult> GetPerceptionSurveyForEvaluation(long evaluationId)
+        {
+            CancellationToken cancelationToken = HttpContext.RequestAborted;
+            var survey = await _mediator.Send(new GetPerceptionSurveysForEvaluationQuery(evaluationId), cancelationToken);
+            return Ok(survey);
+        }
+
         [HttpGet("{id:long}")]
         public async Task<IActionResult> GetPerceptionSurveyById(long id)
         {
@@ -20,8 +30,8 @@ namespace SE.API.Controllers
             return Ok(survey);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(CreatePerceptionSurveyCommand command)
+        [HttpPost("evaluation/{id:long}")]
+        public async Task<IActionResult> Create(long evaluationId, [FromBody] CreatePerceptionSurveyCommand command)
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;
             return Ok(await _mediator.Send(command, cancelationToken));

@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace SE.Core.Models
 {
+    public class EvaluateeDTO
+    {
+        public long EvaluationId { get; set; }
+        public string DisplayName { get; set; }
+    }
     public class WorkAreaContextDTO
     {
         public long Id { get; set; }
@@ -38,11 +43,13 @@ namespace SE.Core.Models
         public bool IsEvaluatee { get; set; }
         public bool IsEvaluator { get; set; }
 
-
         public bool IsSchoolAdmin { get; set; }
         public bool IsDistrictAdmin { get; set; }
 
         public int Priority { get; set; }
+
+        public long EvaluateeEvaluationId { get; set; }
+        public List<EvaluateeDTO> Evaluatees { get; set; }
     }
   
 }
