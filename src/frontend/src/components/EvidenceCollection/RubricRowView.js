@@ -24,11 +24,6 @@ import {
   useGetFrameworkByIdQuery
 } from "@api-slice";
 
-import {
-  getRubricRow
-} from "@lib/eval-helpers";
-
-
  const RubricRowView = () => {
   const errorHandler = useErrorHandler();
   const [activeRubricRow, setActiveRubricRow] = useState(null);
