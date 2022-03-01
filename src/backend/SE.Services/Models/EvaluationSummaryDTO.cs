@@ -16,49 +16,49 @@ namespace SE.Core.Models
 
         public long FrameworkContextId { get; set; }    
         public SchoolYear SchoolYear { get; set; }
-        public string SchoolYearDisplayName { get; set; }
+        public string SchoolYearDisplayName { get; set; } = "";
 
         public EvaluationType EvaluationType { get; set; }
-        public string EvaluationTypeDisplayName { get; set; }
+        public string EvaluationTypeDisplayName { get; set; } = "";
 
-        public string ProfileImageUrl { get; set; }
+        public string ProfileImageUrl { get; set; } = "";
 
-        public string EvaluateeDisplayName { get; set; }
-        public string EvaluatorDisplayName { get; set; }
+        public string EvaluateeDisplayName { get; set; } = "";
+        public string EvaluatorDisplayName { get; set; } = "";
 
         public WfState WfState { get; set; }
-        public string WfStateDisplayName { get; set; }
+        public string WfStateDisplayName { get; set; } = "";
         public DateTime? LockDateTime { get; set; }
 
         public EvaluateePlanType? PlanType { get; set; }
-        public string PlanTypeDisplayName { get; set; }
+        public string PlanTypeDisplayName { get; set; } = "";
 
         public RubricPerformanceLevel? PerformanceLevel { get; set; }
-        public string PerformanceLevelDisplayName { get; set; }
+        public string PerformanceLevelDisplayName { get; set; } = "";
         public StudentGrowthImpactRating? StudentGrowthImpactRating { get; set; }
         public bool? ComprehensiveCarryForward { get; set; }
         public RubricPerformanceLevel? CarryForwardPerformanceLevel { get; set; }
         public SchoolYear? CarryForwardSchoolYear { get; set; }
 
         public long? FocusedFrameworkNodeId { get; set; }
-        public string FocusedFrameworkNodeShortName { get; set; }
+        public string FocusedFrameworkNodeShortName { get; set; } = "";
 
         public long? FocusedSGFrameworkNodeId { get; set; }
-        public string FocusedSGFrameworkNodeShortName { get; set; }
+        public string FocusedSGFrameworkNodeShortName { get; set; } = "";
 
         public long? ModifiedCompFocusedFrameworkNode2Id { get; set; }
-        public string ModifiedCompFocusedFrameworkNode2ShortName { get; set; }
+        public string ModifiedCompFocusedFrameworkNode2ShortName { get; set; } = "";
 
 
         public EvaluateePlanType? LastYearEvaluateePlanType { get; set; }
-        public string LastYearEvaluateePlanTypeDisplayName { get; set; }
+        public string LastYearEvaluateePlanTypeDisplayName { get; set; } = "";
         public EvaluateePlanType? NextYearEvaluateePlanType { get; set; }
-        public string NextYearEvaluateePlanTypeDisplayName { get; set; }
-        public string LastYearFocusedFrameworkNodeShortName { get; set; }
-        public string LastYearFocusedSGframeworkNodeShortName { get; set; }
+        public string NextYearEvaluateePlanTypeDisplayName { get; set; } = "";
+        public string LastYearFocusedFrameworkNodeShortName { get; set; } = "";
+        public string LastYearFocusedSGframeworkNodeShortName { get; set; } = "";
         public EvaluateePlanType? SuggestedEvaluateePlanType { get; set; }
-        public string SuggestedFocusedFrameworkNodeShortName { get; set; }
-        public string SuggestedFocusedSGframeworkNodeShortName { get; set; }
+        public string SuggestedFocusedFrameworkNodeShortName { get; set; } = "";
+        public string SuggestedFocusedSGframeworkNodeShortName { get; set; } = "";
 
     }
 }

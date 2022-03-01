@@ -43,7 +43,7 @@ import {
 
   useEffect(()=> {
     if (!activeFramework) return;
-    setActiveRubricRow(getRubricRow(activeFramework, activeFrameworkNodeId, activeRubricRowId));
+    setActiveRubricRow(activeFramework.rubricRowMap[activeRubricRowId]);
 
   }, [activeFramework, activeFrameworkNodeId, activeRubricRowId])
 

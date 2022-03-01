@@ -777,6 +777,19 @@ namespace SE.Data.Migrations
                     b.ToTable("PerceptionSurvey", "dbo");
                 });
 
+            modelBuilder.Entity("SE.Domain.Entities.PerceptionSurveyPerceptionSurveyStatement", b =>
+                {
+                    b.Property<long>("PerceptionSurveyId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PerceptionSurveyStatementId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("PerceptionSurveyId", "PerceptionSurveyStatementId");
+
+                    b.ToTable("PerceptionSurveyPerceptionSurveyStatement", "dbo");
+                });
+
             modelBuilder.Entity("SE.Domain.Entities.PerceptionSurveyStatement", b =>
                 {
                     b.Property<long>("Id")
@@ -1677,6 +1690,15 @@ namespace SE.Data.Migrations
                     b.Navigation("Evaluator");
                 });
 
+            modelBuilder.Entity("SE.Domain.Entities.PerceptionSurveyPerceptionSurveyStatement", b =>
+                {
+                    b.HasOne("SE.Domain.Entities.PerceptionSurvey", null)
+                        .WithMany("PerceptionSurveyPerceptionSurveyStatements")
+                        .HasForeignKey("PerceptionSurveyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("SE.Domain.Entities.PerceptionSurveyStatement", b =>
                 {
                     b.HasOne("SE.Domain.Entities.RubricRow", "RubricRow")
@@ -1904,6 +1926,11 @@ namespace SE.Data.Migrations
             modelBuilder.Entity("SE.Domain.Entities.FrameworkNode", b =>
                 {
                     b.Navigation("FrameworkNodeRubricRows");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.PerceptionSurvey", b =>
+                {
+                    b.Navigation("PerceptionSurveyPerceptionSurveyStatements");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.RubricRow", b =>

@@ -22,5 +22,8 @@ namespace SE.Domain.Entities
         public DateTime? CompletionDateTime { get; set; }
         public string TinyURL { get; set; } 
         public Guid Guid { get; set; }
+
+        public virtual List<PerceptionSurveyPerceptionSurveyStatement> PerceptionSurveyPerceptionSurveyStatements { get; }
+
     }
 }

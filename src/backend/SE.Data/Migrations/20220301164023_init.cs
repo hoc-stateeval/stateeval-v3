@@ -201,6 +201,26 @@ namespace SE.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PerceptionSurveyPerceptionSurveyStatement",
+                schema: "dbo",
+                columns: table => new
+                {
+                    PerceptionSurveyId = table.Column<long>(type: "bigint", nullable: false),
+                    PerceptionSurveyStatementId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PerceptionSurveyPerceptionSurveyStatement", x => new { x.PerceptionSurveyId, x.PerceptionSurveyStatementId });
+                    table.ForeignKey(
+                        name: "FK_PerceptionSurveyPerceptionSurveyStatement_PerceptionSurvey_PerceptionSurveyId",
+                        column: x => x.PerceptionSurveyId,
+                        principalSchema: "dbo",
+                        principalTable: "PerceptionSurvey",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FrameworkContextPrototype",
                 schema: "dbo",
                 columns: table => new
@@ -745,14 +765,14 @@ namespace SE.Data.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EvaluationId = table.Column<long>(type: "bigint", nullable: false),
                     EvaluatorId = table.Column<long>(type: "bigint", nullable: false),
                     EvaluateeId = table.Column<long>(type: "bigint", nullable: false),
                     EvaluateePlanType = table.Column<int>(type: "int", nullable: false),
                     ShortName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Title = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedByUserId = table.Column<long>(type: "bigint", nullable: false)
+                    CreatedByUserId = table.Column<long>(type: "bigint", nullable: false),
+                    EvaluationId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1374,7 +1394,7 @@ namespace SE.Data.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "PerceptionSurvey",
+                name: "PerceptionSurveyPerceptionSurveyStatement",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
@@ -1415,6 +1435,10 @@ namespace SE.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "EvidencePackage",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "PerceptionSurvey",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

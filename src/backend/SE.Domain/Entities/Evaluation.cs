@@ -84,27 +84,27 @@ namespace SE.Domain.Entities
 
         [ForeignKey("Evaluator")]
         public long? EvaluatorId { get; set; }
-        public virtual User? Evaluator { get; set; }
+        public virtual User Evaluator { get; set; }
 
         [ForeignKey("FocusedFrameworkNode")]
         public long? FocusedFrameworkNodeId { get; set; }
-        public virtual FrameworkNode? FocusedFrameworkNode { get; set; }
+        public virtual FrameworkNode FocusedFrameworkNode { get; set; }
 
         [ForeignKey("FocusedSGFrameworkNode")]
         public long? FocusedSGFrameworkNodeId { get; set; }
-        public virtual FrameworkNode? FocusedSGFrameworkNode { get; set; }
+        public virtual FrameworkNode FocusedSGFrameworkNode { get; set; }
 
         [ForeignKey("ModifiedCompFocusedFrameworkNode2")]
         public long? ModifiedCompFocusedFrameworkNode2Id { get; set; }
-        public virtual FrameworkNode? ModifiedCompFocusedFrameworkNode2 { get; set; }
+        public virtual FrameworkNode ModifiedCompFocusedFrameworkNode2 { get; set; }
 
         [ForeignKey("NextYearFocusedFrameworkNode")]
         public long? NextYearFocusedFrameworkNodeId { get; set; }
-        public virtual FrameworkNode? NextYearFocusedFrameworkNode { get; set; }
+        public virtual FrameworkNode NextYearFocusedFrameworkNode { get; set; }
 
         [ForeignKey("NextYearFocusedSGframeworkNode")]
         public long? NextYearFocusedSGframeworkNodeId { get; set; }
-        public virtual FrameworkNode? NextYearFocusedSGframeworkNode { get; set; }
+        public virtual FrameworkNode NextYearFocusedSGframeworkNode { get; set; }
 
     }
 }

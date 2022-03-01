@@ -35,10 +35,10 @@ namespace SE.Domain.Entities
 
         [ForeignKey("ProcessRubricRow")]
         public long? ProcessRubricRowId { get; set; }
-        public virtual RubricRow? ProcessRubricRow { get; set; }
+        public virtual RubricRow ProcessRubricRow { get; set; }
 
         [ForeignKey("ResultsRubricRow")]
         public long? ResultsRubricRowId { get; set; }
-        public virtual RubricRow? ResultsRubricRow { get; set; }
+        public virtual RubricRow ResultsRubricRow { get; set; }
     }
 }

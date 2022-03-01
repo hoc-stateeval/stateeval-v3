@@ -10,6 +10,15 @@ namespace SE.Domain.Entities
 {
     public abstract class BaseRecurringEvidenceCollection : BaseEntity
     {
+        public BaseRecurringEvidenceCollection()
+        {
+        }
+
+        public BaseRecurringEvidenceCollection(string shortName, string title, DateTime creationDateTime,
+                long createdByUserId, long evaluationId)
+        {
+        }
+
         [MaxLength(50)]
         [Required]
         public string ShortName { get; set; }

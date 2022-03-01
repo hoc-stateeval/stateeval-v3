@@ -11,6 +11,7 @@ using SE.Data;
 using SE.Domain.Entities;
 using SE.Core.Models;
 using SE.Core.Common;
+using SE.Core.Common.Exceptions;
 
 namespace SE.Core.Queries.Frameworks
 {
@@ -43,9 +44,14 @@ namespace SE.Core.Queries.Frameworks
 
             public async Task<IResponse<FrameworkDTO>> Handle(GetFrameworkByIdQuery request, CancellationToken cancellationToken)
             {
-                Framework? framework = await _dataContext.Frameworks
+                Framework framework = await _dataContext.Frameworks
                     .Include(x => x.FrameworkNodes).ThenInclude(x => x.FrameworkNodeRubricRows).ThenInclude(x=>x.RubricRow)
                     .Where(x => x.Id == request.Id).FirstOrDefaultAsync();
+
+                if (framework == null)
+                {
+                    throw new NotFoundException(nameof(Framework), request.Id);
+                }
 
                 FrameworkDTO frameworkDTO = new FrameworkDTO()
                 {

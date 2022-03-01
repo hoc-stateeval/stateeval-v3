@@ -10,12 +10,12 @@ namespace SE.Core.Queries.Assignments
 {
     public class SchoolSummaryAssignmentDataDTO
     {
-        public string SchoolName { get; set; }
-        public string SchoolCode { get; set; }
+        public string SchoolName { get; set; } = "";
+        public string SchoolCode { get; set; } = "";
         public int TotalCount { get; set; }
         public int AssignedCount { get; set; }
         public int UnassignedCount { get; set; }
-        public List<UserDTO> Evaluators { get; set; }
-        public List<RoleType> EvaluatorRoleTypes { get; set; }
+        public List<UserDTO> Evaluators { get; set; } = new List<UserDTO>();
+        public List<RoleType> EvaluatorRoleTypes { get; set; } = new List<RoleType>();
     }
 }

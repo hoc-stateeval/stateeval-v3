@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SE.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,8 +11,10 @@ namespace SE.Core.Models
     {
         public long Id { get; set; }
         public long EvaluationId { get; set; }
-        public string SchoolCode { get; set; }
-        public string Title { get; set; }
+        public string SchoolCode { get; set; } = "";
+        public string Title { get; set; } = "";
+
+        public List<PerceptionSurveyStatementDTO> Statements { get; set; } = new List<PerceptionSurveyStatementDTO>();
 
     }
 }

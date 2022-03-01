@@ -58,6 +58,23 @@ export const apiSlice = createApi({
     // frameworks
     getFrameworkById: builder.query({
       query: (id) => ({ url: `frameworks/${id}`, method: 'get' }),
+      transformResponse: (response) => {
+        const rubricRowMap = response.frameworkNodes.reduce((acc, node) => {
+          for (const rubricRow of node.rubricRows) {
+            acc[rubricRow.id] = rubricRow;
+          }
+          return acc;
+        }, {});
+
+        const frameworkNodeMap = response.frameworkNodes.reduce((acc, node) => {
+          acc[node.id] = node;
+          return acc;
+        }, {});
+
+        response.rubricRowMap = rubricRowMap;
+        response.frameworkNodeMap = frameworkNodeMap;
+        return response;
+      },
     }),
     
     // perception surveys

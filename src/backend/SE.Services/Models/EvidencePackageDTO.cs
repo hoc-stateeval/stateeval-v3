@@ -31,6 +31,6 @@ namespace SE.Core.Models
 
         public string EvidenceCollectionDisplayName { get; set; } = "";
 
-        public List<long> EvidenceItemIds { get; set; }
+        public List<long> EvidenceItemIds { get; set; } = new List<long>();
     }
 }

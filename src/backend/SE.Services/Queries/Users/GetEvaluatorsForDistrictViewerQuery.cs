@@ -12,6 +12,7 @@ using SE.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using SE.Core.Services;
 using SE.Core.Common;
+using SE.Core.Common.Exceptions;
 
 namespace SE.Core.Queries.Evaluators
 {
@@ -53,6 +54,11 @@ namespace SE.Core.Queries.Evaluators
                     .Include(x => x.WorkArea).ThenInclude(x => x.EvaluateeRole)
                     .Where(x => x.Id == request.WorkAreaContextId)
                     .FirstOrDefaultAsync();
+
+                if (workAreaContext == null)
+                {
+                    throw new NotFoundException(nameof(WorkAreaContext), request.WorkAreaContextId);
+                }
 
                 if (workAreaContext.WorkArea.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DV_PR_TR)) {
                     var users = await _userService.GetUsersInRoleAtSchool(request.SchoolCode, RoleType.PR);

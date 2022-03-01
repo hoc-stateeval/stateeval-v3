@@ -36,8 +36,7 @@ import {
 
 import { 
   PerformanceLevels,
-  mapPerformanceLevelToRubricDescriptor,
-  getRubricRow
+  mapPerformanceLevelToRubricDescriptor,  
  } from '@lib/eval-helpers';
 
 import { createHighlightedDescriptorHtml, getSelectedHtml } from '@lib/utils';
@@ -74,7 +73,7 @@ const RubricDescriptor = ({performanceLevel}) => {
   useEffect(()=> {
     if (!activeFramework || !evidencePackageMap) return;
 
-    const activeRubricRow = getRubricRow(activeFramework, activeFrameworkNodeId, activeRubricRowId);
+    const activeRubricRow = activeFramework.rubricRowMap[activeRubricRowId];
     const descriptor = mapPerformanceLevelToRubricDescriptor(activeRubricRow, performanceLevel.value);
     let evidencePackages = evidencePackageMap[activeRubricRowId];
     if (!evidencePackages) evidencePackages = [];
@@ -121,7 +120,7 @@ const RubricAlignmentSection = () => {
             <TableHead>
               <TableRow>
                 {PerformanceLevels.map((next, i)=>(
-                  <TableCell key={i}>{next.shortName}</TableCell>
+                  <TableCell align="center" key={i}>{next.shortName}</TableCell>
                 ))}
               </TableRow>
             </TableHead>

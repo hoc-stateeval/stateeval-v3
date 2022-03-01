@@ -10,6 +10,7 @@ using Xunit;
 using FluentValidation;
 using FluentAssertions;
 using SE.Domain.Entities;
+using SE.Core.Common.Exceptions;
 
 namespace SE.API.Tests
 {
@@ -207,6 +208,11 @@ namespace SE.API.Tests
 
             framework.FrameworkNodes.Count.Should().Be(8);
             var frameworkNode = framework.FrameworkNodes.Where(x => x.ShortName == "C1").FirstOrDefault();
+            if (frameworkNode == null)
+            {
+                throw new NotFoundException(nameof(frameworkNode), "C1");
+            }
+
             var rubricRows = frameworkNode.RubricRows;
             rubricRows.Count().Should().Be(3);
             rubricRows.Where(x => x.ShortName == "2b").Count().Should().Be(1);
@@ -259,6 +265,11 @@ namespace SE.API.Tests
 
             framework.FrameworkNodes.Count.Should().Be(4);
             var frameworkNode = framework.FrameworkNodes.Where(x => x.ShortName == "D1").FirstOrDefault();
+            if (frameworkNode == null)
+            {
+                throw new NotFoundException(nameof(FrameworkNode), "D1");
+            }
+
             var rubricRows = frameworkNode.RubricRows;
             rubricRows.Count().Should().Be(6);
             rubricRows.Where(x => x.ShortName == "1a").Count().Should().Be(1);

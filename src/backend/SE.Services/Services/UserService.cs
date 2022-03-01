@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SE.Core.Common.Exceptions;
 using SE.Core.Mappers;
 using SE.Core.Models;
 using SE.Data;
@@ -36,6 +37,11 @@ namespace SE.Core.Services
             var userDTO = await ExecuteUserDTOQuery(x => x.UserName == userName)
                 .FirstOrDefaultAsync();
 
+            if (userDTO == null)
+            {
+                throw new NotFoundException(nameof(User), userName);
+            }
+
             return userDTO;
         }
 
@@ -43,6 +49,11 @@ namespace SE.Core.Services
         {
             var userDTO = await ExecuteUserDTOQuery(x => x.Id == id)
                 .FirstOrDefaultAsync();
+
+            if (userDTO == null)
+            {
+                throw new NotFoundException(nameof(User), id);
+            }
 
             return userDTO;
         }

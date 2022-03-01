@@ -12,6 +12,7 @@ using SE.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using SE.Core.Services;
 using SE.Core.Common;
+using SE.Core.Common.Exceptions;
 
 namespace SE.Core.Queries.Evaluations
 {
@@ -57,6 +58,11 @@ namespace SE.Core.Queries.Evaluations
                                 x.UserId == request.EvaluatorId &&
                                 x.Building.SchoolCode == request.SchoolCode)
                     .FirstOrDefaultAsync();
+
+                if (workAreaContext == null)
+                {
+                    throw new NotFoundException(nameof(WorkAreaContext), $"{request.FrameworkContextId}:{request.EvaluatorId}: {request.SchoolCode}");
+                }
 
                 var evaluations = await _evaluationService.GetEvaluationsForWorkAreaContext(workAreaContext);
 

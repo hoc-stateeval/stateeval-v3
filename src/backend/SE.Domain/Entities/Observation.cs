@@ -15,20 +15,12 @@ namespace SE.Domain.Entities
         }
 
         public Observation(Evaluation evaluation, User evaluator, string shortName)
+            :base(shortName, shortName, DateTime.Now, evaluator.Id, evaluation.Id)
         {
-            CreationDateTime = DateTime.Now;
             EvaluateePlanType = (EvaluateePlanType)evaluation.EvaluateePlanType;
-            EvaluationId = evaluation.Id;
             EvaluatorId = evaluation.Id;
-            ShortName = shortName;
-            Title = shortName;
         }
 
-        [ForeignKey("Evaluation")]
-        public long EvaluationId { get; }
-
-        [Required]
-        public virtual Evaluation Evaluation { get; set; }
 
         [ForeignKey("Evaluator")]
         public long EvaluatorId { get; set; }

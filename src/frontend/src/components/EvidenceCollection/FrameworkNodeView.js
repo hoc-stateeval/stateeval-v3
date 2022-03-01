@@ -19,10 +19,6 @@ import {
   useGetFrameworkByIdQuery
 } from "@api-slice";
 
-import {
-  getFrameworkNode
-} from "@lib/eval-helpers";
-
  const FrameworkNodeView = () => {
 
   const errorHandler = useErrorHandler();
@@ -37,7 +33,7 @@ import {
 
   useEffect(()=> {
     if (!activeFramework) return;
-    setActiveFrameworkNode(getFrameworkNode(activeFramework, activeFrameworkNodeId));
+    setActiveFrameworkNode(activeFramework.frameworkNodeMap[activeFrameworkNodeId]);
 
   }, [activeFramework, activeFrameworkNodeId])
 

@@ -55,7 +55,12 @@ namespace SE.Core.Services
                 .Include(x => x.UserBuildingRoles)
                 .Where(x => x.UserName == userName)
                 .FirstOrDefaultAsync();
-  
+
+            if (user == null)
+            {
+                throw new NotFoundException(nameof(User), userName);
+            }
+
             // todo
             //if (user == null || !BCryptNet.Verify(model.Password, user.PasswordHash))
             //    throw new AppException("Username or password is incorrect");
@@ -156,6 +161,12 @@ namespace SE.Core.Services
             if (!string.IsNullOrEmpty(refreshToken.ReplacedByToken))
             {
                 var childToken = user.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken.ReplacedByToken);
+
+                if (childToken == null)
+                {
+                    throw new NotFoundException(nameof(RefreshToken), refreshToken.ReplacedByToken);
+                }
+
                 if (childToken.IsActive)
                     RevokeRefreshToken(childToken, ipAddress, reason);
                 else
@@ -163,7 +174,7 @@ namespace SE.Core.Services
             }
         }
 
-        private void RevokeRefreshToken(RefreshToken token, string ipAddress, string reason = null, string replacedByToken = null)
+        private void RevokeRefreshToken(RefreshToken token, string ipAddress, string? reason = null, string? replacedByToken = null)
         {
             token.Revoked = DateTime.UtcNow;
             token.RevokedByIp = ipAddress;

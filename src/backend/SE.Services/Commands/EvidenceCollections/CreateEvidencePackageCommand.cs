@@ -43,7 +43,7 @@ namespace SE.Core.Commands.EvidenceCollections
         public string RubricStatement { get; set; } = string.Empty;
         public RubricPerformanceLevel PerformanceLevel { get; set; }
 
-        public List<long> EvidenceItemIds { get; set; }
+        public List<long> EvidenceItemIds { get; set; } = new List<long>();
         public bool Public { get; set; }
     }
 
@@ -85,11 +85,12 @@ namespace SE.Core.Commands.EvidenceCollections
                 .Where(x => x.Id == evidencePackage.Id)
                 .FirstOrDefaultAsync();
 
-
             var evidencePackageEvidenceItems = evidenceItems.Select(x => new EvidencePackageEvidenceItem
             {
                 EvidenceItemId = x.Id,
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 EvidencePackageId = evidencePackage.Id
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
             }).ToList();
 
             _dataContext.EvidencePackageEvidenceItems.AddRange(evidencePackageEvidenceItems);

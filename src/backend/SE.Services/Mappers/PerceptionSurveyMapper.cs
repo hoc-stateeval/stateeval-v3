@@ -16,8 +16,11 @@ namespace SE.Core.Mappers
             target.Id = source.Id;
             target.Title = source.Title;
             target.EvaluationId = source.EvaluationId;
-            target.SchoolCode = source.SchoolCode;  
- 
+            target.SchoolCode = source.SchoolCode;
+
+            target.Statements = source.PerceptionSurveyPerceptionSurveyStatements.Select(x => x.MapToPerceptionSurveyStatementDTO()).ToList();
+
+
             return target;
         }
     }

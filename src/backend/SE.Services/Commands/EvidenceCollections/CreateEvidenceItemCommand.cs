@@ -86,6 +86,11 @@ namespace SE.Core.Commands.EvidenceCollections
                 .Where(x => x.Id == evidenceItem.Id)
                 .FirstOrDefaultAsync();
 
+            if (evidenceItem == null)
+            {
+                throw new NotFoundException(nameof(EvidenceItem), evidenceItem.Id);
+            }
+
             return Response.Success(evidenceItem.MapToEvidenceItemDTO());
         }
     }

@@ -29,7 +29,7 @@ namespace SE.Domain.Entities
 
         [ForeignKey("InstructionalFramework")]
         public long? InstructionalFrameworkId { get; set; }
-        public virtual Framework? InstructionalFramework { get; set; }
+        public virtual Framework InstructionalFramework { get; set; }
 
         [ForeignKey("EvaluateeRole")]
         public long EvaluateeRoleId { get; set; }

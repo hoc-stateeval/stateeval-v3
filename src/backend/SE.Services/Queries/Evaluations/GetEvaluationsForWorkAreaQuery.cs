@@ -13,6 +13,7 @@ using SE.Core.Queries;
 using SE.Core.Mappers;
 using SE.Core.Services;
 using SE.Core.Common;
+using SE.Core.Common.Exceptions;
 
 namespace SE.Core.Queries.Evaluations
 {
@@ -53,7 +54,12 @@ namespace SE.Core.Queries.Evaluations
                     .Include(x => x.WorkArea)
                     .Where(x => x.Id == request.WorkAreaContextId).FirstOrDefaultAsync(cancellationToken: cancellationToken);
 
-               var evaluations = await _evaluationService.GetEvaluationsForWorkAreaContext(workAreaContext);
+                if (workAreaContext == null)
+                {
+                    throw new NotFoundException(nameof(WorkAreaContext), request.WorkAreaContextId);
+                }
+
+                var evaluations = await _evaluationService.GetEvaluationsForWorkAreaContext(workAreaContext);
 
                 return Response.Success(evaluations);
             }

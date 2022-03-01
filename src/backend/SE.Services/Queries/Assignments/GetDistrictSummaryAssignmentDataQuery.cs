@@ -13,6 +13,7 @@ using SE.Core.Queries;
 using SE.Core.Services;
 using SE.Core.Common;
 using SE.Core.Common.Extensions;
+using SE.Core.Common.Exceptions;
 
 namespace SE.Core.Queries.Assignments
 {
@@ -52,6 +53,11 @@ namespace SE.Core.Queries.Assignments
                 var frameworkContext = await _dataContext.FrameworkContexts
                     .Where(x => x.Id == request.FrameworkContextId)
                     .FirstOrDefaultAsync();
+
+                if (frameworkContext == null)
+                {
+                    throw new NotFoundException(nameof(FrameworkContext), request.FrameworkContextId);
+                }
 
                 var schoolSummaries = new List<SchoolSummaryAssignmentDataDTO>();
 

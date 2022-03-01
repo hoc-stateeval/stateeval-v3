@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace SE.Core.Models
 {
-    public class FrameworkDTO
+    public class PerceptionSurveyStatementDTO
     {
         public long Id { get; set; }
-        public string Name { get; set; } = "";
         public string FrameworkTagName { get; set; } = "";
-
-        public List<FrameworkNodeDTO> FrameworkNodes { get; set; } = new List<FrameworkNodeDTO>();
+        public string Text { get; set; } = "";
+        public long RubricRowId { get; set; }
     }
 }

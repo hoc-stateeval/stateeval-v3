@@ -10,32 +10,32 @@ namespace SE.Core.Models
     public class EvaluateeDTO
     {
         public long EvaluationId { get; set; }
-        public string DisplayName { get; set; }
+        public string DisplayName { get; set; } = "";
     }
     public class WorkAreaContextDTO
     {
         public long Id { get; set; }
         public long UserId { get; set; }
-        public string TagName { get; set; }
-        public string Title { get; set; }
-        public string DistrictName { get; set; }
-        public string SchoolName { get; set; }
-        public string DistrictCode { get; set; }
-        public string SchoolCode { get; set; }
+        public string TagName { get; set; } = "";
+        public string Title { get; set; } = "";
+        public string DistrictName { get; set; } = "";
+        public string SchoolName { get; set; } = "";
+        public string DistrictCode { get; set; } = "";
+        public string SchoolCode { get; set; } = "";
         public Boolean IsSchool { get; set; }
         public RoleType RoleType { get; set; }
-        public string RoleName { get; set; }
+        public string RoleName { get; set; } = "";
         public RoleType EvaluateeRoleType { get;set; }
-        public string EvaluateeRoleName { get; set; }
-        public string EvaluatorTerm { get; set; }
-        public string EvaluateeTerm { get; set; }
+        public string EvaluateeRoleName { get; set; } = "";
+        public string EvaluatorTerm { get; set; } = "";
+        public string EvaluateeTerm { get; set; } = "";
 
-        public string EvaluatorTermLC { get; set; }
-        public string EvaluateeTermLC { get; set; }
+        public string EvaluatorTermLC { get; set; } = "";
+        public string EvaluateeTermLC { get; set; } = "";
         public EvaluationType EvaluationType { get; set; }
 
         public long FrameworkContextId { get; set; }
-        public string FrameworkContextName { get; set; }
+        public string FrameworkContextName { get; set; } = "";
         public long StateFrameworkId { get; set; }
         public long? InstructionalFrameworkId { get; set; }
         public long DefaultFrameworkId { get; set; }
@@ -49,7 +49,7 @@ namespace SE.Core.Models
         public int Priority { get; set; }
 
         public long EvaluateeEvaluationId { get; set; }
-        public List<EvaluateeDTO> Evaluatees { get; set; }
+        public List<EvaluateeDTO> Evaluatees { get; set; } = new List<EvaluateeDTO>();
     }
   
 }

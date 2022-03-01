@@ -12,6 +12,7 @@ using SE.Domain.Entities;
 using SE.Core.Models;
 using SE.Core.Common;
 using SE.Core.Mappers;
+using SE.Core.Common.Exceptions;
 
 namespace SE.Core.Queries.PerceptionSurveys
 {
@@ -44,8 +45,14 @@ namespace SE.Core.Queries.PerceptionSurveys
 
             public async Task<IResponse<PerceptionSurveyDTO>> Handle(GetPerceptionSurveyByIdQuery request, CancellationToken cancellationToken)
             {
-                PerceptionSurvey? survey = await _dataContext.PerceptionSurveys
+                PerceptionSurvey survey = await _dataContext.PerceptionSurveys
+                    .Include(x => x.PerceptionSurveyPerceptionSurveyStatements)
                     .Where(x => x.Id == request.Id).FirstOrDefaultAsync();
+
+                if (survey == null)
+                {
+                    throw new NotFoundException(nameof(EvidenceItem), request.Id);
+                }
 
                 return Response.Success(survey.MapToPerceptionSurveyDTO());
             }

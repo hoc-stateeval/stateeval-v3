@@ -15,10 +15,10 @@ using System.Threading.Tasks;
 
 namespace SE.Core.Commands.PerceptionSurveys
 {
-    public class CreateObservationCommandValidator
+    public class CreatePerceptionSurveyCommandValidator
     : AbstractValidator<CreatePerceptionSurveyCommand>
     {
-        public CreateObservationCommandValidator()
+        public CreatePerceptionSurveyCommandValidator()
         {
             // put validation checks here
         }
@@ -26,9 +26,9 @@ namespace SE.Core.Commands.PerceptionSurveys
     public sealed class CreatePerceptionSurveyCommand : IRequest<IResponse<PerceptionSurveyDTO>>
     {
         public long EvaluationId { get; set; }
-        public string SchoolCode { get; set; }
+        public string SchoolCode { get; set; } = "";
 
-        public string LocationOrigin { get; set; }
+        public string LocationOrigin { get; set; } = "";
 
     }
 

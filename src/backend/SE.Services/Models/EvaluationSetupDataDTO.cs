@@ -9,9 +9,9 @@ namespace SE.Core.Models
 {
     public class EvaluationSetuDataDTO
     {
-        public List<EvaluationSummaryDTO> EvaluationSummaries { get; set; }  
-        public List<UserDTO> Evaluatees { get; set; }
-        public List<UserDTO> Evaluators { get; set; }
-        public List<RoleType> EvaluatorRoleTypes { get; set; }
+        public List<EvaluationSummaryDTO> EvaluationSummaries { get; set; } = new List<EvaluationSummaryDTO>();
+        public List<UserDTO> Evaluatees { get; set; } = new List<UserDTO>();
+        public List<UserDTO> Evaluators { get; set; } = new List<UserDTO>();
+        public List<RoleType> EvaluatorRoleTypes { get; set; } = new List<RoleType>();
     }
 }

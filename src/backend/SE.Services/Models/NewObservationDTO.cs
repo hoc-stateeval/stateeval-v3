@@ -10,7 +10,7 @@ namespace SE.Core.Models
     public class NewObservationDTO
     {
         public long EvaluationId { get; }
-        public string ShortName { get; }
+        public string ShortName { get; } = "";
         public EvaluateePlanType PlanType { get; }
         public long EvaluatorId { get; }
     }

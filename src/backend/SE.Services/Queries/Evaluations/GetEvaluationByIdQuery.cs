@@ -13,6 +13,7 @@ using SE.Core.Queries;
 using SE.Core.Mappers;
 using SE.Core.Services;
 using SE.Core.Common;
+using SE.Core.Common.Exceptions;
 
 namespace SE.Core.Queries.Evaluations
 {
@@ -50,6 +51,11 @@ namespace SE.Core.Queries.Evaluations
                 var evaluation = await _evaluationService
                     .ExecuteEvaluationSummaryDTOQuery(x => x.Id == request.Id)
                     .FirstOrDefaultAsync();
+
+                if (evaluation == null)
+                {
+                    throw new NotFoundException(nameof(EvidenceItem), request.Id);
+                }
 
                 return Response.Success(evaluation);
             }

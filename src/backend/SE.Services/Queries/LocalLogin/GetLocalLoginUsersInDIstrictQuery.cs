@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SE.Core.Common;
+using SE.Core.Common.Exceptions;
 
 namespace SE.Core.Queries.LocalLogin
 {
@@ -45,6 +46,11 @@ namespace SE.Core.Queries.LocalLogin
                 var building = await _dataContext.Buildings
                     .Where(x => !x.IsSchool && x.DistrictCode == request.DistrictCode)
                     .FirstOrDefaultAsync();
+
+                if (building == null)
+                {
+                    throw new NotFoundException(nameof(FrameworkContext), request.DistrictCode);
+                }
 
                 var userBuildingRoles = await _dataContext.UserBuildingRoles
                     .Include(x => x.User)
