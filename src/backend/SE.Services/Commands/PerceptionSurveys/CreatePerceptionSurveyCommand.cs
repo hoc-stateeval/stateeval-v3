@@ -72,6 +72,11 @@ namespace SE.Core.Commands.PerceptionSurveys
             _dataContext.PerceptionSurveys.Add(survey);
             await _dataContext.SaveChangesAsync();
 
+            survey = await _dataContext.PerceptionSurveys
+                .Include(x=>x.PerceptionSurveyPerceptionSurveyStatements)
+                .Where(x => x.Id == survey.Id)
+                .FirstAsync();
+
             return Response.Success(survey.MapToPerceptionSurveyDTO());
         }
     }

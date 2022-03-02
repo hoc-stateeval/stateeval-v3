@@ -90,6 +90,13 @@ export const apiSlice = createApi({
       query: (data) => ({ url: `perception-surveys/evaluation/${data.evaluationId}`, method: 'post', data: data }),
     }),
 
+    getPerceptionSurveyStatementsForFrameworkTagName: builder.query({
+      query: (tagName) => ({ url: `perception-survey-statements/${tagName}`, method: 'get' }),
+    }),
+    getPerceptionSurveyCheckedStatementIds: builder.query({
+      query: (surveyId) => ({ url: `perception-survey-statements/${surveyId}/checkedStatementIds`, method: 'get' }),
+    }),
+
     // evaluations
     getEvaluationById: builder.query({
       query: (evaluationId) => ({url: `evaluations/${evaluationId}`, method: 'get'})
@@ -206,4 +213,6 @@ export const {
   useGetEvidenceItemsForCollectionQuery,
   useGetEvidencePackagesForCollectionQuery,
   useCreateOtherEvidenceItemMutation,
+  useGetPerceptionSurveyStatementsForFrameworkTagNameQuery,
+  useGetPerceptionSurveyCheckedStatementIdsQuery
 } = apiSlice

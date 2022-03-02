@@ -10,13 +10,13 @@ namespace SE.Core.Mappers
 {
     public static partial class Mapper
     {
-        public static PerceptionSurveyStatementDTO MapToPerceptionSurveyStatementDTO(this PerceptionSurveyPerceptionSurveyStatement source)
+        public static PerceptionSurveyStatementDTO MapToPerceptionSurveyStatementDTO(this PerceptionSurveyStatement source)
         {
             PerceptionSurveyStatementDTO target = new PerceptionSurveyStatementDTO();
-            target.Id = source.PerceptionSurveyStatement.Id;
-            target.FrameworkTagName = source.PerceptionSurveyStatement.FrameworkTagName;
-            target.Text = source.PerceptionSurveyStatement.Text;
-            target.RubricRowId = source.PerceptionSurveyStatement.RubricRowId;
+            target.Id = source.Id;
+            target.FrameworkTagName = source.FrameworkTagName;
+            target.Text = source.Text;
+            target.RubricRowId = source.RubricRowId;
 
             return target;
         }

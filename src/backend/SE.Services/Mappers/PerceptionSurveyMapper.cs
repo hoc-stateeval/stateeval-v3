@@ -18,7 +18,8 @@ namespace SE.Core.Mappers
             target.EvaluationId = source.EvaluationId;
             target.SchoolCode = source.SchoolCode;
 
-            target.Statements = source.PerceptionSurveyPerceptionSurveyStatements.Select(x => x.MapToPerceptionSurveyStatementDTO()).ToList();
+            target.Statements = source.PerceptionSurveyPerceptionSurveyStatements
+                .Select(x => x.PerceptionSurveyStatement.MapToPerceptionSurveyStatementDTO()).ToList();
 
 
             return target;

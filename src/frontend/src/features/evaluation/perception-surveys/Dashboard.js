@@ -166,7 +166,7 @@ const Dashboard = () => {
                       <TableCell align="center">
                       <Button
                         component={RouterLink}
-                        to={evaluationPaths.trMePerceptionSurveys}
+                        to={`${evaluationPaths.trMePerceptionSurveys}/${survey.id}`}
                         color="secondary"
                         size="small"
                         variant="contained"
