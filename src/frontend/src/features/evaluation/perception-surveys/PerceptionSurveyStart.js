@@ -13,7 +13,7 @@ import {
   useGetPerceptionSurveyCheckedStatementIdsQuery
 } from "@api-slice";
 
-const PerceptionSurvey = () => {
+const getPerceptionSurveyStatementsForFrameworkTagName = () => {
 
   const errorHandler = useErrorHandler();
 
@@ -36,10 +36,39 @@ const PerceptionSurvey = () => {
 
   useEffect(()=> {
 
-  }, []);
+    const map = statements.reduce((acc, statement) => {
+      const rubricRow = activeFramework.rubricRowMap[statement.rubricRowId];
+      if (!acc[rubricRow.frameworkNodeShortName]) {
+        acc[rubricRow.frameworkNodeShortName] = [];
+      }
+      acc[rubricRow.frameworkNodeShortName].push(statement);
+      return acc;
+    }, {});
+
+    setStatementMap(map);
+  }, [statements, activeFramework]);
 
   return (
     <>
+    { activeFramework.frameworkNodes.map((node, i) => {
+      const statements = statementMap[node.shortName];
+      if (statements) {
+        return (
+          <>
+          <h3 key={i}>{node.shortName}</h3>
+          {statements.map((statement, j)=> {
+            const rubricRow = activeFramework.rubricRowMap[statement.rubricRowId];
+            return (
+              <p key={j}>{rubricRow.shortName} - {statement.text} </p>
+            )
+          })}
+          </>
+        )
+      }
+      else {
+        return (<></>)
+      }
+    })}
     </>
   )
 }
