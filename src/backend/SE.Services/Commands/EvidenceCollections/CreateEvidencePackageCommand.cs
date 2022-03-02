@@ -72,13 +72,12 @@ namespace SE.Core.Commands.EvidenceCollections
             };
 
             _dataContext.EvidencePackages.Add(evidencePackage);
+            await _dataContext.SaveChangesAsync();
 
             var evidenceItems = await _dataContext.EvidenceItems
                                .Where(x => request.EvidenceItemIds.Contains(x.Id))
                                .ToListAsync();
-    
-            await _dataContext.SaveChangesAsync();
-
+   
             evidencePackage = await _dataContext.EvidencePackages
                 .Include(x => x.CreatedByUser)
                 .Include(x => x.EvidencePackageEvidenceItems)

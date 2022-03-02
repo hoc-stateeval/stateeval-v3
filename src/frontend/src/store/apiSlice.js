@@ -23,7 +23,7 @@ export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: axiosBaseQuery({ baseUrl: baseUrl }),
   keepUnusedDataFor: 0,
-  tagTypes: ['EvidenceItem', 'EvidencePackage'],
+  tagTypes: ['EvidenceItem', 'EvidencePackage', 'SurveyStatement'],
   endpoints: builder => ({
 
     // evidence collections
@@ -95,6 +95,15 @@ export const apiSlice = createApi({
     }),
     getPerceptionSurveyCheckedStatementIds: builder.query({
       query: (surveyId) => ({ url: `perception-survey-statements/${surveyId}/checkedStatementIds`, method: 'get' }),
+      provideTags: ['SurveyStatement']
+    }),
+    addStatementToSurvey: builder.mutation({
+      query: (data) => ({url: `perception-surveys/add-statement/${data.surveyId}/${data.statementId}`, method: 'post', data: data}) ,
+      invalidatesTags: ['SurveyStatement'],
+    }),
+    removeStatementFromSurvey: builder.mutation({
+      query: (data) => ({url: `perception-surveys/remove-statement/${data.surveyId}/${data.statementId}`, method: 'post', data: data}) ,
+      invalidatesTags: ['SurveyStatement'],
     }),
 
     // evaluations
@@ -214,5 +223,7 @@ export const {
   useGetEvidencePackagesForCollectionQuery,
   useCreateOtherEvidenceItemMutation,
   useGetPerceptionSurveyStatementsForFrameworkTagNameQuery,
-  useGetPerceptionSurveyCheckedStatementIdsQuery
+  useGetPerceptionSurveyCheckedStatementIdsQuery,
+  useAddStatementToSurveyMutation,
+  useRemoveStatementFromSurveyMutation
 } = apiSlice

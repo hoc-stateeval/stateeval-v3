@@ -14,12 +14,12 @@ namespace SE.API.Controllers
         }
 
 
-        [HttpGet("evaluation/{id:long}")]
-        public async Task<IActionResult> GetPerceptionSurveyForEvaluation(long evaluationId)
+        [HttpGet("evaluation/{evaluationId:long}")]
+        public async Task<IActionResult> GetPerceptionSurvesyForEvaluation(long evaluationId)
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;
-            var survey = await _mediator.Send(new GetPerceptionSurveysForEvaluationQuery(evaluationId), cancelationToken);
-            return Ok(survey);
+            var surveys = await _mediator.Send(new GetPerceptionSurveysForEvaluationQuery(evaluationId), cancelationToken);
+            return Ok(surveys);
         }
 
         [HttpGet("{id:long}")]
@@ -30,11 +30,27 @@ namespace SE.API.Controllers
             return Ok(survey);
         }
 
-        [HttpPost("evaluation/{id:long}")]
+        [HttpPost("evaluation/{evaluationId:long}")]
         public async Task<IActionResult> Create(long evaluationId, [FromBody] CreatePerceptionSurveyCommand command)
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;
             return Ok(await _mediator.Send(command, cancelationToken));
+        }
+
+        [HttpPost("add-statement/{surveyId:long}/{statementId:long}")]
+        public async Task<IActionResult> AddStatementToSurvey(long surveyId, long statementId)
+        {
+            CancellationToken cancelationToken = HttpContext.RequestAborted;
+            var survey = await _mediator.Send(new AddStatementToSurveyCommand(surveyId, statementId), cancelationToken);
+            return Ok(survey);
+        }
+
+        [HttpPost("remove-statement/{surveyId:long}/{statementId:long}")]
+        public async Task<IActionResult> RemoveStatementFromSurvey(long surveyId, long statementId)
+        {
+            CancellationToken cancelationToken = HttpContext.RequestAborted;
+            var survey = await _mediator.Send(new RemoveStatementFromSurveyCommand(surveyId, statementId), cancelationToken);
+            return Ok(survey);
         }
     }
 }

@@ -44,6 +44,7 @@ namespace SE.Core.Queries.PerceptionSurveys
             public async Task<IResponse<List<PerceptionSurveyDTO>>> Handle(GetPerceptionSurveysForEvaluationQuery request, CancellationToken cancellationToken)
             {
                 var surveys = await _dataContext.PerceptionSurveys
+                    .Include(x=>x.PerceptionSurveyPerceptionSurveyStatements)
                     .Where(x => x.EvaluationId == request.EvaluationId)
                     .Select(x => x.MapToPerceptionSurveyDTO())
                     .ToListAsync();
