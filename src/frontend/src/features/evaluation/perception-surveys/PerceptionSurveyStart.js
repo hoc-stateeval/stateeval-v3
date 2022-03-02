@@ -4,20 +4,29 @@ import { useErrorHandler } from 'react-error-boundary';
 import { useSelector } from "react-redux";
 
 import {
+  Checkbox,
+  Stack,
+  Typography
+} from "@mui/material";
+
+import {
   selectActiveFrameworkId,
 } from "@user-context-slice";
 
 import {
   useGetFrameworkByIdQuery,
   useGetPerceptionSurveyStatementsForFrameworkTagNameQuery,
-  useGetPerceptionSurveyCheckedStatementIdsQuery
+  useGetPerceptionSurveyCheckedStatementIdsQuery,
+  useAddStatementToSurveyMutation,
+  useRemoveStatementFromSurveyMutation
 } from "@api-slice";
 
-const getPerceptionSurveyStatementsForFrameworkTagName = () => {
+const PerceptionSurveyStart = () => {
 
   const errorHandler = useErrorHandler();
 
-  const { id: surveyId } = useParams();
+  let { id: surveyId } = useParams();
+  surveyId = parseInt(surveyId);
 
   const [statementMap, setStatementMap] = useState({});
   const activeFrameworkId = useSelector(selectActiveFrameworkId);
@@ -34,8 +43,17 @@ const getPerceptionSurveyStatementsForFrameworkTagName = () => {
     useGetPerceptionSurveyCheckedStatementIdsQuery(surveyId);
   if (getCheckedIdsError) errorHandler(getCheckedIdsError);
 
+  const [addStatement, {error: addStatementError}] = useAddStatementToSurveyMutation();
+  if (addStatementError) errorHandler(addStatementError);
+  
+  const [removeStatement, {error: removeStatementError}] = useRemoveStatementFromSurveyMutation();
+  if (removeStatementError) errorHandler(removeStatementError);
+
+
   useEffect(()=> {
 
+    if (!statements || !activeFramework) return;
+    
     const map = statements.reduce((acc, statement) => {
       const rubricRow = activeFramework.rubricRowMap[statement.rubricRowId];
       if (!acc[rubricRow.frameworkNodeShortName]) {
@@ -48,21 +66,43 @@ const getPerceptionSurveyStatementsForFrameworkTagName = () => {
     setStatementMap(map);
   }, [statements, activeFramework]);
 
+  const toggleStatementChecked = (statementId) => {
+
+    if (checkedIds.find(x=>x === statementId)) {
+      removeStatement({surveyId, statementId});
+    }
+    else {
+      addStatement({surveyId, statementId});
+    }
+  }
+
+  if (!statements || !activeFramework || !checkedIds) {
+    return (<></>)
+  }
+
   return (
     <>
     { activeFramework.frameworkNodes.map((node, i) => {
       const statements = statementMap[node.shortName];
       if (statements) {
         return (
-          <>
-          <h3 key={i}>{node.shortName}</h3>
-          {statements.map((statement, j)=> {
-            const rubricRow = activeFramework.rubricRowMap[statement.rubricRowId];
-            return (
-              <p key={j}>{rubricRow.shortName} - {statement.text} </p>
-            )
-          })}
-          </>
+          <Stack key={i} direction="column">
+            <Typography variant="body1">{node.shortName}-{node.title}</Typography>
+            {statements.map((statement, j)=> {
+              const rubricRow = activeFramework.rubricRowMap[statement.rubricRowId];
+              return (
+                <Stack key={j} direction="row">
+                  <Checkbox
+                      checked={checkedIds.find(x=>x===statement.id)}
+                      onChange={()=>{toggleStatementChecked(statement.id)}}
+                    />
+                  <Typography variant="body1">{rubricRow.shortName}</Typography>
+                  <Typography variant="body1">{statement.text}</Typography>
+                </Stack>
+              )
+            }
+          )}
+          </Stack>
         )
       }
       else {
@@ -73,4 +113,4 @@ const getPerceptionSurveyStatementsForFrameworkTagName = () => {
   )
 }
 
-export default PerceptionSurvey;
+export default PerceptionSurveyStart;
