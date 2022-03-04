@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 import { useEffect, useState } from 'react'
 import { useParams } from "react-router-dom";
 import { useErrorHandler } from 'react-error-boundary';
@@ -21,7 +22,7 @@ import {
   useRemoveStatementFromSurveyMutation
 } from "@api-slice";
 
-const PerceptionSurveyStart = () => {
+const PerceptionSurveyTest = () => {
 
   const errorHandler = useErrorHandler();
 
@@ -29,6 +30,7 @@ const PerceptionSurveyStart = () => {
   surveyId = parseInt(surveyId);
 
   const [statementMap, setStatementMap] = useState({});
+  const [nodesWithStatements, setNodesWithStatements] = useState([]);
   const activeFrameworkId = useSelector(selectActiveFrameworkId);
 
   const { data: activeFramework, error: getFrameworkError } = 
@@ -64,6 +66,17 @@ const PerceptionSurveyStart = () => {
     }, {});
 
     setStatementMap(map);
+
+    let nodesWithStatements = [];
+
+    for (const node of activeFramework.frameworkNodes) {
+      if (map[node.shortName]) {
+        nodesWithStatements.push(node);
+      }
+    };
+
+    setNodesWithStatements(nodesWithStatements);
+
   }, [statements, activeFramework]);
 
   const toggleStatementChecked = (statementId) => {
@@ -82,35 +95,30 @@ const PerceptionSurveyStart = () => {
 
   return (
     <>
-    { activeFramework.frameworkNodes.map((node, i) => {
+    { nodesWithStatements.map((node, i) => {
       const statements = statementMap[node.shortName];
-      if (statements) {
-        return (
-          <Stack key={i} direction="column">
-            <Typography variant="body1">{node.shortName}-{node.title}</Typography>
-            {statements.map((statement, j)=> {
-              const rubricRow = activeFramework.rubricRowMap[statement.rubricRowId];
-              return (
-                <Stack key={j} direction="row">
-                  <Checkbox
-                      checked={checkedIds.find(x=>x===statement.id)}
-                      onChange={()=>{toggleStatementChecked(statement.id)}}
-                    />
-                  <Typography variant="body1">{rubricRow.shortName}</Typography>
-                  <Typography variant="body1">{statement.text}</Typography>
-                </Stack>
-              )
-            }
-          )}
-          </Stack>
-        )
-      }
-      else {
-        return (<></>)
-      }
+      return (
+        <Stack key={i} direction="column">
+          <Typography variant="body1">{node.shortName}-{node.title}</Typography>
+          {statements.map((statement, j)=> {
+            const rubricRow = activeFramework.rubricRowMap[statement.rubricRowId];
+            const checked = checkedIds.includes(statement.id);
+            return (
+              <Stack key={j} direction="row">
+                <Checkbox
+                    checked={checked}
+                    onChange={()=>{toggleStatementChecked(statement.id)}}
+                  />
+                <Typography variant="body1">{rubricRow.shortName}</Typography>
+                <Typography variant="body1">{statement.text}</Typography>
+              </Stack>
+            )})
+          }
+        </Stack>
+      );
     })}
     </>
   )
 }
 
-export default PerceptionSurveyStart;
+export default PerceptionSurveyTest;
