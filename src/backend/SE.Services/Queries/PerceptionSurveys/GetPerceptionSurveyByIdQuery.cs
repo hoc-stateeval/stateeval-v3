@@ -47,6 +47,7 @@ namespace SE.Core.Queries.PerceptionSurveys
             {
                 PerceptionSurvey survey = await _dataContext.PerceptionSurveys
                     .Include(x => x.PerceptionSurveyPerceptionSurveyStatements)
+                    .ThenInclude(x => x.PerceptionSurveyStatement)
                     .Where(x => x.Id == request.Id).FirstOrDefaultAsync();
 
                 if (survey == null)

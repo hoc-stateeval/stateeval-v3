@@ -47,6 +47,9 @@ function updateCodedText(codedText, descriptorText, selectedText, code) {
       codedText[i] = code;
       i++;
     }
+    else if (codedText[i]===code) {
+      i++;
+    }
     else {
       codedText[i] = 3;
       i++;

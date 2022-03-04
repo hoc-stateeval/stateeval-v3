@@ -201,26 +201,6 @@ namespace SE.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PerceptionSurveyPerceptionSurveyStatement",
-                schema: "dbo",
-                columns: table => new
-                {
-                    PerceptionSurveyId = table.Column<long>(type: "bigint", nullable: false),
-                    PerceptionSurveyStatementId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PerceptionSurveyPerceptionSurveyStatement", x => new { x.PerceptionSurveyId, x.PerceptionSurveyStatementId });
-                    table.ForeignKey(
-                        name: "FK_PerceptionSurveyPerceptionSurveyStatement_PerceptionSurvey_PerceptionSurveyId",
-                        column: x => x.PerceptionSurveyId,
-                        principalSchema: "dbo",
-                        principalTable: "PerceptionSurvey",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "FrameworkContextPrototype",
                 schema: "dbo",
                 columns: table => new
@@ -517,6 +497,33 @@ namespace SE.Data.Migrations
                         principalSchema: "dbo",
                         principalTable: "Role",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PerceptionSurveyPerceptionSurveyStatement",
+                schema: "dbo",
+                columns: table => new
+                {
+                    PerceptionSurveyId = table.Column<long>(type: "bigint", nullable: false),
+                    PerceptionSurveyStatementId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PerceptionSurveyPerceptionSurveyStatement", x => new { x.PerceptionSurveyId, x.PerceptionSurveyStatementId });
+                    table.ForeignKey(
+                        name: "FK_PerceptionSurveyPerceptionSurveyStatement_PerceptionSurvey_PerceptionSurveyId",
+                        column: x => x.PerceptionSurveyId,
+                        principalSchema: "dbo",
+                        principalTable: "PerceptionSurvey",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PerceptionSurveyPerceptionSurveyStatement_PerceptionSurveyStatement_PerceptionSurveyStatementId",
+                        column: x => x.PerceptionSurveyStatementId,
+                        principalSchema: "dbo",
+                        principalTable: "PerceptionSurveyStatement",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -1239,6 +1246,12 @@ namespace SE.Data.Migrations
                 column: "EvaluatorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PerceptionSurveyPerceptionSurveyStatement_PerceptionSurveyStatementId",
+                schema: "dbo",
+                table: "PerceptionSurveyPerceptionSurveyStatement",
+                column: "PerceptionSurveyStatementId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PerceptionSurveyStatement_RubricRowId",
                 schema: "dbo",
                 table: "PerceptionSurveyStatement",
@@ -1398,10 +1411,6 @@ namespace SE.Data.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "PerceptionSurveyStatement",
-                schema: "dbo");
-
-            migrationBuilder.DropTable(
                 name: "RefreshTokens",
                 schema: "dbo");
 
@@ -1439,6 +1448,10 @@ namespace SE.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "PerceptionSurvey",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "PerceptionSurveyStatement",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

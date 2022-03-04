@@ -22,8 +22,8 @@ const convertToRubricRowIdMap = (response) => {
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: axiosBaseQuery({ baseUrl: baseUrl }),
-  keepUnusedDataFor: 0,
-  tagTypes: ['EvidenceItem', 'EvidencePackage', 'SurveyStatement'],
+  keepUnusedDataFor: 10,
+  tagTypes: ['EvidenceItem', 'EvidencePackage', 'CheckedStatementIds'],
   endpoints: builder => ({
 
     // evidence collections
@@ -95,15 +95,15 @@ export const apiSlice = createApi({
     }),
     getPerceptionSurveyCheckedStatementIds: builder.query({
       query: (surveyId) => ({ url: `perception-survey-statements/${surveyId}/checkedStatementIds`, method: 'get' }),
-      provideTags: ['SurveyStatement']
+      providesTags: ['CheckedStatementIds']
     }),
     addStatementToSurvey: builder.mutation({
       query: (data) => ({url: `perception-surveys/add-statement/${data.surveyId}/${data.statementId}`, method: 'post', data: data}) ,
-      invalidatesTags: ['SurveyStatement'],
+      invalidatesTags: ['CheckedStatementIds'],
     }),
     removeStatementFromSurvey: builder.mutation({
       query: (data) => ({url: `perception-surveys/remove-statement/${data.surveyId}/${data.statementId}`, method: 'post', data: data}) ,
-      invalidatesTags: ['SurveyStatement'],
+      invalidatesTags: ['CheckedStatementIds'],
     }),
 
     // evaluations

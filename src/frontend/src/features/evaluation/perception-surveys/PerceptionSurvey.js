@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 import { useEffect, useState } from 'react'
 import { useParams } from "react-router-dom";
 import { useErrorHandler } from 'react-error-boundary';
@@ -29,6 +30,7 @@ const PerceptionSurvey = () => {
   surveyId = parseInt(surveyId);
 
   const [statementMap, setStatementMap] = useState({});
+  const [nodesWithStatements, setNodesWithStatements] = useState([]);
   const activeFrameworkId = useSelector(selectActiveFrameworkId);
 
   const { data: activeFramework, error: getFrameworkError } = 
@@ -49,12 +51,72 @@ const PerceptionSurvey = () => {
   const [removeStatement, {error: removeStatementError}] = useRemoveStatementFromSurveyMutation();
   if (removeStatementError) errorHandler(removeStatementError);
 
+
+  useEffect(()=> {
+
+    if (!statements || !activeFramework) return;
+    
+    const map = statements.reduce((acc, statement) => {
+      const rubricRow = activeFramework.rubricRowMap[statement.rubricRowId];
+      if (!acc[rubricRow.frameworkNodeShortName]) {
+        acc[rubricRow.frameworkNodeShortName] = [];
+      }
+      acc[rubricRow.frameworkNodeShortName].push(statement);
+      return acc;
+    }, {});
+
+    setStatementMap(map);
+
+    let nodesWithStatements = [];
+
+    for (const node of activeFramework.frameworkNodes) {
+      if (map[node.shortName]) {
+        nodesWithStatements.push(node);
+      }
+    };
+
+    setNodesWithStatements(nodesWithStatements);
+
+  }, [statements, activeFramework]);
+
+  const toggleStatementChecked = (statementId) => {
+
+    if (checkedIds.find(x=>x === statementId)) {
+      removeStatement({surveyId, statementId});
+    }
+    else {
+      addStatement({surveyId, statementId});
+    }
+  }
+
   if (!statements || !activeFramework || !checkedIds) {
     return (<></>)
   }
 
   return (
     <>
+    { nodesWithStatements.map((node, i) => {
+      const statements = statementMap[node.shortName];
+      return (
+        <Stack key={i} direction="column">
+          <Typography variant="body1">{node.shortName}-{node.title}</Typography>
+          {statements.map((statement, j)=> {
+            const rubricRow = activeFramework.rubricRowMap[statement.rubricRowId];
+            const checked = checkedIds.includes(statement.id);
+            return (
+              <Stack key={j} direction="row">
+                <Checkbox
+                    checked={checked}
+                    onChange={()=>{toggleStatementChecked(statement.id)}}
+                  />
+                <Typography variant="body1">{rubricRow.shortName}</Typography>
+                <Typography variant="body1">{statement.text}</Typography>
+              </Stack>
+            )})
+          }
+        </Stack>
+      );
+    })}
     </>
   )
 }

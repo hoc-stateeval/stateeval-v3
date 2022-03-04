@@ -12,7 +12,7 @@ using SE.Data;
 namespace SE.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220301164023_init")]
+    [Migration("20220303183601_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -788,6 +788,8 @@ namespace SE.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("PerceptionSurveyId", "PerceptionSurveyStatementId");
+
+                    b.HasIndex("PerceptionSurveyStatementId");
 
                     b.ToTable("PerceptionSurveyPerceptionSurveyStatement", "dbo");
                 });
@@ -1694,11 +1696,21 @@ namespace SE.Data.Migrations
 
             modelBuilder.Entity("SE.Domain.Entities.PerceptionSurveyPerceptionSurveyStatement", b =>
                 {
-                    b.HasOne("SE.Domain.Entities.PerceptionSurvey", null)
+                    b.HasOne("SE.Domain.Entities.PerceptionSurvey", "PerceptionSurvey")
                         .WithMany("PerceptionSurveyPerceptionSurveyStatements")
                         .HasForeignKey("PerceptionSurveyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("SE.Domain.Entities.PerceptionSurveyStatement", "PerceptionSurveyStatement")
+                        .WithMany()
+                        .HasForeignKey("PerceptionSurveyStatementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PerceptionSurvey");
+
+                    b.Navigation("PerceptionSurveyStatement");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.PerceptionSurveyStatement", b =>

@@ -45,6 +45,7 @@ namespace SE.Core.Commands.PerceptionSurveys
         public async Task<IResponse<Unit>> Handle(RemoveStatementFromSurveyCommand request, CancellationToken cancellationToken)
         {
             PerceptionSurvey? survey = await _dataContext.PerceptionSurveys
+              .Include(x => x.PerceptionSurveyPerceptionSurveyStatements)
               .Where(x => x.Id == request.SurveyId)
               .FirstOrDefaultAsync();
 
@@ -62,13 +63,16 @@ namespace SE.Core.Commands.PerceptionSurveys
                 throw new NotFoundException(nameof(PerceptionSurveyStatement), request.StatementId);
             }
 
-            var surveySurveyStatement = new PerceptionSurveyPerceptionSurveyStatement
-            {
-                PerceptionSurveyId = request.SurveyId,
-                PerceptionSurveyStatementId = request.StatementId
-            };
+            var surveyStatement = await _dataContext.PerceptionSurveyPerceptionSurveyStatements
+                .Where(x => x.PerceptionSurveyId == request.SurveyId && x.PerceptionSurveyStatementId == request.StatementId)
+                .FirstOrDefaultAsync();
 
-            survey.PerceptionSurveyPerceptionSurveyStatements.Remove(surveySurveyStatement);
+            if (surveyStatement == null)
+            {
+                throw new NotFoundException(nameof(PerceptionSurveyPerceptionSurveyStatement), $"surveyid: {request.SurveyId} statementid: {request.StatementId}");
+            }
+
+            survey.PerceptionSurveyPerceptionSurveyStatements.Remove(surveyStatement);
             await _dataContext.SaveChangesAsync();
 
             return Response.Success(Unit.Value);

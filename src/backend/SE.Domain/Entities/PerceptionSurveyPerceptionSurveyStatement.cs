@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -12,10 +13,14 @@ namespace SE.Domain.Entities
     {
         [ForeignKey("PerceptionSurvey")]
         public long PerceptionSurveyId { get; set; }
-        public virtual PerceptionSurvey PerceptionSurvey { get; }
 
         [ForeignKey("PerceptionSurveyStatement")]
         public long PerceptionSurveyStatementId { get; set; }
-        public virtual PerceptionSurveyStatement PerceptionSurveyStatement { get; }
+
+        [Required]
+        public virtual PerceptionSurvey PerceptionSurvey { get; set; }
+
+        [Required]
+        public virtual PerceptionSurveyStatement PerceptionSurveyStatement { get; set; }
     }
 }

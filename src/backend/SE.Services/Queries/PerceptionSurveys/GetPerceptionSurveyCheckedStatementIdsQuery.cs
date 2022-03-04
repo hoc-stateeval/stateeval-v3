@@ -44,12 +44,15 @@ namespace SE.Core.Queries.PerceptionSurveys
 
             public async Task<IResponse<List<long>>> Handle(GetPerceptionSurveyCheckedStatementsIdsQuery request, CancellationToken cancellationToken)
             {
-                List<long> ids = await _dataContext.PerceptionSurveyPerceptionSurveyStatements
-                    .Where(x => x.PerceptionSurveyId == request.SurveyId)
-                    .Select(x => x.PerceptionSurveyStatementId)
-                    .ToListAsync();
+                var survey = await _dataContext.PerceptionSurveys
+                   .Include(x => x.PerceptionSurveyPerceptionSurveyStatements)
+                   .ThenInclude(x => x.PerceptionSurveyStatement)
+                   .Where(x => x.Id == request.SurveyId)
+                   .FirstAsync();
 
-                return Response.Success(ids);
+                var statementIds = survey.PerceptionSurveyPerceptionSurveyStatements.Select(x => x.PerceptionSurveyStatementId).ToList();
+
+                return Response.Success(statementIds);
             }
         }
     }

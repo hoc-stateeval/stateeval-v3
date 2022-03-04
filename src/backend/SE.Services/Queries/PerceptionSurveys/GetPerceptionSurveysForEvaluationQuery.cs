@@ -45,6 +45,7 @@ namespace SE.Core.Queries.PerceptionSurveys
             {
                 var surveys = await _dataContext.PerceptionSurveys
                     .Include(x=>x.PerceptionSurveyPerceptionSurveyStatements)
+                    .ThenInclude(x=>x.PerceptionSurveyStatement)
                     .Where(x => x.EvaluationId == request.EvaluationId)
                     .Select(x => x.MapToPerceptionSurveyDTO())
                     .ToListAsync();
