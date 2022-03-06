@@ -1,4 +1,5 @@
-﻿using SE.Core.Models;
+﻿using SE.Core.Common;
+using SE.Core.Models;
 using SE.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,10 @@ namespace SE.Core.Mappers
             target.Title = source.Title;
             target.EvaluationId = source.EvaluationId;
             target.SchoolCode = source.SchoolCode;
+            target.TinyURL = source.TinyURL;
 
-            target.Statements = source.PerceptionSurveyPerceptionSurveyStatements
-                .Select(x => x.PerceptionSurveyStatement.MapToPerceptionSurveyStatementDTO()).ToList();
-
+            target.WfState = (WfState)source.WfState;
+            target.WfStateDisplayName = EnumUtils.MapWfStateToDisplayName((WfState)source.WfState, "");
 
             return target;
         }

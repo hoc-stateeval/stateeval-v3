@@ -95,6 +95,7 @@ const EvaluationResourcesDashboard = lazy(() => import('@evaluation/resources/Da
 const EvaluationReportArchivesDashboard = lazy(() => import('@evaluation/report-archives/Dashboard'));
 const PerceptionSurveysDashboard = lazy(() => import('@evaluation/perception-surveys/Dashboard'));
 const PerceptionSurvey = lazy(() => import('@evaluation/perception-surveys/PerceptionSurvey'));
+const PerceptionSurveyStudentInput = lazy(() => import('@evaluation/perception-surveys/StudentInput'));
 
 const evaluationSharedRoutes = {
   artifacts:  {
@@ -420,6 +421,10 @@ const evaluationRoutes_TR_ME = {
     {
       path: evaluationPaths.trMePerceptionSurveyById,
       element : <PerceptionSurvey />,
+    },
+    {
+      path: evaluationPaths.trMePerceptionSurveyStudentInputByGuid,
+      element : <PerceptionSurveyStudentInput />,
     },
     ...trainingRoutes,
   ]

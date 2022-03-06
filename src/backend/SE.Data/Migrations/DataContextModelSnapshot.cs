@@ -772,6 +772,9 @@ namespace SE.Data.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<int>("WfState")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("PerceptionSurvey", "dbo");
@@ -790,6 +793,38 @@ namespace SE.Data.Migrations
                     b.HasIndex("PerceptionSurveyStatementId");
 
                     b.ToTable("PerceptionSurveyPerceptionSurveyStatement", "dbo");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.PerceptionSurveyResponse", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<int>("LevelOfAgreement")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("PerceptionSurveyId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("PerceptionSurveyStatementId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("StatementId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("SurveyId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PerceptionSurveyId");
+
+                    b.HasIndex("PerceptionSurveyStatementId");
+
+                    b.ToTable("PerceptionSurveyResponse", "dbo");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.PerceptionSurveyStatement", b =>
@@ -1705,6 +1740,21 @@ namespace SE.Data.Migrations
                         .HasForeignKey("PerceptionSurveyStatementId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("PerceptionSurvey");
+
+                    b.Navigation("PerceptionSurveyStatement");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.PerceptionSurveyResponse", b =>
+                {
+                    b.HasOne("SE.Domain.Entities.PerceptionSurvey", "PerceptionSurvey")
+                        .WithMany()
+                        .HasForeignKey("PerceptionSurveyId");
+
+                    b.HasOne("SE.Domain.Entities.PerceptionSurveyStatement", "PerceptionSurveyStatement")
+                        .WithMany()
+                        .HasForeignKey("PerceptionSurveyStatementId");
 
                     b.Navigation("PerceptionSurvey");
 

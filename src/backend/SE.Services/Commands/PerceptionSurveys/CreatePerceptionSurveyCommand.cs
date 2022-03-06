@@ -55,11 +55,12 @@ namespace SE.Core.Commands.PerceptionSurveys
             survey.Title = "New Perception Survey";
             survey.SchoolCode = request.SchoolCode;
             survey.EvaluationId = request.EvaluationId;
+            survey.WfState = WfState.PERCEPTION_SURVEY_BUILDING;
 
             Guid guid = Guid.NewGuid();
             survey.Guid = guid;
 
-            string fullUrl = request.LocationOrigin + "/#/student-perception-survey/" + guid;
+            string fullUrl = request.LocationOrigin + "/perception-surveys/student-survey/" + guid;
             if (request.LocationOrigin.Contains("localhost"))
             {
                 survey.TinyURL = fullUrl;

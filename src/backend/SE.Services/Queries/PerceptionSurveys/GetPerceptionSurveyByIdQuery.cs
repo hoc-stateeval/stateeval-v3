@@ -45,14 +45,12 @@ namespace SE.Core.Queries.PerceptionSurveys
 
             public async Task<IResponse<PerceptionSurveyDTO>> Handle(GetPerceptionSurveyByIdQuery request, CancellationToken cancellationToken)
             {
-                PerceptionSurvey survey = await _dataContext.PerceptionSurveys
-                    .Include(x => x.PerceptionSurveyPerceptionSurveyStatements)
-                    .ThenInclude(x => x.PerceptionSurveyStatement)
+                PerceptionSurvey? survey = await _dataContext.PerceptionSurveys
                     .Where(x => x.Id == request.Id).FirstOrDefaultAsync();
 
                 if (survey == null)
                 {
-                    throw new NotFoundException(nameof(EvidenceItem), request.Id);
+                    throw new NotFoundException(nameof(PerceptionSurvey), request.Id);
                 }
 
                 return Response.Success(survey.MapToPerceptionSurveyDTO());

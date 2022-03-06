@@ -13,12 +13,21 @@ namespace SE.API.Controllers
         {
         }
 
-        [HttpGet("{tagName}")]
+        [HttpGet("by-tagname/{tagName}")]
         public async Task<IActionResult> GetPerceptionSurveyStatementForFrameworkTagName(string tagName)
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;
             var survey = await _mediator.Send(new GetPerceptionSurveyStatementsForFrameworkTagNameQuery(tagName), cancelationToken);
             return Ok(survey);
+        }
+
+
+        [HttpGet("{surveyId:long}")]
+        public async Task<IActionResult> GetPerceptionSurveyStatementsForSurvey(long surveyId)
+        {
+            CancellationToken cancelationToken = HttpContext.RequestAborted;
+            var statements = await _mediator.Send(new GetPerceptionSurveyStatementsQuery(surveyId), cancelationToken);
+            return Ok(statements);
         }
 
         [HttpGet("{surveyId}/checkedStatementIds")]

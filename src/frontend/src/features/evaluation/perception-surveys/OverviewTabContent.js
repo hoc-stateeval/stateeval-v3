@@ -1,7 +1,7 @@
 import { 
   Stack,
   Typography
-} from "@mui/icons-material";
+} from "@mui/material";
 
 import CSTPImage from "../../../images/cstp.png";
 
