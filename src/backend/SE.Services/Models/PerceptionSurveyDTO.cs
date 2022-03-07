@@ -14,7 +14,6 @@ namespace SE.Core.Models
         public string SchoolCode { get; set; } = "";
         public string Title { get; set; } = "";
 
-        public List<PerceptionSurveyStatementDTO> Statements { get; set; } = new List<PerceptionSurveyStatementDTO>();
-
+        public WfState WfState { get; set; }
     }
 }
