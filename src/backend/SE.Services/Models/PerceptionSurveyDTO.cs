@@ -14,6 +14,7 @@ namespace SE.Core.Models
         public string SchoolCode { get; set; } = "";
         public string Title { get; set; } = "";
         public string TinyURL { get; set; } = "";
+        public WfState WfState { get; set;  }
         public string WfStateDisplayName { get; set; } = "";
     }
 }
