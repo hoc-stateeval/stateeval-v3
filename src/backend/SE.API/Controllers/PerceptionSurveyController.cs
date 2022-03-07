@@ -22,12 +22,20 @@ namespace SE.API.Controllers
             return Ok(surveys);
         }
 
-        [HttpGet("{id:long}")]
-        public async Task<IActionResult> GetPerceptionSurveyById(long id)
+        [HttpGet("{guid}")]
+        public async Task<IActionResult> GetPerceptionSurveyByGuid(Guid guid)
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;
-            var survey = await _mediator.Send(new GetPerceptionSurveyByIdQuery(id), cancelationToken);
+            var survey = await _mediator.Send(new GetPerceptionSurveyByGuidQuery(guid), cancelationToken);
             return Ok(survey);
+        }
+
+        [HttpPut("{id:long}")]
+        public async Task<IActionResult> UpdatePerceptionSurvey(long surveyId, [FromBody] UpdatePerceptionSurveyCommand command)
+        {
+            CancellationToken cancelationToken = HttpContext.RequestAborted;
+            await _mediator.Send(command, cancelationToken);
+            return Ok(Unit.Value);
         }
 
         [HttpPost("evaluation/{evaluationId:long}")]

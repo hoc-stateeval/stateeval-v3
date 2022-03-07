@@ -24,6 +24,7 @@ namespace SE.Data
         public DbSet<PerceptionSurvey> PerceptionSurveys { get; set; }
 
         public DbSet<PerceptionSurveyStatement> PerceptionSurveyStatements { get; set; }
+        public DbSet<PerceptionSurveyResponse> PerceptionSurveyResponses { get; set; }
         public DbSet<PerceptionSurveyPerceptionSurveyStatement> PerceptionSurveyPerceptionSurveyStatements { get; set;}
 
         public DbSet<RefreshToken> RefreshTokens { get; set; }

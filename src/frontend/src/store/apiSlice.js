@@ -82,8 +82,8 @@ export const apiSlice = createApi({
       query: (evaluationId) => ({ url: `perception-surveys/evaluation/${evaluationId}`, method: 'get' }),
     }),
 
-    getPerceptionSurveyById: builder.query({
-      query: (data) => ({ url: `perception-surveys/${data.id}}`, method: 'get' }),
+    getPerceptionSurveyByGuid: builder.query({
+      query: (guid) => ({ url: `perception-surveys/${guid}}`, method: 'get' }),
     }),
 
     createPerceptionSurvey: builder.mutation({
@@ -91,7 +91,7 @@ export const apiSlice = createApi({
     }),
 
     getPerceptionSurveyStatementsForFrameworkTagName: builder.query({
-      query: (tagName) => ({ url: `perception-survey-statements/${tagName}`, method: 'get' }),
+      query: (tagName) => ({ url: `perception-survey-statements/by-tagname/${tagName}`, method: 'get' }),
     }),
     getPerceptionSurveyCheckedStatementIds: builder.query({
       query: (surveyId) => ({ url: `perception-survey-statements/${surveyId}/checkedStatementIds`, method: 'get' }),
@@ -225,5 +225,6 @@ export const {
   useGetPerceptionSurveyStatementsForFrameworkTagNameQuery,
   useGetPerceptionSurveyCheckedStatementIdsQuery,
   useAddStatementToSurveyMutation,
-  useRemoveStatementFromSurveyMutation
+  useRemoveStatementFromSurveyMutation,
+  useGetPerceptionSurveyByGuidQuery
 } = apiSlice

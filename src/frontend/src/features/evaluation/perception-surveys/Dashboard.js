@@ -6,7 +6,6 @@ import SurveyList from './SurveyList';
 import TabPanel from "@components"
 
 
-
 const Dashboard = () => {
   
   const [value, setValue] = useState(0);
@@ -32,7 +31,7 @@ const Dashboard = () => {
       </TabPanel>
     </Box>
     </>
-  )
-}
+  );
+};
 
 export default Dashboard;

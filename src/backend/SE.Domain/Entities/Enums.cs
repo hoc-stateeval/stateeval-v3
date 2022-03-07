@@ -6,6 +6,16 @@ using System.Threading.Tasks;
 
 namespace SE.Domain.Entities
 {
+    public enum PerceptionSurveyLevelOfAgreement
+    {
+        UNDEFINED = 0,
+        STRONGLY_DISAGREE,
+        DISAGREE,
+        NEITHER,
+        AGREE,
+        STRONGLY_AGREE
+    }
+
     public enum EvidenceCollectionScoreType
     {
         RR = 1,

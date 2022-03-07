@@ -105,7 +105,9 @@ const AddOtherEvidence = () => {
           </Box>
         </Box>
         }
-        {!showOtherEvidenceInputArea && <Button 
+        {!showOtherEvidenceInputArea && 
+        <Button 
+          sx={{alignSelf: 'flex-start'}}
           variant="contained" 
           color="secondary" 
           size="small"

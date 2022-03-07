@@ -70,7 +70,7 @@ export const adminPaths = {
 const evaluationRoot = '/evaluation';
 const evalDashboardsRoot = `${evaluationRoot}/dashboards`
 const evalSettingsRoot = `${evaluationRoot}/settings`;
-const evalPerceptionSurveysRoot =  `${evaluationRoot}/perceptionSurveys`
+const evalPerceptionSurveysRoot =  `${evaluationRoot}/perception-surveys`
 
 export const evaluationPaths = {
   prTrDashboard: `${evalDashboardsRoot}/pr-tr`,
@@ -92,6 +92,7 @@ export const evaluationPaths = {
   resources:  `${evaluationRoot}/resources`,
   trMePerceptionSurveys: evalPerceptionSurveysRoot,
   trMePerceptionSurveyById: `${evalPerceptionSurveysRoot}/:id`,
+  trMePerceptionSurveyStudentInputByGuid: `${evalPerceptionSurveysRoot}/student-input/:guid`,
 
   settingsRoot: `${evalSettingsRoot}`,
   settingsGeneral: `${evalSettingsRoot}/general`,

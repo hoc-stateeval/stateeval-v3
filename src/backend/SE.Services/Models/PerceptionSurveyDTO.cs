@@ -13,7 +13,7 @@ namespace SE.Core.Models
         public long EvaluationId { get; set; }
         public string SchoolCode { get; set; } = "";
         public string Title { get; set; } = "";
-
-        public WfState WfState { get; set; }
+        public string TinyURL { get; set; } = "";
+        public string WfStateDisplayName { get; set; } = "";
     }
 }
