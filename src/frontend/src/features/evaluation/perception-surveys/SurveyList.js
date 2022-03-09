@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useErrorHandler } from 'react-error-boundary';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
@@ -11,6 +11,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+
 
 import {
   selectActiveWorkAreaContext,
@@ -73,8 +74,16 @@ async function mkNewSurvey (){
             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
           >
             <TableCell align="right">{survey.title}</TableCell>
-            <TableCell align="right">h</TableCell>
-            <TableCell align="right"></TableCell>
+            <TableCell align="right">{survey.wfStateDisplayName}</TableCell>
+            <TableCell align="right">
+            <Button variant='contained' 
+              color='secondary' 
+              size="small" 
+              component={RouterLink}
+              to={`${evaluationPaths.trMePerceptionSurveys}/${survey.id}`}>
+                View Survey
+             </Button>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

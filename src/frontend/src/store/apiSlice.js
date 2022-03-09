@@ -23,7 +23,7 @@ export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: axiosBaseQuery({ baseUrl: baseUrl }),
   keepUnusedDataFor: 10,
-  tagTypes: ['EvidenceItem', 'EvidencePackage', 'CheckedStatementIds', 'PerceptionSurveys'],
+  tagTypes: ['EvidenceItem', 'EvidencePackage', 'CheckedStatementIds', 'PerceptionSurveys', 'Observations'],
   endpoints: builder => ({
 
     // evidence collections
@@ -76,7 +76,17 @@ export const apiSlice = createApi({
         return response;
       },
     }),
-    
+
+    // observations
+    getObservationsForEvaluation: builder.query({
+      query: (evaluationId) => ({ url: `observations/evaluation/${evaluationId}`, method: 'get' }),
+      providesTags: ['Observations'],
+    }),
+    createObservation: builder.mutation({
+      query: (data) => ({ url: `observations/evaluation/${data.evaluationId}`, method: 'post', data: data }),
+      invalidatesTags: ['Observations'],
+    }),
+
     // perception surveys
     getPerceptionSurveysForEvaluation: builder.query({
       query: (evaluationId) => ({ url: `perception-surveys/evaluation/${evaluationId}`, method: 'get' }),
@@ -228,5 +238,7 @@ export const {
   useGetPerceptionSurveyCheckedStatementIdsQuery,
   useAddStatementToSurveyMutation,
   useRemoveStatementFromSurveyMutation,
-  useGetPerceptionSurveyByGuidQuery
+  useGetPerceptionSurveyByGuidQuery,
+  useGetObservationsForEvaluationQuery,
+  useCreateObservationMutation
 } = apiSlice
