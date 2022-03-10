@@ -26,13 +26,16 @@ namespace SE.Core.Commands.Observations
     }
     public sealed class CreateObservationCommand : IRequest<IResponse<ObservationDTO>>
     {
-        public long EvaluationId { get; }
-        public long EvaluatorId { get; }
+        public long EvaluationId { get; set; }
+        public long EvaluatorId { get; set; }
 
-        public CreateObservationCommand(long evaluationId, long evaluatorId)
+        public ObservationType ObservationType { get; set; }
+
+        public CreateObservationCommand(long evaluationId, long evaluatorId, ObservationType observationType)
         {
             EvaluationId = evaluationId;
-            EvaluatorId = evaluatorId;  
+            EvaluatorId = evaluatorId;
+            ObservationType = observationType;
         }
     }
 
@@ -73,9 +76,14 @@ namespace SE.Core.Commands.Observations
 
             string shortName = $"Obs {EnumUtils.GetCurrentSchoolYearDisplayName()} .{Convert.ToString(count + 1)}";
 
-            Observation observation = new Observation(evaluation, evaluator, shortName);
+            Observation observation = new Observation(evaluation, evaluator, shortName, request.ObservationType);
             _dataContext.Observations.Add(observation);
             _dataContext.SaveChanges();
+
+            observation = await _dataContext.Observations
+                .Include(x => x.Evaluator)
+                .Where(x => x.Id == observation.Id)
+                .FirstAsync();
 
             return Response.Success(observation.MapToObservationDTO());
         }

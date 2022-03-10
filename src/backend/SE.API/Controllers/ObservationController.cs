@@ -5,6 +5,7 @@ using SE.Core.Queries;
 using SE.Core.Commands;
 using SE.Core.Models;
 using SE.Core.Commands.Observations;
+using SE.Core.Queries.Observations;
 
 namespace SE.API.Controllers
 {
@@ -15,8 +16,16 @@ namespace SE.API.Controllers
         {
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateObservationCommand command)
+        [HttpGet("evaluation/{evaluationId:long}")]
+        public async Task<IActionResult> GetObservationsForEvaluation(long evaluationId)
+        {
+            CancellationToken cancelationToken = HttpContext.RequestAborted;
+            var observations = await _mediator.Send(new GetObservationsForEvaluationQuery(evaluationId), cancelationToken);
+            return Ok(observations);
+        }
+
+        [HttpPost("evaluation/{evaluationId:long}")]
+        public async Task<IActionResult> Create(long evaluationId, CreateObservationCommand command)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
             return Ok(await _mediator.Send(command, cancelationToken));

@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace SE.Domain.Entities
 {
+    public enum ObservationType
+    {
+        UNDEFINED = 0,
+        FORMAL,
+        INFORMAL
+    }
     public enum PerceptionSurveyLevelOfAgreement
     {
         UNDEFINED = 0,

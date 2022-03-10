@@ -76,6 +76,15 @@ export const apiSlice = createApi({
         return response;
       },
     }),
+
+    // observations
+    getObservationsForEvaluation: builder.query({
+      query: (evaluationId) => ({ url: `observations/evaluation/${evaluationId}`, method: 'get' }),
+    }),
+
+    createObservation: builder.mutation({
+      query: (data) => ({ url: `observations/evaluation/${data.evaluationId}`, method: 'post', data: data }),
+    }),
     
     // perception surveys
     getPerceptionSurveysForEvaluation: builder.query({
@@ -226,5 +235,7 @@ export const {
   useGetPerceptionSurveyCheckedStatementIdsQuery,
   useAddStatementToSurveyMutation,
   useRemoveStatementFromSurveyMutation,
-  useGetPerceptionSurveyByGuidQuery
+  useGetPerceptionSurveyByGuidQuery,
+  useGetObservationsForEvaluationQuery,
+  useCreateObservationMutation
 } = apiSlice

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SE.Core.Common;
 
 namespace SE.Core.Mappers
 {
@@ -18,8 +19,17 @@ namespace SE.Core.Mappers
             target.ShortName = source.ShortName;
             target.Title = source.Title;
             target.EvaluationId = source.EvaluationId;
+            target.EvaluatorId = source.EvaluatorId;
+            target.EvaluatorDisplayName = source.Evaluator.FirstName + " " + source.Evaluator.LastName;
+
             target.EvaluateePlanType = source.EvaluateePlanType;
             target.CreationDateTime = source.CreationDateTime;
+
+            target.WfState = source.WfState;
+            target.WfStateDisplayName = EnumUtils.MapWfStateToDisplayName(source.WfState, "");
+
+            target.ObservationType = source.ObservationType;
+            target.ObservationTypeDisplayName = EnumUtils.MapObservationTypeToDisplayName(source.ObservationType);
 
             return target;
         }

@@ -10,6 +10,7 @@ const SidebarLogo = () => {
     <>
      <Box sx={{pl:2}}>
             <Button component={Link}
+              variant="text"
               disableRipple
               sx={{p:'0'}}
               to="/">

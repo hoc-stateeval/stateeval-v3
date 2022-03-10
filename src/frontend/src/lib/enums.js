@@ -1,3 +1,8 @@
+export const ObservationType = {
+  'UNDEFINED': 0,
+  'FORMAL': 1,
+  'INFORMAL': 2
+};
 
 export const EvidenceType = {
   'UNDEFINED': 0,

@@ -17,6 +17,11 @@ namespace SE.Domain.Entities
         public BaseRecurringEvidenceCollection(string shortName, string title, DateTime creationDateTime,
                 long createdByUserId, long evaluationId)
         {
+            ShortName = shortName;
+            Title = title;
+            CreationDateTime = creationDateTime;
+            EvaluationId = evaluationId;
+            CreatedByUserId = createdByUserId;
         }
 
         [MaxLength(50)]

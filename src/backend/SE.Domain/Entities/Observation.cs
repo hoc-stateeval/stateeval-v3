@@ -14,13 +14,15 @@ namespace SE.Domain.Entities
         public Observation() { 
         }
 
-        public Observation(Evaluation evaluation, User evaluator, string shortName)
+        public Observation(Evaluation evaluation, User evaluator, string shortName, ObservationType observationType)
             :base(shortName, shortName, DateTime.Now, evaluator.Id, evaluation.Id)
         {
             EvaluateePlanType = (EvaluateePlanType)evaluation.EvaluateePlanType;
-            EvaluatorId = evaluation.Id;
+            EvaluatorId = evaluator.Id;
+            SchoolCode = evaluation.SchoolCode;
+            ObservationType = observationType;
+            WfState = WfState.OBS_IN_PROGRESS_TOR;
         }
-
 
         [ForeignKey("Evaluator")]
         public long EvaluatorId { get; set; }
@@ -28,13 +30,15 @@ namespace SE.Domain.Entities
         [Required]
         public virtual User Evaluator { get; set; }
 
-        [ForeignKey("Evaluatee")]
-        public long EvaluateeId { get; set; }
-
-        [Required]
-        public virtual User Evaluatee { get; set; }
-
         public EvaluateePlanType EvaluateePlanType { get; set; }
+
+        public ObservationType ObservationType { get; set; }
+
+        [MaxLength(20)]
+        [Required]
+        public string SchoolCode { get; set; }
+
+        public WfState WfState { get; set; }
 
     }
 }

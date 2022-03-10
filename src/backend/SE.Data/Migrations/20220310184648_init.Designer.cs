@@ -12,7 +12,7 @@ using SE.Data;
 namespace SE.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220306013921_init")]
+    [Migration("20220310184648_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -708,9 +708,6 @@ namespace SE.Data.Migrations
                     b.Property<DateTime>("CreationDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("EvaluateeId")
-                        .HasColumnType("bigint");
-
                     b.Property<int>("EvaluateePlanType")
                         .HasColumnType("int");
 
@@ -719,6 +716,14 @@ namespace SE.Data.Migrations
 
                     b.Property<long>("EvaluatorId")
                         .HasColumnType("bigint");
+
+                    b.Property<int>("ObservationType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SchoolCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("ShortName")
                         .IsRequired()
@@ -730,11 +735,12 @@ namespace SE.Data.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
+                    b.Property<int>("WfState")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedByUserId");
-
-                    b.HasIndex("EvaluateeId");
 
                     b.HasIndex("EvaluationId")
                         .IsUnique();
@@ -1702,12 +1708,6 @@ namespace SE.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SE.Domain.Entities.User", "Evaluatee")
-                        .WithMany()
-                        .HasForeignKey("EvaluateeId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("SE.Domain.Entities.Evaluation", "Evaluation")
                         .WithOne()
                         .HasForeignKey("SE.Domain.Entities.Observation", "EvaluationId")
@@ -1721,8 +1721,6 @@ namespace SE.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("CreatedByUser");
-
-                    b.Navigation("Evaluatee");
 
                     b.Navigation("Evaluation");
 

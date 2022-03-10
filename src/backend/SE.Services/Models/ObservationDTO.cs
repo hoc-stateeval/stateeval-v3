@@ -11,11 +11,19 @@ namespace SE.Core.Models
     {
         public long Id { get; set; }
         public long EvaluationId { get; set; }
+        public long EvaluatorId { get; set; }
+        public string EvaluatorDisplayName { get; set; } = "";
         public string ShortName { get; set; } = "";
         public string Title { get; set; } = "";
         public EvaluateePlanType EvaluateePlanType { get; set; }
+
+        public ObservationType ObservationType { get; set; }
+        public string ObservationTypeDisplayName { get; set; } = "";
+
         public DateTime CreationDateTime { get; set; }
 
-        public Guid? ObservationNoteClientId { get; set; }
+        public WfState WfState { get; set; }
+
+        public string WfStateDisplayName { get; set; } = "";
     }
 }

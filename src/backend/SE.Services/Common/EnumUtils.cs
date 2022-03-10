@@ -104,6 +104,16 @@ namespace SE.Core.Common
             return tagName;
         }
 
+        public static string MapObservationTypeToDisplayName(ObservationType type)
+        {
+            var typeString = type switch
+            {
+                ObservationType.INFORMAL => "Informal",
+                ObservationType.FORMAL => "Formal",
+                _ => throw new Exception($"MapObservationTypeToDisplayName: Unknown mapping: {type}")
+            };
+            return typeString;
+        }
         public static string MapRoleTypeToDisplayName(RoleType role)
         {
             var roleString = role switch

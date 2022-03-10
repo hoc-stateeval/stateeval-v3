@@ -15,7 +15,7 @@ namespace SE.API.Controllers
 
 
         [HttpGet("evaluation/{evaluationId:long}")]
-        public async Task<IActionResult> GetPerceptionSurvesyForEvaluation(long evaluationId)
+        public async Task<IActionResult> GetPerceptionSurveysForEvaluation(long evaluationId)
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;
             var surveys = await _mediator.Send(new GetPerceptionSurveysForEvaluationQuery(evaluationId), cancelationToken);

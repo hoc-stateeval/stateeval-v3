@@ -804,8 +804,10 @@ namespace SE.Data.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EvaluatorId = table.Column<long>(type: "bigint", nullable: false),
-                    EvaluateeId = table.Column<long>(type: "bigint", nullable: false),
                     EvaluateePlanType = table.Column<int>(type: "int", nullable: false),
+                    ObservationType = table.Column<int>(type: "int", nullable: false),
+                    SchoolCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    WfState = table.Column<int>(type: "int", nullable: false),
                     ShortName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Title = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -828,12 +830,6 @@ namespace SE.Data.Migrations
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Observation_User_EvaluateeId",
-                        column: x => x.EvaluateeId,
-                        principalSchema: "dbo",
-                        principalTable: "User",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Observation_User_EvaluatorId",
                         column: x => x.EvaluatorId,
@@ -1256,12 +1252,6 @@ namespace SE.Data.Migrations
                 schema: "dbo",
                 table: "Observation",
                 column: "CreatedByUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Observation_EvaluateeId",
-                schema: "dbo",
-                table: "Observation",
-                column: "EvaluateeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Observation_EvaluationId",

@@ -71,6 +71,7 @@ const evaluationRoot = '/evaluation';
 const evalDashboardsRoot = `${evaluationRoot}/dashboards`
 const evalSettingsRoot = `${evaluationRoot}/settings`;
 const evalPerceptionSurveysRoot =  `${evaluationRoot}/perception-surveys`
+const evalObservationsRoot =  `${evaluationRoot}/observations`
 
 export const evaluationPaths = {
   prTrDashboard: `${evalDashboardsRoot}/pr-tr`,
@@ -85,6 +86,7 @@ export const evaluationPaths = {
   ytdEvidence: `${evaluationRoot}/ytd`,
   studentGrowth: `${evaluationRoot}/sgg`,
   observations: `${evaluationRoot}/observations`,
+  observationById: `${evalObservationsRoot}/:id`,
   selfAssessments: `${evaluationRoot}/self-assessments`,
   midYearEvaluation:  `${evaluationRoot}/mid-year-eval`,
   summativeEvaluation: `${evaluationRoot}/summative-eval`,

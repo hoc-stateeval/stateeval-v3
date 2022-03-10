@@ -53,6 +53,13 @@ let theme = createTheme(
       },
     },
     components: {
+      MuiButton: {
+        defaultProps: {
+          color: 'secondary',
+          size: 'small',
+          variant: 'contained'
+        },
+      },
       MuiTableHead: {
         styleOverrides: {
           root: {

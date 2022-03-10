@@ -88,6 +88,7 @@ const DvCtDashboard = lazy(() => import('@district-viewer/dashboards/dv-ct/Dashb
 const DvDeDashboard = lazy(() => import('@district-viewer/dashboards/dv-de/Dashboard'));
 const DvDteDashboard = lazy(() => import('@district-viewer/dashboards/dv-dte/Dashboard'));
 const ObservationsDashboard = lazy(() => import('@evaluation/observations/Dashboard'));
+const Observation = lazy(() => import('@evaluation/observations/Observation'));
 const SelfAssessmentsDashboard = lazy(() => import('@evaluation/self-assessments/Dashboard'));
 const SummativeEvalDashboard = lazy(() => import('@evaluation/summative-eval/Dashboard'));
 const MidYearEvalDashboard = lazy(() => import('@evaluation/mid-year-eval/Dashboard'));
@@ -113,6 +114,10 @@ const evaluationSharedRoutes = {
   observations: {
     path: evaluationPaths.observations,
     element: <ObservationsDashboard/>
+  },
+  observationById: {
+    path: evaluationPaths.observationById,
+    element: <Observation/>
   },
   selfAssessments: {
     path: evaluationPaths.selfAssessments,
@@ -146,6 +151,7 @@ const evaluationRoutes_coreRoutes = [
   evaluationSharedRoutes.ytdEvidence,
   evaluationSharedRoutes.studentGrowth,
   evaluationSharedRoutes.observations,
+  evaluationSharedRoutes.observationById,
   evaluationSharedRoutes.selfAssessments,
   evaluationSharedRoutes.midYearEvaluation,
   evaluationSharedRoutes.summativeEvaluation,
@@ -386,6 +392,7 @@ const evaluationRoutes_CT = {
     evaluationSharedRoutes.artifacts,
     evaluationSharedRoutes.ytdEvidence,
     evaluationSharedRoutes.observations,
+    evaluationSharedRoutes.observationById,
     evaluationSharedRoutes.midYearEvaluation,
     evaluationSharedRoutes.summativeEvaluation,
     evaluationSharedRoutes.resources,
