@@ -22,7 +22,6 @@ import {
 
 import {  
   selectCurrentUser,
-  selectActiveWorkAreaContext,
   selectActiveEvaluationId,
 } from "@user-context-slice";
 
@@ -112,6 +111,7 @@ const Dashboard = () => {
       <TableHead>
         <TableRow>
           <TableCell align="center">Title</TableCell>
+          <TableCell align="center">Type</TableCell>
           <TableCell align="center">Status</TableCell>
           <TableCell align="center">Action</TableCell>
         </TableRow>
@@ -124,7 +124,10 @@ const Dashboard = () => {
                   {observation.title}
                 </TableCell>
                 <TableCell align="center">
-                  {observation.wfStateDisplayString}
+                  {observation.observationTypeDisplayName}
+                </TableCell>
+                <TableCell align="center">
+                  {observation.wfStateDisplayName}
                 </TableCell>
                 <TableCell align="center">
                 <Button
