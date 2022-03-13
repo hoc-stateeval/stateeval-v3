@@ -13,6 +13,7 @@ namespace SE.Core.Models
         public long EvaluationId { get; set; }
         public long EvaluatorId { get; set; }
         public string EvaluatorDisplayName { get; set; } = "";
+        public string EvaluateeDisplayName { get; set; } = "";
         public string ShortName { get; set; } = "";
         public string Title { get; set; } = "";
         public EvaluateePlanType EvaluateePlanType { get; set; }

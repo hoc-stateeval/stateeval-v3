@@ -44,6 +44,8 @@ namespace SE.Core.Queries.Observations
             public async Task<IResponse<List<ObservationDTO>>> Handle(GetObservationsForEvaluationQuery request, CancellationToken cancellationToken)
             {
                 var observations = await _dataContext.Observations
+                    .Include(x => x.Evaluator)
+                    .Include(x => x.Evaluation).ThenInclude(x => x.Evaluatee)
                     .Where(x => x.EvaluationId == request.EvaluationId)
                     .Select(x => x.MapToObservationDTO())
                     .ToListAsync();

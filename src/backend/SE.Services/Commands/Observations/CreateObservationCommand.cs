@@ -82,6 +82,7 @@ namespace SE.Core.Commands.Observations
 
             observation = await _dataContext.Observations
                 .Include(x => x.Evaluator)
+                .Include(x => x.Evaluation).ThenInclude(x=>x.Evaluatee)
                 .Where(x => x.Id == observation.Id)
                 .FirstAsync();
 

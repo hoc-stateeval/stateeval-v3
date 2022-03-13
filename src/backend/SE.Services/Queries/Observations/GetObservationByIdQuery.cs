@@ -47,6 +47,8 @@ namespace SE.Core.Queries.Observations
             public async Task<IResponse<ObservationDTO>> Handle(GetObservationByIdQuery request, CancellationToken cancellationToken)
             {
                 Observation? observation = await _dataContext.Observations
+                    .Include(x => x.Evaluator)
+                    .Include(x => x.Evaluation).ThenInclude(x => x.Evaluatee)
                     .Where(x => x.Id == request.Id)
                     .FirstOrDefaultAsync();
 

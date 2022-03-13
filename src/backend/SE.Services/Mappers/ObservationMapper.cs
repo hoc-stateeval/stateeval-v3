@@ -21,6 +21,7 @@ namespace SE.Core.Mappers
             target.EvaluationId = source.EvaluationId;
             target.EvaluatorId = source.EvaluatorId;
             target.EvaluatorDisplayName = source.Evaluator.FirstName + " " + source.Evaluator.LastName;
+            target.EvaluateeDisplayName = source.Evaluation.Evaluatee.FirstName + " " + source.Evaluation.Evaluatee.LastName;
 
             target.EvaluateePlanType = source.EvaluateePlanType;
             target.CreationDateTime = source.CreationDateTime;
