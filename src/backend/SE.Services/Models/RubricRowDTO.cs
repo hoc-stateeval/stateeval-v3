@@ -12,6 +12,7 @@ namespace SE.Core.Models
         public string ShortName { get; set; } = "";
         public string Title { get; set; } = "";
         public string FrameworkNodeShortName { get; set; } = "";
+        public long FrameworkNodeId { get; set; }
         public bool IsStudentGrowthAligned { get; set; }
         public int Sequence { get; set; }
 

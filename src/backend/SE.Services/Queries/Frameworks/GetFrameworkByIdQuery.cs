@@ -74,6 +74,7 @@ namespace SE.Core.Queries.Frameworks
                             Id = rr.Id,
                             ShortName = rr.ShortName,
                             Title = rr.Title,
+                            FrameworkNodeId = fn.Id,
                             FrameworkNodeShortName = fn.ShortName,
                             IsStudentGrowthAligned = rr.IsStudentGrowthAligned,
                             PL1Descriptor = rr.PL1Descriptor,
