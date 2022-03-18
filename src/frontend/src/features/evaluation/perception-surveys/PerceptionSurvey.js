@@ -5,12 +5,8 @@ import { useErrorHandler } from 'react-error-boundary';
 import { useSelector } from "react-redux";
 
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Alert,
   AlertTitle,
-  Box,
   Button,
   Checkbox,
   Paper,
@@ -21,10 +17,10 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography
 } from "@mui/material";
-
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import {
   selectActiveEvaluationId,
@@ -119,6 +115,7 @@ const PerceptionSurvey = () => {
   if (getPerceptionSurveysError) errorHandler(getPerceptionSurveysError);
 
   const [statementMap, setStatementMap] = useState({});
+  const [showFilter, setShowFilter] = useState("all");
   
   const { data: activeFramework, error: getFrameworkError } = 
     useGetFrameworkByIdQuery(activeFrameworkId);
@@ -166,27 +163,17 @@ const PerceptionSurvey = () => {
     }
   }
 
-  const buildAccordionContent = () => {
+  const buildContent = (showAll) => {
     let content = [];
     for (const rubricRowId in statementMap) {
       const statementsForRubricRow = statementMap[rubricRowId];
       const rubricRow = activeFramework.rubricRowMap[rubricRowId];
       const frameworkNode = activeFramework.frameworkNodeMap[rubricRow.frameworkNodeId];
-      const checkedIdCount = statementsForRubricRow
-        .map(statement=>statement.id)
-        .filter(statementId=>checkedIds.find(checkedId=>checkedId===statementId)).length;
       content.push(
-        <Accordion key={rubricRowId}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon/>}
-            arial-controls={`${frameworkNode.shortName} - ${frameworkNode.title} : ${rubricRow.shortName} statements`}
-          >
-            <Stack direction="row" spacing={4}>
-              <Typography>{frameworkNode.shortName} - {frameworkNode.title} : {rubricRow.shortName} - {rubricRow.title} </Typography>
-              <Typography>{checkedIdCount} Statements Included</Typography>
+          <Stack direction="column" sx={{pt:4}} spacing={4}>
+            <Stack direction="row" spacing={2}>
+              <Typography variant="h4">{frameworkNode.shortName} - {frameworkNode.title} : {rubricRow.shortName} - {rubricRow.title} </Typography>
             </Stack>
-           </AccordionSummary>
-          <AccordionDetails>
             <TableContainer component={Paper}>
               <Table size="small" aria-label="simple table">
                 <TableHead>
@@ -196,27 +183,30 @@ const PerceptionSurvey = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                {statementsForRubricRow.map((statement, i)=> {
+                {statementsForRubricRow.map((statement, i) => {
                   const checked = checkedIds.includes(statement.id);
-                  return (
-                    <TableRow key={i}>
-                      <TableCell align="center" >
-                        <Checkbox
-                          checked={checked}
-                          onChange={()=>{toggleStatementChecked(statement.id)}}
-                        />
-                        </TableCell>
-                        <TableCell align="left">{statement.text}</TableCell>
-                    </TableRow>
-                  )})
-                } 
+                  const show = showFilter === 'all' || checked;
+                    return  show ? (
+                      <TableRow key={i}>
+                        <TableCell align="center" >
+                          <Checkbox
+                            checked={checked}
+                            onChange={()=>{toggleStatementChecked(statement.id)}}
+                          />
+                          </TableCell>
+                          <TableCell align="left">{statement.text}</TableCell>
+                      </TableRow>) : (<></>)
+                })}
                 </TableBody>
               </Table>
             </TableContainer>
-          </AccordionDetails>
-        </Accordion>);
+        </Stack>);
     }
     return content;
+  }
+
+  const changeShowFilter = (event, newState) => {
+    setShowFilter(newState);
   }
 
   if (!statements || !activeFramework || !checkedIds) {
@@ -227,61 +217,17 @@ const PerceptionSurvey = () => {
     <>
     <Stack direction="column" spacing={2}>
       {survey && <SurveyStatus survey={survey} />}
-      {buildAccordionContent()}
-      {/* {statementMap.map((node, i) => {
-            const statements = statementMap[node.shortName];
-            return (
-              <Accordion key={i}>
-                <AccordionSummary 
-                  expandIcon={<ExpandMoreIcon/>}
-                  arial-controls={`${node.shortName} statements`}
-                >
-                  <Typography>{node.shortName}-{node.title}</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <TableContainer component={Paper}>
-                    <Table size="small" aria-label="simple table">
-                      <TableHead>
-                        <TableRow>
-                          <TableCell align="center">Include</TableCell>
-                          <TableCell align="center">Rubric</TableCell>
-                          <TableCell align="left">Statement</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                      {nodesWithStatements.map((node, i) => {
-                        const statements = statementMap[node.shortName];
-                        return (
-                          <>
-                            <TableRow key={i}>
-                              <TableCell align="left" colspan="3">{node.shortName}-{node.title}</TableCell>
-                            </TableRow>
-                            {statements.map((statement, j)=> {
-                              const rubricRow = activeFramework.rubricRowMap[statement.rubricRowId];
-                              const checked = checkedIds.includes(statement.id);
-                              return (
-                                <TableRow key={j}>
-                                  <TableCell align="center" >
-                                    <Checkbox
-                                      checked={checked}
-                                      onChange={()=>{toggleStatementChecked(statement.id)}}
-                                    />
-                                    </TableCell>
-                                    <TableCell align="center">{rubricRow.shortName}</TableCell>
-                                    <TableCell align="left">{statement.text}</TableCell>
-                                </TableRow>
-                              )})
-                            } 
-                          </>
-                        )})
-                      }
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </AccordionDetails>
-              </Accordion>
-            )})
-      } */}
+
+      <ToggleButtonGroup
+        color="secondary"
+        value={showFilter}
+        exclusive
+        onChange={changeShowFilter}
+      >
+        <ToggleButton value="all">Show All</ToggleButton>
+        <ToggleButton value="selected">Show Selected Only</ToggleButton>
+      </ToggleButtonGroup>
+      {buildContent(showFilter)}
     </Stack>
     </>
   )
