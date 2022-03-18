@@ -30,11 +30,11 @@ namespace SE.API.Controllers
             return Ok(statements);
         }
 
-        [HttpGet("{surveyId}/checkedStatementIds")]
-        public async Task<IActionResult> GetPerceptionSurveyCheckedStatementIds(long surveyId)
+        [HttpGet("{surveyId}/statementIds")]
+        public async Task<IActionResult> GetPerceptionSurveyStatementIds(long surveyId)
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;
-            var survey = await _mediator.Send(new GetPerceptionSurveyCheckedStatementsIdsQuery(surveyId), cancelationToken);
+            var survey = await _mediator.Send(new GetPerceptionSurveyStatementsIdsQuery(surveyId), cancelationToken);
             return Ok(survey);
         }
     }

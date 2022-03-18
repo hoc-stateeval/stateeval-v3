@@ -60,5 +60,13 @@ namespace SE.API.Controllers
             var survey = await _mediator.Send(new RemoveStatementFromSurveyCommand(surveyId, statementId), cancelationToken);
             return Ok(survey);
         }
+
+        [HttpDelete("{id:long}")]
+        public async Task<IActionResult> DeleteSurvey(long id)
+        {
+            CancellationToken cancelationToken = HttpContext.RequestAborted;
+            var result = await _mediator.Send(new DeleteSurveyCommand(id), cancelationToken);
+            return Ok(result);
+        }
     }
 }

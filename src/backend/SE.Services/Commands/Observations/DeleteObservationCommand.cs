@@ -20,7 +20,6 @@ namespace SE.Core.Commands.Observations
     {
         public DeleteObservationCommandValidator()
         {
-            RuleFor(x=>x.ObservationId).NotEmpty();
         }
     }
     public sealed class DeleteObservationCommand : 

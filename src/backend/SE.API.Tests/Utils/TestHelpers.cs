@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using SE.API.Tests.Fixtures;
 using SE.Core.Commands;
 using SE.Core.Commands.Evaluations;
 using SE.Core.Commands.PerceptionSurveys;

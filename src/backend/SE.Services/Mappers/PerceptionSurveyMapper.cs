@@ -15,6 +15,7 @@ namespace SE.Core.Mappers
         {
             PerceptionSurveyDTO target = new PerceptionSurveyDTO();
             target.Id = source.Id;
+            target.Guid = source.Guid;
             target.Title = source.Title;
             target.EvaluationId = source.EvaluationId;
             target.SchoolCode = source.SchoolCode;

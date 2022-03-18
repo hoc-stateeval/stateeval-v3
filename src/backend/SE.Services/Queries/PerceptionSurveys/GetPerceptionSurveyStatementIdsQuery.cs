@@ -16,33 +16,33 @@ using SE.Core.Common.Exceptions;
 
 namespace SE.Core.Queries.PerceptionSurveys
 {
-    public class GetPerceptionSurveyCheckedStatementsIdsQueryValidator
-    : AbstractValidator<GetPerceptionSurveyCheckedStatementsIdsQuery>
+    public class GetPerceptionSurveyStatementsIdsQueryValidator
+    : AbstractValidator<GetPerceptionSurveyStatementsIdsQuery>
     {
-        public GetPerceptionSurveyCheckedStatementsIdsQueryValidator()
+        public GetPerceptionSurveyStatementsIdsQueryValidator()
         {
         }
     }
-    public sealed class GetPerceptionSurveyCheckedStatementsIdsQuery : 
+    public sealed class GetPerceptionSurveyStatementsIdsQuery : 
         IRequest<List<long>>
     {
         public long SurveyId { get; set;  }
 
-        public GetPerceptionSurveyCheckedStatementsIdsQuery(long surveyId)
+        public GetPerceptionSurveyStatementsIdsQuery(long surveyId)
         {
             SurveyId = surveyId;
         }
 
-        internal sealed class GetPerceptionSurveyCheckedStatementsIdsQueryHandler : 
-            IRequestHandler<GetPerceptionSurveyCheckedStatementsIdsQuery, List<long>>
+        internal sealed class GetPerceptionSurveyStatementsIdsQueryHandler : 
+            IRequestHandler<GetPerceptionSurveyStatementsIdsQuery, List<long>>
         {
             private readonly DataContext _dataContext;
-            public GetPerceptionSurveyCheckedStatementsIdsQueryHandler(DataContext dataContext)
+            public GetPerceptionSurveyStatementsIdsQueryHandler(DataContext dataContext)
             {
                 _dataContext = dataContext;
             }
 
-            public async Task<List<long>> Handle(GetPerceptionSurveyCheckedStatementsIdsQuery request, CancellationToken cancellationToken)
+            public async Task<List<long>> Handle(GetPerceptionSurveyStatementsIdsQuery request, CancellationToken cancellationToken)
             {
                 var survey = await _dataContext.PerceptionSurveys
                    .Include(x => x.PerceptionSurveyPerceptionSurveyStatements)
