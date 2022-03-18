@@ -1,90 +1,107 @@
-import { useErrorHandler } from "react-error-boundary";
 import { useSelector } from "react-redux";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useErrorHandler } from 'react-error-boundary';
 
-import {
+import { 
   Button,
   Paper,
+  Stack,
   Table,
-  TableBody,
-  TableCell,
   TableContainer,
   TableHead,
+  TableBody,
   TableRow,
-  Typography
-} from "@mui/material"
+  TableCell,
+} from "@mui/material";
+
+import {  
+  selectActiveWorkAreaContext,
+  selectActiveEvaluationId,
+} from "@user-context-slice";
 
 import {
   useGetPerceptionSurveysForEvaluationQuery,
-  useCreatePerceptionSurveyMutation
-} from "@api-slice"
+  useCreatePerceptionSurveyMutation,
+} from "@api-slice";
 
-import {
-  selectActiveEvaluationId,
-  selectActiveWorkAreaContext
-} from "@user-context-slice"
+import { evaluationPaths } from '@routes/paths';
 
-import { evaluationPaths } from "@routes/paths";
+import { AddCircleOutline as AddCircleOutlineIcon } from "@mui/icons-material"
 
 const SurveyList = () => {
 
+  const navigate = useNavigate();
   const errorHandler = useErrorHandler();
-
   const evaluationId = useSelector(selectActiveEvaluationId);
-  const workAreaContext = useSelector(selectActiveWorkAreaContext);
+  const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
 
-  const { data: surveys, error: getSurveysError } = useGetPerceptionSurveysForEvaluationQuery(evaluationId);
-  if (getSurveysError) errorHandler(getSurveysError);
+  const { data: surveys, error: getPerceptionSurveysError } = useGetPerceptionSurveysForEvaluationQuery(evaluationId);
+  if (getPerceptionSurveysError) errorHandler(getPerceptionSurveysError);
 
   const [createSurvey, {error: createSurveyError}] = useCreatePerceptionSurveyMutation();
   if (createSurveyError) errorHandler(createSurveyError);
 
   const onClickNewSurvey = async () => {
-
-    const survey = await createSurvey({
-      evaluationId: evaluationId,
-      schoolCode: workAreaContext.schoolCode,
-      locationOrigin: window.location.origin.toLowerCase()
-    }).unwrap();
+    const survey = await createSurvey(
+      {
+        evaluationId: evaluationId,
+        schoolCode: activeWorkAreaContext.schoolCode,
+        locationOrigin: window.location.origin.toLowerCase()
+      }
+    ).unwrap();
+    const path = `${evaluationPaths.trMePerceptionSurveys}/${survey.id}`
+    navigate(path);
   }
 
   return (
-  <>
-    <Button variant="contained" color="secondary" size="small"
-      onClick={onClickNewSurvey}>
-        Add Survey
-    </Button>
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="center">Title</TableCell>
-            <TableCell align="center">Status</TableCell>
-            <TableCell align="center">Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {surveys && surveys.map((survey, i) => (
-            <TableRow
-              key={i}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">{survey.title}</TableCell>
-              <TableCell align="center">{survey.wfStateDisplayName}</TableCell>
-              <TableCell align="center">
-              <Button variant="contained" color="secondary" size="small"
-                component={RouterLink}
-                to={`${evaluationPaths.trMePerceptionSurveys}/${survey.id}`}
-              >
-                    View Survey
-                </Button>
-              </TableCell>
+    <Stack direction="column" spacing={2}>
+      <Stack direction="row" sx={{ justifyContent: "flex-end" }} spacing={2}>
+        <Button
+          variant="contained"
+          color="secondary"
+          size="small"
+          startIcon={<AddCircleOutlineIcon />}
+          onClick={onClickNewSurvey}
+        >
+          Add Survey
+        </Button>
+      </Stack>
+      <TableContainer component={Paper}>
+        <Table size="small" aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center">Title</TableCell>
+              <TableCell align="center">Status</TableCell>
+              <TableCell align="center">Action</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  </>
+          </TableHead>
+          <TableBody>
+            {surveys &&
+              surveys.map((survey, i) => (
+                  <TableRow key={i}>
+                    <TableCell align="center">
+                      {survey.title}
+                    </TableCell>
+                    <TableCell align="center">
+                      {survey.statusDisplayString}
+                    </TableCell>
+                    <TableCell align="center">
+                    <Button
+                      component={RouterLink}
+                      to={`${evaluationPaths.trMePerceptionSurveys}/${survey.id}`}
+                      color="secondary"
+                      size="small"
+                      variant="contained"
+                    >
+                      View
+                    </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+  </Stack>
   )
 }
 
