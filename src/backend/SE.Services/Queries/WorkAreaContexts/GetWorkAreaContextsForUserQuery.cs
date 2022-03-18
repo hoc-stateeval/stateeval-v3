@@ -22,7 +22,7 @@ namespace SE.Core.Queries.WorkAreaContexts
         }
     }
     public sealed class GetWorkAreaContextsForUserQuery : 
-        IRequest<IResponse<List<WorkAreaContextDTO>>>
+        IRequest<List<WorkAreaContextDTO>>
     {
         public long UserId { get; }
 
@@ -32,7 +32,7 @@ namespace SE.Core.Queries.WorkAreaContexts
         }
 
         internal sealed class GetWorkAreaContextsForUserQueryHandler : 
-            IRequestHandler<GetWorkAreaContextsForUserQuery, IResponse<List<WorkAreaContextDTO>>>
+            IRequestHandler<GetWorkAreaContextsForUserQuery, List<WorkAreaContextDTO>>
         {
             private readonly DataContext _dataContext;
             private readonly IWorkAreaContextService _workAreaContextService;
@@ -47,7 +47,7 @@ namespace SE.Core.Queries.WorkAreaContexts
                 _evaluationService = evaluationService;
             }
 
-            public async Task<IResponse<List<WorkAreaContextDTO>>> Handle(GetWorkAreaContextsForUserQuery request, CancellationToken cancellationToken)
+            public async Task<List<WorkAreaContextDTO>> Handle(GetWorkAreaContextsForUserQuery request, CancellationToken cancellationToken)
             {
                 var workAreaContexts = await _workAreaContextService
                     .GetWorkAreaContextsForUser(request.UserId);
@@ -85,7 +85,7 @@ namespace SE.Core.Queries.WorkAreaContexts
                     }
                 });
 
-                return Response.Success(workAreaContexts);
+                return workAreaContexts;
             }
         }
     }

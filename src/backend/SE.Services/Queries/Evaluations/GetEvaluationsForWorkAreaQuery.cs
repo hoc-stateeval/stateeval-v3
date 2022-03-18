@@ -26,7 +26,7 @@ namespace SE.Core.Queries.Evaluations
         }
     }
     public sealed class GetEvaluationsForWorkAreaContextQuery : 
-        IRequest<IResponse<List<EvaluationSummaryDTO>>>
+        IRequest<List<EvaluationSummaryDTO>>
     {
         public long WorkAreaContextId { get; }
 
@@ -36,7 +36,7 @@ namespace SE.Core.Queries.Evaluations
         }
 
         internal sealed class GetEvaluationsForWorkAreaContextQueryHandler : 
-            IRequestHandler<GetEvaluationsForWorkAreaContextQuery, IResponse<List<EvaluationSummaryDTO>>>
+            IRequestHandler<GetEvaluationsForWorkAreaContextQuery, List<EvaluationSummaryDTO>>
         {
             private readonly DataContext _dataContext;
             private readonly IEvaluationService _evaluationService;
@@ -47,7 +47,7 @@ namespace SE.Core.Queries.Evaluations
                 _evaluationService = evaluationService;
             }
 
-            public async Task<IResponse<List<EvaluationSummaryDTO>>> Handle(GetEvaluationsForWorkAreaContextQuery request, CancellationToken cancellationToken)
+            public async Task<List<EvaluationSummaryDTO>> Handle(GetEvaluationsForWorkAreaContextQuery request, CancellationToken cancellationToken)
             {
                 WorkAreaContext? workAreaContext = await _dataContext.WorkAreaContexts
                     .Include(x=>x.Building)
@@ -61,7 +61,7 @@ namespace SE.Core.Queries.Evaluations
 
                 var evaluations = await _evaluationService.GetEvaluationsForWorkAreaContext(workAreaContext);
 
-                return Response.Success(evaluations);
+                return evaluations;
             }
         }
     }

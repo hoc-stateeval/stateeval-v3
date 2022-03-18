@@ -23,7 +23,7 @@ namespace SE.Core.Queries.WorkAreaContexts
         }
     }
     public sealed class GetWorkAreaContextForUserQuery : 
-        IRequest<IResponse<WorkAreaContextDTO>>
+        IRequest<WorkAreaContextDTO>
     {
         public long FrameworkContextId { get; }
         public long UserId { get; }
@@ -37,7 +37,7 @@ namespace SE.Core.Queries.WorkAreaContexts
         }
 
         internal sealed class GetWorkAreaContextForUserQueryHandler : 
-            IRequestHandler<GetWorkAreaContextForUserQuery, IResponse<WorkAreaContextDTO>>
+            IRequestHandler<GetWorkAreaContextForUserQuery, WorkAreaContextDTO>
         {
             private readonly DataContext _dataContext;
             private readonly IWorkAreaContextService _workAreaContextService;
@@ -47,7 +47,7 @@ namespace SE.Core.Queries.WorkAreaContexts
                 _workAreaContextService = workAreaContextService;
             }
 
-            public async Task<IResponse<WorkAreaContextDTO>> Handle(GetWorkAreaContextForUserQuery request, CancellationToken cancellationToken)
+            public async Task<WorkAreaContextDTO> Handle(GetWorkAreaContextForUserQuery request, CancellationToken cancellationToken)
             {
                 var workAreaContext = await _workAreaContextService
                     .ExecuteWorkAreaContextDTOQuery(x => x.UserId == request.UserId &&
@@ -55,7 +55,7 @@ namespace SE.Core.Queries.WorkAreaContexts
                                                          x.Building.SchoolCode == request.SchoolCode)
                     .FirstAsync();
 
-                return Response.Success(workAreaContext);
+                return workAreaContext;
             }
         }
     }

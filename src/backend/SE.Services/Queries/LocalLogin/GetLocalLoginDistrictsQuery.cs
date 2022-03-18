@@ -14,14 +14,14 @@ using SE.Core.Common;
 namespace SE.Core.Queries.LocalLogin
 {
     public sealed class GetLocalLoginDistrictsQuery :
-        IRequest<IResponse<List<DistrictWithSchoolsDTO>>>
+        IRequest<List<DistrictWithSchoolsDTO>>
     {
         public GetLocalLoginDistrictsQuery()
         {
         }
 
         internal sealed class GetLocalLoginDistrictsQueryHandler : 
-            IRequestHandler<GetLocalLoginDistrictsQuery, IResponse<List<DistrictWithSchoolsDTO>>>
+            IRequestHandler<GetLocalLoginDistrictsQuery, List<DistrictWithSchoolsDTO>>
         {
             private readonly DataContext _dataContext;
             public GetLocalLoginDistrictsQueryHandler(DataContext dataContext)
@@ -29,7 +29,7 @@ namespace SE.Core.Queries.LocalLogin
                 _dataContext = dataContext;
             }
 
-            public async Task<IResponse<List<DistrictWithSchoolsDTO>>> Handle(GetLocalLoginDistrictsQuery request, CancellationToken cancellationToken)
+            public async Task<List<DistrictWithSchoolsDTO>> Handle(GetLocalLoginDistrictsQuery request, CancellationToken cancellationToken)
             {
                 var districts = await _dataContext.Buildings.Where(x => !x.IsSchool).ToListAsync();
                 var schools = await _dataContext.Buildings.Where(x => x.IsSchool).ToListAsync();    
@@ -50,7 +50,7 @@ namespace SE.Core.Queries.LocalLogin
                             }).ToList()
                     }).ToList();
 
-                return Response.Success(list);
+                return list;
             }
         }
     }

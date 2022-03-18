@@ -24,7 +24,7 @@ namespace SE.Core.Queries.PerceptionSurveys
         }
     }
     public sealed class GetPerceptionSurveyStatementsQuery : 
-        IRequest<IResponse<List<PerceptionSurveyStatementDTO>>>
+        IRequest<List<PerceptionSurveyStatementDTO>>
     {
         public long SurveyId { get; set;  }
 
@@ -34,7 +34,8 @@ namespace SE.Core.Queries.PerceptionSurveys
         }
 
         internal sealed class GetPerceptionSurveyStatementsQueryHandler : 
-            IRequestHandler<GetPerceptionSurveyStatementsQuery, IResponse<List<PerceptionSurveyStatementDTO>>>
+            IRequestHandler<GetPerceptionSurveyStatementsQuery, 
+            List<PerceptionSurveyStatementDTO>>
         {
             private readonly DataContext _dataContext;
             public GetPerceptionSurveyStatementsQueryHandler(DataContext dataContext)
@@ -42,7 +43,7 @@ namespace SE.Core.Queries.PerceptionSurveys
                 _dataContext = dataContext;
             }
 
-            public async Task<IResponse<List<PerceptionSurveyStatementDTO>>> Handle(GetPerceptionSurveyStatementsQuery request, CancellationToken cancellationToken)
+            public async Task<List<PerceptionSurveyStatementDTO>> Handle(GetPerceptionSurveyStatementsQuery request, CancellationToken cancellationToken)
             {
                 List<PerceptionSurveyStatementDTO> statements = await _dataContext.PerceptionSurveyPerceptionSurveyStatements
                     .Include(x=>x.PerceptionSurveyStatement)
@@ -50,7 +51,7 @@ namespace SE.Core.Queries.PerceptionSurveys
                     .Select(x => x.PerceptionSurveyStatement.MapToPerceptionSurveyStatementDTO())
                     .ToListAsync();
 
-                return Response.Success(statements);
+                return statements;
             }
         }
     }

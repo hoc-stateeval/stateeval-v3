@@ -27,7 +27,7 @@ namespace SE.Core.Commands.Authentication
     }
 
     public sealed class RefreshTokenCommand :
-        IRequest<IResponse<AuthenticatedTokensDTO>>
+        IRequest<AuthenticatedTokensDTO>
     {
         public string RefreshToken { get; set; }
         public string IPAddress { get; set; }
@@ -42,7 +42,7 @@ namespace SE.Core.Commands.Authentication
     }
 
     public sealed class RefreshTokenCommandHandler :
-    IRequestHandler<RefreshTokenCommand, IResponse<AuthenticatedTokensDTO>>
+    IRequestHandler<RefreshTokenCommand, AuthenticatedTokensDTO>
     {
         private readonly DataContext _dataContext;
         private readonly IAuthenticateService _authenticateService;
@@ -53,10 +53,10 @@ namespace SE.Core.Commands.Authentication
             _authenticateService = authenticateService;
         }
 
-        public async Task<IResponse<AuthenticatedTokensDTO>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+        public async Task<AuthenticatedTokensDTO> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
             var tokens = await _authenticateService.RefreshToken(request.RefreshToken, request.IPAddress, cancellationToken);
-            return Response.Success(tokens);
+            return tokens;
            
         }
     }

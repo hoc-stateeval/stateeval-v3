@@ -26,7 +26,7 @@ namespace SE.API.Controllers
             command.IPAddress = ipAddress();
             CancellationToken cancelationToken = HttpContext.RequestAborted;
             var authenticatedUser = await _mediator.Send(command, cancelationToken);
-            setTokenCookie(authenticatedUser.Data.Tokens.RefreshToken);
+            setTokenCookie(authenticatedUser.Tokens.RefreshToken);
             return Ok(authenticatedUser);
         }
 
@@ -61,7 +61,7 @@ namespace SE.API.Controllers
             return Ok(new { message = "Token revoked" });
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("{username}")]
         public async Task<IActionResult> GetUserByUserName(string username)
         {
@@ -117,9 +117,20 @@ namespace SE.API.Controllers
         {
             // get source ip address for the current request
             if (Request.Headers.ContainsKey("X-Forwarded-For"))
+            {
                 return Request.Headers["X-Forwarded-For"];
+            }
             else
-                return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            {
+                try
+                {
+                    return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+                }
+                catch (Exception ex)
+                {
+                    return "";
+                }
+            }
         }
     }
 }

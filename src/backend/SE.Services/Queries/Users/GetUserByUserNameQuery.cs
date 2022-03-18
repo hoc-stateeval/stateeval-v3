@@ -25,7 +25,7 @@ namespace SE.Core.Queries.Users
         }
     }
     public sealed class GetUserByUserNameQuery : 
-        IRequest<IResponse<UserDTO>>
+        IRequest<UserDTO>
     {
         public string UserName { get; }
 
@@ -35,7 +35,7 @@ namespace SE.Core.Queries.Users
         }
 
         internal sealed class GetUserByUserNameQueryHandler : 
-            IRequestHandler<GetUserByUserNameQuery, IResponse<UserDTO>>
+            IRequestHandler<GetUserByUserNameQuery, UserDTO>
         {
             private readonly DataContext _dataContext;
             private readonly IUserService _userService;
@@ -45,10 +45,10 @@ namespace SE.Core.Queries.Users
                 _userService = userService; 
             }
 
-            public async Task<IResponse<UserDTO>> Handle(GetUserByUserNameQuery request, CancellationToken cancellationToken)
+            public async Task<UserDTO> Handle(GetUserByUserNameQuery request, CancellationToken cancellationToken)
             {
                 var userDTO = await _userService.GetUserByUserName(request.UserName);
-                return Response.Success(userDTO);
+                return userDTO;
             }
         }
     }

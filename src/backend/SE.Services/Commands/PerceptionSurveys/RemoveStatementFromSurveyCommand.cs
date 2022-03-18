@@ -23,7 +23,7 @@ namespace SE.Core.Commands.PerceptionSurveys
             // put validation checks here
         }
     }
-    public sealed class RemoveStatementFromSurveyCommand : IRequest<IResponse<Unit>>
+    public sealed class RemoveStatementFromSurveyCommand : IRequest<Unit>
     {
         public RemoveStatementFromSurveyCommand(long surveyId, long statementId)
         {
@@ -34,7 +34,8 @@ namespace SE.Core.Commands.PerceptionSurveys
         public long StatementId { get; set; }
     }
 
-    public class RemoveStatementFromSurveyCommandHandler : IRequestHandler<RemoveStatementFromSurveyCommand, IResponse<Unit>>
+    public class RemoveStatementFromSurveyCommandHandler : 
+        IRequestHandler<RemoveStatementFromSurveyCommand, Unit>
     {
         private readonly DataContext _dataContext;
         public RemoveStatementFromSurveyCommandHandler(DataContext dataContext)
@@ -42,7 +43,7 @@ namespace SE.Core.Commands.PerceptionSurveys
             _dataContext = dataContext;
         }
 
-        public async Task<IResponse<Unit>> Handle(RemoveStatementFromSurveyCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(RemoveStatementFromSurveyCommand request, CancellationToken cancellationToken)
         {
             PerceptionSurvey? survey = await _dataContext.PerceptionSurveys
               .Include(x => x.PerceptionSurveyPerceptionSurveyStatements)
@@ -75,7 +76,7 @@ namespace SE.Core.Commands.PerceptionSurveys
             survey.PerceptionSurveyPerceptionSurveyStatements.Remove(surveyStatement);
             await _dataContext.SaveChangesAsync();
 
-            return Response.Success(Unit.Value);
+            return Unit.Value;
         }
     }
 

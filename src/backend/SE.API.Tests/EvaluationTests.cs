@@ -12,7 +12,6 @@ using FluentAssertions;
 using SE.Domain.Entities;
 using SE.Core.Commands;
 using SE.Core.Commands.Evaluations;
-using SE.Core.Commands.Users;
 
 namespace SE.API.Tests
 {
@@ -25,16 +24,14 @@ namespace SE.API.Tests
         public async Task PR_Should_Have_Assigned_Evaluations()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.School1.PrincipalA.UserName;
-
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var user = await GetUserByUserName(DAN_District.School1.PrincipalA.UserName);
+            
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(2);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
 
-            var evaluations = await TestHelpers.GetEvaluationsForWorkArea(_client, user.Id, workAreaContext.Id);
+            var evaluations = await GetEvaluationsForWorkArea(user.Id, workAreaContext.Id);
             evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School1.TeacherA.UserName).Should().NotBeNull();
             evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School1.TeacherB.UserName).Should().NotBeNull();
             evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School1.TeacherC.UserName).Should().NotBeNull();
@@ -45,16 +42,14 @@ namespace SE.API.Tests
         public async Task Evaluation_Should_Have_Expected_Property_Values()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.School1.PrincipalA.UserName;
-
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var user = await GetUserByUserName(DAN_District.School1.PrincipalA.UserName);
+            
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(2);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
 
-            var evaluations = await TestHelpers.GetEvaluationsForWorkArea(_client, user.Id, workAreaContext.Id);
+            var evaluations = await GetEvaluationsForWorkArea(user.Id, workAreaContext.Id);
             var evaluation = evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School1.TeacherA.UserName);
             evaluation.Should().NotBeNull();
 
@@ -62,28 +57,26 @@ namespace SE.API.Tests
             evaluation.WfState.Should().Be(WfState.EVAL_DRAFT);
             evaluation.LockDateTime.Should().BeNull();
             evaluation.EvaluationType.Should().Be(EvaluationType.TEACHER);
-            evaluation.PerformanceLevel.Should().BeNull();
-            evaluation.StudentGrowthImpactRating.Should().BeNull();
+            evaluation.PerformanceLevel.Should().Be(RubricPerformanceLevel.UNDEFINED);
+            evaluation.StudentGrowthImpactRating.Should().Be(StudentGrowthImpactRating.UNDEFINED);
         }
 
         [Fact]
         public async Task Evaluation_Should_Be_Able_To_Change_EvaluateePlanType()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.School2.PrincipalA.UserName;
-
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var user = await GetUserByUserName(DAN_District.School2.PrincipalA.UserName);
+            
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(2);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
 
-            var evaluations = await TestHelpers.GetEvaluationsForWorkArea(_client, user.Id, workAreaContext.Id);
+            var evaluations = await GetEvaluationsForWorkArea(user.Id, workAreaContext.Id);
             var evaluation = evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School2.TeacherD.UserName);
             evaluation.Should().NotBeNull();
 
-            var framework = await TestHelpers.GetFrameworkById(_client, workAreaContext.StateFrameworkId);
+            var framework = await GetFrameworkById(workAreaContext.StateFrameworkId);
             framework.Should().NotBeNull(); 
             var focusFrameworkNode = framework.FrameworkNodes.Find(x => x.ShortName == "C3");
             focusFrameworkNode.Should().NotBeNull();    
@@ -94,9 +87,9 @@ namespace SE.API.Tests
                                         focusFrameworkNode.Id, focusSGFrameworkNode.Id, SchoolYear.SY_2020, RubricPerformanceLevel.PL3);
 
 
-            await TestHelpers.UpdateEvaluateePlanType(_client, user.Id, workAreaContext.Id, evaluation.Id, command);
+            await UpdateEvaluateePlanType(user.Id, workAreaContext.Id, evaluation.Id, command);
 
-            evaluations = await TestHelpers.GetEvaluationsForWorkArea(_client, user.Id, workAreaContext.Id);
+            evaluations = await GetEvaluationsForWorkArea(user.Id, workAreaContext.Id);
             evaluation = evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School2.TeacherD.UserName);
             evaluation.Should().NotBeNull();
 
@@ -111,8 +104,8 @@ namespace SE.API.Tests
 
             var command2 = new UpdateEvaluateePlanTypeCommand(evaluation.Id, EvaluateePlanType.COMPREHENSIVE);
 
-            await TestHelpers.UpdateEvaluateePlanType(_client, user.Id, workAreaContext.Id, evaluation.Id, command2);
-            evaluations = await TestHelpers.GetEvaluationsForWorkArea(_client, user.Id, workAreaContext.Id);
+            await UpdateEvaluateePlanType(user.Id, workAreaContext.Id, evaluation.Id, command2);
+            evaluations = await GetEvaluationsForWorkArea(user.Id, workAreaContext.Id);
             evaluation = evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School2.TeacherD.UserName);
             evaluation.Should().NotBeNull();
 
@@ -122,35 +115,33 @@ namespace SE.API.Tests
             evaluation.FocusedSGFrameworkNodeId.Should().BeNull();
             evaluation.FocusedFrameworkNodeShortName.Should().BeEmpty();
             evaluation.FocusedSGFrameworkNodeShortName.Should().BeEmpty();
-            evaluation.CarryForwardPerformanceLevel.Should().BeNull();
-            evaluation.CarryForwardSchoolYear.Should().BeNull();
+            evaluation.CarryForwardPerformanceLevel.Should().Be(RubricPerformanceLevel.UNDEFINED);
+            evaluation.CarryForwardSchoolYear.Should().Be(SchoolYear.UNDEFINED);
         }
 
         [Fact]
         public async Task Evaluation_Should_Be_Able_To_Change_Evalator()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.School2.PrincipalA.UserName;
-
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var user = await GetUserByUserName(DAN_District.School2.PrincipalA.UserName);
+            
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(2);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
 
-            var evaluations = await TestHelpers.GetEvaluationsForWorkArea(_client, user.Id, workAreaContext.Id);
+            var evaluations = await GetEvaluationsForWorkArea(user.Id, workAreaContext.Id);
             var evaluation = evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School2.TeacherD.UserName);
             evaluation.Should().NotBeNull();
 
-            var prB = await TestHelpers.GetUserByUserName(_client, DAN_District.School2.PrincipalB.UserName);
+            var prB = await GetUserByUserName(DAN_District.School2.PrincipalB.UserName);
 
 
             var command = new UpdateEvaluatorCommand(evaluation.Id, prB.Id);
 
-            await TestHelpers.UpdateEvaluator(_client, user.Id, workAreaContext.Id, evaluation.Id, command);
+            await UpdateEvaluator(user.Id, workAreaContext.Id, evaluation.Id, command);
 
-            evaluations = await TestHelpers.GetEvaluationsForWorkArea(_client, user.Id, workAreaContext.Id);
+            evaluations = await GetEvaluationsForWorkArea(user.Id, workAreaContext.Id);
             evaluation = evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School2.TeacherD.UserName);
             evaluation.Should().NotBeNull();
 
@@ -162,8 +153,14 @@ namespace SE.API.Tests
         public async Task DAN_District_School1_Should_Have_4_Teacher_Evaluations()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
+            var user = await GetUserByUserName(DAN_District.School1.PrincipalA.UserName);
 
-            var evaluations = await TestHelpers.GetEvaluationsForSchool(_client, DAN_District.DistrictCode, DAN_District.School1.SchoolCode, EvaluationType.TEACHER);
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
+            workAreaContexts.Count.Should().Be(2);
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
+            workAreaContext.Should().NotBeNull();
+
+            var evaluations = await GetEvaluationsForWorkArea(user.Id, workAreaContext.Id);
             evaluations.Count().Should().Be(4);
             evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School1.TeacherA.UserName).Should().NotBeNull();
             evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School1.TeacherB.UserName).Should().NotBeNull();
@@ -175,8 +172,14 @@ namespace SE.API.Tests
         public async Task DAN_District_School1_Should_Have_2_Principal_Evaluations()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
+            var user = await GetUserByUserName(DAN_District.School1.HeadPrincipal.UserName);
 
-            var evaluations = await TestHelpers.GetEvaluationsForSchool(_client, DAN_District.DistrictCode, DAN_District.School1.SchoolCode, EvaluationType.PRINCIPAL);
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
+            workAreaContexts.Count.Should().BeGreaterThanOrEqualTo(3);
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_PR);
+            workAreaContext.Should().NotBeNull();
+
+            var evaluations = await GetEvaluationsForWorkArea(user.Id, workAreaContext.Id);
             evaluations.Count().Should().Be(2);
             evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School1.PrincipalA.UserName).Should().NotBeNull();
             evaluations.Find(x => x.EvaluateeDisplayName == DAN_District.School1.PrincipalB.UserName).Should().NotBeNull();

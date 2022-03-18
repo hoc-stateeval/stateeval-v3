@@ -26,7 +26,7 @@ namespace SE.Core.Queries.Evaluations
         }
     }
     public sealed class GetEvaluationByIdQuery : 
-        IRequest<IResponse<EvaluationSummaryDTO>>
+        IRequest<EvaluationSummaryDTO>
     {
         public long Id { get; }
 
@@ -36,7 +36,7 @@ namespace SE.Core.Queries.Evaluations
         }
 
         internal sealed class GetEvaluationByIdQueryHandler : 
-            IRequestHandler<GetEvaluationByIdQuery, IResponse<EvaluationSummaryDTO>>
+            IRequestHandler<GetEvaluationByIdQuery, EvaluationSummaryDTO>
         {
             private readonly DataContext _dataContext;
             private readonly IEvaluationService _evaluationService;
@@ -46,7 +46,7 @@ namespace SE.Core.Queries.Evaluations
                 _evaluationService = evaluationService;
             }
 
-            public async Task<IResponse<EvaluationSummaryDTO>> Handle(GetEvaluationByIdQuery request, CancellationToken cancellationToken)
+            public async Task<EvaluationSummaryDTO> Handle(GetEvaluationByIdQuery request, CancellationToken cancellationToken)
             {
                 var evaluation = await _evaluationService
                     .ExecuteEvaluationSummaryDTOQuery(x => x.Id == request.Id)
@@ -57,7 +57,7 @@ namespace SE.Core.Queries.Evaluations
                     throw new NotFoundException(nameof(EvidenceItem), request.Id);
                 }
 
-                return Response.Success(evaluation);
+                return evaluation;
             }
         }
     }

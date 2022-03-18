@@ -715,8 +715,23 @@ namespace SE.Data.Migrations
                     b.Property<long>("EvaluatorId")
                         .HasColumnType("bigint");
 
+                    b.Property<bool>("IncludeStudentGrowthComponents")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("ObservationDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<short>("ObservationDuration")
+                        .HasColumnType("smallint");
+
                     b.Property<int>("ObservationType")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("PostConferenceDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("PreConferenceDateTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("SchoolCode")
                         .IsRequired()
@@ -1259,14 +1274,17 @@ namespace SE.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<bool>("CreatedAsAdmin")
-                        .HasColumnType("bit");
-
                     b.Property<long>("CreatedByUserId")
                         .HasColumnType("bigint");
 
+                    b.Property<bool>("DistrictRequired")
+                        .HasColumnType("bit");
+
                     b.Property<long?>("EvaluationId")
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("EvaluatorRequired")
+                        .HasColumnType("bit");
 
                     b.Property<long>("FrameworkContextId")
                         .HasColumnType("bigint");
@@ -1274,8 +1292,8 @@ namespace SE.Data.Migrations
                     b.Property<long?>("ObservationId")
                         .HasColumnType("bigint");
 
-                    b.Property<bool>("Private")
-                        .HasColumnType("bit");
+                    b.Property<int>("OwnerTier")
+                        .HasColumnType("int");
 
                     b.Property<string>("Prompt")
                         .HasColumnType("nvarchar(max)");
@@ -1289,8 +1307,8 @@ namespace SE.Data.Migrations
                     b.Property<string>("SchoolCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<short>("Sequence")
-                        .HasColumnType("smallint");
+                    b.Property<bool>("SchoolRequired")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -1340,8 +1358,6 @@ namespace SE.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("UserPromptGroupId", "UserPromptId");
-
-                    b.HasIndex("UserPromptId");
 
                     b.ToTable("UserPromptGroupUserPrompt", "dbo");
                 });
@@ -1896,12 +1912,6 @@ namespace SE.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("SE.Domain.Entities.UserPrompt", null)
-                        .WithMany("UserPromptGroupUserPrompts")
-                        .HasForeignKey("UserPromptId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("UserPromptGroup");
                 });
 
@@ -2015,8 +2025,6 @@ namespace SE.Data.Migrations
             modelBuilder.Entity("SE.Domain.Entities.UserPrompt", b =>
                 {
                     b.Navigation("Responses");
-
-                    b.Navigation("UserPromptGroupUserPrompts");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.UserPromptGroup", b =>

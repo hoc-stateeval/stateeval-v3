@@ -25,7 +25,7 @@ namespace SE.Core.Queries.Evaluations
         }
     }
     public sealed class GetHistoricalEvaluationsForUserQuery :
-        IRequest<IResponse<List<EvaluationSummaryDTO>>>
+        IRequest<List<EvaluationSummaryDTO>>
     {
         public long UserId { get; }
 
@@ -35,7 +35,7 @@ namespace SE.Core.Queries.Evaluations
         }
 
         internal sealed class GetHistoricalEvaluationsForUserQueryHandler : 
-            IRequestHandler<GetHistoricalEvaluationsForUserQuery, IResponse<List<EvaluationSummaryDTO>>>
+            IRequestHandler<GetHistoricalEvaluationsForUserQuery, List<EvaluationSummaryDTO>>
         {
             private readonly DataContext _dataContext;
             private readonly IEvaluationService _evaluationService;
@@ -46,13 +46,13 @@ namespace SE.Core.Queries.Evaluations
                 _evaluationService = evaluationService;
             }
 
-            public async Task<IResponse<List<EvaluationSummaryDTO>>> Handle(GetHistoricalEvaluationsForUserQuery request, CancellationToken cancellationToken)
+            public async Task<List<EvaluationSummaryDTO>> Handle(GetHistoricalEvaluationsForUserQuery request, CancellationToken cancellationToken)
             {
                 var evaluations = await _evaluationService
                     .ExecuteEvaluationSummaryDTOQuery(x => x.IsActive && x.EvaluateeId == request.UserId)
                     .ToListAsync();
 
-                return Response.Success(evaluations);
+                return evaluations;
             }
         }
     }

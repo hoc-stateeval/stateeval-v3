@@ -24,7 +24,7 @@ namespace SE.Core.Commands.Observations
         }
     }
     public sealed class UpdateObservationCommand : 
-        IRequest<IResponse<Unit>>
+        IRequest<Unit>
     {
         public long ObservationId { get; }
         public string Title { get; }
@@ -39,7 +39,7 @@ namespace SE.Core.Commands.Observations
     }
 
     public class UpdateObservationCommandHandler :
-    IRequestHandler<UpdateObservationCommand, IResponse<Unit>>
+    IRequestHandler<UpdateObservationCommand, Unit>
     {
         private readonly DataContext _dataContext;
         public UpdateObservationCommandHandler(DataContext dataContext)
@@ -47,7 +47,7 @@ namespace SE.Core.Commands.Observations
             _dataContext = dataContext;
         }
 
-        public async Task<IResponse<Unit>> Handle(UpdateObservationCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateObservationCommand request, CancellationToken cancellationToken)
         {
             Observation? observation = await _dataContext.Observations
                    .Where(x => x.Id == request.ObservationId)
@@ -63,7 +63,7 @@ namespace SE.Core.Commands.Observations
 
             _dataContext.SaveChanges();
 
-            return Response.Success(Unit.Value);
+            return Unit.Value;
         }
     }
 }

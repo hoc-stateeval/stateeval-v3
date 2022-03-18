@@ -25,7 +25,7 @@ namespace SE.Core.Commands.Roles
         }
     }
     public sealed class UpdateDTERoleInSchoolsCommand : 
-        IRequest<IResponse<Unit>>
+        IRequest<Unit>
     {
         public long UserId{ get; }
         public List<UserBuildingRoleDTO> NewUserBuildingRoles { get; }
@@ -38,7 +38,7 @@ namespace SE.Core.Commands.Roles
     }
 
     public class UpdateDTERoleInSchoolsCommandHandler :
-    IRequestHandler<UpdateDTERoleInSchoolsCommand, IResponse<Unit>>
+    IRequestHandler<UpdateDTERoleInSchoolsCommand, Unit>
     {
         private readonly DataContext _dataContext;
         public UpdateDTERoleInSchoolsCommandHandler(DataContext dataContext)
@@ -46,7 +46,7 @@ namespace SE.Core.Commands.Roles
             _dataContext = dataContext;
         }
 
-        public async Task<IResponse<Unit>> Handle(UpdateDTERoleInSchoolsCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateDTERoleInSchoolsCommand request, CancellationToken cancellationToken)
         {
             var currentUserBuildingRoles = await _dataContext.UserBuildingRoles
                 .Include(x => x.Building)
@@ -78,7 +78,7 @@ namespace SE.Core.Commands.Roles
 
             _dataContext.SaveChanges();
 
-            return Response.Success(Unit.Value);
+            return Unit.Value;
         }
     }
 }

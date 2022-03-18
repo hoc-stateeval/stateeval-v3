@@ -24,7 +24,7 @@ namespace SE.Core.Commands.Observations
         }
     }
     public sealed class DeleteObservationCommand : 
-        IRequest<IResponse<Unit>>
+        IRequest<Unit>
     {
         public long ObservationId { get; }
         public DeleteObservationCommand(long observationId)
@@ -34,7 +34,7 @@ namespace SE.Core.Commands.Observations
     }
 
     public class DeleteObservationCommandHandler :
-    IRequestHandler<DeleteObservationCommand, IResponse<Unit>>
+    IRequestHandler<DeleteObservationCommand, Unit>
     {
         private readonly DataContext _dataContext;
         public DeleteObservationCommandHandler(DataContext dataContext)
@@ -42,7 +42,7 @@ namespace SE.Core.Commands.Observations
             _dataContext = dataContext;
         }
 
-        public async Task<IResponse<Unit>> Handle(DeleteObservationCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteObservationCommand request, CancellationToken cancellationToken)
         {
             Observation? observation = await _dataContext.Observations
                  .Where(x => x.Id == request.ObservationId)
@@ -56,7 +56,7 @@ namespace SE.Core.Commands.Observations
             _dataContext.Observations.Remove(observation);
             _dataContext.SaveChanges();
 
-            return Response.Success(Unit.Value);
+            return Unit.Value;
         }
     }
 }

@@ -85,7 +85,6 @@ namespace SE.Core.Common
                 WorkAreaType.DA_CT_SPS => "DA_CT_SPS",
                 WorkAreaType.DTE => "DTE",
                 WorkAreaType.DE => "DE",
-                WorkAreaType.DV => "DV",
                 WorkAreaType.PR_TR => "PR_TR",
                 WorkAreaType.PR_PR => "PR_PR",
                 WorkAreaType.TR_ME => "TR_ME",
@@ -188,6 +187,21 @@ namespace SE.Core.Common
                 null => "N/A",
                 _ => throw new Exception($"MapPerformanceLevelToDIsplayName: Unknown mapping: {performanceLevel}")
             };
+            return displayName;
+        }
+
+        public static string MapStudentGrowthImpactRatingToDisplayName(StudentGrowthImpactRating? rating)
+        {
+            var displayName = rating switch
+            {
+                StudentGrowthImpactRating.LOW => "LOW",
+                StudentGrowthImpactRating.AVERAGE => "AVERAGE",
+                StudentGrowthImpactRating.HIGH => "HIGH",
+                StudentGrowthImpactRating.UNDEFINED => "N/A",
+                null => "N/A",
+                _ => throw new Exception($"MapStudentGrowthImpactRatingToDisplayName: Unknown mapping: {rating}")
+            };
+
             return displayName;
         }
 

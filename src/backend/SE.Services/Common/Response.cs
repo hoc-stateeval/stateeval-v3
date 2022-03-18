@@ -20,7 +20,6 @@ public static class Response
 
 public class Response<T> : IResponse<T>
 {
-
     public Response(string error, bool succeeded)
     {
         ErrorMessage = error;

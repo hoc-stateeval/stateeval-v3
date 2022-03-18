@@ -26,7 +26,7 @@ namespace SE.Core.Queries.SchoolConfigurations
         }
     }
     public sealed class GetSchoolConfigurationsForFrameworkContextQuery :
-        IRequest<IResponse<List<SchoolConfigurationDTO>>>
+        IRequest<List<SchoolConfigurationDTO>>
     {
         public long FrameworkContextId { get; }
 
@@ -36,7 +36,8 @@ namespace SE.Core.Queries.SchoolConfigurations
         }
 
         internal sealed class GetSchoolConfigurationsForFrameworkContextQueryHandler :
-            IRequestHandler<GetSchoolConfigurationsForFrameworkContextQuery, IResponse<List<SchoolConfigurationDTO>>>
+            IRequestHandler<GetSchoolConfigurationsForFrameworkContextQuery, 
+                List<SchoolConfigurationDTO>>
         {
             private readonly DataContext _dataContext;
             public GetSchoolConfigurationsForFrameworkContextQueryHandler(DataContext dataContext)
@@ -44,7 +45,7 @@ namespace SE.Core.Queries.SchoolConfigurations
                 _dataContext = dataContext;
             }
 
-            public async Task<IResponse<List<SchoolConfigurationDTO>>> Handle(GetSchoolConfigurationsForFrameworkContextQuery request, CancellationToken cancellationToken)
+            public async Task<List<SchoolConfigurationDTO>> Handle(GetSchoolConfigurationsForFrameworkContextQuery request, CancellationToken cancellationToken)
             {
                 var frameworkContext = await _dataContext.SchoolConfigurations
                    .Where(x => x.Id == request.FrameworkContextId)
@@ -60,7 +61,7 @@ namespace SE.Core.Queries.SchoolConfigurations
                     .Select(x => x.MapToSchoolConfigurationDTO())
                     .ToListAsync();
 
-                return Response.Success(configs);
+                return configs;
             }
         }
     }

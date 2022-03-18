@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace SE.Domain.Entities
 {
+    public enum UserPromptOwnerTier
+    {
+        UNDEFINED = 0,
+        DISTRICT_ADMIN = 1,
+        SCHOOL_ADMIN = 2,
+        EVALUATOR = 3
+    }
     public enum ObservationType
     {
         UNDEFINED = 0,
@@ -50,7 +57,7 @@ namespace SE.Domain.Entities
         DA_CT_SPS,
         DTE,
         DE,
-        DV,
+        DV_OBSOLETE,
         DAM_TR,
         DAM_PR,
         PR_TR,
@@ -104,7 +111,8 @@ namespace SE.Domain.Entities
         PRE_CONFERENCE,
         POST_CONFERENCE,
         STUDENT_GROWTH_GOAL,
-        SUMMATIVE
+        SUMMATIVE,
+        STUDENT_GROWTH_RESULT
     }
 
     public enum ReportType

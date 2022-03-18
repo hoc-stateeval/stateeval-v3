@@ -23,7 +23,7 @@ namespace SE.Core.Queries.EvidenceCollections
         }
     }
     public sealed class GetYearToDateEvidenceCollectionQuery :
-        IRequest<IResponse<YearToDateEvidenceCollectionDTO>>
+        IRequest<YearToDateEvidenceCollectionDTO>
     {
         public long EvaluationId { get; set; }
 
@@ -34,7 +34,7 @@ namespace SE.Core.Queries.EvidenceCollections
 
         internal sealed class GetYearToDateEvidenceCollectionQueryHandler :
             IRequestHandler<GetYearToDateEvidenceCollectionQuery, 
-            IResponse<YearToDateEvidenceCollectionDTO>>
+            YearToDateEvidenceCollectionDTO>
         {
             private readonly DataContext _dataContext;
             public GetYearToDateEvidenceCollectionQueryHandler(DataContext dataContext)
@@ -42,7 +42,7 @@ namespace SE.Core.Queries.EvidenceCollections
                 _dataContext = dataContext;
             }
 
-            public async Task<IResponse<YearToDateEvidenceCollectionDTO>> Handle(
+            public async Task<YearToDateEvidenceCollectionDTO> Handle(
                 GetYearToDateEvidenceCollectionQuery request, 
                 CancellationToken cancellationToken)
             {
@@ -65,7 +65,7 @@ namespace SE.Core.Queries.EvidenceCollections
                     EvidencePackages = evidencePackages.Select(x => x.MapToEvidencePackageDTO()).ToList()
                 };
 
-                return Response.Success(dto);
+                return dto;
             }
         }
     }

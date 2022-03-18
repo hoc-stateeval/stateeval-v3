@@ -7,7 +7,7 @@ import {
   Tabs,
  } from "@mui/material";
 
-import TabPanel from "@components";
+import { TabPanel } from "@components";
 
 import Settings from "./Settings";
 import PreConference from "./PreConference";

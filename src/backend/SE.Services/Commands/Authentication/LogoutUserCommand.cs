@@ -25,10 +25,10 @@ namespace SE.Core.Commands.Authentication
     }
     
     public record LogoutUserCommand(string Token, string IPAddress, CancellationToken cancellationToken) 
-        : IRequest<IResponse<Unit>>;
+        : IRequest<Unit>;
 
     public sealed class LogoutUserCommandHandler :
-    IRequestHandler<LogoutUserCommand, IResponse<Unit>>
+    IRequestHandler<LogoutUserCommand, Unit>
     {
         private readonly DataContext _dataContext;
         private readonly IAuthenticateService _authenticateService;
@@ -39,10 +39,10 @@ namespace SE.Core.Commands.Authentication
             _authenticateService = authenticationService;
         }
 
-        public async Task<IResponse<Unit>> Handle(LogoutUserCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(LogoutUserCommand request, CancellationToken cancellationToken)
         {
             await _authenticateService.RevokeToken(request.Token, request.IPAddress, cancellationToken);
-            return Response.Success(Unit.Value);
+            return Unit.Value;
         }
     }
 }

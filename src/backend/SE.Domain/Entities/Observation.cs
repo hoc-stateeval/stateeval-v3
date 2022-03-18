@@ -40,5 +40,12 @@ namespace SE.Domain.Entities
 
         public WfState WfState { get; set; }
 
+        public DateTime PreConferenceDateTime { get; set; }
+        public DateTime ObservationDateTime { get; set; }
+        public short ObservationDuration { get; set; }
+        public DateTime PostConferenceDateTime { get; set; }
+
+        public bool IncludeStudentGrowthComponents { get; set; }
+
     }
 }

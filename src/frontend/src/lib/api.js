@@ -23,13 +23,6 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// axiosInstance.interceptors.response.use(
-//   (response) => response,
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
-
 const executeRequest = async ({url, method, data}) => {
   try {
     const result = await axiosInstance({
@@ -40,11 +33,11 @@ const executeRequest = async ({url, method, data}) => {
 
     const login = url.includes('authenticate');
     if (login) {
-      const { accessToken, refreshToken } = result.data.data.tokens;
+      const { accessToken, refreshToken } = result.data.tokens;
       updateTokens(accessToken, refreshToken);
     }
 
-    return {data: result.data.data};
+    return {data: result.data};
   }
   catch (axiosError) {
     if (!axiosError.response) {
@@ -60,14 +53,14 @@ const executeRequest = async ({url, method, data}) => {
             refreshToken: token,
           },
         });
-        const { accessToken, refreshToken } = rs.data.data;
+        const { accessToken, refreshToken } = rs.data;
         updateTokens(accessToken, refreshToken);
         return axios(axiosError.config.url);
       } catch (_error) {
         return Promise.reject(_error);
       }
     }
-    throw new Error(`api-error:${axiosError.response?.status}:${axiosError.response?.data.ErrorMessage}`)
+    throw new Error(`api-error:${axiosError.response.status}:${axiosError.response.data.ErrorMessage}`)
   }
 }
 

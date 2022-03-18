@@ -27,24 +27,21 @@ namespace SE.Core.Commands.Authentication
     }
 
     public sealed class LoginUserCommand :
-    IRequest<IResponse<AuthenticatedUserDTO>>
+    IRequest<AuthenticatedUserDTO>
     {
         public string UserName { get; set; }    
         public string Password { get; set; }
         public string IPAddress { get; set; }
-        public CancellationToken CancellationToken { get; set; }
 
-        public LoginUserCommand(string userName, string password, string ipAddress, CancellationToken cancellationToken)
+        public LoginUserCommand(string userName, string password)
         {
             UserName = userName;
             Password = password;
-            IPAddress = ipAddress;
-            CancellationToken = cancellationToken;
         }
     }
 
     public sealed class LoginUserCommandHandler :
-    IRequestHandler<LoginUserCommand, IResponse<AuthenticatedUserDTO>>
+    IRequestHandler<LoginUserCommand, AuthenticatedUserDTO>
     {
         private readonly DataContext _dataContext;
         private readonly IAuthenticateService _authenticateService;
@@ -54,10 +51,10 @@ namespace SE.Core.Commands.Authentication
             _authenticateService = authenticateService;
         }
 
-        public async Task<IResponse<AuthenticatedUserDTO>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+        public async Task<AuthenticatedUserDTO> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             var dto = await _authenticateService.AuthenticateUser(request.UserName, request.Password, request.IPAddress, cancellationToken);
-            return Response.Success(dto);
+            return dto;
         }
     }
 }

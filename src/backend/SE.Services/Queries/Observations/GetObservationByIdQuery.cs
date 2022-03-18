@@ -26,7 +26,7 @@ namespace SE.Core.Queries.Observations
         }
     }
     public sealed class GetObservationByIdQuery : 
-        IRequest<IResponse<ObservationDTO>>
+        IRequest<ObservationDTO>
     {
         public long Id { get; }
 
@@ -36,7 +36,7 @@ namespace SE.Core.Queries.Observations
         }
 
         internal sealed class GetObservationByIdQueryHandler : 
-            IRequestHandler<GetObservationByIdQuery, IResponse<ObservationDTO>>
+            IRequestHandler<GetObservationByIdQuery, ObservationDTO>
         {
             private readonly DataContext _dataContext;
             public GetObservationByIdQueryHandler(DataContext dataContext)
@@ -44,7 +44,7 @@ namespace SE.Core.Queries.Observations
                 _dataContext = dataContext;
             }
 
-            public async Task<IResponse<ObservationDTO>> Handle(GetObservationByIdQuery request, CancellationToken cancellationToken)
+            public async Task<ObservationDTO> Handle(GetObservationByIdQuery request, CancellationToken cancellationToken)
             {
                 Observation? observation = await _dataContext.Observations
                     .Include(x => x.Evaluator)
@@ -57,7 +57,7 @@ namespace SE.Core.Queries.Observations
                     throw new NotFoundException(nameof(Observation), request.Id);
                 }
 
-                return Response.Success(observation.MapToObservationDTO());
+                return observation.MapToObservationDTO();
             }
         }
     }

@@ -24,7 +24,7 @@ namespace SE.Core.Queries.Evaluations
         }
     }
     public sealed class GetEvaluationsForEvaluatorQuery :
-        IRequest<IResponse<List<EvaluationSummaryDTO>>>
+        IRequest<List<EvaluationSummaryDTO>>
     {
         public long FrameworkContextId { get; }
         public long EvaluatorId { get; }
@@ -36,7 +36,7 @@ namespace SE.Core.Queries.Evaluations
         }
 
         internal sealed class GetEvaluationsForEvaluatorQueryHandler : 
-            IRequestHandler<GetEvaluationsForEvaluatorQuery, IResponse<List<EvaluationSummaryDTO>>>
+            IRequestHandler<GetEvaluationsForEvaluatorQuery, List<EvaluationSummaryDTO>>
         {
             private readonly DataContext _dataContext;
             private readonly IEvaluationService _evaluationService;
@@ -46,7 +46,7 @@ namespace SE.Core.Queries.Evaluations
                 _evaluationService = evaluationService;
             }
 
-            public async Task<IResponse<List<EvaluationSummaryDTO>>> Handle(GetEvaluationsForEvaluatorQuery request, CancellationToken cancellationToken)
+            public async Task<List<EvaluationSummaryDTO>> Handle(GetEvaluationsForEvaluatorQuery request, CancellationToken cancellationToken)
             {
                 var evaluations = await _evaluationService
                     .ExecuteEvaluationSummaryDTOQuery(
@@ -55,7 +55,7 @@ namespace SE.Core.Queries.Evaluations
                             x.EvaluatorId == request.EvaluatorId)
                     .ToListAsync();
 
-                return Response.Success(evaluations);
+                return evaluations;
             }
         }
     }

@@ -23,7 +23,7 @@ namespace SE.Core.Commands.PerceptionSurveys
         }
     }
     public sealed class UpdatePerceptionSurveyCommand : 
-        IRequest<IResponse<Unit>>
+        IRequest<Unit>
     {
         public long SurveyId { get; set; }
         public string Title { get; set; }
@@ -38,7 +38,7 @@ namespace SE.Core.Commands.PerceptionSurveys
     }
 
     public class UpdatePerceptionSurveyCommandHandler :
-    IRequestHandler<UpdatePerceptionSurveyCommand, IResponse<Unit>>
+    IRequestHandler<UpdatePerceptionSurveyCommand, Unit>
     {
         private readonly DataContext _dataContext;
         public UpdatePerceptionSurveyCommandHandler(DataContext dataContext)
@@ -46,7 +46,7 @@ namespace SE.Core.Commands.PerceptionSurveys
             _dataContext = dataContext;
         }
 
-        public async Task<IResponse<Unit>> Handle(UpdatePerceptionSurveyCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdatePerceptionSurveyCommand request, CancellationToken cancellationToken)
         {
             PerceptionSurvey? survey = await _dataContext.PerceptionSurveys
                    .Where(x => x.Id == request.SurveyId)
@@ -62,7 +62,7 @@ namespace SE.Core.Commands.PerceptionSurveys
 
             _dataContext.SaveChanges();
 
-            return Response.Success(Unit.Value);
+            return Unit.Value;
         }
     }
 }

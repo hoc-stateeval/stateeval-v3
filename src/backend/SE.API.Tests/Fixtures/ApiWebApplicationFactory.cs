@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebMotions.Fake.Authentication.JwtBearer;
 
 namespace SE.API.Tests.Fixtures
 {
@@ -27,6 +28,16 @@ namespace SE.API.Tests.Fixtures
                 config.AddConfiguration(Configuration);
                 //config.SetBasePath = new Uri("http://localhost/api/products/");
             });
+
+            // https://gist.github.com/Elfocrash/101ffc29947832545cdaebcb259c2f44
+
+            // https://github.com/webmotions/fake-authentication-jwtbearer/blob/master/samples/Sample.WebApplication.Tests/WeatherForecastControllerTests.cs
+            // builder
+            //    .UseTestServer()
+            //    .ConfigureTestServices(collection =>
+            //    {
+            //        collection.AddAuthentication(FakeJwtBearerDefaults.AuthenticationScheme).AddFakeJwtBearer();
+            //    });
         }
     }
 }

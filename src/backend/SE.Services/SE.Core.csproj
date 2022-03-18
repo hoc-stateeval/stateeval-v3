@@ -17,4 +17,9 @@
     <ProjectReference Include="..\SE.Domain\SE.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\UserPrompts\" />
+    <Folder Include="Commands\Users\" />
+  </ItemGroup>
+
 </Project>

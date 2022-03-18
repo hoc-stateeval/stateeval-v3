@@ -11,6 +11,7 @@ using FluentValidation;
 using FluentAssertions;
 using SE.Domain.Entities;
 using SE.Core.Common;
+using System.Net.Http.Json;
 
 namespace SE.API.Tests
 {
@@ -24,11 +25,9 @@ namespace SE.API.Tests
         public async Task DAN_PR_TR_WorkAreaContext_Should_Have_Basic_Properties()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.School1.PrincipalA.UserName;
+            var user = await GetUserByUserName(DAN_District.School1.PrincipalA.UserName);
 
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-  
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(2);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
@@ -59,11 +58,9 @@ namespace SE.API.Tests
         public async Task DAN_TR_ME_WorkAreaContext_Should_Have_Basic_Properties()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.School1.TeacherA.UserName;
-
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var user = await GetUserByUserName(DAN_District.School1.TeacherA.UserName);
+            
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(1);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.TR_ME);
             workAreaContext.Should().NotBeNull();
@@ -94,11 +91,9 @@ namespace SE.API.Tests
         public async Task DAN_PR_ME_WorkAreaContext_Should_Have_Basic_Properties()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.School1.PrincipalA.UserName;
-
-            var user = await _client.GetAndDeserialize<UserDTO>($"/users/{userName}");
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var user = await GetUserByUserName(DAN_District.School1.PrincipalA.UserName);
+            
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(2);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_ME);
             workAreaContext.Should().NotBeNull();
@@ -122,17 +117,14 @@ namespace SE.API.Tests
             workAreaContext.IsDistrictAdmin.Should().BeFalse();
 
             workAreaContext.Priority.Should().BeGreaterThanOrEqualTo(0);
-
         }
 
         public async Task DAN_DA_TR_WorkAreaContext_Should_Have_Basic_Properties()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.DistrictAdmin.UserName;
-
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var user = await GetUserByUserName(DAN_District.DistrictAdmin.UserName);
+            
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(2);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DA_TR);
             workAreaContext.Should().NotBeNull();
@@ -161,11 +153,9 @@ namespace SE.API.Tests
         public async Task DAN_DTE_WorkAreaContext_Should_Have_Basic_Properties()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.DTE.UserName;
-
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var user = await GetUserByUserName(DAN_District.DTE.UserName);
+            
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(1);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DTE);
             workAreaContext.Should().NotBeNull();
@@ -194,11 +184,9 @@ namespace SE.API.Tests
         public async Task DAN_CT_WorkAreaContext_Should_Have_Basic_Properties()
         {
             var SPS_District = new District(DistrictNames.Seattle, DistrictCodes.Seattle);
-            var userName = SPS_District.School2.PrincipalA.UserName;
-
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var user = await GetUserByUserName(SPS_District.School2.PrincipalA.UserName);
+           
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(1);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.CT_SPS);
             workAreaContext.Should().NotBeNull();
@@ -227,11 +215,9 @@ namespace SE.API.Tests
         public async Task DAN_SA_TR_WorkAreaContext_Should_Have_Basic_Properties()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.School1.SchoolAdmin.UserName;
+            var user = await GetUserByUserName(DAN_District.School1.SchoolAdmin.UserName);
 
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(2);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.SA_TR);
             workAreaContext.Should().NotBeNull();
@@ -263,11 +249,9 @@ namespace SE.API.Tests
             // PrincipalB at each school has been given roles of : principal, head principal, and school admin
 
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.School1.PrincipalB.UserName;
-
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var user = await GetUserByUserName(DAN_District.School1.PrincipalB.UserName);
+            
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(5);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
@@ -290,11 +274,9 @@ namespace SE.API.Tests
         public async Task DAN_PR_Should_Have_Two_WorkAreaContext_PR_TR_and_PR_ME()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.School1.PrincipalA.UserName;
-
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var user = await GetUserByUserName(DAN_District.School1.PrincipalA.UserName);
+            
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(2);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
@@ -307,11 +289,9 @@ namespace SE.API.Tests
         public async Task DAN_TR_Should_Have_One_WorkAreaContext_TR_ME()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.School1.TeacherA.UserName;
-
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var user = await GetUserByUserName(DAN_District.School1.TeacherA.UserName);
+            
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(1);
             var workAreaContext = workAreaContexts.Find(x => x.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.TR_ME));
             workAreaContext.Should().NotBeNull();
@@ -321,11 +301,9 @@ namespace SE.API.Tests
         public async Task DAN_DA_Should_Have_Two_WorkAreaContext_DA_PR_and_DA_TR()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.DistrictAdmin.UserName;
-
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var user = await GetUserByUserName(DAN_District.DistrictAdmin.UserName);
+            
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(2);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DA_PR);
             workAreaContext.Should().NotBeNull();
@@ -338,11 +316,9 @@ namespace SE.API.Tests
         public async Task DAN_SA_Should_Have_Two_WorkAreaContext_SA_PR_and_SA_TR()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.School1.SchoolAdmin.UserName;
-
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var user = await GetUserByUserName(DAN_District.School1.SchoolAdmin.UserName);
+            
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(2);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.SA_PR);
             workAreaContext.Should().NotBeNull();
@@ -355,11 +331,9 @@ namespace SE.API.Tests
         public async Task DAN_DTE_Should_Have_One_WorkAreaContext_DTE()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.DTE.UserName;
-
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var user = await GetUserByUserName(DAN_District.DTE.UserName);
+            
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(1);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DTE);
             workAreaContext.Should().NotBeNull();
@@ -370,13 +344,17 @@ namespace SE.API.Tests
         public async Task DAN_DV_Should_Have_One_WorkAreaContext_DV()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.DistrictViewer.UserName;
-
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
-            workAreaContexts.Count.Should().Be(1);
-            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DV);
+            var user = await GetUserByUserName(DAN_District.DistrictViewer.UserName);
+            
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
+            workAreaContexts.Count.Should().Be(4);
+            var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DV_DTE);
+            workAreaContext.Should().NotBeNull();
+            workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DV_PR_PR);
+            workAreaContext.Should().NotBeNull();
+            workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DV_PR_TR);
+            workAreaContext.Should().NotBeNull();
+            workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DV_DE);
             workAreaContext.Should().NotBeNull();
         }
 
@@ -384,11 +362,9 @@ namespace SE.API.Tests
         public async Task DAN_DAM_Should_Have_Two_WorkAreaContext_DAM_PR_and_DAM_TR()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.DistrictAssignmentManager.UserName;
-
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var user = await GetUserByUserName(DAN_District.DistrictAssignmentManager.UserName);
+            
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(2);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DAM_PR);
             workAreaContext.Should().NotBeNull();
@@ -401,11 +377,9 @@ namespace SE.API.Tests
         public async Task DAN_DE_Should_Have_One_WorkAreaContext_DE()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var userName = DAN_District.DistrictEvaluator.UserName;
-
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var user = await GetUserByUserName(DAN_District.DistrictEvaluator.UserName);
+            
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(1);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DE);
             workAreaContext.Should().NotBeNull();
@@ -417,11 +391,9 @@ namespace SE.API.Tests
             // PrincipalA in SPS district school2 is in the role of consulting teacher
 
             var SPS_District = new District(DistrictNames.Seattle, DistrictCodes.Seattle);
-            var userName = SPS_District.School2.PrincipalA.UserName;
+            var user = await GetUserByUserName(SPS_District.School2.PrincipalA.UserName);
 
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(3);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.CT_SPS);
             workAreaContext.Should().NotBeNull();
@@ -439,11 +411,9 @@ namespace SE.API.Tests
             // PrincipalA in SPS district school2 is in the role of consulting teacher
 
             var SPS_District = new District(DistrictNames.Seattle, DistrictCodes.Seattle);
-            var userName = SPS_District.DistrictAdmin.UserName;
-
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var user = await GetUserByUserName(SPS_District.DistrictAdmin.UserName);
+            
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(3);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.DA_PR);
             workAreaContext.Should().NotBeNull();
@@ -462,11 +432,9 @@ namespace SE.API.Tests
             // both districts
 
             var MAR2_District = new District(DistrictNames.MAR2, DistrictCodes.MAR2);
-            var userName = MAR2_District.DistrictAdmin.UserName;
+            var user = await GetUserByUserName(MAR2_District.DistrictAdmin.UserName);
 
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(4);
            
             workAreaContexts.FindAll(x => x.DistrictCode == DistrictCodes.CEL2 &&
@@ -493,11 +461,9 @@ namespace SE.API.Tests
             // have TR_ME workarea contexts in both districts
 
             var MAR2_District = new District(DistrictNames.MAR2, DistrictCodes.MAR2);
-            var userName = MAR2_District.School2.TeacherB.UserName;
-
-            var user = await TestHelpers.GetUserByUserName(_client, userName);
-            var workAreaContexts = await TestHelpers.GetWorkAreaContextsForUser(_client, user.Id);
-
+            var user = await GetUserByUserName(MAR2_District.School2.TeacherB.UserName);
+            
+            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
             workAreaContexts.Count.Should().Be(2);
 
             workAreaContexts.FindAll(x => x.DistrictCode == DistrictCodes.CEL2 &&

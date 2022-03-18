@@ -24,7 +24,7 @@ namespace SE.Core.Commands.SchoolConfigurations
         }
     }
     public sealed class UpdateSchoolConfigurationCommand : 
-        IRequest<IResponse<Unit>>
+        IRequest<Unit>
     {
         public long Id{ get; }
         public bool EvaluationSetupDelegated { get; }
@@ -37,7 +37,7 @@ namespace SE.Core.Commands.SchoolConfigurations
     }
 
     public class UpdateSchoolConfigurationCommandHandler :
-    IRequestHandler<UpdateSchoolConfigurationCommand, IResponse<Unit>>
+    IRequestHandler<UpdateSchoolConfigurationCommand, Unit>
     {
         private readonly DataContext _dataContext;
         public UpdateSchoolConfigurationCommandHandler(DataContext dataContext)
@@ -45,7 +45,7 @@ namespace SE.Core.Commands.SchoolConfigurations
             _dataContext = dataContext;
         }
 
-        public async Task<IResponse<Unit>> Handle(UpdateSchoolConfigurationCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateSchoolConfigurationCommand request, CancellationToken cancellationToken)
         {
             SchoolConfiguration? config = await _dataContext.SchoolConfigurations
                    .Where(x => x.Id == request.Id)
@@ -59,7 +59,7 @@ namespace SE.Core.Commands.SchoolConfigurations
             config.EvaluationSetupDelegated = request.EvaluationSetupDelegated;
             _dataContext.SaveChanges();
 
-            return Response.Success(Unit.Value);
+            return Unit.Value;
         }
     }
 }

@@ -25,7 +25,7 @@ namespace SE.Core.Queries.PerceptionSurveys
         }
     }
     public sealed class GetPerceptionSurveyByIdQuery : 
-        IRequest<IResponse<PerceptionSurveyDTO>>
+        IRequest<PerceptionSurveyDTO>
     {
         public long Id { get; }
 
@@ -35,7 +35,7 @@ namespace SE.Core.Queries.PerceptionSurveys
         }
 
         internal sealed class GetPerceptionSurveyByIdQueryHandler : 
-            IRequestHandler<GetPerceptionSurveyByIdQuery, IResponse<PerceptionSurveyDTO>>
+            IRequestHandler<GetPerceptionSurveyByIdQuery, PerceptionSurveyDTO>
         {
             private readonly DataContext _dataContext;
             public GetPerceptionSurveyByIdQueryHandler(DataContext dataContext)
@@ -43,7 +43,7 @@ namespace SE.Core.Queries.PerceptionSurveys
                 _dataContext = dataContext;
             }
 
-            public async Task<IResponse<PerceptionSurveyDTO>> Handle(GetPerceptionSurveyByIdQuery request, CancellationToken cancellationToken)
+            public async Task<PerceptionSurveyDTO> Handle(GetPerceptionSurveyByIdQuery request, CancellationToken cancellationToken)
             {
                 PerceptionSurvey? survey = await _dataContext.PerceptionSurveys
                     .Where(x => x.Id == request.Id).FirstOrDefaultAsync();
@@ -53,7 +53,7 @@ namespace SE.Core.Queries.PerceptionSurveys
                     throw new NotFoundException(nameof(PerceptionSurvey), request.Id);
                 }
 
-                return Response.Success(survey.MapToPerceptionSurveyDTO());
+                return survey.MapToPerceptionSurveyDTO();
             }
         }
     }

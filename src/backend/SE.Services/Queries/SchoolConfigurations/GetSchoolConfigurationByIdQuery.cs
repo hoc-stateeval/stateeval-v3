@@ -25,7 +25,7 @@ namespace SE.Core.Queries.SchoolConfigurations
         }
     }
     public sealed class GetSchoolConfigurationByIdQuery : 
-        IRequest<IResponse<SchoolConfigurationDTO>>
+        IRequest<SchoolConfigurationDTO>
     {
         public long Id { get; }
 
@@ -35,7 +35,7 @@ namespace SE.Core.Queries.SchoolConfigurations
         }
 
         internal sealed class GetSchoolConfigurationByIdQueryHandler : 
-            IRequestHandler<GetSchoolConfigurationByIdQuery, IResponse<SchoolConfigurationDTO>>
+            IRequestHandler<GetSchoolConfigurationByIdQuery, SchoolConfigurationDTO>
         {
             private readonly DataContext _dataContext;
             public GetSchoolConfigurationByIdQueryHandler(DataContext dataContext)
@@ -43,7 +43,7 @@ namespace SE.Core.Queries.SchoolConfigurations
                 _dataContext = dataContext;
             }
 
-            public async Task<IResponse<SchoolConfigurationDTO>> Handle(GetSchoolConfigurationByIdQuery request, CancellationToken cancellationToken)
+            public async Task<SchoolConfigurationDTO> Handle(GetSchoolConfigurationByIdQuery request, CancellationToken cancellationToken)
             {
                 var config = await _dataContext.SchoolConfigurations
                    .Where(x => x.Id == request.Id)
@@ -54,7 +54,7 @@ namespace SE.Core.Queries.SchoolConfigurations
                     throw new NotFoundException(nameof(SchoolConfiguration), request.Id);
                 }
 
-                return Response.Success(config.MapToSchoolConfigurationDTO());
+                return config.MapToSchoolConfigurationDTO();
             }
         }
     }

@@ -23,7 +23,7 @@ namespace SE.Core.Commands.PerceptionSurveys
             // put validation checks here
         }
     }
-    public sealed class SubmitSurveyResponsesCommand : IRequest<IResponse<Unit>>
+    public sealed class SubmitSurveyResponsesCommand : IRequest<Unit>
     {
         public SubmitSurveyResponsesCommand(long surveyId, List<PerceptionSurveyResponseDTO> responses, string ethniticies, string gender)
         {
@@ -38,7 +38,8 @@ namespace SE.Core.Commands.PerceptionSurveys
         public string Gender { get; set; }  
     }
 
-    public class SubmitSurveyResponsesCommandHandler : IRequestHandler<SubmitSurveyResponsesCommand, IResponse<Unit>>
+    public class SubmitSurveyResponsesCommandHandler : 
+        IRequestHandler<SubmitSurveyResponsesCommand, Unit>
     {
         private readonly DataContext _dataContext;
         public SubmitSurveyResponsesCommandHandler(DataContext dataContext)
@@ -46,7 +47,7 @@ namespace SE.Core.Commands.PerceptionSurveys
             _dataContext = dataContext;
         }
 
-        public async Task<IResponse<Unit>> Handle(SubmitSurveyResponsesCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(SubmitSurveyResponsesCommand request, CancellationToken cancellationToken)
         {
             PerceptionSurvey? survey = await _dataContext.PerceptionSurveys
                 .Where(x => x.Id == request.SurveyId)
@@ -71,7 +72,7 @@ namespace SE.Core.Commands.PerceptionSurveys
   
             await _dataContext.SaveChangesAsync();
 
-            return Response.Success(Unit.Value);
+            return Unit.Value;
         }
     }
 

@@ -37,6 +37,7 @@ namespace SE.Core.Mappers
 
             target.ComprehensiveCarryForward = source.ComprehensiveCarryForward ?? false;
             target.CarryForwardPerformanceLevel = source.CarryForwardPerformanceLevel ?? RubricPerformanceLevel.UNDEFINED;
+            target.CarryForwardPerformanceLevelDisplayName = EnumUtils.MapPerformanceLevelToDisplayName(source.CarryForwardPerformanceLevel);
             target.CarryForwardSchoolYear = source.CarryForwardSchoolYear ?? SchoolYear.UNDEFINED;
 
             target.FocusedFrameworkNodeId = source.FocusedFrameworkNodeId;
@@ -58,6 +59,9 @@ namespace SE.Core.Mappers
 
             target.PerformanceLevel = source.PerformanceLevel ?? RubricPerformanceLevel.UNDEFINED;
             target.PerformanceLevelDisplayName = EnumUtils.MapPerformanceLevelToDisplayName(source.PerformanceLevel);
+
+            target.StudentGrowthImpactRating = source.StudentGrowthImpactRating ?? StudentGrowthImpactRating.UNDEFINED;
+            target.StudentGrowthImpactRatingDisplayName = EnumUtils.MapStudentGrowthImpactRatingToDisplayName(source.StudentGrowthImpactRating);
 
             target.LockDateTime = source.LockDateTime;
 

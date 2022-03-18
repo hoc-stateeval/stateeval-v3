@@ -32,6 +32,12 @@ namespace SE.Core.Mappers
             target.ObservationType = source.ObservationType;
             target.ObservationTypeDisplayName = EnumUtils.MapObservationTypeToDisplayName(source.ObservationType);
 
+            target.PreConferenceDateTime = source.PreConferenceDateTime;
+            target.ObservationDateTime = source.ObservationDateTime;
+            target.PostConferenceDateTime = source.PostConferenceDateTime;
+            target.ObservationDuration = source.ObservationDuration;
+            target.IncludeStudentGrowthComponents = source.IncludeStudentGrowthComponents;
+
             return target;
         }
     }

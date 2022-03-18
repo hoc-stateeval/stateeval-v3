@@ -24,7 +24,7 @@ namespace SE.Core.Queries.PerceptionSurveys
         }
     }
     public sealed class GetPerceptionSurveyCheckedStatementsIdsQuery : 
-        IRequest<IResponse<List<long>>>
+        IRequest<List<long>>
     {
         public long SurveyId { get; set;  }
 
@@ -34,7 +34,7 @@ namespace SE.Core.Queries.PerceptionSurveys
         }
 
         internal sealed class GetPerceptionSurveyCheckedStatementsIdsQueryHandler : 
-            IRequestHandler<GetPerceptionSurveyCheckedStatementsIdsQuery, IResponse<List<long>>>
+            IRequestHandler<GetPerceptionSurveyCheckedStatementsIdsQuery, List<long>>
         {
             private readonly DataContext _dataContext;
             public GetPerceptionSurveyCheckedStatementsIdsQueryHandler(DataContext dataContext)
@@ -42,7 +42,7 @@ namespace SE.Core.Queries.PerceptionSurveys
                 _dataContext = dataContext;
             }
 
-            public async Task<IResponse<List<long>>> Handle(GetPerceptionSurveyCheckedStatementsIdsQuery request, CancellationToken cancellationToken)
+            public async Task<List<long>> Handle(GetPerceptionSurveyCheckedStatementsIdsQuery request, CancellationToken cancellationToken)
             {
                 var survey = await _dataContext.PerceptionSurveys
                    .Include(x => x.PerceptionSurveyPerceptionSurveyStatements)
@@ -51,7 +51,7 @@ namespace SE.Core.Queries.PerceptionSurveys
 
                 var statementIds = survey.PerceptionSurveyPerceptionSurveyStatements.Select(x => x.PerceptionSurveyStatementId).ToList();
 
-                return Response.Success(statementIds);
+                return statementIds;
             }
         }
     }

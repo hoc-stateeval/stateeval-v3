@@ -23,16 +23,29 @@ namespace SE.Core.Commands.PerceptionSurveys
             // put validation checks here
         }
     }
-    public sealed class CreatePerceptionSurveyCommand : IRequest<IResponse<PerceptionSurveyDTO>>
+    public sealed class CreatePerceptionSurveyCommand : 
+        IRequest<PerceptionSurveyDTO>
     {
         public long EvaluationId { get; set; }
-        public string SchoolCode { get; set; } = "";
+        public string SchoolCode { get; set; } = string.Empty;
 
-        public string LocationOrigin { get; set; } = "";
+        public string LocationOrigin { get; set; } = string.Empty;
 
+        public CreatePerceptionSurveyCommand(
+           long evaluationId,
+           string schoolCode,
+           string locationOrigin)
+        {
+            EvaluationId = evaluationId;
+            SchoolCode = schoolCode;
+            LocationOrigin = locationOrigin;
+        }
     }
 
-    public class CreatePerceptionSurveyCommandHandler : IRequestHandler<CreatePerceptionSurveyCommand, IResponse<PerceptionSurveyDTO>>
+
+    public class CreatePerceptionSurveyCommandHandler : 
+        IRequestHandler<CreatePerceptionSurveyCommand, 
+        PerceptionSurveyDTO>
     {
         private readonly DataContext _dataContext;
         public CreatePerceptionSurveyCommandHandler(DataContext dataContext)
@@ -40,7 +53,7 @@ namespace SE.Core.Commands.PerceptionSurveys
             _dataContext = dataContext;
         }
 
-        public async Task<IResponse<PerceptionSurveyDTO>> Handle(CreatePerceptionSurveyCommand request, CancellationToken cancellationToken)
+        public async Task<PerceptionSurveyDTO> Handle(CreatePerceptionSurveyCommand request, CancellationToken cancellationToken)
         {
             Evaluation? evaluation = await _dataContext.Evaluations
                   .Where(x => x.Id == request.EvaluationId)
@@ -78,7 +91,7 @@ namespace SE.Core.Commands.PerceptionSurveys
                 .Where(x => x.Id == survey.Id)
                 .FirstAsync();
 
-            return Response.Success(survey.MapToPerceptionSurveyDTO());
+            return survey.MapToPerceptionSurveyDTO();
         }
     }
 

@@ -6,7 +6,6 @@ using SE.Core.Queries;
 using SE.Domain.Entities;
 using SE.Core.Commands.Evaluations;
 using SE.Core.Queries.Evaluations;
-using SE.Core.Commands.Users;
 
 namespace SE.API.Controllers
 {

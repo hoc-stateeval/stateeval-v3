@@ -24,7 +24,7 @@ namespace SE.Core.Queries.Frameworks
         }
     }
     public sealed class GetFrameworkByIdQuery : 
-        IRequest<IResponse<FrameworkDTO>>
+        IRequest<FrameworkDTO>
     {
         public long Id { get; }
 
@@ -34,7 +34,7 @@ namespace SE.Core.Queries.Frameworks
         }
 
         internal sealed class GetFrameworkByIdQueryHandler : 
-            IRequestHandler<GetFrameworkByIdQuery, IResponse<FrameworkDTO>>
+            IRequestHandler<GetFrameworkByIdQuery, FrameworkDTO>
         {
             private readonly DataContext _dataContext;
             public GetFrameworkByIdQueryHandler(DataContext dataContext)
@@ -42,7 +42,7 @@ namespace SE.Core.Queries.Frameworks
                 _dataContext = dataContext;
             }
 
-            public async Task<IResponse<FrameworkDTO>> Handle(GetFrameworkByIdQuery request, CancellationToken cancellationToken)
+            public async Task<FrameworkDTO> Handle(GetFrameworkByIdQuery request, CancellationToken cancellationToken)
             {
                 Framework framework = await _dataContext.Frameworks
                     .Include(x => x.FrameworkNodes).ThenInclude(x => x.FrameworkNodeRubricRows).ThenInclude(x=>x.RubricRow)
@@ -88,7 +88,7 @@ namespace SE.Core.Queries.Frameworks
                     }).ToList()
                 };
 
-                return Response.Success(frameworkDTO);
+                return frameworkDTO;
             }
         }
     }

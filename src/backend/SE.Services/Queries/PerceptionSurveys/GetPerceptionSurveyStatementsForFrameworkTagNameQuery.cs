@@ -25,7 +25,7 @@ namespace SE.Core.Queries.PerceptionSurveys
         }
     }
     public sealed class GetPerceptionSurveyStatementsForFrameworkTagNameQuery : 
-        IRequest<IResponse<List<PerceptionSurveyStatementDTO>>>
+        IRequest<List<PerceptionSurveyStatementDTO>>
     {
         public string TagName { get; set;  }
 
@@ -35,7 +35,8 @@ namespace SE.Core.Queries.PerceptionSurveys
         }
 
         internal sealed class GetPerceptionSurveyStatementsForFrameworkTagNameQueryHandler : 
-            IRequestHandler<GetPerceptionSurveyStatementsForFrameworkTagNameQuery, IResponse<List<PerceptionSurveyStatementDTO>>>
+            IRequestHandler<GetPerceptionSurveyStatementsForFrameworkTagNameQuery, 
+                List<PerceptionSurveyStatementDTO>>
         {
             private readonly DataContext _dataContext;
             public GetPerceptionSurveyStatementsForFrameworkTagNameQueryHandler(DataContext dataContext)
@@ -43,14 +44,14 @@ namespace SE.Core.Queries.PerceptionSurveys
                 _dataContext = dataContext;
             }
 
-            public async Task<IResponse<List<PerceptionSurveyStatementDTO>>> Handle(GetPerceptionSurveyStatementsForFrameworkTagNameQuery request, CancellationToken cancellationToken)
+            public async Task<List<PerceptionSurveyStatementDTO>> Handle(GetPerceptionSurveyStatementsForFrameworkTagNameQuery request, CancellationToken cancellationToken)
             {
                 List<PerceptionSurveyStatementDTO> statements = await _dataContext.PerceptionSurveyStatements
                     .Where(x => x.FrameworkTagName == request.TagName)
                     .Select(x => x.MapToPerceptionSurveyStatementDTO())
                     .ToListAsync();
 
-                return Response.Success(statements);
+                return statements;
             }
         }
     }

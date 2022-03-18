@@ -23,7 +23,7 @@ namespace SE.Core.Queries.Observations
         }
     }
     public sealed class GetObservationsForEvaluationQuery : 
-        IRequest<IResponse<List<ObservationDTO>>>
+        IRequest<List<ObservationDTO>>
     {
         public long EvaluationId { get; }
 
@@ -33,7 +33,7 @@ namespace SE.Core.Queries.Observations
         }
 
         internal sealed class GetObservationsForEvaluationQueryHandler : 
-            IRequestHandler<GetObservationsForEvaluationQuery, IResponse<List<ObservationDTO>>>
+            IRequestHandler<GetObservationsForEvaluationQuery, List<ObservationDTO>>
         {
             private readonly DataContext _dataContext;
             public GetObservationsForEvaluationQueryHandler(DataContext dataContext)
@@ -41,7 +41,7 @@ namespace SE.Core.Queries.Observations
                 _dataContext = dataContext;
             }
 
-            public async Task<IResponse<List<ObservationDTO>>> Handle(GetObservationsForEvaluationQuery request, CancellationToken cancellationToken)
+            public async Task<List<ObservationDTO>> Handle(GetObservationsForEvaluationQuery request, CancellationToken cancellationToken)
             {
                 var observations = await _dataContext.Observations
                     .Include(x => x.Evaluator)
@@ -50,7 +50,7 @@ namespace SE.Core.Queries.Observations
                     .Select(x => x.MapToObservationDTO())
                     .ToListAsync();
 
-                return Response.Success(observations);
+                return observations;
             }
         }
     }

@@ -24,7 +24,7 @@ namespace SE.Core.Queries.Evaluations
         }
     }
     public sealed class GetEvaluationsForDistrictViewerQuery : 
-        IRequest<IResponse<List<EvaluationSummaryDTO>>>
+        IRequest<List<EvaluationSummaryDTO>>
     {
         public long FrameworkContextId { get; }
         public long EvaluatorId { get; }
@@ -38,7 +38,7 @@ namespace SE.Core.Queries.Evaluations
         }
 
         internal sealed class GetEvaluationsForDistrictViewerQueryHandler : 
-            IRequestHandler<GetEvaluationsForDistrictViewerQuery, IResponse<List<EvaluationSummaryDTO>>>
+            IRequestHandler<GetEvaluationsForDistrictViewerQuery, List<EvaluationSummaryDTO>>
         {
             private readonly DataContext _dataContext;
             private readonly IEvaluationService _evaluationService;
@@ -49,7 +49,7 @@ namespace SE.Core.Queries.Evaluations
                 _evaluationService = evaluationService;
             }
 
-            public async Task<IResponse<List<EvaluationSummaryDTO>>> Handle(GetEvaluationsForDistrictViewerQuery request, CancellationToken cancellationToken)
+            public async Task<List<EvaluationSummaryDTO>> Handle(GetEvaluationsForDistrictViewerQuery request, CancellationToken cancellationToken)
             {
                 var workAreaContext = await _dataContext.WorkAreaContexts
                     .Include(x => x.Building)
@@ -66,7 +66,7 @@ namespace SE.Core.Queries.Evaluations
 
                 var evaluations = await _evaluationService.GetEvaluationsForWorkAreaContext(workAreaContext);
 
-                return Response.Success(evaluations);
+                return evaluations;
             }
         }
     }

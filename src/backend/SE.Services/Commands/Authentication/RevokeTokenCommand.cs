@@ -28,10 +28,10 @@ namespace SE.Core.Commands.Authentication
     }
     
     public record RevokeTokenCommand(string Token, string IPAdress) 
-        : IRequest<IResponse<Unit>>;
+        : IRequest<Unit>;
 
     public sealed class RevokeTokenCommandHandler :
-    IRequestHandler<RevokeTokenCommand, IResponse<Unit>>
+    IRequestHandler<RevokeTokenCommand, Unit>
     {
         private readonly DataContext _dataContext;
         private readonly IAuthenticateService _authenticateService;
@@ -42,10 +42,10 @@ namespace SE.Core.Commands.Authentication
             _authenticateService = authenticateService;
         }
 
-        public async Task<IResponse<Unit>> Handle(RevokeTokenCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(RevokeTokenCommand request, CancellationToken cancellationToken)
         {
             await _authenticateService.RevokeToken(request.Token, request.IPAdress, cancellationToken);
-            return Response.Success(Unit.Value);
+            return Unit.Value;
         }
     }
 }

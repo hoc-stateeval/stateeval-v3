@@ -24,7 +24,7 @@ namespace SE.Core.Queries.Evaluators
         }
     }
     public sealed class GetEvaluatorsForDistrictViewerQuery : 
-        IRequest<IResponse<List<UserDTO>>>
+        IRequest<List<UserDTO>>
     {
         public long WorkAreaContextId { get; }
         public string SchoolCode { get; }  
@@ -36,7 +36,7 @@ namespace SE.Core.Queries.Evaluators
         }
 
         internal sealed class GetEvaluatorsForDistrictViewerQueryHandler : 
-            IRequestHandler<GetEvaluatorsForDistrictViewerQuery, IResponse<List<UserDTO>>>
+            IRequestHandler<GetEvaluatorsForDistrictViewerQuery, List<UserDTO>>
         {
             private readonly DataContext _dataContext;
             private readonly IUserService _userService;
@@ -47,7 +47,7 @@ namespace SE.Core.Queries.Evaluators
                 _userService = userService;
             }
 
-            public async Task<IResponse<List<UserDTO>>> Handle(GetEvaluatorsForDistrictViewerQuery request, CancellationToken cancellationToken)
+            public async Task<List<UserDTO>> Handle(GetEvaluatorsForDistrictViewerQuery request, CancellationToken cancellationToken)
             {
                 
                 var workAreaContext = await _dataContext.WorkAreaContexts
@@ -62,26 +62,26 @@ namespace SE.Core.Queries.Evaluators
 
                 if (workAreaContext.WorkArea.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DV_PR_TR)) {
                     var users = await _userService.GetUsersInRoleAtSchool(request.SchoolCode, RoleType.PR);
-                    return Response.Success(users);
+                    return users;
                 }
                 else if (workAreaContext.WorkArea.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DV_PR_PR)) {
                     var users = await _userService.GetUsersInRoleAtSchool(request.SchoolCode, RoleType.HEAD_PR);
-                    return Response.Success(users);
+                    return users;
                 }
                 else if (workAreaContext.WorkArea.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DV_DE))
                 {
                     var users = await _userService.GetUsersInRoleAtDistrict(request.SchoolCode, RoleType.DE);
-                    return Response.Success(users);
+                    return users;
                 }
                 else if (workAreaContext.WorkArea.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DV_DTE))
                 {
                     var users = await _userService.GetUsersInRoleAtDistrict(request.SchoolCode, RoleType.DTE);
-                    return Response.Success(users);
+                    return users;
                 }
                 else if (workAreaContext.WorkArea.TagName == EnumUtils.MapWorkAreaTypeToTagName(WorkAreaType.DV_CT))
                 {
                     var users = await _userService.GetUsersInRoleAtSchool(request.SchoolCode, RoleType.SPS_CT_TR);
-                    return Response.Success(users);
+                    return users;
                 }
                 else
                 {

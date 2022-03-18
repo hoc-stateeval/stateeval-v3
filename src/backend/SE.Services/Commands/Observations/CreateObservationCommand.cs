@@ -24,7 +24,7 @@ namespace SE.Core.Commands.Observations
         {
         }
     }
-    public sealed class CreateObservationCommand : IRequest<IResponse<ObservationDTO>>
+    public sealed class CreateObservationCommand : IRequest<ObservationDTO>
     {
         public long EvaluationId { get; set; }
         public long EvaluatorId { get; set; }
@@ -40,7 +40,7 @@ namespace SE.Core.Commands.Observations
     }
 
     public class CreateObservationCommandHandler :
-    IRequestHandler<CreateObservationCommand, IResponse<ObservationDTO>>
+    IRequestHandler<CreateObservationCommand, ObservationDTO>
     {
         private readonly DataContext _dataContext;
         public CreateObservationCommandHandler(DataContext dataContext)
@@ -48,7 +48,7 @@ namespace SE.Core.Commands.Observations
             _dataContext = dataContext;
         }
 
-        public async Task<IResponse<ObservationDTO>> Handle(CreateObservationCommand request, CancellationToken cancellationToken)
+        public async Task<ObservationDTO> Handle(CreateObservationCommand request, CancellationToken cancellationToken)
         {
 
             Evaluation? evaluation = await _dataContext.Evaluations
@@ -86,7 +86,7 @@ namespace SE.Core.Commands.Observations
                 .Where(x => x.Id == observation.Id)
                 .FirstAsync();
 
-            return Response.Success(observation.MapToObservationDTO());
+            return observation.MapToObservationDTO();
         }
     }
 }

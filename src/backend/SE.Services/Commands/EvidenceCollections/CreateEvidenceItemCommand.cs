@@ -37,7 +37,7 @@ namespace SE.Core.Commands.EvidenceCollections
                  .When(x => Enum.GetName(typeof(EvidenceType), x.EvidenceType).Contains("CODED"));
         }
     }
-    public sealed class CreateEvidenceItemCommand : IRequest<IResponse<EvidenceItemDTO>>
+    public sealed class CreateEvidenceItemCommand : IRequest<EvidenceItemDTO>
     {
         public CreateEvidenceItemCommand() { }
         public long CollectionObjectId { get; set; }
@@ -53,7 +53,7 @@ namespace SE.Core.Commands.EvidenceCollections
     }
 
     public class CreateEvidenceItemCommandHandler :
-    IRequestHandler<CreateEvidenceItemCommand, IResponse<EvidenceItemDTO>>
+    IRequestHandler<CreateEvidenceItemCommand, EvidenceItemDTO>
     {
         private readonly DataContext _dataContext;
          public CreateEvidenceItemCommandHandler(DataContext dataContext)
@@ -61,7 +61,7 @@ namespace SE.Core.Commands.EvidenceCollections
             _dataContext = dataContext;
         }
 
-        public async Task<IResponse<EvidenceItemDTO>> Handle(CreateEvidenceItemCommand request, CancellationToken cancellationToken)
+        public async Task<EvidenceItemDTO> Handle(CreateEvidenceItemCommand request, CancellationToken cancellationToken)
         {
             var evidenceItem = new EvidenceItem()
             {
@@ -91,7 +91,7 @@ namespace SE.Core.Commands.EvidenceCollections
                 throw new NotFoundException(nameof(EvidenceItem), evidenceItem.Id);
             }
 
-            return Response.Success(evidenceItem.MapToEvidenceItemDTO());
+            return evidenceItem.MapToEvidenceItemDTO();
         }
     }
 }

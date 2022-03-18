@@ -23,7 +23,7 @@ namespace SE.Core.Queries.EvidenceCollections
         }
     }
     public sealed class GetEvidencePackagesForEvidenceCollectionQuery :
-        IRequest<IResponse<List<EvidencePackageDTO>>>
+        IRequest<List<EvidencePackageDTO>>
     {
         public long EvaluationId { get; set; }
         public EvidenceCollectionType CollectionType { get; set; }
@@ -39,7 +39,7 @@ namespace SE.Core.Queries.EvidenceCollections
 
         internal sealed class GetEvidencePackagesForEvidenceCollectionQueryHandler :
             IRequestHandler<GetEvidencePackagesForEvidenceCollectionQuery, 
-            IResponse<List<EvidencePackageDTO>>>
+            List<EvidencePackageDTO>>
         {
             private readonly DataContext _dataContext;
             public GetEvidencePackagesForEvidenceCollectionQueryHandler(DataContext dataContext)
@@ -47,7 +47,7 @@ namespace SE.Core.Queries.EvidenceCollections
                 _dataContext = dataContext;
             }
 
-            public async Task<IResponse<List<EvidencePackageDTO>>> Handle(
+            public async Task<List<EvidencePackageDTO>> Handle(
                 GetEvidencePackagesForEvidenceCollectionQuery request, 
                 CancellationToken cancellationToken)
             {
@@ -62,7 +62,7 @@ namespace SE.Core.Queries.EvidenceCollections
                     .Select(x => x.MapToEvidencePackageDTO())
                     .ToListAsync();
 
-                return Response.Success(evidencePackages);
+                return evidencePackages;
             }
         }
     }

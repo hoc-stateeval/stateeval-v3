@@ -24,7 +24,7 @@ namespace SE.Core.Commands.SchoolConfigurations
         }
     }
     public sealed class DelegateEvaluationSetupCommand :
-        IRequest<IResponse<Unit>>
+        IRequest<Unit>
     {
         public long FrameworkContextId { get; }
         public bool DelegateEvalSetup { get; }
@@ -37,7 +37,7 @@ namespace SE.Core.Commands.SchoolConfigurations
     }
 
     public class DelegateEvaluationSetupCommandHandler :
-    IRequestHandler<DelegateEvaluationSetupCommand, IResponse<Unit>>
+    IRequestHandler<DelegateEvaluationSetupCommand, Unit>
     {
         private readonly DataContext _dataContext;
         public DelegateEvaluationSetupCommandHandler(DataContext dataContext)
@@ -45,7 +45,7 @@ namespace SE.Core.Commands.SchoolConfigurations
             _dataContext = dataContext;
         }
 
-        public async Task<IResponse<Unit>> Handle(DelegateEvaluationSetupCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DelegateEvaluationSetupCommand request, CancellationToken cancellationToken)
         {
             FrameworkContext? frameworkContext = await _dataContext.FrameworkContexts
                    .Where(x => x.Id == request.FrameworkContextId)
@@ -66,7 +66,7 @@ namespace SE.Core.Commands.SchoolConfigurations
 
             _dataContext.SaveChanges();
 
-            return Response.Success(Unit.Value);
+            return Unit.Value;
         }
     }
 }

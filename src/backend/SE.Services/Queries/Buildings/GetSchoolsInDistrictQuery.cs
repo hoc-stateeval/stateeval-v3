@@ -24,7 +24,7 @@ namespace SE.Core.Queries.Buildings
         }
     }
     public sealed class GetSchoolsInDistrictQuery :
-        IRequest<IResponse<List<BuildingDTO>>>
+        IRequest<List<BuildingDTO>>
     {
         public string DistrictCode { get; }
 
@@ -34,7 +34,7 @@ namespace SE.Core.Queries.Buildings
         }
 
         internal sealed class GetSchoolsInDistrictQueryHandler :
-            IRequestHandler<GetSchoolsInDistrictQuery, IResponse<List<BuildingDTO>>>
+            IRequestHandler<GetSchoolsInDistrictQuery, List<BuildingDTO>>
         {
             private readonly IBuildingService _buildingService;
             public GetSchoolsInDistrictQueryHandler(IBuildingService buildingService)
@@ -42,10 +42,10 @@ namespace SE.Core.Queries.Buildings
                 _buildingService = buildingService;
             }
 
-            public async Task<IResponse<List<BuildingDTO>>> Handle(GetSchoolsInDistrictQuery request, CancellationToken cancellationToken)
+            public async Task<List<BuildingDTO>> Handle(GetSchoolsInDistrictQuery request, CancellationToken cancellationToken)
             {
                 var schools = await _buildingService.GetSchoolsInDistrict(request.DistrictCode);
-                return Response.Success(schools);
+                return schools;
             }
         }
     }

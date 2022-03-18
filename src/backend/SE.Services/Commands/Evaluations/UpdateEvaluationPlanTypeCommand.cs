@@ -36,7 +36,7 @@ namespace SE.Core.Commands.Evaluations
         }
     }
     public sealed class UpdateEvaluateePlanTypeCommand :
-        IRequest<IResponse<Unit>>
+        IRequest<Unit>
     {
         public long EvaluationId { get; }
         public EvaluateePlanType EvaluateePlanType { get; }
@@ -63,7 +63,7 @@ namespace SE.Core.Commands.Evaluations
     }
 
     public class UpdateEvaluateePlanTypeCommandHandler :
-    IRequestHandler<UpdateEvaluateePlanTypeCommand, IResponse<Unit>>
+    IRequestHandler<UpdateEvaluateePlanTypeCommand, Unit>
     {
         private readonly DataContext _dataContext;
         public UpdateEvaluateePlanTypeCommandHandler(DataContext dataContext)
@@ -71,7 +71,7 @@ namespace SE.Core.Commands.Evaluations
             _dataContext = dataContext;
         }
 
-        public async Task<IResponse<Unit>> Handle(UpdateEvaluateePlanTypeCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateEvaluateePlanTypeCommand request, CancellationToken cancellationToken)
         {
             Evaluation? evaluation = await _dataContext.Evaluations
                    .Where(x => x.Id == request.EvaluationId)
@@ -100,7 +100,7 @@ namespace SE.Core.Commands.Evaluations
 
             _dataContext.SaveChanges();
 
-            return Response.Success(Unit.Value);
+            return Unit.Value;
         }
     }
 }

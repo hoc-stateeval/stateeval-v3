@@ -36,8 +36,10 @@ namespace SE.Core.Models
         public RubricPerformanceLevel? PerformanceLevel { get; set; }
         public string PerformanceLevelDisplayName { get; set; } = "";
         public StudentGrowthImpactRating? StudentGrowthImpactRating { get; set; }
+        public string StudentGrowthImpactRatingDisplayName { get; set; } = "";
         public bool? ComprehensiveCarryForward { get; set; }
         public RubricPerformanceLevel? CarryForwardPerformanceLevel { get; set; }
+        public string CarryForwardPerformanceLevelDisplayName { get; set; } = "";
         public SchoolYear? CarryForwardSchoolYear { get; set; }
 
         public long? FocusedFrameworkNodeId { get; set; }
