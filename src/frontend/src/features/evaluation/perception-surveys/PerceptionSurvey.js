@@ -91,7 +91,7 @@ const PerceptionSurvey = () => {
           <Button onClick={deleteSurvey}>Delete Survey</Button>
       </Stack>
       {mode==='edit' && <SurveyBuilder activeFramework={activeFramework} survey={survey} checkedIds={checkedIds} statementMap={statementMap}/>}
-      {mode==='preview' && <StudentSurveyBody activeFramework={activeFramework}  survey={survey} checkedIds={checkedIds} statementMap={statementMap} />}
+      {mode==='preview' && <StudentSurveyBody checkedIds={checkedIds} allStatements={statements} />}
     </Stack>
     </>
   )

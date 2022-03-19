@@ -114,5 +114,14 @@ export const WorkState = {
   'PERCEPTION_SURVEY_COMPLETE': 21
 };
 
+export const PerceptionSurveyLevelOfAgreement = {
+    'UNDEFINED ': 0,
+    'STRONGLY_DISAGREE': 1,
+    'DISAGREE': 2,
+    'NEITHER': 3,
+    'AGREE': 4,
+    'STRONGLY_AGREE': 5
+}
+
 
 
