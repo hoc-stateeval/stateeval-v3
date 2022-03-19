@@ -3,12 +3,13 @@ import { useErrorHandler } from 'react-error-boundary';
 import { useSelector } from "react-redux";
 
 import {
+  Alert,
+  AlertTitle,
   Checkbox,
   FormControl,
   FormControlLabel,
   FormGroup,
   FormLabel, 
-  MenuItem,
   Paper,
   Radio,
   RadioGroup,
@@ -19,7 +20,6 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  TextField,
   Typography
 } from "@mui/material";
 
@@ -35,7 +35,7 @@ import {
 import { PerceptionSurveyLevelOfAgreement } from "@lib/enums";
 import { Ethnicities } from "@lib/eval-helpers";
 
-const StudentSurveyBody = ({checkedIds, allStatements}) => {
+const StudentSurveyBody = ({preview, checkedIds, allStatements}) => {
   const errorHandler = useErrorHandler();
 
   const activeEvaluationId = useSelector(selectActiveEvaluationId);
@@ -53,7 +53,7 @@ const StudentSurveyBody = ({checkedIds, allStatements}) => {
     });
   }
 
-  const [statements, setStatements] = useState(getStatements());
+  const [statements] = useState(getStatements());
   const [gender, setGender] = useState('0');
   const [race, setRace] = useState(Ethnicities.reduce((acc, next)=> {
     acc[next.name] = false;
@@ -102,6 +102,15 @@ const StudentSurveyBody = ({checkedIds, allStatements}) => {
 
   return (
     <>
+      {preview &&
+        <Alert severity="info">
+          <AlertTitle>Status: Preview</AlertTitle>
+          <Typography>
+            This survey is currently being previewed. To switch back to building the survey, 
+            click the <strong>Edit Survey</strong> button.
+          </Typography>
+        </Alert>
+      }
       <Typography sx={{textAlign:'center'}} variant="h2">Student Survey for Secondary School</Typography>
       <Typography>
         The teacher of this class wants to get your opinions in order to improve your learning

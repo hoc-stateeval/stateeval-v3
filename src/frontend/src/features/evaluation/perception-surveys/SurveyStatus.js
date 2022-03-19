@@ -9,7 +9,7 @@ import {
 import { WorkState } from "@lib/enums";
 import copyToClipboard from "@lib/utils/copyToClipboard";
 
-const SurveyStatus = ({survey}) => {
+const SurveyStatus = ({survey, checkedIds}) => {
 
   return (
     <>
@@ -29,6 +29,14 @@ const SurveyStatus = ({survey}) => {
         <Typography>
           This survey is currently under construction. To make the survey visible to your 
           students, click the <strong>Open Survey</strong> button.
+        </Typography>
+      </Alert>
+    }
+     {survey.wfState === WorkState.PERCEPTION_SURVEY_BUILDING && checkedIds.length===0 &&
+      <Alert severity="warning">
+        <AlertTitle>Status: Incomplete</AlertTitle>
+        <Typography>
+          This survey must have at least one statement included before it can be previewed or opened.
         </Typography>
       </Alert>
     }

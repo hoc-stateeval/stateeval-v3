@@ -89,7 +89,7 @@ const SurveyBuilder = ({activeFramework, survey, checkedIds, statementMap}) => {
 
   return (
     <>
-      <SurveyStatus survey={survey} />
+      <SurveyStatus survey={survey} checkedIds={checkedIds} />
       <ToggleButtonGroup
         color="secondary"
         value={showFilter}

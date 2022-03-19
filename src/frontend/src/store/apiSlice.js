@@ -23,7 +23,7 @@ export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: axiosBaseQuery({ baseUrl: baseUrl }),
   keepUnusedDataFor: 10,
-  tagTypes: ['EvidenceItem', 'EvidencePackage', 'StatementIds'],
+  tagTypes: ['EvidenceItem', 'EvidencePackage', 'StatementIds', 'PerceptionSurveys'],
   endpoints: builder => ({
 
     // evidence collections
@@ -89,6 +89,7 @@ export const apiSlice = createApi({
     // perception surveys
     getPerceptionSurveysForEvaluation: builder.query({
       query: (evaluationId) => ({ url: `perception-surveys/evaluation/${evaluationId}`, method: 'get' }),
+      providesTags: ['PerceptionSurveys']
     }),
 
     getPerceptionSurveyByGuid: builder.query({
@@ -97,6 +98,12 @@ export const apiSlice = createApi({
 
     createPerceptionSurvey: builder.mutation({
       query: (data) => ({ url: `perception-surveys/evaluation/${data.evaluationId}`, method: 'post', data: data }),
+      invalidatesTags: ['PerceptionSurveys'],
+    }),
+
+    deletePerceptionSurvey: builder.mutation({
+      query: (surveyId) => ({ url: `perception-surveys/${surveyId}`, method: 'delete' }),
+      invalidatesTags: ['PerceptionSurveys'],
     }),
 
     getPerceptionSurveyStatementsForFrameworkTagName: builder.query({
@@ -237,5 +244,6 @@ export const {
   useRemoveStatementFromSurveyMutation,
   useGetPerceptionSurveyByGuidQuery,
   useGetObservationsForEvaluationQuery,
-  useCreateObservationMutation
+  useCreateObservationMutation,
+  useDeletePerceptionSurveyMutation
 } = apiSlice
