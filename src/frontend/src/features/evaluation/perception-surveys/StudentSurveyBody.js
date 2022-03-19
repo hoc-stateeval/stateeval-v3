@@ -3,14 +3,23 @@ import { useErrorHandler } from 'react-error-boundary';
 import { useSelector } from "react-redux";
 
 import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormLabel, 
+  MenuItem,
   Paper,
   Radio,
+  RadioGroup,
+  Stack,
   Table,
   TableContainer,
   TableHead,
   TableBody,
   TableRow,
   TableCell,
+  TextField,
   Typography
 } from "@mui/material";
 
@@ -24,6 +33,7 @@ import {
 } from "@api-slice";
 
 import { PerceptionSurveyLevelOfAgreement } from "@lib/enums";
+import { Ethnicities } from "@lib/eval-helpers";
 
 const StudentSurveyBody = ({checkedIds, allStatements}) => {
   const errorHandler = useErrorHandler();
@@ -44,12 +54,27 @@ const StudentSurveyBody = ({checkedIds, allStatements}) => {
   }
 
   const [statements, setStatements] = useState(getStatements());
+  const [gender, setGender] = useState('0');
+  const [race, setRace] = useState(Ethnicities.reduce((acc, next)=> {
+    acc[next.name] = false;
+    return acc;
+  }, {}));
 
+  const handleChange = (event) => {
+    setRace({
+      ...race,
+      [event.target.name]: event.target.checked,
+    });
+  };
 
   const setResult = (statementId, levelOfAgreement) => {
     let newResults = {...results};
     newResults[statementId] = levelOfAgreement;
     setResults(newResults);
+  }
+
+  const changeGender = (newValue) => {
+    setGender(newValue);
   }
 
   const tableData = [
@@ -73,7 +98,7 @@ const StudentSurveyBody = ({checkedIds, allStatements}) => {
       levelOfAgreementTitle: 'Strongly Agree',
       levelOfAgreementValue: PerceptionSurveyLevelOfAgreement.STRONGLY_AGREE,
     }
-  ]
+  ];
 
   return (
     <>
@@ -122,6 +147,43 @@ const StudentSurveyBody = ({checkedIds, allStatements}) => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Typography>
+        <strong>Demographic Information:</strong> (This information is for state use only and will not be shared with teachers or others.)
+      </Typography>
+      <Stack direction="column" spacing={2}>
+      <FormControl>
+          <FormLabel id="gender-radio-buttons-group-label"><strong>Gender</strong></FormLabel>
+          <RadioGroup row
+            sx={{ml:3}}
+            aria-labelledby="gender-radio-buttons-group-label"
+            defaultValue="0"
+            value={gender}
+            onChange={(e) => {
+              changeGender(e.target.value);
+            }}
+            name="gender-radio-buttons-group"
+          >
+            <FormControlLabel value="F" control={<Radio />} label="Female" />
+            <FormControlLabel value="M" control={<Radio />} label="Male" />
+            <FormControlLabel value="O" control={<Radio />} label="Other" />
+          </RadioGroup>
+        </FormControl>
+        <FormControl>
+          <FormLabel component="legend"><strong>Race/Ethnic Group (select all that apply):</strong></FormLabel>
+          <FormGroup sx={{ml:3}}>
+            {Ethnicities.map((x,i)=> {
+              return (
+                <FormControlLabel
+                  control={
+                    <Checkbox checked={race[x]} onChange={handleChange} name={x.name} />
+                  }
+                  label={x.name}
+                />
+              )
+            })}
+          </FormGroup>
+        </FormControl>
+    </Stack>
     </>
   )
 }
