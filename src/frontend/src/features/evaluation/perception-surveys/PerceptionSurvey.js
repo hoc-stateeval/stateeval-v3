@@ -26,11 +26,15 @@ import {
   useGetPerceptionSurveyStatementsForFrameworkTagNameQuery,
   useGetPerceptionSurveyStatementIdsQuery,
   useDeletePerceptionSurveyMutation,
+  useUpdatePerceptionSurveyMutation,
 } from "@api-slice";
 
 import StudentSurveyBody from "./StudentSurveyBody";
 import SurveyBuilder from "./SurveyBuilder";
+import SurveyResults from "./SurveyResults";
+import SurveyStatus from "./SurveyStatus";
 import { evaluationPaths } from "@routes/paths";
+import { WorkState } from "@lib/enums";
 
 const PerceptionSurvey = () => {
 
@@ -46,6 +50,9 @@ const PerceptionSurvey = () => {
   const [deleteSurveyAPI, {error: deleteSurveyError}] = useDeletePerceptionSurveyMutation();
   if (deleteSurveyError) errorHandler(deleteSurveyError);
 
+  const [updateSurveyAPI, {error: updateSurveyError}] = useUpdatePerceptionSurveyMutation();
+  if (updateSurveyError) errorHandler(updateSurveyError);
+
   const { survey, error: getPerceptionSurveysError } = 
   useGetPerceptionSurveysForEvaluationQuery(activeEvaluationId, {
     selectFromResult: ({ data }) => ({
@@ -58,6 +65,7 @@ const PerceptionSurvey = () => {
   const [mode, setMode] = useState('edit');
   const [openSurveyDlgOpen, setOpenSurveyDlgOpen] = useState(false);
   const [deleteSurveyDlgOpen, setDeleteSurveyDlgOpen] = useState(false);
+  const [completeSurveyDlgOpen, setCompleteSurveyDlgOpen] = useState(false);
 
   const { data: activeFramework, error: getFrameworkError } = 
     useGetFrameworkByIdQuery(activeFrameworkId);
@@ -93,11 +101,162 @@ const PerceptionSurvey = () => {
     navigate(evaluationPaths.trMePerceptionSurveys);
   }
 
-  const openSurvey = () => {
+  const openSurvey = async () => {
+    await updateSurveyAPI({
+      surveyId: survey.id,
+      title: survey.title,
+      wfState: WorkState.PERCEPTION_SURVEY_OPEN,
+    });
   }
 
-  const closeSurvey = () => {
+  const closeSurvey = async () => {
+    await updateSurveyAPI({
+      surveyId: survey.id,
+      title: survey.title,
+      wfState: WorkState.PERCEPTION_SURVEY_CLOSED,
+    });
+  }
 
+  const completeSurvey = async () => {
+    await updateSurveyAPI({
+      surveyId: survey.id,
+      title: survey.title,
+      wfState: WorkState.PERCEPTION_SURVEY_COMPLETE,
+    });
+  }
+
+  const buildCompleteSurveyButton = () => {
+    return (
+      <>
+          <Button onClick={()=> {setCompleteSurveyDlgOpen(true)}}>Complete Survey</Button>
+          <Dialog open={completeSurveyDlgOpen} onClose={()=> {setCompleteSurveyDlgOpen(false)}}>
+          <DialogTitle>Delete</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to complete this survey? Students will no longer be able to take this survey once it has been complete.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button variant="outlined"  onClick={()=> {setCompleteSurveyDlgOpen(false)}}>Cancel</Button>
+            <Button variant="contained" onClick={completeSurvey}>Complete Survey</Button>
+          </DialogActions>
+        </Dialog>
+      </>
+    )
+  }
+  const buildDeleteSurveyButton = () => {
+    return (
+      <>
+        <Button onClick={()=> {setDeleteSurveyDlgOpen(true)}}>Delete Survey</Button>
+        <Dialog open={deleteSurveyDlgOpen} onClose={()=> {setDeleteSurveyDlgOpen(false)}}>
+          <DialogTitle>Delete</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to delete this survey?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button variant="outlined"  onClick={()=> {setDeleteSurveyDlgOpen(false)}}>Cancel</Button>
+            <Button variant="contained" onClick={deleteSurvey}>Delete Survey</Button>
+          </DialogActions>
+        </Dialog>
+    </>
+    );
+  }
+
+  const buildOpenSurveyButton = () => {
+    return (
+      <>
+      <Button disabled={checkedIds.length===0} onClick={()=> {setOpenSurveyDlgOpen(true)}}>Open Survey</Button>
+      <Dialog open={openSurveyDlgOpen} onClose={()=> {setOpenSurveyDlgOpen(false)}}>
+        <DialogTitle>Open Survey to Students</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <p>Please make sure your survey is ready. The survey will be
+                available to anyone that has the survey URL.
+                Once the survey is public you will not be able to modify the survey.
+            </p>
+            <p>What happens after clicking the "Open Survey" button?:</p>
+            <ul>
+                <li>
+                    The survey will be accessible from a public URL. This page will display the public URL
+                    that you can distribute to your students.
+                </li>
+                <li>The survey will remain open until you either temporarily close the survey or complete
+                    the survey.</li>
+                <li>If you temporarily close the survey you can re-open it.</li>
+                <li>Once you complete the survey it cannot be re-opened.</li>
+            </ul>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined"  onClick={()=> {setOpenSurveyDlgOpen(false)}}>Cancel</Button>
+          <Button variant="contained" onClick={openSurvey}>Open Survey</Button>
+        </DialogActions>
+      </Dialog>
+      </>
+    )
+  }
+
+  const buildButtons = () => {
+    let content = [];
+    if (survey.wfState === WorkState.PERCEPTION_SURVEY_BUILDING) {
+      if (mode==='preview') {
+        content.push(<Button onClick={() => { setMode('edit'); }}>Edit Survey</Button>)
+      }
+      else if (mode==='edit') {
+        content.push(
+          <>
+          <Button disabled={checkedIds.length===0} onClick={() => {setMode('preview'); }}>Preview Survey</Button>
+          {buildOpenSurveyButton()}
+          {buildDeleteSurveyButton()}
+        </>     
+        )
+      }
+    }
+    else if (survey.wfState === WorkState.PERCEPTION_SURVEY_CLOSED) {
+      content.push(
+        <>
+          {buildOpenSurveyButton()}
+          {buildCompleteSurveyButton()}
+          {buildDeleteSurveyButton()}
+        </>
+      );
+    }
+    else if (survey.wfState === WorkState.PERCEPTION_SURVEY_OPEN) {
+      content.push(
+        <>
+          <Button onClick={() => {closeSurvey(); }}>Close Survey</Button>
+          {buildCompleteSurveyButton()}
+          {buildDeleteSurveyButton()}
+        </>
+      );
+    }
+
+    return content;
+  }
+
+  const buildMainContent = () => {
+    let content = [];
+    content.push(<SurveyStatus survey={survey} checkedIds={checkedIds} />)
+    if (survey.wfState === WorkState.PERCEPTION_SURVEY_BUILDING) {
+      if (mode==='preview') {
+        content.push(<StudentSurveyBody preview={true} checkedIds={checkedIds} allStatements={statements} />)
+      }
+      else if (mode==='edit') {
+        content.push(
+          <SurveyBuilder activeFramework={activeFramework} survey={survey} checkedIds={checkedIds} statementMap={statementMap}/>
+        );
+      }
+    }
+    else if (survey.wfState === WorkState.PERCEPTION_SURVEY_OPEN) {
+      content.push(<SurveyResults />)
+    }
+    else if (survey.wfState === WorkState.PERCEPTION_SURVEY_CLOSED) {
+      content.push(<SurveyResults />)
+    }
+
+    return content;
   }
 
   if (!survey || !statements || !activeFramework || !checkedIds) {
@@ -108,57 +267,10 @@ const PerceptionSurvey = () => {
     <>
     <Stack direction="column" spacing={2}>
       <Stack direction="row" spacing={2} sx={{justifyContent: 'flex-end'}}>
-          {mode==='preview' && <Button onClick={() => { setMode('edit'); }}>Edit Survey</Button>}
-          {mode==='edit' && (
-            <>
-              <Button disabled={checkedIds.length===0} onClick={() => {setMode('preview'); }}>Preview Survey</Button>
-              <Button disabled={checkedIds.length===0} onClick={()=> {setOpenSurveyDlgOpen(true)}}>Open Survey</Button>
-              <Dialog open={openSurveyDlgOpen} onClose={()=> {setOpenSurveyDlgOpen(false)}}>
-                <DialogTitle>Open Survey to Students</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    <p>Please make sure your survey is ready. The survey will be
-                        available to anyone that has the survey URL.
-                        Once the survey is public you will not be able to modify the survey.
-                    </p>
-                    <p>What happens after clicking the "Open Survey" button?:</p>
-                    <ul>
-                        <li>
-                            The survey will be accessible from a public URL. This page will display the public URL
-                            that you can distribute to your students.
-                        </li>
-                        <li>The survey will remain open until you either temporarily close the survey or complete
-                            the survey.</li>
-                        <li>If you temporarily close the survey you can re-open it.</li>
-                        <li>Once you complete the survey it cannot be re-opened.</li>
-                    </ul>
-                    
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button variant="outlined"  onClick={()=> {setOpenSurveyDlgOpen(false)}}>Cancel</Button>
-                  <Button variant="contained" onClick={openSurvey}>Open Survey</Button>
-                </DialogActions>
-              </Dialog>
-              <Button onClick={()=> {setDeleteSurveyDlgOpen(true)}}>Delete Survey</Button>
-              <Dialog open={deleteSurveyDlgOpen} onClose={()=> {setDeleteSurveyDlgOpen(false)}}>
-                <DialogTitle>Delete</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    Are you sure you want to delete this survey?
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button variant="outlined"  onClick={()=> {setDeleteSurveyDlgOpen(false)}}>Cancel</Button>
-                  <Button variant="contained" onClick={deleteSurvey}>Delete Survey</Button>
-                </DialogActions>
-              </Dialog>
-            </>
-          )}
+         {buildButtons()}
       </Stack>
-      {mode==='edit' && <SurveyBuilder activeFramework={activeFramework} survey={survey} checkedIds={checkedIds} statementMap={statementMap}/>}
-      {mode==='preview' && <StudentSurveyBody preview={true} checkedIds={checkedIds} allStatements={statements} />}
-    </Stack>
+      {buildMainContent()}
+     </Stack>
     </>
   )
 }

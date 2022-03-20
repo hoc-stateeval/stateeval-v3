@@ -23,7 +23,7 @@ export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: axiosBaseQuery({ baseUrl: baseUrl }),
   keepUnusedDataFor: 10,
-  tagTypes: ['EvidenceItem', 'EvidencePackage', 'StatementIds', 'PerceptionSurveys'],
+  tagTypes: ['EvidenceItem', 'EvidencePackage', 'PerceptionSurveyStatementIds', 'PerceptionSurveys'],
   endpoints: builder => ({
 
     // evidence collections
@@ -101,6 +101,11 @@ export const apiSlice = createApi({
       invalidatesTags: ['PerceptionSurveys'],
     }),
 
+    updatePerceptionSurvey: builder.mutation({
+      query: (data) => ({ url: `perception-surveys/${data.surveyId}`, method: 'put', data: data }),
+      invalidatesTags: ['PerceptionSurveys'],
+    }),
+
     deletePerceptionSurvey: builder.mutation({
       query: (surveyId) => ({ url: `perception-surveys/${surveyId}`, method: 'delete' }),
       invalidatesTags: ['PerceptionSurveys'],
@@ -111,15 +116,15 @@ export const apiSlice = createApi({
     }),
     getPerceptionSurveyStatementIds: builder.query({
       query: (surveyId) => ({ url: `perception-survey-statements/${surveyId}/statementIds`, method: 'get' }),
-      providesTags: ['StatementIds']
+      providesTags: ['PerceptionSurveyStatementIds']
     }),
     addStatementToSurvey: builder.mutation({
       query: (data) => ({url: `perception-surveys/add-statement/${data.surveyId}/${data.statementId}`, method: 'post', data: data}) ,
-      invalidatesTags: ['StatementIds'],
+      invalidatesTags: ['PerceptionSurveyStatementIds'],
     }),
     removeStatementFromSurvey: builder.mutation({
       query: (data) => ({url: `perception-surveys/remove-statement/${data.surveyId}/${data.statementId}`, method: 'post', data: data}) ,
-      invalidatesTags: ['CheckedStatementIds'],
+      invalidatesTags: ['PerceptionSurveyStatementIds'],
     }),
 
     // evaluations
@@ -245,5 +250,6 @@ export const {
   useGetPerceptionSurveyByGuidQuery,
   useGetObservationsForEvaluationQuery,
   useCreateObservationMutation,
-  useDeletePerceptionSurveyMutation
+  useDeletePerceptionSurveyMutation,
+  useUpdatePerceptionSurveyMutation,
 } = apiSlice

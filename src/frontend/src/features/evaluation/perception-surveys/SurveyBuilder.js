@@ -19,8 +19,6 @@ import {
   useRemoveStatementFromSurveyMutation
 } from "@api-slice";
 
-import SurveyStatus from "./SurveyStatus";
-
 const SurveyBuilder = ({activeFramework, survey, checkedIds, statementMap}) => {
   const errorHandler = useErrorHandler();
 
@@ -89,7 +87,6 @@ const SurveyBuilder = ({activeFramework, survey, checkedIds, statementMap}) => {
 
   return (
     <>
-      <SurveyStatus survey={survey} checkedIds={checkedIds} />
       <ToggleButtonGroup
         color="secondary"
         value={showFilter}
