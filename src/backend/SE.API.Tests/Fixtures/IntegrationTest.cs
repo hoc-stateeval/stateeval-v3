@@ -29,6 +29,8 @@ namespace SE.API.Tests.Fixtures
         private string workAreaContextsRoot = "work-area-contexts";
         private string perceptionSurveysRoot = "perception-surveys";
         private string perceptionSurveyStatementsRoot = "perception-survey-statements";
+        private string perceptionSurveyResponsesRoot = "perception-survey-responses";
+        private string perceptionSurveyDemographicsRoot = "perception-survey-demographics";
         private string evaluationsRoot = "evaluations";
 
         public IntegrationTest(ApiWebApplicationFactory fixture)
@@ -36,33 +38,33 @@ namespace SE.API.Tests.Fixtures
             _factory = fixture;
             _client = _factory.CreateClient();
         }
-        public async Task<UserDTO> GetUserByUserName(string userName)
+        public async Task<UserDTO> GetUserByUserNameAPI(string userName)
         {
             var user = await _client.GetFromJsonAsync<UserDTO>($"users/{userName}");
             return user;
         }
 
-        public async Task<List<WorkAreaContextDTO>> GetWorkAreaContextsForUser(long userId)
+        public async Task<List<WorkAreaContextDTO>> GetWorkAreaContextsForUserAPI(long userId)
         {
             var url = $"${workAreaContextsRoot}/user/{userId}";
             var workAreaContexts = await _client.GetFromJsonAsync<List<WorkAreaContextDTO>>(url);
             return workAreaContexts;
         }
 
-        public async Task<List<EvaluationSummaryDTO>> GetEvaluationsForWorkArea(long userId, long workAreaContextId)
+        public async Task<List<EvaluationSummaryDTO>> GetEvaluationsForWorkAreaAPI(long userId, long workAreaContextId)
         {
             var url = $"{evaluationsRoot}/work-area-context/{workAreaContextId}";
             var evaluations = await _client.GetFromJsonAsync<List<EvaluationSummaryDTO>>(url);
             return evaluations;
         }
 
-        public async Task<FrameworkDTO> GetFrameworkById(long id)
+        public async Task<FrameworkDTO> GetFrameworkByIdAPI(long id)
         {
             var framework = await _client.GetFromJsonAsync<FrameworkDTO>($"frameworks/{id}");
             return framework;
         }
 
-        public async Task<HttpResponseMessage> UpdateEvaluateePlanType(long userId, long workAreaContextId,
+        public async Task<HttpResponseMessage> UpdateEvaluateePlanTypeAPI(long userId, long workAreaContextId,
             long evaluationId, UpdateEvaluateePlanTypeCommand command)
         {
             var url = $"{evaluationsRoot}/{evaluationId}/update-plan-type";
@@ -70,7 +72,7 @@ namespace SE.API.Tests.Fixtures
             return response;
         }
 
-        public async Task<HttpResponseMessage> UpdateEvaluator(long userId, long workAreaContextId,
+        public async Task<HttpResponseMessage> UpdateEvaluatorAPI(long userId, long workAreaContextId,
            long evaluationId, UpdateEvaluatorCommand command)
         {
             var url = $"{evaluationsRoot}/{evaluationId}/update-evaluator";
@@ -79,14 +81,14 @@ namespace SE.API.Tests.Fixtures
         }
 
 
-        public async Task<PerceptionSurveyDTO> GetPerceptionSurveyByGuid(Guid guid)
+        public async Task<PerceptionSurveyDTO> GetPerceptionSurveyByGuidAPI(string guid)
         {
             var url = $"{perceptionSurveysRoot}/{guid}";
             var survey = await _client.GetFromJsonAsync<PerceptionSurveyDTO>(url);
             return survey;
 
         }
-        public async Task<PerceptionSurveyDTO?> CreatePerceptionSurvey(long evaluationId, CreatePerceptionSurveyCommand command)
+        public async Task<PerceptionSurveyDTO?> CreatePerceptionSurveyAPI(long evaluationId, CreatePerceptionSurveyCommand command)
         {
             var url = $"{perceptionSurveysRoot}/evaluation/{evaluationId}";
             var response = _client.PostAsJsonAsync<CreatePerceptionSurveyCommand>(url, command);
@@ -94,7 +96,29 @@ namespace SE.API.Tests.Fixtures
             return survey;
         }
 
-        public async Task<Unit> UpdatePerceptionSurvey(long surveyId, UpdatePerceptionSurveyCommand command)
+        public async Task<Unit> SubmitSurveyResponsesAPI(long surveyId, SubmitSurveyResponsesCommand command)
+        {
+            var url = $"{perceptionSurveyResponsesRoot}/{surveyId}";
+            var response = _client.PostAsJsonAsync<SubmitSurveyResponsesCommand>(url, command);
+            var result = await response.Result.Content.ReadFromJsonAsync<Unit>();
+            return result;
+        }
+
+        public async Task<List<PerceptionSurveyResponseDTO>> GetPerceptionSurveyResponsesAPI(long surveyId)
+        {
+            var url = $"{perceptionSurveyResponsesRoot}/{surveyId}";
+            var responses = await _client.GetFromJsonAsync<List<PerceptionSurveyResponseDTO>>(url);
+            return responses;
+        }
+
+        public async Task<List<PerceptionSurveyDemographicDTO>> GetPerceptionSurveyDemographicsAPI(long surveyId)
+        {
+            var url = $"{perceptionSurveyDemographicsRoot}/{surveyId}";
+            var demographics = await _client.GetFromJsonAsync<List<PerceptionSurveyDemographicDTO>>(url);
+            return demographics;
+        }
+
+        public async Task<Unit> UpdatePerceptionSurveyAPI(long surveyId, UpdatePerceptionSurveyCommand command)
         {
             var url = $"{perceptionSurveysRoot}/{surveyId}";
             var response = _client.PutAsJsonAsync<UpdatePerceptionSurveyCommand>(url, command);
@@ -102,21 +126,21 @@ namespace SE.API.Tests.Fixtures
             return result;
         }
 
-        public async Task<List<long>> GetPerceptionSurveyStatementIds(long surveyId)
+        public async Task<List<long>> GetPerceptionSurveyStatementIdsAPI(long surveyId)
         {
             var url = $"{perceptionSurveyStatementsRoot}/{surveyId}/statementIds";
             var ids = await _client.GetFromJsonAsync<List<long>>(url);
             return ids;
         }
 
-        public async Task<List<PerceptionSurveyStatementDTO>> GetPerceptionSurveyStatementsForFrameworkTagName(string tagName)
+        public async Task<List<PerceptionSurveyResponseDTO>> GetPerceptionSurveyStatementsForFrameworkTagNameAPI(string tagName)
         {
             var url = $"{perceptionSurveyStatementsRoot}/by-tagname/{tagName}";
-            var statements = await _client.GetFromJsonAsync<List<PerceptionSurveyStatementDTO>>(url);
+            var statements = await _client.GetFromJsonAsync<List<PerceptionSurveyResponseDTO>>(url);
             return statements;
         }
 
-        public async Task<Unit> DeleteSurvey(long surveyId)
+        public async Task<Unit> DeleteSurveyAPI(long surveyId)
         {
             var url = $"{perceptionSurveysRoot}/{surveyId}";
             var response = _client.DeleteAsync(url);
@@ -124,7 +148,7 @@ namespace SE.API.Tests.Fixtures
             return result;
         }
 
-        public async Task<Unit> AddStatementToSurvey(long surveyId, long statementId)
+        public async Task<Unit> AddStatementToSurveyAPI(long surveyId, long statementId)
         {
             var url = $"{perceptionSurveysRoot}/add-statement/{surveyId}/{statementId}";
             var command = new AddStatementToSurveyCommand(surveyId, statementId);
@@ -132,7 +156,7 @@ namespace SE.API.Tests.Fixtures
             var result = await response.Result.Content.ReadFromJsonAsync<Unit>();
             return result;
         }
-        public async Task<Unit> RemoveStatementFromSurvey(long surveyId, long statementId)
+        public async Task<Unit> RemoveStatementFromSurveyAPI(long surveyId, long statementId)
         {
             var url = $"{perceptionSurveysRoot}/remove-statement/{surveyId}/{statementId}";
             var command = new RemoveStatementFromSurveyCommand(surveyId, statementId);
@@ -141,22 +165,22 @@ namespace SE.API.Tests.Fixtures
             return result;
         }
 
-        public async Task<List<PerceptionSurveyDTO>> GetPerceptionSurveysForEvaluation(long evaluationId)
+        public async Task<List<PerceptionSurveyDTO>> GetPerceptionSurveysForEvaluationAPI(long evaluationId)
         {
             var url = $"{perceptionSurveysRoot}/evaluation/{evaluationId}";
             var surveys = await _client.GetFromJsonAsync<List<PerceptionSurveyDTO>>(url);
             return surveys;
         }
 
-        public async Task<EvaluationSummaryDTO> GetEvaluationForUser(string userName, WorkAreaType workAreaType)
+        public async Task<EvaluationSummaryDTO> GetEvaluationForUserAPI(string userName, WorkAreaType workAreaType)
         {
-            var user = await GetUserByUserName(userName);
-            var workAreaContexts = await GetWorkAreaContextsForUser(user.Id);
+            var user = await GetUserByUserNameAPI(userName);
+            var workAreaContexts = await GetWorkAreaContextsForUserAPI(user.Id);
             workAreaContexts.Count.Should().BeGreaterThan(0);
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, workAreaType);
             workAreaContext.Should().NotBeNull();
 
-            var evaluations = await GetEvaluationsForWorkArea(user.Id, workAreaContext.Id);
+            var evaluations = await GetEvaluationsForWorkAreaAPI(user.Id, workAreaContext.Id);
             evaluations.Count.Should().Be(1);
             return evaluations[0];
         }

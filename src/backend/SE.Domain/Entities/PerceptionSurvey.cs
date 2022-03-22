@@ -21,7 +21,7 @@ namespace SE.Domain.Entities
         public string SchoolCode { get; set; }
         public DateTime? CompletionDateTime { get; set; }
         public string TinyURL { get; set; } 
-        public Guid Guid { get; set; }
+        public string Guid { get; set; }
 
         public WfState WfState { get; set; }
 

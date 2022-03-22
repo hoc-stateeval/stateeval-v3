@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SE.Core</name>
+    </assembly>
+    <members>
+        <member name="T:SE.Core.Commands.PerceptionSurveys.UpdatePerceptionSurveyCommand">
+            <summary>
+            The command object to update a perception survey
+            </summary>
+        </member>
+        <member name="P:SE.Core.Commands.PerceptionSurveys.UpdatePerceptionSurveyCommand.SurveyId">
+            <summary>
+            The survey Id
+            </summary>
+        </member>
+        <member name="P:SE.Core.Commands.PerceptionSurveys.UpdatePerceptionSurveyCommand.Title">
+            <summary>
+            The survey title
+            </summary>
+        </member>
+        <member name="P:SE.Core.Commands.PerceptionSurveys.UpdatePerceptionSurveyCommand.WfState">
+            <summary>
+            The survey work state
+            </summary>
+        </member>
+        <member name="T:SE.Core.Models.BuildingDTO">
+            <summary>
+            A physical building, which is either a school or a district. 
+            When IsSchool is true, the DistrictName, DistrictCode, SchoolName, and SchoolCode will all be populated.
+            When IsSchool is false, the SchoolName and SchoolCode will be empty.
+            When it is a school,
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.BuildingDTO.IsSchool">
+            <summary>
+            Whether the building is a school or a district
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.BuildingDTO.SchoolName">
+            <summary>
+            The OSPI name of the school, if IsSchool is true, otherwise an empty string.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.BuildingDTO.SchoolCode">
+            <summary>
+            The unique OSPI code for the school, if IsSchool is true, otherwise an empty string.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.BuildingDTO.DistrictCode">
+            <summary>
+            The unique OSPI code for the district
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.BuildingDTO.DistrictName">
+            <summary>
+            The OSPI name for the district
+            </summary>
+        </member>
+        <member name="T:SE.Core.Models.PerceptionSurveyDTO">
+            <summary>
+            A perception survey teachers can optionally create for their evaluation
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyDTO.Id">
+            <summary>
+            The survey id
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyDTO.Guid">
+            <summary>
+            The survey guid
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyDTO.EvaluationId">
+            <summary>
+            The survey evaluation id
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyDTO.SchoolCode">
+            <summary>
+            The schoolcode associated with the survey
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyDTO.Title">
+            <summary>
+            The title of the survey
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyDTO.TinyURL">
+            <summary>
+            The tinyURL used by students to access the survey
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyDTO.WfState">
+            <summary>
+            The work state of the survey
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyDTO.WfStateDisplayName">
+            <summary>
+            The string representation of the state of the survey
+            </summary>
+        </member>
+    </members>
+</doc>

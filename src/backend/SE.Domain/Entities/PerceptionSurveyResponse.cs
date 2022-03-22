@@ -14,8 +14,12 @@ namespace SE.Domain.Entities
         [Required]
         public PerceptionSurveyLevelOfAgreement LevelOfAgreement { get; set; }
 
+        [Required]
+        public Guid RespondentId { get; set; }
+
         [ForeignKey("SurveyId")]
         public long SurveyId { get; set; }
+
         public virtual PerceptionSurvey PerceptionSurvey { get; set; }
 
         [ForeignKey("StatementId")]

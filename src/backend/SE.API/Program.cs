@@ -90,7 +90,23 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(
+     options =>
+     {
+         // https://dejanstojanovic.net/aspnet/2019/march/dto-comments-from-external-assembly-in-swagger-documentation-in-aspnet-core/
+         // Collect all referenced projects output XML document file paths  
+         var currentAssembly = Assembly.GetExecutingAssembly();
+         var xmlDocs = currentAssembly.GetReferencedAssemblies()
+         .Union(new AssemblyName[] { currentAssembly.GetName() })
+         .Select(a => Path.Combine(Path.GetDirectoryName(currentAssembly.Location), $"{a.Name}.xml"))
+         .Where(f => File.Exists(f)).ToArray();
+
+         Array.ForEach(xmlDocs, (d) =>
+         {
+             options.IncludeXmlComments(d);
+         });
+     }
+     );
 builder.Services.RegisterServiceLayerDi();
 
 var app = builder.Build();

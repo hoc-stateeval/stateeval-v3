@@ -58,12 +58,28 @@ namespace SE.Data.Migrations
                     SchoolCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     CompletionDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     TinyURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Guid = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     WfState = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PerceptionSurvey", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PerceptionSurveyDemographic",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SurveyId = table.Column<long>(type: "bigint", nullable: false),
+                    Ethnicities = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PerceptionSurveyDemographic", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -529,6 +545,7 @@ namespace SE.Data.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LevelOfAgreement = table.Column<int>(type: "int", nullable: false),
+                    RespondentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SurveyId = table.Column<long>(type: "bigint", nullable: false),
                     PerceptionSurveyId = table.Column<long>(type: "bigint", nullable: true),
                     StatementId = table.Column<long>(type: "bigint", nullable: false),
@@ -1430,6 +1447,10 @@ namespace SE.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "FrameworkNodeRubricRow",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "PerceptionSurveyDemographic",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

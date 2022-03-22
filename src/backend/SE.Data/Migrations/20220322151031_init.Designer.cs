@@ -12,7 +12,7 @@ using SE.Data;
 namespace SE.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220315225553_init")]
+    [Migration("20220322151031_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -779,8 +779,8 @@ namespace SE.Data.Migrations
                     b.Property<long>("EvaluationId")
                         .HasColumnType("bigint");
 
-                    b.Property<Guid>("Guid")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Guid")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SchoolCode")
                         .IsRequired()
@@ -801,6 +801,28 @@ namespace SE.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PerceptionSurvey", "dbo");
+                });
+
+            modelBuilder.Entity("SE.Domain.Entities.PerceptionSurveyDemographic", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("Ethnicities")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("SurveyId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PerceptionSurveyDemographic", "dbo");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.PerceptionSurveyPerceptionSurveyStatement", b =>
@@ -834,6 +856,9 @@ namespace SE.Data.Migrations
 
                     b.Property<long?>("PerceptionSurveyStatementId")
                         .HasColumnType("bigint");
+
+                    b.Property<Guid>("RespondentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<long>("StatementId")
                         .HasColumnType("bigint");

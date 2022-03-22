@@ -27,7 +27,7 @@ namespace SE.Core.Queries.Assignments
         }
     }
     public sealed class GetSchoolDetailAssignmentDataQuery :
-        IRequest<SchoolDetailAssignmentDataDTO>
+        IRequest<DetailAssignmentDataDTO>
     {
         public long FrameworkContextId { get; }
         public string SchoolCode { get; }
@@ -39,7 +39,7 @@ namespace SE.Core.Queries.Assignments
         }
 
         internal sealed class GetSchoolDetailAssignmentDataQueryHandler : 
-            IRequestHandler<GetSchoolDetailAssignmentDataQuery, SchoolDetailAssignmentDataDTO>
+            IRequestHandler<GetSchoolDetailAssignmentDataQuery, DetailAssignmentDataDTO>
         {
             private readonly DataContext _dataContext;
             private readonly IUserService _userService;
@@ -52,9 +52,9 @@ namespace SE.Core.Queries.Assignments
                 _evaluationService = evaluationService;
             }
 
-            public async Task<SchoolDetailAssignmentDataDTO> Handle(GetSchoolDetailAssignmentDataQuery request, CancellationToken cancellationToken)
+            public async Task<DetailAssignmentDataDTO> Handle(GetSchoolDetailAssignmentDataQuery request, CancellationToken cancellationToken)
             {
-                var result = new SchoolDetailAssignmentDataDTO();
+                var result = new DetailAssignmentDataDTO();
 
                 var frameworkContext = await _dataContext.FrameworkContexts
                     .Where(x => x.Id == request.FrameworkContextId)

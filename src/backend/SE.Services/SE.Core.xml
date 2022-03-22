@@ -1,0 +1,659 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SE.Core</name>
+    </assembly>
+    <members>
+        <member name="M:SE.Core.Commands.PerceptionSurveys.SubmitSurveyResponsesCommand.#ctor(System.Int64,System.Collections.Generic.List{SE.Core.Models.PerceptionSurveyResponseDTO},System.String,System.String)">
+            <summary>
+            The command containing the data for the survey submission
+            </summary>
+            <param name="surveyId">the survey id</param>
+            <param name="responses">the collection of survey responses</param>
+            <param name="ethniticies">the demographic data for the respondent's ethnicities</param>
+            <param name="gender">the demographic data fro the respondent's gender</param>
+        </member>
+        <member name="P:SE.Core.Commands.PerceptionSurveys.SubmitSurveyResponsesCommand.SurveyId">
+            <summary>
+            The survey id
+            </summary>
+        </member>
+        <member name="P:SE.Core.Commands.PerceptionSurveys.SubmitSurveyResponsesCommand.Responses">
+            <summary>
+            The colelction of responses for the survey
+            </summary>
+        </member>
+        <member name="P:SE.Core.Commands.PerceptionSurveys.SubmitSurveyResponsesCommand.Enthicities">
+            <summary>
+            The demographic data for the respondent's ethniticities
+            </summary>
+        </member>
+        <member name="P:SE.Core.Commands.PerceptionSurveys.SubmitSurveyResponsesCommand.Gender">
+            <summary>
+            The demographic data for the respondent's gender.
+            </summary>
+        </member>
+        <member name="T:SE.Core.Commands.PerceptionSurveys.UpdatePerceptionSurveyCommand">
+            <summary>
+            The command object to update a perception survey
+            </summary>
+        </member>
+        <member name="P:SE.Core.Commands.PerceptionSurveys.UpdatePerceptionSurveyCommand.SurveyId">
+            <summary>
+            The survey Id
+            </summary>
+        </member>
+        <member name="P:SE.Core.Commands.PerceptionSurveys.UpdatePerceptionSurveyCommand.Title">
+            <summary>
+            The survey title
+            </summary>
+        </member>
+        <member name="P:SE.Core.Commands.PerceptionSurveys.UpdatePerceptionSurveyCommand.WfState">
+            <summary>
+            The survey work state
+            </summary>
+        </member>
+        <member name="T:SE.Core.Models.BuildingDTO">
+            <summary>
+            A physical building, which is either a school or a district. 
+            When IsSchool is true, the DistrictName, DistrictCode, SchoolName, and SchoolCode will all be populated.
+            When IsSchool is false, the SchoolName and SchoolCode will be empty.
+            When it is a school,
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.BuildingDTO.IsSchool">
+            <summary>
+            Whether the building is a school or a district
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.BuildingDTO.SchoolName">
+            <summary>
+            The OSPI name of the school, if IsSchool is true, otherwise an empty string.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.BuildingDTO.SchoolCode">
+            <summary>
+            The unique OSPI code for the school, if IsSchool is true, otherwise an empty string.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.BuildingDTO.DistrictCode">
+            <summary>
+            The unique OSPI code for the district
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.BuildingDTO.DistrictName">
+            <summary>
+            The OSPI name for the district
+            </summary>
+        </member>
+        <member name="T:SE.Core.Models.EvaluationSummaryDTO">
+            <summary>
+            Represent the summary information about an evaluation that is used outside of th context
+            of the Summative Evaluation section of eval.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.Id">
+            <summary>
+            The evaluation id
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.EvaluateeId">
+            <summary>
+            The id of the user to which the evaluation belongs
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.EvaluatorId">
+            <summary>
+            The id of the user who is the assigned evaluator for the evaluation
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.FrameworkContextId">
+            <summary>
+            The framework context associated with the evaluation
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.SchoolYear">
+            <summary>
+            The school year for the evaluation.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.SchoolYearDisplayName">
+            <summary>
+            The school year for the evaluation displayed as a string.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.EvaluationType">
+            <summary>
+            The type of evaluation, such as Teacher, Principal
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.EvaluationTypeDisplayName">
+            <summary>
+            The type of evaluation, displayed as a string
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.ProfileImageUrl">
+            <summary>
+            The profile image URI for the user to which the evaluation belongs
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.EvaluateeDisplayName">
+            <summary>
+            The display name for the user to which the evaluation belongs, in the form of FirstName LastName
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.EvaluatorDisplayName">
+            <summary>
+            The display name for the evaluator for the evaluation, in the form of FirstName LastName
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.WfState">
+            <summary>
+            The work state for the evaluation
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.WfStateDisplayName">
+            <summary>
+            The work state for the evaluation as a string.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.LockDateTime">
+            <summary>
+            The date on which the evaluation was locked/completed.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.PlanType">
+            <summary>
+            The type of plan the evaluation is on, such as Comprehensive, Focused
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.PlanTypeDisplayName">
+            <summary>
+            The type of plan the evaluation is on, as a string
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.PerformanceLevel">
+            <summary>
+            The final performance level for the evaluation
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.PerformanceLevelDisplayName">
+            <summary>
+            The final performance level for the evaluation, as a string.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.StudentGrowthImpactRating">
+            <summary>
+            The final student growth impact rating for the evaluation
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.StudentGrowthImpactRatingDisplayName">
+            <summary>
+            The final student growth impact rating for the evaluation, as a string.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.ComprehensiveCarryForward">
+            <summary>
+            Whether the evaluation is configured to carry forward the performance level from
+            the ,last comprenehsve evaluation. This will be the case when the EvaluateePlanType is Focused.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.CarryForwardPerformanceLevel">
+            <summary>
+            The carry-forward performance level from the last comprehensive evaluation.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.CarryForwardPerformanceLevelDisplayName">
+            <summary>
+            The carry-forward performance level from the last comprehensive evaluation, as a string.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.CarryForwardSchoolYear">
+            <summary>
+            The carry-forward school year from the last comprehensive evaluation.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.FocusedFrameworkNodeId">
+            <summary>
+            The framework node id that represents the primary focus for a focused evaluation.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.FocusedFrameworkNodeShortName">
+            <summary>
+            The framework node id that represents the primary focus for a focused evaluation, as a string.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.FocusedSGFrameworkNodeId">
+            <summary>
+            The framework node id that represents the student growth focus for a focused evaluation.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.FocusedSGFrameworkNodeShortName">
+            <summary>
+            The framework node id that represents the student growth focus for a focused evaluation, as a string.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.ModifiedCompFocusedFrameworkNode2Id">
+            <summary>
+            The framework node id that represents the secondary focus for a modified comprehensive sevaluation.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.ModifiedCompFocusedFrameworkNode2ShortName">
+            <summary>
+            The framework node id that represents the secondary focus for a modified comprehensive sevaluation, as a string.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.LastYearEvaluateePlanType">
+            <summary>
+            The plan type for last year's evaluation
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.LastYearEvaluateePlanTypeDisplayName">
+            <summary>
+            The plan type for last year's evaluation, as a string.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.NextYearEvaluateePlanType">
+            <summary>
+            The plan type proposed for current year's evaluation. The value is rolled over from the 
+            SuggestedEvaluateePlanType from the previoius year at the beginning of the school year 
+            and used during the assignment proecss.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.NextYearEvaluateePlanTypeDisplayName">
+            <summary>
+            The plan type proposed for the current year's evaluation, as a string.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.LastYearFocusedFrameworkNodeShortName">
+            <summary>
+            The framework node id for the primary focus for last year's evaluation.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.LastYearFocusedSGframeworkNodeShortName">
+            <summary>
+            The framework node id for the primary focus for last year's evaluation, as a string.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.SuggestedEvaluateePlanType">
+            <summary>
+            The suggested plan type for next year's evaluation. It is filled out at the end of the
+            year.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.SuggestedFocusedFrameworkNodeShortName">
+            <summary>
+            The shortname of the framework node that is the suggested focus for next year's evaluation.
+            It will only have a value when the suggested plan type is Focused.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.EvaluationSummaryDTO.SuggestedFocusedSGframeworkNodeShortName">
+            <summary>
+            The shortname of the framework node that is the suggested student growth focus for next 
+            year's evaluation. It will only have a value when the suggested plan type is Focused.
+            </summary>
+        </member>
+        <member name="T:SE.Core.Models.FrameworkDTO">
+            <summary>
+            A framework (instructional or state)
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.FrameworkDTO.Id">
+            <summary>
+            The framework id
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.FrameworkDTO.Name">
+            <summary>
+            The name of the framework, such as 'Danielson'
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.FrameworkDTO.FrameworkTagName">
+            <summary>
+            The tag name of the framework, such as DAN, CEL, MAR-TR, MAR-PR, LEADERSHIP
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.FrameworkDTO.FrameworkNodes">
+            <summary>
+            A collection of framework nodes for the framework
+            </summary>
+        </member>
+        <member name="T:SE.Core.Models.FrameworkNodeDTO">
+            <summary>
+             A framework node represents a criterion in a framework, such as D1, D2, D3, D4 in the Danielson Framework
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.FrameworkNodeDTO.Id">
+            <summary>
+            The framework node id
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.FrameworkNodeDTO.FrameworkId">
+            <summary>
+            The framework id the framework node is associated with
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.FrameworkNodeDTO.ShortName">
+            <summary>
+            The short name for the framework node, such as D1, D2, D3, D4 for the Danielson Framework
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.FrameworkNodeDTO.Title">
+            <summary>
+            The full title for the framework node, such as "Planning and Preparation" for D1 in Danielson Framework
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.FrameworkNodeDTO.IsStudentGrowthAligned">
+            <summary>
+            Is true when the framework no contains student growth rubric components
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.FrameworkNodeDTO.Sequence">
+            <summary>
+            The sequence of the framework node within the framework. For example D1, D2, D3, D4 for Danielson Framework.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.FrameworkNodeDTO.RubricRows">
+            <summary>
+            The collection of rubric components associated with the framework node.
+            </summary>
+        </member>
+        <member name="T:SE.Core.Models.PerceptionSurveyDemographicDTO">
+            <summary>
+            A response to a survey statement
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyDemographicDTO.SurveyId">
+            <summary>
+            The survey id
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyDemographicDTO.Ethnitcities">
+            <summary>
+            The demographic data for the  ethnicities associated with the respondent
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyDemographicDTO.Gender">
+            <summary>
+            The demographic data for the gender associated with the respondent
+            </summary>
+        </member>
+        <member name="T:SE.Core.Models.PerceptionSurveyDTO">
+            <summary>
+            A perception survey teachers can optionally create for their evaluation
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyDTO.Id">
+            <summary>
+            The survey id
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyDTO.Guid">
+            <summary>
+            The survey guid
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyDTO.EvaluationId">
+            <summary>
+            The survey evaluation id
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyDTO.SchoolCode">
+            <summary>
+            The schoolcode associated with the survey
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyDTO.Title">
+            <summary>
+            The title of the survey
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyDTO.TinyURL">
+            <summary>
+            The tinyURL used by students to access the survey
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyDTO.WfState">
+            <summary>
+            The work state of the survey
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyDTO.WfStateDisplayName">
+            <summary>
+            The string representation of the state of the survey
+            </summary>
+        </member>
+        <member name="T:SE.Core.Models.PerceptionSurveyResponseDTO">
+            <summary>
+            A response to a survey statement
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyResponseDTO.Id">
+            <summary>
+            The survey response id
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyResponseDTO.SurveyId">
+            <summary>
+            The survey id
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyResponseDTO.RespondentId">
+            <summary>
+            The respondent id, a GUID
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyResponseDTO.StatementId">
+            <summary>
+            The survey statement id
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveyResponseDTO.LevelOfAgreement">
+            <summary>
+            The response value, represented by a level of agreement value
+            </summary>
+        </member>
+        <member name="T:SE.Core.Models.PerceptionSurveySubmissionDTO">
+            <summary>
+            A response to a survey statement
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveySubmissionDTO.SurveyId">
+            <summary>
+            The survey id
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveySubmissionDTO.Ethnitcities">
+            <summary>
+            The demographic data for the  ethnicities associated with the respondent
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveySubmissionDTO.Gender">
+            <summary>
+            The demographic data for the gender associated with the respondent
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.PerceptionSurveySubmissionDTO.Responses">
+            <summary>
+            The collection of responses submitted by the respondent
+            </summary>
+        </member>
+        <member name="T:SE.Core.Models.RubricRowDTO">
+            <summary>
+            Represents a rubric component within a framework
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.RubricRowDTO.Id">
+            <summary>
+            The id of the rubric row
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.RubricRowDTO.ShortName">
+            <summary>
+            The short name for the rubric component, such as 1a, 1b, 1c within the D1 framework node
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.RubricRowDTO.Title">
+            <summary>
+            The full title for the rubric component, such as "Demonstrating Knowledge of Content and Pedagogy" for 1a.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.RubricRowDTO.FrameworkNodeShortName">
+            <summary>
+            The frameworknode shortname associated with this rubric component
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.RubricRowDTO.FrameworkNodeId">
+            <summary>
+            The frameworknode id associated with this rubric component
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.RubricRowDTO.IsStudentGrowthAligned">
+            <summary>
+            True if the rubric component is measuring student growth 
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.RubricRowDTO.Sequence">
+            <summary>
+            The sequence of the rubric component within the framework node
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.RubricRowDTO.PL1Descriptor">
+            <summary>
+            The performance level descriptor for level 1
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.RubricRowDTO.PL2Descriptor">
+            <summary>
+            The performance level descriptor for level 2
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.RubricRowDTO.PL3Descriptor">
+            <summary>
+            The performance level descriptor for level 3
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.RubricRowDTO.PL4Descriptor">
+            <summary>
+            The performance level descriptor for level 4
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.RubricRowDTO.LookFor1">
+            <summary>
+            Danielson framework only: extended descriptor for level 1
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.RubricRowDTO.LookFor2">
+            <summary>
+            Danielson framework only: extended descriptor for level 2
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.RubricRowDTO.LookFor3">
+            <summary>
+            Danielson framework only: extended descriptor for level 3
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.RubricRowDTO.LookFor4">
+            <summary>
+            Danielson framework only: extended descriptor for level 4
+            </summary>
+        </member>
+        <member name="T:SE.Core.Models.UserBuildingRoleDTO">
+            <summary>
+            An eval user can be associated with multiple roles at diffent locations
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.UserBuildingRoleDTO.Id">
+            <summary>
+            The id of the user building role
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.UserBuildingRoleDTO.UserId">
+            <summary>
+            The user id associated with the user building role
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.UserBuildingRoleDTO.BuildingId">
+            <summary>
+            The building id associated with the user building role
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.UserBuildingRoleDTO.RoleId">
+            <summary>
+            The role id associated with the user building role
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.UserBuildingRoleDTO.RoleName">
+            <summary>
+            The name of the role associated with the suer building role.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.UserBuildingRoleDTO.SchoolName">
+            <summary>
+            The name of the school associated with the user building role. It will be empty if the role is
+            associated with a district building.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.UserBuildingRoleDTO.SchoolCode">
+            <summary>
+            The OSPI code for the school associated with the user building role.It will be empty if the role
+            is associated with a district  building.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.UserBuildingRoleDTO.DistrictName">
+            <summary>
+            The name of the district associated with the user building role.
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.UserBuildingRoleDTO.DistrictCode">
+            <summary>
+            The OSPI code for the district associated with the user building role.
+            </summary>
+        </member>
+        <member name="T:SE.Core.Models.UserDTO">
+            <summary>
+            A user within the eval application
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.UserDTO.Id">
+            <summary>
+            The user id
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.UserDTO.FirstName">
+            <summary>
+            The user's first name
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.UserDTO.LastName">
+            <summary>
+            The user's last name
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.UserDTO.DisplayName">
+            <summary>
+            The user's full name in form of FirstName LastName
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.UserDTO.Email">
+            <summary>
+            The user's email addresss
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.UserDTO.UserName">
+            <summary>
+            The user's username
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.UserDTO.ProfileImageUrl">
+            <summary>
+            The use's profile image URL
+            </summary>
+        </member>
+        <member name="P:SE.Core.Models.UserDTO.UserBuildingRoles">
+            <summary>
+            A collection of the user's building/roles
+            </summary>
+        </member>
+    </members>
+</doc>

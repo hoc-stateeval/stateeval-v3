@@ -22,11 +22,24 @@ namespace SE.Core.Commands.PerceptionSurveys
         {
         }
     }
+    
+    /// <summary>
+    /// The command object to update a perception survey
+    /// </summary>
     public sealed class UpdatePerceptionSurveyCommand : 
         IRequest<Unit>
     {
+        /// <summary>
+        /// The survey Id
+        /// </summary>
         public long SurveyId { get; set; }
+        /// <summary>
+        /// The survey title
+        /// </summary>
         public string Title { get; set; }
+        /// <summary>
+        /// The survey work state
+        /// </summary>
         public WfState WfState { get; set; }
 
         public UpdatePerceptionSurveyCommand(long surveyId, string title, WfState wfState)

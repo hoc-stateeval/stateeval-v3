@@ -7,6 +7,7 @@ using SE.Domain.Entities;
 using SE.Core.Queries.Observations;
 using SE.Core.Queries.EvidenceCollections;
 using SE.Core.Commands.EvidenceCollections;
+using SE.Core.Models;
 
 namespace SE.API.Controllers
 {
@@ -18,7 +19,7 @@ namespace SE.API.Controllers
         }
 
         [HttpGet("ytd/{evaluationId:long}")]
-        public async Task<IActionResult> GetYearToDateEvidenceCollection(long evaluationId)
+        public async Task<ActionResult<YearToDateEvidenceCollectionDTO>> GetYearToDateEvidenceCollection(long evaluationId)
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;
             var evidenceCollection = await _mediator.Send(new GetYearToDateEvidenceCollectionQuery(evaluationId), cancelationToken);

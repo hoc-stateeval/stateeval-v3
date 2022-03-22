@@ -6,6 +6,7 @@ using SE.Core.Queries;
 using SE.Domain.Entities;
 using SE.Core.Commands.SchoolConfigurations;
 using SE.Core.Queries.SchoolConfigurations;
+using SE.Core.Models;
 
 namespace SE.API.Controllers
 {
@@ -17,7 +18,7 @@ namespace SE.API.Controllers
         }
 
         [HttpGet("framework-context/{frameworkContextId:long}")]
-        public async Task<IActionResult> GetSchoolConfigurationsForFrameworkContext(long frameworkContextId)
+        public async Task<ActionResult<List<SchoolConfigurationDTO>>> GetSchoolConfigurationsForFrameworkContext(long frameworkContextId)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
             var config = await _mediator.Send(new GetSchoolConfigurationsForFrameworkContextQuery(frameworkContextId), cancelationToken);
@@ -25,7 +26,7 @@ namespace SE.API.Controllers
         }
 
         [HttpGet("{id:long}")]
-        public async Task<IActionResult> GetSchoolConfigurationById(long id)
+        public async Task<ActionResult<SchoolConfiguration>> GetSchoolConfigurationById(long id)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
             var config = await _mediator.Send(new GetSchoolConfigurationByIdQuery(id), cancelationToken);
@@ -33,7 +34,7 @@ namespace SE.API.Controllers
         }
 
         [HttpPut("{id:long}")]
-        public async Task<IActionResult> UpdateSchoolConfiguration(long id, [FromBody] UpdateSchoolConfigurationCommand command)
+        public async Task<ActionResult> UpdateSchoolConfiguration(long id, [FromBody] UpdateSchoolConfigurationCommand command)
         {
             if (id != command.Id)
             {
@@ -45,7 +46,7 @@ namespace SE.API.Controllers
         }
 
         [HttpPut("{frameworkContextId:long}/delegate-evaluation-setup/{delegate}")]
-        public async Task<IActionResult> UpdateSchoolConfigurationEvaluationSetup(long frameworkContextId, [FromBody] UpdateSchoolConfigurationCommand command)
+        public async Task<ActionResult> UpdateSchoolConfigurationEvaluationSetup(long frameworkContextId, [FromBody] UpdateSchoolConfigurationCommand command)
         {
             if (frameworkContextId != command.Id)
             {
@@ -58,7 +59,7 @@ namespace SE.API.Controllers
 
 
         [HttpPut("{frameworkContextId:long}/delegate-evaluation-setup")]
-        public async Task<IActionResult> DelegateEvaluationSetup(long frameworkContextId, [FromBody] DelegateEvaluationSetupCommand command)
+        public async Task<ActionResult> DelegateEvaluationSetup(long frameworkContextId, [FromBody] DelegateEvaluationSetupCommand command)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
             await _mediator.Send(command, cancelationToken);

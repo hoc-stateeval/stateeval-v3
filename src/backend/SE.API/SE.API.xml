@@ -1,0 +1,199 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SE.API</name>
+    </assembly>
+    <members>
+        <member name="M:SE.API.Controllers.AssignmentsController.GetDistrictSummaryAssignmentData(System.Int64)">
+            <summary>
+            This is a specialized endpoint, that returns the data necessary to build the Assignments 
+            screen for the district-level summary
+            </summary>
+            <param name="frameworkContextId">the framework context id for the assignments data</param>
+            <returns>
+            A collection of SchoolSummaryAssignmentDataDTO objects to build the district assignment summary 
+            for each school.
+            </returns>
+        </member>
+        <member name="M:SE.API.Controllers.AssignmentsController.GetDetailAssignmentDataQuery(System.Int64,System.String)">
+            <summary>
+            This is specialized endpoint to support the Assignments screen for detailed assignment information about
+            teachers or principals. The Assignments screen for teacher evaluations are shown in the context of a
+            school, whereas the Assignments screen for principal evaluations shows all principals across the district
+            in a single screen. When the framework context id is for principal evaluations, the school code parameter
+            will be empty.
+            </summary>
+            <param name="frameworkContextId">the framework context id for the assignment data</param>
+            <param name="schoolCode">the school code for the assignment data. this will be empty when the framework 
+            context id is for principal evaluations</param>
+            <returns>
+            A DetailAssignmentDataDTO containing the assignment details for each user in the framewwork context
+            </returns>
+        </member>
+        <member name="M:SE.API.Controllers.LocalLoginController.GetDistricts">
+            <summary>
+            Used for populating the sandbox local login screen with sample districts/schools.
+            </summary>
+            <returns>
+                A list of DistrictWithSchoolsDTO objects
+            </returns>
+        </member>
+        <member name="M:SE.API.Controllers.LocalLoginController.GetUsers(System.String)">
+            <summary>
+             Used for getting a list of sandbox user accounts for populating the local login screen.   
+            </summary>
+            <param name="districtCode">the unique OSPI district code</param>
+            <returns>
+                A list of LocalLoginUserDTO objects
+            </returns>
+        </member>
+        <member name="M:SE.API.Controllers.PerceptionSurveyController.GetPerceptionSurveysForEvaluation(System.Int64)">
+            <summary>
+            Gets the list of surveys associated with an evaluation.
+            </summary>
+            <param name="evaluationId">the evaluation id</param>
+            <returns>
+                A list of PerceptionSurveyDTO objects
+            </returns>
+        </member>
+        <member name="M:SE.API.Controllers.PerceptionSurveyController.GetPerceptionSurveyByGuid(System.String)">
+            <summary>
+                Gets the perception survey from its unique GUID
+            </summary>
+            <param name="guid">the unique GUID associated with the survey</param>
+            <returns>
+                The PerceptionSurveyDTO object
+            </returns>
+        </member>
+        <member name="M:SE.API.Controllers.PerceptionSurveyController.UpdatePerceptionSurvey(System.Int64,SE.Core.Commands.PerceptionSurveys.UpdatePerceptionSurveyCommand)">
+            <summary>
+                Updates the survey
+            </summary>
+            <param name="surveyId">survey Id</param>
+            <param name="command">The UpdatePerceptionSurveyCommand object for specifying the fields to update.</param>
+            <returns>
+                No value.
+            </returns>
+        </member>
+        <member name="M:SE.API.Controllers.PerceptionSurveyController.Create(System.Int64,SE.Core.Commands.PerceptionSurveys.CreatePerceptionSurveyCommand)">
+            <summary>
+            Creates a new perception survey object
+            </summary>
+            <param name="evaluationId">the evaluation id to associate the survey with</param>
+            <param name="command">the command object for specifying the survey data</param>
+            <returns>
+                A PerceptionSurveyDTO object
+            </returns>
+        </member>
+        <member name="M:SE.API.Controllers.PerceptionSurveyController.AddStatementToSurvey(System.Int64,System.Int64)">
+            <summary>
+            Add a PerceptionSurveyStatement to a PerceptionSurvey
+            </summary>
+            <param name="surveyId">The survey id</param>
+            <param name="statementId">The survey statement id</param>
+            <returns>
+                No value.
+            </returns>
+        </member>
+        <member name="M:SE.API.Controllers.PerceptionSurveyController.RemoveStatementFromSurvey(System.Int64,System.Int64)">
+            <summary>
+                Removes a PerceptionSurveyStatement from a PerceptionSurvey
+            </summary>
+            <param name="surveyId">The survey id</param>
+            <param name="statementId">The survey statement id</param>
+            <returns>
+                No value.
+            </returns>
+        </member>
+        <member name="M:SE.API.Controllers.PerceptionSurveyController.DeleteSurvey(System.Int64)">
+            <summary>
+            Deletes the PerceptionSurvey
+            </summary>
+            <param name="surveyId">the survey id </param>
+            <returns>
+                No value.
+            </returns>
+        </member>
+        <member name="M:SE.API.Controllers.PerceptionSurveyDemographicController.GetPerceptionSurveyDemographics(System.Int64)">
+            <summary>
+                Gets a demographic data associated with the survey.
+            </summary>
+            <param name="surveyId">the survey id</param>
+            <returns>
+                A collection of PerceptionSurveyDemographicDTO objects
+            </returns>
+        </member>
+        <member name="M:SE.API.Controllers.PerceptionSurveyDemographicController.SubmitPerceptionSurveyResponses(System.Int64,SE.Core.Commands.PerceptionSurveys.SubmitSurveyResponsesCommand)">
+            <summary>
+            Submits all of the responses and demographic data for a survey.
+            </summary>
+            <param name="surveyId">the survey id</param>
+            <param name="command">the command containing the responses and demographic data</param>
+            <returns>No content</returns>
+        </member>
+        <member name="M:SE.API.Controllers.PerceptionSurveyResponseController.GetPerceptionSurveyResponses(System.Int64)">
+            <summary>
+                Gets a responses associated with the survey.
+            </summary>
+            <param name="surveyId">the survey id</param>
+            <returns>
+                A list of PerceptionSurveyResponseDTO objects
+            </returns>
+        </member>
+        <member name="M:SE.API.Controllers.PerceptionSurveyResponseController.SubmitPerceptionSurveyResponses(System.Int64,SE.Core.Commands.PerceptionSurveys.SubmitSurveyResponsesCommand)">
+            <summary>
+            Submits all of the responses and demographic data for a survey.
+            </summary>
+            <param name="surveyId">the survey id</param>
+            <param name="command">the command containing the responses and demographic data</param>
+            <returns>No content</returns>
+        </member>
+        <member name="M:SE.API.Controllers.PerceptionSurveyStatementController.GetPerceptionSurveyStatementForFrameworkTagName(System.String)">
+            <summary>
+                Get the statements that are associated with a particular instructional framework.
+            </summary>
+            <param name="tagName">the instructional framework tagname</param>
+            <returns>
+                A list of PerceptionSurveyStatemntDTO objects
+            </returns>
+        </member>
+        <member name="M:SE.API.Controllers.PerceptionSurveyStatementController.GetPerceptionSurveyStatementsForSurvey(System.Int64)">
+            <summary>
+                Get the statements that have been associated with the survey
+            </summary>
+            <param name="surveyId">the survey id</param>
+            <returns>
+                A list of PerceptionSurveyStatemntDTO objects
+            </returns>
+        </member>
+        <member name="M:SE.API.Controllers.PerceptionSurveyStatementController.GetPerceptionSurveyStatementIds(System.Int64)">
+            <summary>
+                Gets a list of the statement ids that have been selected to be used with the survey.
+            </summary>
+            <param name="surveyId">the survey id</param>
+            <returns>
+                A list of statement ids
+            </returns>
+        </member>
+        <member name="M:SE.API.Controllers.WorkAreaContextController.GetWorkAreaContextsForUser(System.Int64)">
+            <summary>
+            Get a collection of the work area contexts for the user.
+            </summary>
+            <param name="userId">the user id</param>
+            <returns>
+            A collection of the work area contexts for the current user.
+            </returns>
+        </member>
+        <member name="M:SE.API.Controllers.WorkAreaContextController.GetWorkAreaContextForUser(System.Int64,System.Int64,System.String)">
+            <summary>
+            Get the work area context for the user for the given framework context. For example, a
+            principal would have a framework context for evaluating teachers as well as one for his own 
+            evaluation, and a work area context for each.
+            </summary>
+            <param name="frameworkContextId">the framework context id</param>
+            <param name="userId">the user id</param>
+            <param name="schoolCode">the school code. Can be entpy if it is a district-level user/role </param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

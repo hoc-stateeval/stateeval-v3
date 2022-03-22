@@ -26,9 +26,9 @@ namespace SE.Core.Queries.PerceptionSurveys
     public sealed class GetPerceptionSurveyByGuidQuery : 
         IRequest<PerceptionSurveyDTO>
     {
-        public Guid Guid { get; }
+        public string Guid { get; }
 
-        public GetPerceptionSurveyByGuidQuery(Guid guid)
+        public GetPerceptionSurveyByGuidQuery(string guid)
         {
             Guid = guid;
         }

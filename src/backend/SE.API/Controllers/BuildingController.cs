@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SE.Core.Queries;
 using SE.Domain.Entities;
 using SE.Core.Queries.Buildings;
+using SE.Core.Models;
 
 namespace SE.API.Controllers
 {
@@ -16,7 +17,7 @@ namespace SE.API.Controllers
 
         [Authorize]
         [HttpGet("{districtcode}/schools")]
-        public async Task<IActionResult> GetSchoolsInDistrict(string districtCode)
+        public async Task<ActionResult<List<BuildingDTO>>> GetSchoolsInDistrict(string districtCode)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
             var schools = await _mediator.Send(new GetSchoolsInDistrictQuery(districtCode), cancelationToken);

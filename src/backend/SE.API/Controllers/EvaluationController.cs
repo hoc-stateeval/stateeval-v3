@@ -6,6 +6,7 @@ using SE.Core.Queries;
 using SE.Domain.Entities;
 using SE.Core.Commands.Evaluations;
 using SE.Core.Queries.Evaluations;
+using SE.Core.Models;
 
 namespace SE.API.Controllers
 {
@@ -17,7 +18,7 @@ namespace SE.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetEvaluationById(long id)
+        public async Task<ActionResult<EvaluationSummaryDTO>> GetEvaluationById(long id)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
             var evaluation = await _mediator.Send(new GetEvaluationByIdQuery(id), cancelationToken);
@@ -25,7 +26,7 @@ namespace SE.API.Controllers
         }
 
         [HttpGet("historical/{userId}")]
-        public async Task<IActionResult> GetHistoricalEvaluationsForUser(long userId)
+        public async Task<ActionResult<List<EvaluationSummaryDTO>>> GetHistoricalEvaluationsForUser(long userId)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
             var evaluation = await _mediator.Send(new GetHistoricalEvaluationsForUserQuery(userId), cancelationToken);
@@ -33,7 +34,7 @@ namespace SE.API.Controllers
         }
 
         [HttpPut("{id}/update-plan-type")]
-        public async Task<IActionResult> UpdateEvaluateePlanType(long id, [FromBody] UpdateEvaluateePlanTypeCommand command)
+        public async Task<ActionResult<EvaluationSummaryDTO>> UpdateEvaluateePlanType(long id, [FromBody] UpdateEvaluateePlanTypeCommand command)
         {
             if (id != command.EvaluationId)
             {
@@ -46,7 +47,7 @@ namespace SE.API.Controllers
         }
 
         [HttpPut("{id}/update-evaluator")]
-        public async Task<IActionResult> UpdateEvaluator(long id, [FromBody] UpdateEvaluatorCommand command)
+        public async Task<ActionResult<EvaluationSummaryDTO>> UpdateEvaluator(long id, [FromBody] UpdateEvaluatorCommand command)
         {
             if (id != command.EvaluationId)
             {
@@ -59,7 +60,7 @@ namespace SE.API.Controllers
         }
 
         [HttpGet("work-area-context/{workAreaContextId}")]
-        public async Task<IActionResult> GetEvaluationsForWorkAreaContext(long workAreaContextId)
+        public async Task<ActionResult<List<EvaluationSummaryDTO>>> GetEvaluationsForWorkAreaContext(long workAreaContextId)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
             var evaluations = await _mediator.Send(new GetEvaluationsForWorkAreaContextQuery(workAreaContextId), cancelationToken);
@@ -67,7 +68,7 @@ namespace SE.API.Controllers
         }
 
         [HttpGet("{frameworkContextId}/{evaluatorId}")]
-        public async Task<IActionResult> GetEvaluationsForEvaluator(long frameworkContextId, long evaluatorId)
+        public async Task<ActionResult<List<EvaluationSummaryDTO>>> GetEvaluationsForEvaluator(long frameworkContextId, long evaluatorId)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
             var evaluations = await _mediator.Send(new GetEvaluationsForEvaluatorQuery(frameworkContextId, evaluatorId), cancelationToken);
@@ -75,7 +76,7 @@ namespace SE.API.Controllers
         }
 
         [HttpGet("{frameworkContextId}/{schoolCode}")]
-        public async Task<IActionResult> GetEvaluationsForSchool(long frameworkContextId, string schoolCode)
+        public async Task<ActionResult<List<EvaluationSummaryDTO>>> GetEvaluationsForSchool(long frameworkContextId, string schoolCode)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
             var evaluations = await _mediator.Send(new GetEvaluationsForSchoolQuery(frameworkContextId, schoolCode), cancelationToken);
@@ -83,7 +84,7 @@ namespace SE.API.Controllers
         }
 
         [HttpGet("{frameworkContextId}/{evaluatorId}/{schoolCode?}")]
-        public async Task<IActionResult> GetEvaluationsForDistrictViewer(long frameworkContextId, long evaluatorId, string schoolCode)
+        public async Task<ActionResult<List<EvaluationSummaryDTO>>> GetEvaluationsForDistrictViewer(long frameworkContextId, long evaluatorId, string schoolCode)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
             var users = await _mediator.Send(new GetEvaluationsForDistrictViewerQuery(frameworkContextId, evaluatorId, schoolCode), cancelationToken);

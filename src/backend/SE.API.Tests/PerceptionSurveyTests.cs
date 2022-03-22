@@ -26,18 +26,18 @@ namespace SE.API.Tests
         public async Task CreatePerceptionSurvey()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var evaluation = GetEvaluationForUser(DAN_District.School1.TeacherA.UserName, WorkAreaType.TR_ME);
+            var evaluation = GetEvaluationForUserAPI(DAN_District.School1.TeacherA.UserName, WorkAreaType.TR_ME);
 
-            var perceptionSurveys = await GetPerceptionSurveysForEvaluation(evaluation.Id);
+            var perceptionSurveys = await GetPerceptionSurveysForEvaluationAPI(evaluation.Id);
             var countBefore = perceptionSurveys.Count;
 
             var command = new CreatePerceptionSurveyCommand(evaluation.Id, DAN_District.School1.SchoolCode, "localhost");
 
-            var perceptionSurvey = await CreatePerceptionSurvey(evaluation.Id, command);
+            var perceptionSurvey = await CreatePerceptionSurveyAPI(evaluation.Id, command);
             perceptionSurvey.Should().NotBeNull();
             perceptionSurvey.EvaluationId.Should().Be(evaluation.Id);
 
-            perceptionSurveys = await GetPerceptionSurveysForEvaluation(evaluation.Id);
+            perceptionSurveys = await GetPerceptionSurveysForEvaluationAPI(evaluation.Id);
             var countAfter = perceptionSurveys.Count;
             countAfter.Should().Be(countBefore + 1);
         }
@@ -46,18 +46,18 @@ namespace SE.API.Tests
         public async Task UpdatePerceptionSurvey()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var evaluation = GetEvaluationForUser(DAN_District.School1.TeacherA.UserName, WorkAreaType.TR_ME);
+            var evaluation = GetEvaluationForUserAPI(DAN_District.School1.TeacherA.UserName, WorkAreaType.TR_ME);
 
             var createCommand = new CreatePerceptionSurveyCommand(evaluation.Id, DAN_District.School1.SchoolCode, "localhost");
-            var survey = await CreatePerceptionSurvey(evaluation.Id, createCommand);
+            var survey = await CreatePerceptionSurveyAPI(evaluation.Id, createCommand);
             survey.Should().NotBeNull();
 
             var newTitle = "New Title";
             var newWfState = WfState.PERCEPTION_SURVEY_OPEN;
             var updateCommand = new UpdatePerceptionSurveyCommand(survey.Id, newTitle, newWfState);
 
-            var result = await UpdatePerceptionSurvey(evaluation.Id, updateCommand);
-            survey = await GetPerceptionSurveyByGuid(survey.Guid);
+            var result = await UpdatePerceptionSurveyAPI(evaluation.Id, updateCommand);
+            survey = await GetPerceptionSurveyByGuidAPI(survey.Guid);
             survey.Title.Should().Be(newTitle);
             survey.WfState.Should().Be(newWfState);        
         }
@@ -66,71 +66,114 @@ namespace SE.API.Tests
         public async Task AddRemoveStatementsForPerceptionSurvey()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var evaluation = GetEvaluationForUser(DAN_District.School1.TeacherA.UserName, WorkAreaType.TR_ME);
+            var evaluation = GetEvaluationForUserAPI(DAN_District.School1.TeacherA.UserName, WorkAreaType.TR_ME);
 
             var createCommand = new CreatePerceptionSurveyCommand(evaluation.Id, DAN_District.School1.SchoolCode, "localhost");
-            var survey = await CreatePerceptionSurvey(evaluation.Id, createCommand);
+            var survey = await CreatePerceptionSurveyAPI(evaluation.Id, createCommand);
             survey.Should().NotBeNull();
 
-            var statements = await GetPerceptionSurveyStatementsForFrameworkTagName("DAN");
+            var statements = await GetPerceptionSurveyStatementsForFrameworkTagNameAPI("DAN");
             statements.Count.Should().Be(67);
             var statementToAdd = statements[0];
 
-            var statementIdsBefore = await GetPerceptionSurveyStatementIds(survey.Id);
+            var statementIdsBefore = await GetPerceptionSurveyStatementIdsAPI(survey.Id);
             statementIdsBefore.Count.Should().Be(0);
 
-            var addStatementCommand = new AddStatementToSurveyCommand(evaluation.Id, statementToAdd.Id);
-            await AddStatementToSurvey(survey.Id, statementToAdd.Id);
-            var statementIdsAfter = await GetPerceptionSurveyStatementIds(survey.Id);
+            await AddStatementToSurveyAPI(survey.Id, statementToAdd.Id);
+            var statementIdsAfter = await GetPerceptionSurveyStatementIdsAPI(survey.Id);
             statementIdsAfter.Count.Should().Be(1);
 
             statementIdsAfter[0].Should().Be(statementToAdd.Id);
-
-            var removeStatementCommand = new RemoveStatementFromSurveyCommand(evaluation.Id, statementToAdd.Id);
-            await RemoveStatementFromSurvey(survey.Id, statementToAdd.Id);
-            statementIdsAfter = await GetPerceptionSurveyStatementIds(survey.Id);
+            await RemoveStatementFromSurveyAPI(survey.Id, statementToAdd.Id);
+            statementIdsAfter = await GetPerceptionSurveyStatementIdsAPI(survey.Id);
             statementIdsAfter.Count.Should().Be(0);
+        }
 
+        [Fact]
+        public async Task SubmitPerceptionSurvey()
+        {
+            var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
+            var evaluation = GetEvaluationForUserAPI(DAN_District.School1.TeacherA.UserName, WorkAreaType.TR_ME);
 
+            var createCommand = new CreatePerceptionSurveyCommand(evaluation.Id, DAN_District.School1.SchoolCode, "localhost");
+            var survey = await CreatePerceptionSurveyAPI(evaluation.Id, createCommand);
+            survey.Should().NotBeNull();
+
+            var statements = await GetPerceptionSurveyStatementsForFrameworkTagNameAPI("DAN");
+            statements.Count.Should().Be(67);
+            var statementToAdd = statements[0];
+
+            await AddStatementToSurveyAPI(survey.Id, statementToAdd.Id);
+            var statementIds = await GetPerceptionSurveyStatementIdsAPI(survey.Id);
+            statementIds.Count.Should().Be(1);
+
+            statementIds[0].Should().Be(statementToAdd.Id);
+
+            var responses = new List<PerceptionSurveyResponseDTO>();
+            var respondentGuid = Guid.NewGuid();
+            responses.Add(new PerceptionSurveyResponseDTO()
+            {
+                SurveyId = survey.Id,
+                RespondentId = respondentGuid,
+                StatementId = statementToAdd.Id,
+                LevelOfAgreement = PerceptionSurveyLevelOfAgreement.STRONGLY_DISAGREE,
+            });
+
+            var submitCommand = new SubmitSurveyResponsesCommand(survey.Id, responses, "Asian, American Indian", "F");
+
+            await SubmitSurveyResponsesAPI(survey.Id, submitCommand);
+
+            responses = await GetPerceptionSurveyResponsesAPI(survey.Id);
+            responses.Count.Should().Be(1);
+            responses[0].StatementId.Should().Be(statementIds[0]);
+            responses[0].SurveyId.Should().Be(survey.Id);
+            responses[0].RespondentId.Should().Be(respondentGuid);
+
+            var demographics = await GetPerceptionSurveyDemographicsAPI(survey.Id);
+            demographics.Count.Should().Be(1);
+            var demographic = demographics[0];
+            demographic.SurveyId.Should().Be(survey.Id);
+            demographic.Gender.Should().Be("F");
+            demographic.Ethnitcities.Should().Be("Asian, American Indian");
         }
 
         [Fact]
         public async Task DeletePerceptionSurvey_NoStatements()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var evaluation = GetEvaluationForUser(DAN_District.School1.TeacherA.UserName, WorkAreaType.TR_ME);
+            var evaluation = GetEvaluationForUserAPI(DAN_District.School1.TeacherA.UserName, WorkAreaType.TR_ME);
 
             var createCommand = new CreatePerceptionSurveyCommand(evaluation.Id, DAN_District.School1.SchoolCode, "localhost");
-            var survey = await CreatePerceptionSurvey(evaluation.Id, createCommand);
+            var survey = await CreatePerceptionSurveyAPI(evaluation.Id, createCommand);
             survey.Should().NotBeNull();
 
             var surveyGuid = survey.Guid;
-            await DeleteSurvey(survey.Id);
+            await DeleteSurveyAPI(survey.Id);
 
-            await Assert.ThrowsAsync<HttpRequestException>(async () => await GetPerceptionSurveyByGuid(survey.Guid));
+            await Assert.ThrowsAsync<HttpRequestException>(async () => await GetPerceptionSurveyByGuidAPI(survey.Guid));
         }
 
         [Fact]
         public async Task DeletePerceptionSurvey_WithStatements()
         {
             var DAN_District = new District(DistrictNames.DAN, DistrictCodes.DAN);
-            var evaluation = GetEvaluationForUser(DAN_District.School1.TeacherA.UserName, WorkAreaType.TR_ME);
+            var evaluation = GetEvaluationForUserAPI(DAN_District.School1.TeacherA.UserName, WorkAreaType.TR_ME);
 
             var createCommand = new CreatePerceptionSurveyCommand(evaluation.Id, DAN_District.School1.SchoolCode, "localhost");
-            var survey = await CreatePerceptionSurvey(evaluation.Id, createCommand);
+            var survey = await CreatePerceptionSurveyAPI(evaluation.Id, createCommand);
             survey.Should().NotBeNull();
 
-            var statements = await GetPerceptionSurveyStatementsForFrameworkTagName("DAN");
+            var statements = await GetPerceptionSurveyStatementsForFrameworkTagNameAPI("DAN");
             statements.Count.Should().Be(67);
             var statementToAdd = statements[0];
 
             var addStatementCommand = new AddStatementToSurveyCommand(evaluation.Id, statementToAdd.Id);
-            await AddStatementToSurvey(survey.Id, statementToAdd.Id);
+            await AddStatementToSurveyAPI(survey.Id, statementToAdd.Id);
 
             var surveyGuid = survey.Guid;
-            await DeleteSurvey(survey.Id);
+            await DeleteSurveyAPI(survey.Id);
 
-            await Assert.ThrowsAsync<HttpRequestException>(async () => await GetPerceptionSurveyByGuid(survey.Guid));
+            await Assert.ThrowsAsync<HttpRequestException>(async () => await GetPerceptionSurveyByGuidAPI(survey.Guid));
 
 
 

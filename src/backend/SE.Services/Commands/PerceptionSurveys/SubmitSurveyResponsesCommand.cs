@@ -25,6 +25,13 @@ namespace SE.Core.Commands.PerceptionSurveys
     }
     public sealed class SubmitSurveyResponsesCommand : IRequest<Unit>
     {
+        /// <summary>
+        /// The command containing the data for the survey submission
+        /// </summary>
+        /// <param name="surveyId">the survey id</param>
+        /// <param name="responses">the collection of survey responses</param>
+        /// <param name="ethniticies">the demographic data for the respondent's ethnicities</param>
+        /// <param name="gender">the demographic data fro the respondent's gender</param>
         public SubmitSurveyResponsesCommand(long surveyId, List<PerceptionSurveyResponseDTO> responses, string ethniticies, string gender)
         {
             SurveyId = surveyId;
@@ -32,9 +39,21 @@ namespace SE.Core.Commands.PerceptionSurveys
             Enthicities = ethniticies;
             Gender = gender;
         }
+        /// <summary>
+        /// The survey id
+        /// </summary>
         public long SurveyId { get; set; }
+        /// <summary>
+        /// The colelction of responses for the survey
+        /// </summary>
         public List<PerceptionSurveyResponseDTO> Responses { get; set; }
+        /// <summary>
+        /// The demographic data for the respondent's ethniticities
+        /// </summary>
         public string Enthicities { get; set; }
+        /// <summary>
+        /// The demographic data for the respondent's gender.
+        /// </summary>
         public string Gender { get; set; }  
     }
 
@@ -64,11 +83,21 @@ namespace SE.Core.Commands.PerceptionSurveys
                 {
                     SurveyId = request.SurveyId,
                     StatementId = responseDTO.StatementId,
+                    RespondentId = responseDTO.RespondentId,
                     LevelOfAgreement = responseDTO.LevelOfAgreement
                 };
 
                 _dataContext.PerceptionSurveyResponses.Add(response);
             });
+
+            var demographic = new PerceptionSurveyDemographic
+            {
+                SurveyId = request.SurveyId,
+                Ethnicities = request.Enthicities,
+                Gender = request.Gender
+            };
+
+            _dataContext.PerceptionSurveyDemographics.Add(demographic);
   
             await _dataContext.SaveChangesAsync();
 

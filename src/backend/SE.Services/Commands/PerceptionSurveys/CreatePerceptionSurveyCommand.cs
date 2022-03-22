@@ -70,7 +70,7 @@ namespace SE.Core.Commands.PerceptionSurveys
             survey.EvaluationId = request.EvaluationId;
             survey.WfState = WfState.PERCEPTION_SURVEY_BUILDING;
 
-            Guid guid = Guid.NewGuid();
+            string guid = Guid.NewGuid().ToString();
             survey.Guid = guid;
 
             string fullUrl = request.LocationOrigin + "/perception-surveys/student-survey/" + guid;

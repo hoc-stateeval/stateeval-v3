@@ -26,7 +26,7 @@ namespace SE.Core.Queries.Assignments
         }
     }
     public sealed class GetDistrictDetailAssignmentDataQuery :
-        IRequest<SchoolDetailAssignmentDataDTO>
+        IRequest<DetailAssignmentDataDTO>
     {
         public long FrameworkContextId { get; }
 
@@ -36,7 +36,7 @@ namespace SE.Core.Queries.Assignments
         }
 
         internal sealed class GetDistrictDetailAssignmentDataQueryHandler : 
-            IRequestHandler<GetDistrictDetailAssignmentDataQuery, SchoolDetailAssignmentDataDTO>
+            IRequestHandler<GetDistrictDetailAssignmentDataQuery, DetailAssignmentDataDTO>
         {
             private readonly DataContext _dataContext;
             private readonly IUserService _userService;
@@ -51,9 +51,9 @@ namespace SE.Core.Queries.Assignments
                 _buildingService = building;
             }
 
-            public async Task<SchoolDetailAssignmentDataDTO> Handle(GetDistrictDetailAssignmentDataQuery request, CancellationToken cancellationToken)
+            public async Task<DetailAssignmentDataDTO> Handle(GetDistrictDetailAssignmentDataQuery request, CancellationToken cancellationToken)
             {
-                var result = new SchoolDetailAssignmentDataDTO();
+                var result = new DetailAssignmentDataDTO();
 
                 var frameworkContext = await _dataContext.FrameworkContexts
                     .Where(x => x.Id == request.FrameworkContextId)

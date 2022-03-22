@@ -7,6 +7,7 @@ using SE.Domain.Entities;
 using SE.Core.Queries.Observations;
 using SE.Core.Queries.EvidenceCollections;
 using SE.Core.Commands.EvidenceCollections;
+using SE.Core.Models;
 
 namespace SE.API.Controllers
 {
@@ -18,7 +19,7 @@ namespace SE.API.Controllers
         }
 
         [HttpGet("{evaluationId}/{collectionType}/{collectionObjectId}")]
-        public async Task<IActionResult> GetEvidenceItemsForEvidenceCollection(
+        public async Task<ActionResult<List<EvidenceItemDTO>>> GetEvidenceItemsForEvidenceCollection(
             long evaluationId, EvidenceCollectionType collectionType, long collectionObjectId)
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;
@@ -29,7 +30,7 @@ namespace SE.API.Controllers
         }
 
         [HttpPost("{evaluationId}/{collectionType}/{collectionObjectId}")]
-        public async Task<IActionResult> CreateEvidenceItem(
+        public async Task<ActionResult<EvidenceItemDTO>> CreateEvidenceItem(
             long evaluationId, EvidenceCollectionType collectionType, 
             long? collectionObjectId, 
             [FromBody] CreateEvidenceItemCommand command)

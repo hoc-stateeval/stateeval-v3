@@ -7,26 +7,26 @@ using SE.Core.Models;
 
 namespace SE.API.Controllers
 {
-    [Route("perception-survey-responses")]
-    public class PerceptionSurveyResponseController : ApiControllerBase
+    [Route("perception-survey-demographics")]
+    public class PerceptionSurveyDemographicController : ApiControllerBase
     {
-        public PerceptionSurveyResponseController(IMediator mediator) : base(mediator)
+        public PerceptionSurveyDemographicController(IMediator mediator) : base(mediator)
         {
         }
 
         /// <summary>
-        ///     Gets a responses associated with the survey.
+        ///     Gets a demographic data associated with the survey.
         /// </summary>
         /// <param name="surveyId">the survey id</param>
         /// <returns>
-        ///     A list of PerceptionSurveyResponseDTO objects
+        ///     A collection of PerceptionSurveyDemographicDTO objects
         /// </returns>
         [HttpGet("{surveyId}")]
-        public async Task<ActionResult<List<PerceptionSurveyResponseDTO>>> GetPerceptionSurveyResponses(long surveyId)
+        public async Task<ActionResult<List<PerceptionSurveyDemographicDTO>>> GetPerceptionSurveyDemographics(long surveyId)
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;
-            var responses = await _mediator.Send(new GetPerceptionSurveyResponsesQuery(surveyId), cancelationToken);
-            return Ok(responses);
+            var demographics = await _mediator.Send(new GetPerceptionSurveyDemographicsQuery(surveyId), cancelationToken);
+            return Ok(demographics);
         }
 
         /// <summary>
@@ -41,7 +41,6 @@ namespace SE.API.Controllers
             CancellationToken cancelationToken = HttpContext.RequestAborted;
             await _mediator.Send(command, cancelationToken);
             return Ok(NoContent());
-
         }
     }
 }

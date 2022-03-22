@@ -8,6 +8,7 @@ using SE.API.Authorization;
 using SE.Core.Commands.Authentication;
 using SE.Core.Queries.Users;
 using SE.Core.Queries.Evaluators;
+using SE.Core.Models;
 
 namespace SE.API.Controllers
 {
@@ -21,7 +22,7 @@ namespace SE.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public async Task<IActionResult> Authenticate([FromBody] LoginUserCommand command)
+        public async Task<ActionResult<AuthenticatedUserDTO>> Authenticate([FromBody] LoginUserCommand command)
         {
             command.IPAddress = ipAddress();
             CancellationToken cancelationToken = HttpContext.RequestAborted;
@@ -32,7 +33,7 @@ namespace SE.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand command)
+        public async Task<ActionResult<AuthenticatedTokensDTO>> RefreshToken([FromBody] RefreshTokenCommand command)
         {
             //  Request.Cookies["refreshToken"];
 
@@ -63,7 +64,7 @@ namespace SE.API.Controllers
 
         //[Authorize]
         [HttpGet("{username}")]
-        public async Task<IActionResult> GetUserByUserName(string username)
+        public async Task<ActionResult<UserDTO>> GetUserByUserName(string username)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
             var user = await _mediator.Send(new GetUserByUserNameQuery(username), cancelationToken);
@@ -71,7 +72,7 @@ namespace SE.API.Controllers
         }
 
         [HttpGet("district/{districtCode}/users-in-role/{roleType}")]
-        public async Task<IActionResult> GetUsersInRoleAtDistrict(string districtCode, RoleType roleType)
+        public async Task<ActionResult<List<UserDTO>>> GetUsersInRoleAtDistrict(string districtCode, RoleType roleType)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
             var users = await _mediator.Send(new GetUsersInRoleAtDistrictQuery(districtCode, roleType), cancelationToken);
@@ -79,7 +80,7 @@ namespace SE.API.Controllers
         }
 
         [HttpGet("school/{schoolCode}/users-in-role/{roleType}")]
-        public async Task<IActionResult> GetUsersInRoleInSchool(string schoolCode, RoleType roleType)
+        public async Task<ActionResult<List<UserDTO>>> GetUsersInRoleInSchool(string schoolCode, RoleType roleType)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
             var users = await _mediator.Send(new GetUsersInRoleInSchoolQuery(schoolCode, roleType), cancelationToken);
@@ -87,7 +88,7 @@ namespace SE.API.Controllers
         }
 
         [HttpGet("{districtCode}/users-in-role-in-schools/{roleType}")]
-        public async Task<IActionResult> GetUsersInRoleInSchools(string districtCode, RoleType roleType)
+        public async Task<ActionResult<List<UserDTO>>> GetUsersInRoleInSchools(string districtCode, RoleType roleType)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
             var users = await _mediator.Send(new GetUsersInRoleInSchoolsQuery(districtCode, roleType), cancelationToken);
@@ -95,7 +96,7 @@ namespace SE.API.Controllers
         }
 
         [HttpGet("{workAreaContextId}/evaluators-for-district-viewer/{schoolCode?}")]
-        public async Task<IActionResult> GetEvaluatorsForDistrictViewer(long workAreaContextId, string schoolCode)
+        public async Task<ActionResult<List<UserDTO>>> GetEvaluatorsForDistrictViewer(long workAreaContextId, string schoolCode)
         {
             CancellationToken cancelationToken =  HttpContext.RequestAborted;
             var users = await _mediator.Send(new GetEvaluatorsForDistrictViewerQuery(workAreaContextId, schoolCode), cancelationToken);

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SE.Core.Queries.Assignments
 {
-    public class SchoolDetailAssignmentDataDTO
+    public class DetailAssignmentDataDTO
     {
         public List<EvaluationSummaryDTO> EvaluationSummaries { get; set; } = new List<EvaluationSummaryDTO>();
         public List<UserDTO> Evaluatees { get; set; } = new List<UserDTO>();
