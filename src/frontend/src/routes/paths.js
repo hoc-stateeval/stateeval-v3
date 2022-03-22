@@ -3,7 +3,8 @@
  * Public Routes 
  */
 export const unAuthenticatedPaths = {
-  login: '/login'
+  login: '/login',
+  studentPerceptionSurvey: '/perception-surveys/student-survey/:guid'
 };
 
 /*
@@ -94,7 +95,6 @@ export const evaluationPaths = {
   resources:  `${evaluationRoot}/resources`,
   trMePerceptionSurveys: evalPerceptionSurveysRoot,
   trMePerceptionSurveyById: `${evalPerceptionSurveysRoot}/:id`,
-  trMePerceptionSurveyStudentInputByGuid: `${evalPerceptionSurveysRoot}/student-input/:guid`,
 
   settingsRoot: `${evalSettingsRoot}`,
   settingsGeneral: `${evalSettingsRoot}/general`,

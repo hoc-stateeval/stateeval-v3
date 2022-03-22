@@ -9,6 +9,7 @@ import WorkAreaRoutes from "@routes/WorkAreaRoutes";
 
 const LocalLogin = lazy(() => import("@routes/login/LocalLogin"));
 const NotFound = lazy(() => import("@routes/errors/NotFound"));
+const StudentPerceptionSurvey = lazy(() => import("@evaluation/perception-surveys/StudentPerceptionSurvey"));
 
 const RootRoute = () => {
   const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
@@ -19,6 +20,7 @@ const RootRoute = () => {
           path="/"
           element={<Navigate to={unAuthenticatedPaths.login} />}
         />
+        <Route path={unAuthenticatedPaths.studentPerceptionSurvey} element={<StudentPerceptionSurvey />} />
         <Route path={unAuthenticatedPaths.login} element={<LocalLogin />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import {
   Alert,
   AlertTitle,
+  Box,
+  Button,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -24,45 +26,31 @@ import {
 } from "@mui/material";
 
 import {
-  selectActiveEvaluationId,
-  selectActiveWorkAreaContext,
-} from "@user-context-slice";
-
-import {
-  useGetEvaluationByIdQuery,
+  useSubmitPerceptionSurveyResponsesMutation
 } from "@api-slice";
 
 import { PerceptionSurveyLevelOfAgreement } from "@lib/enums";
+import { getNewGuid } from "@lib/utils";
 import { Ethnicities } from "@lib/eval-helpers";
 
-const StudentSurveyBody = ({preview, checkedIds, allStatements}) => {
+const StudentSurveyBody = ({preview, survey, statements}) => {
+
   const errorHandler = useErrorHandler();
-
-  const activeEvaluationId = useSelector(selectActiveEvaluationId);
-  const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
-
-  const { data:activeEvaluation, error: getEvaluationError } = useGetEvaluationByIdQuery(activeEvaluationId);
-  if (getEvaluationError) errorHandler(getEvaluationError);
 
   const [results, setResults] = useState({});
 
-  const getStatements = () => {
-   return allStatements.filter((statement, i) => {
-      const checked = checkedIds.includes(statement.id);
-      return checked;
-    });
-  }
-
-  const [statements] = useState(getStatements());
   const [gender, setGender] = useState('0');
-  const [race, setRace] = useState(Ethnicities.reduce((acc, next)=> {
+  const [ethnicities, setEthnicities] = useState(Ethnicities.reduce((acc, next)=> {
     acc[next.name] = false;
     return acc;
   }, {}));
 
-  const handleChange = (event) => {
-    setRace({
-      ...race,
+  const { submitSurveyAPI, error: submitError } = useSubmitPerceptionSurveyResponsesMutation();
+  if (submitError) useErrorHandler(submitError);
+
+  const changeEthnicities = (event) => {
+    setEthnicities({
+      ...ethnicities,
       [event.target.name]: event.target.checked,
     });
   };
@@ -75,6 +63,30 @@ const StudentSurveyBody = ({preview, checkedIds, allStatements}) => {
 
   const changeGender = (newValue) => {
     setGender(newValue);
+  }
+
+  const submitSurvey = async () => {
+
+    let responses = [];
+    let respondentId = getNewGuid();
+
+    for (const statementId in results) {
+      responses.push(
+        {
+          surveyId: survey.id,
+          statementId: statementId,
+          levelOfAgreement: results[statementId],
+          respondentId: respondentId
+        }
+      )
+    }
+    await submitSurveyAPI({
+      surveyId: survey.id,
+      responses: responses,
+      ethnicities: ethnicities,
+      gender: gender
+
+    })
   }
 
   const tableData = [
@@ -118,12 +130,6 @@ const StudentSurveyBody = ({preview, checkedIds, allStatements}) => {
         one box, from strongly disagree to strongly agree. Keep in mind that <strong>your selections
             relate only for this teacher and this class</strong>
       </Typography>
-      <Typography>
-        <strong>School:</strong> {activeWorkAreaContext.schoolName}
-      </Typography>
-      <Typography>
-        <strong>Teacher's Last Name:</strong> {activeEvaluation.evaluateeDisplayName}
-      </Typography>
 
       <TableContainer component={Paper}>
         <Table size="small" aria-label="simple table">
@@ -160,7 +166,7 @@ const StudentSurveyBody = ({preview, checkedIds, allStatements}) => {
         <strong>Demographic Information:</strong> (This information is for state use only and will not be shared with teachers or others.)
       </Typography>
       <Stack direction="column" spacing={2}>
-      <FormControl>
+        <FormControl>
           <FormLabel id="gender-radio-buttons-group-label"><strong>Gender</strong></FormLabel>
           <RadioGroup row
             sx={{ml:3}}
@@ -184,7 +190,7 @@ const StudentSurveyBody = ({preview, checkedIds, allStatements}) => {
               return (
                 <FormControlLabel
                   control={
-                    <Checkbox checked={race[x]} onChange={handleChange} name={x.name} />
+                    <Checkbox checked={ethnicities[x]} onChange={changeEthnicities} name={x.name} />
                   }
                   label={x.name}
                 />
@@ -192,6 +198,11 @@ const StudentSurveyBody = ({preview, checkedIds, allStatements}) => {
             })}
           </FormGroup>
         </FormControl>
+        {!preview && 
+        <Box sx="textAlign: 'center">
+          <Button onClick={submitSurvey}>Submit Survey</Button>
+        </Box>
+        }
     </Stack>
     </>
   )

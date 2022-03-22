@@ -45,7 +45,7 @@ const SurveyStatus = ({survey, checkedIds}) => {
         <AlertTitle>Status: Open to Students
         </AlertTitle>
         <Stack direction="column" spacing={2}>
-          <Button sx={{alignSelf: 'flex-start'}} variant="outlined" size="small" onClick={copyToClipboard(survey.tinyURL)}>Copy URL to Clipboard</Button>
+          <Button sx={{alignSelf: 'flex-start'}} variant="outlined" size="small" onClick={()=>{copyToClipboard(survey.tinyURL)}}>Copy URL to Clipboard</Button>
           <Typography>
             If you need to temporarily close access to the survey, click the <strong>Close Survey </strong> button. You will be able to re-open the survey again.
           </Typography>

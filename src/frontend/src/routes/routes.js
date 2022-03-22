@@ -96,7 +96,7 @@ const EvaluationResourcesDashboard = lazy(() => import('@evaluation/resources/Da
 const EvaluationReportArchivesDashboard = lazy(() => import('@evaluation/report-archives/Dashboard'));
 const PerceptionSurveysDashboard = lazy(() => import('@evaluation/perception-surveys/Dashboard'));
 const PerceptionSurvey = lazy(() => import('@evaluation/perception-surveys/PerceptionSurvey'));
-const PerceptionSurveyStudentInput = lazy(() => import('@evaluation/perception-surveys/StudentInput'));
+const PerceptionSurveyStudentInput = lazy(() => import('@evaluation/perception-surveys/StudentPerceptionSurvey'));
 
 const evaluationSharedRoutes = {
   artifacts:  {

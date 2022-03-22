@@ -236,12 +236,19 @@ const PerceptionSurvey = () => {
     return content;
   }
 
+  const getCheckedStatements = () => {
+    return statements.filter((statement, i) => {
+       const checked = checkedIds.includes(statement.id);
+       return checked;
+     });
+   }
+
   const buildMainContent = () => {
     let content = [];
     content.push(<SurveyStatus survey={survey} checkedIds={checkedIds} />)
     if (survey.wfState === WorkState.PERCEPTION_SURVEY_BUILDING) {
       if (mode==='preview') {
-        content.push(<StudentSurveyBody preview={true} checkedIds={checkedIds} allStatements={statements} />)
+        content.push(<StudentSurveyBody preview={true} statements={getCheckedStatements} />)
       }
       else if (mode==='edit') {
         content.push(

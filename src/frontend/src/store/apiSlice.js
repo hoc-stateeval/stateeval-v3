@@ -91,28 +91,26 @@ export const apiSlice = createApi({
       query: (evaluationId) => ({ url: `perception-surveys/evaluation/${evaluationId}`, method: 'get' }),
       providesTags: ['PerceptionSurveys']
     }),
-
     getPerceptionSurveyByGuid: builder.query({
-      query: (guid) => ({ url: `perception-surveys/${guid}}`, method: 'get' }),
+      query: (guid) => ({ url: `perception-surveys/${guid}`, method: 'get' }),
     }),
-
     createPerceptionSurvey: builder.mutation({
       query: (data) => ({ url: `perception-surveys/evaluation/${data.evaluationId}`, method: 'post', data: data }),
       invalidatesTags: ['PerceptionSurveys'],
     }),
-
     updatePerceptionSurvey: builder.mutation({
       query: (data) => ({ url: `perception-surveys/${data.surveyId}`, method: 'put', data: data }),
       invalidatesTags: ['PerceptionSurveys'],
     }),
-
     deletePerceptionSurvey: builder.mutation({
       query: (surveyId) => ({ url: `perception-surveys/${surveyId}`, method: 'delete' }),
       invalidatesTags: ['PerceptionSurveys'],
     }),
-
     getPerceptionSurveyStatementsForFrameworkTagName: builder.query({
       query: (tagName) => ({ url: `perception-survey-statements/by-tagname/${tagName}`, method: 'get' }),
+    }),
+    getPerceptionSurveyStatementsForSurvey: builder.query({
+      query: (surveyId) => ({ url: `perception-survey-statements/${surveyId}`, method: 'get' }),
     }),
     getPerceptionSurveyStatementIds: builder.query({
       query: (surveyId) => ({ url: `perception-survey-statements/${surveyId}/statementIds`, method: 'get' }),
@@ -126,6 +124,11 @@ export const apiSlice = createApi({
       query: (data) => ({url: `perception-surveys/remove-statement/${data.surveyId}/${data.statementId}`, method: 'post', data: data}) ,
       invalidatesTags: ['PerceptionSurveyStatementIds'],
     }),
+    submitPerceptionSurveyResponses: builder.mutation({
+      query: (data) => ({url: `perception-survey-responses/${data.surveyId}`, method: 'post', data: data}) ,
+      invalidatesTags: ['PerceptionSurveyStatementIds'],
+    }),
+
 
     // evaluations
     getEvaluationById: builder.query({
@@ -252,4 +255,6 @@ export const {
   useCreateObservationMutation,
   useDeletePerceptionSurveyMutation,
   useUpdatePerceptionSurveyMutation,
+  useGetPerceptionSurveyStatementsForSurveyQuery,
+  useSubmitPerceptionSurveyResponsesMutation
 } = apiSlice
