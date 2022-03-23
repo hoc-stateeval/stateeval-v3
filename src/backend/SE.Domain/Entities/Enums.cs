@@ -6,6 +6,40 @@ using System.Threading.Tasks;
 
 namespace SE.Domain.Entities
 {
+
+    public enum GradeBand
+    {
+        UNDEFINED = 0,
+        ELEMENTARY,
+        MIDDLE,
+        HIGH,
+        K_SECOND,
+        THIRD_FIFTH,
+        POST_SECONDARY,
+        PRE_K,
+        K_EIGHT
+    }
+    public enum Subject
+    {
+        UNDEFINED = 0,
+        ELA,
+        MATH,
+        SCIENCE,
+        SOCIAL_STUDIES,
+        ART,
+        CTE,
+        MUSIC,
+        HEALTH,
+        ELL,
+        SPECIAL_ED,
+        SOCIAL,
+        FINE_ARTS,
+        ELECTIVE,
+        SPECIALIST,
+        GENERALIST,
+        OTHER,
+        PE
+    }
     public enum UserPromptOwnerTier
     {
         UNDEFINED = 0,
