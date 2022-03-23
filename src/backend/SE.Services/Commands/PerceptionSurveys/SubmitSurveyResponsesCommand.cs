@@ -81,8 +81,8 @@ namespace SE.Core.Commands.PerceptionSurveys
             {
                 var response = new PerceptionSurveyResponse
                 {
-                    SurveyId = request.SurveyId,
-                    StatementId = responseDTO.StatementId,
+                    PerceptionSurveyId = request.SurveyId,
+                    PerceptionSurveyStatementId = responseDTO.StatementId,
                     RespondentId = responseDTO.RespondentId,
                     LevelOfAgreement = responseDTO.LevelOfAgreement
                 };
@@ -92,7 +92,7 @@ namespace SE.Core.Commands.PerceptionSurveys
 
             var demographic = new PerceptionSurveyDemographic
             {
-                SurveyId = request.SurveyId,
+                PerceptionSurveyId = request.SurveyId,
                 Ethnicities = request.Enthicities,
                 Gender = request.Gender
             };

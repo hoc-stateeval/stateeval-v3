@@ -30,23 +30,30 @@ import {
 } from "@api-slice";
 
 import { PerceptionSurveyLevelOfAgreement } from "@lib/enums";
-import { getNewGuid } from "@lib/utils";
+import getNewGuid from "@lib/utils/getNewGuid";
 import { Ethnicities } from "@lib/eval-helpers";
 
 const StudentSurveyBody = ({preview, survey, statements}) => {
 
   const errorHandler = useErrorHandler();
 
-  const [results, setResults] = useState({});
+  const initializeResults = () => {
+    let results = {};
+    for (const statement of statements) {
+      results[statement.id] = PerceptionSurveyLevelOfAgreement.UNDEFINED;
+    }
+    return results;
+  }
 
+  const [results, setResults] = useState(initializeResults());
   const [gender, setGender] = useState('0');
   const [ethnicities, setEthnicities] = useState(Ethnicities.reduce((acc, next)=> {
     acc[next.name] = false;
     return acc;
   }, {}));
 
-  const { submitSurveyAPI, error: submitError } = useSubmitPerceptionSurveyResponsesMutation();
-  if (submitError) useErrorHandler(submitError);
+  const [submitSurveyAPI, {error: submitError}] = useSubmitPerceptionSurveyResponsesMutation();
+  if (submitError) errorHandler(submitError);
 
   const changeEthnicities = (event) => {
     setEthnicities({
@@ -138,7 +145,7 @@ const StudentSurveyBody = ({preview, survey, statements}) => {
               <TableCell align="center"></TableCell>
               <TableCell align="center">Statement</TableCell>
                 {tableData.map((x,i)=>(
-                  <TableCell align="center">{x.levelOfAgreementTitle}</TableCell>
+                  <TableCell key={i} align="center">{x.levelOfAgreementTitle}</TableCell>
                 ))}
             </TableRow>
           </TableHead>
@@ -148,10 +155,10 @@ const StudentSurveyBody = ({preview, survey, statements}) => {
                 <TableRow key={i}>
                   <TableCell align="left">{i+1}</TableCell>
                   <TableCell align="left" sx={{width:'40%'}}>{statement.text}</TableCell>
-                  {tableData.map((x,i)=>(
-                  <TableCell align="center">
+                  {tableData.map((x,j)=>(
+                  <TableCell key={j} align="center">
                     <Radio
-                      name={i}
+                      name={j.toString()}
                       checked={results[statement.id]===x.levelOfAgreementValue}
                       onChange={()=>{setResult(statement.id, x.levelOfAgreementValue)}}
                       />
@@ -188,7 +195,7 @@ const StudentSurveyBody = ({preview, survey, statements}) => {
           <FormGroup sx={{ml:3}}>
             {Ethnicities.map((x,i)=> {
               return (
-                <FormControlLabel
+                <FormControlLabel key={i}
                   control={
                     <Checkbox checked={ethnicities[x]} onChange={changeEthnicities} name={x.name} />
                   }
@@ -199,7 +206,7 @@ const StudentSurveyBody = ({preview, survey, statements}) => {
           </FormGroup>
         </FormControl>
         {!preview && 
-        <Box sx="textAlign: 'center">
+        <Box sx={{textAlign: 'center'}}>
           <Button onClick={submitSurvey}>Submit Survey</Button>
         </Box>
         }

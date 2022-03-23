@@ -815,10 +815,12 @@ namespace SE.Data.Migrations
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("SurveyId")
+                    b.Property<long>("PerceptionSurveyId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PerceptionSurveyId");
 
                     b.ToTable("PerceptionSurveyDemographic", "dbo");
                 });
@@ -849,20 +851,14 @@ namespace SE.Data.Migrations
                     b.Property<int>("LevelOfAgreement")
                         .HasColumnType("int");
 
-                    b.Property<long?>("PerceptionSurveyId")
+                    b.Property<long>("PerceptionSurveyId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("PerceptionSurveyStatementId")
+                    b.Property<long>("PerceptionSurveyStatementId")
                         .HasColumnType("bigint");
 
                     b.Property<Guid>("RespondentId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<long>("StatementId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("SurveyId")
-                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -1766,6 +1762,17 @@ namespace SE.Data.Migrations
                     b.Navigation("Evaluator");
                 });
 
+            modelBuilder.Entity("SE.Domain.Entities.PerceptionSurveyDemographic", b =>
+                {
+                    b.HasOne("SE.Domain.Entities.PerceptionSurvey", "PerceptionSurvey")
+                        .WithMany()
+                        .HasForeignKey("PerceptionSurveyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PerceptionSurvey");
+                });
+
             modelBuilder.Entity("SE.Domain.Entities.PerceptionSurveyPerceptionSurveyStatement", b =>
                 {
                     b.HasOne("SE.Domain.Entities.PerceptionSurvey", "PerceptionSurvey")
@@ -1789,11 +1796,15 @@ namespace SE.Data.Migrations
                 {
                     b.HasOne("SE.Domain.Entities.PerceptionSurvey", "PerceptionSurvey")
                         .WithMany()
-                        .HasForeignKey("PerceptionSurveyId");
+                        .HasForeignKey("PerceptionSurveyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SE.Domain.Entities.PerceptionSurveyStatement", "PerceptionSurveyStatement")
                         .WithMany()
-                        .HasForeignKey("PerceptionSurveyStatementId");
+                        .HasForeignKey("PerceptionSurveyStatementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("PerceptionSurvey");
 

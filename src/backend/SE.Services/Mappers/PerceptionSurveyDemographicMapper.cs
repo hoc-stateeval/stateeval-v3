@@ -13,8 +13,7 @@ namespace SE.Core.Mappers
         public static PerceptionSurveyDemographicDTO MapToPerceptionSurveyDemographicDTO(this PerceptionSurveyDemographic source)
         {
             PerceptionSurveyDemographicDTO target = new PerceptionSurveyDemographicDTO();
-            target.SurveyId = source.Id;
-            target.SurveyId = source.SurveyId;
+            target.SurveyId = source.PerceptionSurveyId;
             target.Ethnitcities = source.Ethnicities;
             target.Gender = source.Gender;
             return target;

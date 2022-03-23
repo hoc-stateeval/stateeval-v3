@@ -14,8 +14,8 @@ namespace SE.Core.Mappers
         {
             PerceptionSurveyResponseDTO target = new PerceptionSurveyResponseDTO();
             target.Id = source.Id;
-            target.SurveyId = source.SurveyId;
-            target.StatementId = source.StatementId;
+            target.SurveyId = source.PerceptionSurveyId;
+            target.StatementId = source.PerceptionSurveyStatementId;
             target.LevelOfAgreement = source.LevelOfAgreement;
             target.RespondentId = source.RespondentId;
 

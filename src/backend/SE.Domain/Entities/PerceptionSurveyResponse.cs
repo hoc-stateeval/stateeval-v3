@@ -17,13 +17,13 @@ namespace SE.Domain.Entities
         [Required]
         public Guid RespondentId { get; set; }
 
-        [ForeignKey("SurveyId")]
-        public long SurveyId { get; set; }
+        [ForeignKey("PerceptionSurveyId")]
+        public long PerceptionSurveyId { get; set; }
 
         public virtual PerceptionSurvey PerceptionSurvey { get; set; }
 
-        [ForeignKey("StatementId")]
-        public long StatementId { get; set; }
+        [ForeignKey("PerceptionSurveyStatementId")]
+        public long PerceptionSurveyStatementId { get; set; }
         public virtual PerceptionSurveyStatement PerceptionSurveyStatement { get; set; }
     }
 }

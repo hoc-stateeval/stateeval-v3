@@ -12,7 +12,10 @@ namespace SE.Domain.Entities
     public class PerceptionSurveyDemographic : BaseEntity
     {
         public long Id { get; set; }
-        public long SurveyId { get; set; }
+
+        [ForeignKey("PerceptionSurveyId")]
+        public long PerceptionSurveyId { get; set; }
+        public virtual PerceptionSurvey PerceptionSurvey { get; set; }
 
         public string Ethnicities { get; set; } = string.Empty;
         public string Gender { get; set; } = string.Empty;

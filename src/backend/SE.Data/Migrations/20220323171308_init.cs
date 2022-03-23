@@ -67,22 +67,6 @@ namespace SE.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PerceptionSurveyDemographic",
-                schema: "dbo",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SurveyId = table.Column<long>(type: "bigint", nullable: false),
-                    Ethnicities = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PerceptionSurveyDemographic", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Role",
                 schema: "dbo",
                 columns: table => new
@@ -214,6 +198,29 @@ namespace SE.Data.Migrations
                         column: x => x.FrameworkId,
                         principalSchema: "dbo",
                         principalTable: "Framework",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PerceptionSurveyDemographic",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PerceptionSurveyId = table.Column<long>(type: "bigint", nullable: false),
+                    Ethnicities = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PerceptionSurveyDemographic", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PerceptionSurveyDemographic_PerceptionSurvey_PerceptionSurveyId",
+                        column: x => x.PerceptionSurveyId,
+                        principalSchema: "dbo",
+                        principalTable: "PerceptionSurvey",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -546,10 +553,8 @@ namespace SE.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LevelOfAgreement = table.Column<int>(type: "int", nullable: false),
                     RespondentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SurveyId = table.Column<long>(type: "bigint", nullable: false),
-                    PerceptionSurveyId = table.Column<long>(type: "bigint", nullable: true),
-                    StatementId = table.Column<long>(type: "bigint", nullable: false),
-                    PerceptionSurveyStatementId = table.Column<long>(type: "bigint", nullable: true)
+                    PerceptionSurveyId = table.Column<long>(type: "bigint", nullable: false),
+                    PerceptionSurveyStatementId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -559,13 +564,15 @@ namespace SE.Data.Migrations
                         column: x => x.PerceptionSurveyId,
                         principalSchema: "dbo",
                         principalTable: "PerceptionSurvey",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PerceptionSurveyResponse_PerceptionSurveyStatement_PerceptionSurveyStatementId",
                         column: x => x.PerceptionSurveyStatementId,
                         principalSchema: "dbo",
                         principalTable: "PerceptionSurveyStatement",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -1281,6 +1288,12 @@ namespace SE.Data.Migrations
                 schema: "dbo",
                 table: "Observation",
                 column: "EvaluatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PerceptionSurveyDemographic_PerceptionSurveyId",
+                schema: "dbo",
+                table: "PerceptionSurveyDemographic",
+                column: "PerceptionSurveyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PerceptionSurveyPerceptionSurveyStatement_PerceptionSurveyStatementId",
