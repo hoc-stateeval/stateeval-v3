@@ -36,11 +36,11 @@ const SurveyBuilder = ({activeFramework, survey, checkedIds, statementMap}) => {
       const rubricRow = activeFramework.rubricRowMap[rubricRowId];
       const frameworkNode = activeFramework.frameworkNodeMap[rubricRow.frameworkNodeId];
       content.push(
-        <TableContainer component={Paper}>
+        <TableContainer key={rubricRowId} component={Paper}>
         <Table size="small" aria-label="simple table">
           <TableHead>
           <TableRow>
-              <TableCell align="left" colspan="2">{frameworkNode.shortName} - {frameworkNode.title} : {rubricRow.shortName} - {rubricRow.title}</TableCell>
+              <TableCell align="left" colSpan="2">{frameworkNode.shortName} - {frameworkNode.title} : {rubricRow.shortName} - {rubricRow.title}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell align="left">Include</TableCell>

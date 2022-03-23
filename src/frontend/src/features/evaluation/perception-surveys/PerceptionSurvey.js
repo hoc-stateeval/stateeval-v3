@@ -29,7 +29,7 @@ import {
   useUpdatePerceptionSurveyMutation,
 } from "@api-slice";
 
-import StudentSurveyBody from "./StudentSurveyBody";
+import StudentSurveyPreview from "./StudentSurveyPreview";
 import SurveyBuilder from "./SurveyBuilder";
 import SurveyResults from "./SurveyResults";
 import SurveyStatus from "./SurveyStatus";
@@ -199,23 +199,22 @@ const PerceptionSurvey = () => {
   }
 
   const buildButtons = () => {
-    let content = [];
     if (survey.wfState === WorkState.PERCEPTION_SURVEY_BUILDING) {
       if (mode==='preview') {
-        content.push(<Button onClick={() => { setMode('edit'); }}>Edit Survey</Button>)
+        return <Button onClick={() => { setMode('edit'); }}>Edit Survey</Button>;
       }
       else if (mode==='edit') {
-        content.push(
+        return (
           <>
-          <Button disabled={checkedIds.length===0} onClick={() => {setMode('preview'); }}>Preview Survey</Button>
-          {buildOpenSurveyButton()}
-          {buildDeleteSurveyButton()}
-        </>     
+            <Button disabled={checkedIds.length===0} onClick={() => {setMode('preview'); }}>Preview Survey</Button>
+            {buildOpenSurveyButton()}
+            {buildDeleteSurveyButton()}
+         </>     
         )
       }
     }
     else if (survey.wfState === WorkState.PERCEPTION_SURVEY_CLOSED) {
-      content.push(
+      return (
         <>
           {buildOpenSurveyButton()}
           {buildCompleteSurveyButton()}
@@ -224,7 +223,7 @@ const PerceptionSurvey = () => {
       );
     }
     else if (survey.wfState === WorkState.PERCEPTION_SURVEY_OPEN) {
-      content.push(
+      return (
         <>
           <Button onClick={() => {closeSurvey(); }}>Close Survey</Button>
           {buildCompleteSurveyButton()}
@@ -232,8 +231,9 @@ const PerceptionSurvey = () => {
         </>
       );
     }
-
-    return content;
+    else {
+      return (<></>);
+    }
   }
 
   const getCheckedStatements = () => {
@@ -245,22 +245,22 @@ const PerceptionSurvey = () => {
 
   const buildMainContent = () => {
     let content = [];
-    content.push(<SurveyStatus survey={survey} checkedIds={checkedIds} />)
+    if (mode!=='preview') content.push(<SurveyStatus key={0}  survey={survey} checkedIds={checkedIds} />)
     if (survey.wfState === WorkState.PERCEPTION_SURVEY_BUILDING) {
       if (mode==='preview') {
-        content.push(<StudentSurveyBody preview={true} statements={getCheckedStatements} />)
+        content.push(<StudentSurveyPreview key={1} survey={survey} statements={getCheckedStatements()} />)
       }
       else if (mode==='edit') {
         content.push(
-          <SurveyBuilder activeFramework={activeFramework} survey={survey} checkedIds={checkedIds} statementMap={statementMap}/>
+          <SurveyBuilder key={1} activeFramework={activeFramework} survey={survey} checkedIds={checkedIds} statementMap={statementMap}/>
         );
       }
     }
     else if (survey.wfState === WorkState.PERCEPTION_SURVEY_OPEN) {
-      content.push(<SurveyResults />)
+      content.push(<SurveyResults key={1} />)
     }
     else if (survey.wfState === WorkState.PERCEPTION_SURVEY_CLOSED) {
-      content.push(<SurveyResults />)
+      content.push(<SurveyResults key={1} />)
     }
 
     return content;
