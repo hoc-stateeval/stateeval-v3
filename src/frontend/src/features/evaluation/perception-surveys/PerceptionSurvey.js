@@ -256,11 +256,10 @@ const PerceptionSurvey = () => {
         );
       }
     }
-    else if (survey.wfState === WorkState.PERCEPTION_SURVEY_OPEN) {
-      content.push(<SurveyResults key={1} />)
-    }
-    else if (survey.wfState === WorkState.PERCEPTION_SURVEY_CLOSED) {
-      content.push(<SurveyResults key={1} />)
+    else if (survey.wfState === WorkState.PERCEPTION_SURVEY_OPEN || 
+             survey.wfState === WorkState.PERCEPTION_SURVEY_CLOSED ||
+             survey.wfState === WorkState.PERCEPTION_SURVEY_COMPLETE) {
+      content.push(<SurveyResults key={1} survey={survey} statements={getCheckedStatements()} />)
     }
 
     return content;

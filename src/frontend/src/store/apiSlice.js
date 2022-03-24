@@ -129,6 +129,9 @@ export const apiSlice = createApi({
       query: (data) => ({url: `perception-survey-responses/${data.surveyId}`, method: 'post', data: data}) ,
       invalidatesTags: ['PerceptionSurveyStatementIds'],
     }),
+    getPerceptionSurveyResponses: builder.query({
+      query: (surveyId) => ({ url: `perception-survey-responses/${surveyId}`, method: 'get' }),
+    }),
 
 
     // evaluations
@@ -257,5 +260,6 @@ export const {
   useDeletePerceptionSurveyMutation,
   useUpdatePerceptionSurveyMutation,
   useGetPerceptionSurveyStatementsForSurveyQuery,
-  useSubmitPerceptionSurveyResponsesMutation
+  useSubmitPerceptionSurveyResponsesMutation,
+  useGetPerceptionSurveyResponsesQuery
 } = apiSlice
