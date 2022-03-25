@@ -11,9 +11,9 @@ namespace SE.Core.Models
     {
         public long Id { get; set; }
         public long UserPromptId { get; set; }
+        public long? EvaluatorId { get; set; } = null;
         public string SchoolCode {  get; set; } = string.Empty;
         public UserPromptTier ConfigurationTier { get; set; }
-        public long? EvaluatorId { get; set } = null;
         public bool Required { get; set; }
 
 

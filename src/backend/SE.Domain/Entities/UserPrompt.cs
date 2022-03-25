@@ -10,19 +10,15 @@ namespace SE.Domain.Entities
         [ForeignKey("FrameworkContext")]
         public long FrameworkContextId { get; set; }
         public virtual FrameworkContext FrameworkContext { get; }
+        public UserPromptTier OwnerTier { get; set; }
         public string SchoolCode { get; set; }
-
-        public UserPromptType PromptType { get; set; }
-        public string Prompt { get; set; }
-
-        public bool Retired { get; set; }
-        public bool Required { get; set; }
-
-        public UserPromptTier OwnerTier { get; set; }  
-
         [ForeignKey("Evaluator")]
         public long? EvaluatorId { get; set; }
         public virtual User Evaluator { get; }
+
+
+        public UserPromptType PromptType { get; set; }
+        public string Prompt { get; set; }
 
         // observation-specific conference prompts
         [ForeignKey("Observation")]

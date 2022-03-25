@@ -20,6 +20,7 @@ namespace SE.Core.Mappers
             target.ConfigurationTier = source.ConfigurationTier;
             target.SchoolCode = source.SchoolCode;
             target.EvaluatorId = source.EvaluatorId;
+
             target.Required = source.Required;
 
             return target;

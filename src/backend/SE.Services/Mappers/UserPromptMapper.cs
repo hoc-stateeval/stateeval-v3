@@ -16,9 +16,12 @@ namespace SE.Core.Mappers
         {
             UserPromptDTO target =new UserPromptDTO();
             target.Id = source.Id;
+            target.OwnerTier = source.OwnerTier;
+            target.SchoolCode = source.SchoolCode;
+            target.EvaluatorId = source.EvaluatorId;
+
             target.Prompt = source.Prompt;
             target.PromptType = source.PromptType;
-            target.OwnerTier = source.OwnerTier;
             target.ObservationId = source.ObservationId;
             target.EvaluationId = source.EvaluationId;
             target.TierConfigs = source.TierConfigs.Select(x => x.MapToUserPromptTierConfig()).ToList();
