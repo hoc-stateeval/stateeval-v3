@@ -5,6 +5,7 @@ using SE.API.Tests.Utils;
 using SE.Core.Commands.Authentication;
 using SE.Core.Commands.Evaluations;
 using SE.Core.Commands.PerceptionSurveys;
+using SE.Core.Commands.UserPrompts;
 using SE.Core.Models;
 using SE.Domain.Entities;
 using System;
@@ -32,6 +33,7 @@ namespace SE.API.Tests.Fixtures
         private string perceptionSurveyResponsesRoot = "perception-survey-responses";
         private string perceptionSurveyDemographicsRoot = "perception-survey-demographics";
         private string evaluationsRoot = "evaluations";
+        private string userPromptsRoot = "user-prompts";
 
         public IntegrationTest(ApiWebApplicationFactory fixture)
         {
@@ -183,6 +185,13 @@ namespace SE.API.Tests.Fixtures
             var evaluations = await GetEvaluationsForWorkAreaAPI(user.Id, workAreaContext.Id);
             evaluations.Count.Should().Be(1);
             return evaluations[0];
+        }
+
+        public async Task<Unit> CreatUserPromptAPI(long evaluationId, CreateUserPromptCommand command)
+        {
+            var url = $"{userPromptsRoot}";
+            var response = _client.PostAsJsonAsync<CreateUserPromptCommand>(url, command);
+            return Unit.Value;
         }
 
 

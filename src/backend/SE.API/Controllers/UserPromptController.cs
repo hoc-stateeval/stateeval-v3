@@ -14,6 +14,17 @@ namespace SE.API.Controllers
         {
         }
 
+        /// <summary>
+        /// Creates a UserPrompt
+        /// </summary>
+        /// <param name="command">The data describing the new prompt</param>
+        /// <returns></returns>
+        [HttpPost()]
+        public async Task<ActionResult<UserPromptDTO>> Create([FromBody] CreateUserPromptCommand command)
+        {
+            CancellationToken cancelationToken = HttpContext.RequestAborted;
+            return Ok(await _mediator.Send(command, cancelationToken));
+        }
 
         [HttpGet("{frameworkContextId:long}/{ownerTier}/{userId:long}")]
         public async Task<ActionResult<List<UserPromptDTO>>> GetUserPromptsForOwnerTier(long frameworkContextId, UserPromptOwnerTier ownerTier, long userId)

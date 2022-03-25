@@ -40,7 +40,7 @@ namespace SE.Domain.Entities
         OTHER,
         PE
     }
-    public enum UserPromptOwnerTier
+    public enum UserPromptTier
     {
         UNDEFINED = 0,
         DISTRICT_ADMIN = 1,

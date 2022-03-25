@@ -16,15 +16,13 @@ namespace SE.Domain.Entities
         public string Prompt { get; set; }
 
         public bool Retired { get; set; }
+        public bool Required { get; set; }
 
-        public UserPromptOwnerTier OwnerTier { get; set; }  
-        public bool DistrictRequired { get; set; } 
-        public bool SchoolRequired { get; set; }
-        public bool EvaluatorRequired { get; set; }
+        public UserPromptTier OwnerTier { get; set; }  
 
-        [ForeignKey("CreateByUser")]
-        public long CreatedByUserId { get; set; }
-        public virtual User CreatedByUser { get; }
+        [ForeignKey("Evaluator")]
+        public long? EvaluatorId { get; set; }
+        public virtual User Evaluator { get; }
 
         // observation-specific conference prompts
         [ForeignKey("Observation")]
@@ -36,7 +34,9 @@ namespace SE.Domain.Entities
         public long? EvaluationId { get; set; }
         public virtual Evaluation Evaluation { get; }
 
-        public virtual List<UserPromptResponse> Responses { get; set; }
+        public virtual List<UserPromptTierConfig> TierConfigs { get; set; } = new List<UserPromptTierConfig>();
+
+        public virtual List<UserPromptResponse> Responses { get; set; } = new List<UserPromptResponse>();
 
     }
 }

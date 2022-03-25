@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\UserPrompts\" />
     <Folder Include="Commands\Users\" />
   </ItemGroup>
 
