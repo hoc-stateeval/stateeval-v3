@@ -27,7 +27,7 @@ namespace SE.API.Tests.Fixtures
         protected readonly ApiWebApplicationFactory _factory;
         protected readonly HttpClient _client;
 
-        private string workAreaContextsRoot = "work-area-contexts";
+        private string workAreaContextsRoot = "workarea-contexts";
         private string perceptionSurveysRoot = "perception-surveys";
         private string perceptionSurveyStatementsRoot = "perception-survey-statements";
         private string perceptionSurveyResponsesRoot = "perception-survey-responses";
@@ -48,7 +48,7 @@ namespace SE.API.Tests.Fixtures
 
         public async Task<List<WorkAreaContextDTO>> GetWorkAreaContextsForUserAPI(long userId)
         {
-            var url = $"${workAreaContextsRoot}/user/{userId}";
+            var url = $"{workAreaContextsRoot}/user/{userId}";
             var workAreaContexts = await _client.GetFromJsonAsync<List<WorkAreaContextDTO>>(url);
             return workAreaContexts;
         }
@@ -187,11 +187,12 @@ namespace SE.API.Tests.Fixtures
             return evaluations[0];
         }
 
-        public async Task<Unit> CreatUserPromptAPI(long evaluationId, CreateUserPromptCommand command)
+        public async Task<UserPromptDTO> CreatUserPromptAPI(CreateUserPromptCommand command)
         {
             var url = $"{userPromptsRoot}";
             var response = _client.PostAsJsonAsync<CreateUserPromptCommand>(url, command);
-            return Unit.Value;
+            var userPrompt = await response.Result.Content.ReadFromJsonAsync<UserPromptDTO>();
+            return userPrompt;
         }
 
 

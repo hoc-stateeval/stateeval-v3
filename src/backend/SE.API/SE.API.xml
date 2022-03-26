@@ -175,6 +175,13 @@
                 A list of statement ids
             </returns>
         </member>
+        <member name="M:SE.API.Controllers.UserPromptController.Create(SE.Core.Commands.UserPrompts.CreateUserPromptCommand)">
+            <summary>
+            Creates a UserPrompt
+            </summary>
+            <param name="command">The data describing the new prompt</param>
+            <returns></returns>
+        </member>
         <member name="M:SE.API.Controllers.WorkAreaContextController.GetWorkAreaContextsForUser(System.Int64)">
             <summary>
             Get a collection of the work area contexts for the user.

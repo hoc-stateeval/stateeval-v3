@@ -5,6 +5,8 @@ using System.Text;
 
 namespace SE.Domain.Entities
 {
+
+    [Table("UserPromptResponse")]
     public class UserPromptResponse : BaseEntity
     {
         public string Response { get; set; }

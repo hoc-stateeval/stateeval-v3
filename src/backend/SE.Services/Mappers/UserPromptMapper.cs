@@ -24,7 +24,7 @@ namespace SE.Core.Mappers
             target.PromptType = source.PromptType;
             target.ObservationId = source.ObservationId;
             target.EvaluationId = source.EvaluationId;
-            target.TierConfigs = source.TierConfigs.Select(x => x.MapToUserPromptTierConfig()).ToList();
+            target.TierConfigs = source.TierConfigs.Select(x => x.MapToUserPromptTierConfigDTO()).ToList();
 
             return target;
         }

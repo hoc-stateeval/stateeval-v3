@@ -28,7 +28,7 @@ namespace SE.Core.Commands.UserPrompts
     {
         public long FrameworkContextId { get; set; }
 
-        public UserPromptOwnerTier OwnerTier { get; set; }
+        public UserPromptTier OwnerTier { get; set; }
         public string SchoolCode { get; set; }
 
         public UserPromptType PromptType { get; set; }
@@ -42,7 +42,7 @@ namespace SE.Core.Commands.UserPrompts
         public CreateUserPromptCommand(
             long frameworkContextId,
             string schoolCode,
-            UserPromptOwnerTier ownerTier,
+            UserPromptTier ownerTier,
             UserPromptType promptType,
             string prompt,
             bool required,
@@ -53,11 +53,11 @@ namespace SE.Core.Commands.UserPrompts
         {
             FrameworkContextId = frameworkContextId;
             SchoolCode = schoolCode;
+            EvaluatorId = evaluatorId;
             OwnerTier = ownerTier;
             PromptType = promptType;
             Prompt = prompt;
             Required = required;
-            EvaluatorId = evaluatorId;
             EvaluationId = evaluationId;
             ObservationId = observationId;
         }
@@ -105,6 +105,8 @@ namespace SE.Core.Commands.UserPrompts
             config.Required = request.Required;
             config.SchoolCode = request.SchoolCode;
             config.EvaluatorId = request.EvaluatorId;
+
+            _dataContext.UserPromptTierConfigs.Add(config);
 
             await _dataContext.SaveChangesAsync();
 

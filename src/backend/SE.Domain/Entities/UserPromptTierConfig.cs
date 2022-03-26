@@ -5,6 +5,9 @@ using System.Text;
 
 namespace SE.Domain.Entities
 {
+
+
+    [Table("UserPromptTierConfig")]
     public class UserPromptTierConfig : BaseEntity
     {
         [ForeignKey("UserPrompt")]

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SE.Core.Queries.UserPrompts;
 using SE.Domain.Entities;
 using SE.Core.Models;
+using SE.Core.Commands.UserPrompts;
 
 namespace SE.API.Controllers
 {
@@ -27,7 +28,7 @@ namespace SE.API.Controllers
         }
 
         [HttpGet("{frameworkContextId:long}/{ownerTier}/{userId:long}")]
-        public async Task<ActionResult<List<UserPromptDTO>>> GetUserPromptsForOwnerTier(long frameworkContextId, UserPromptOwnerTier ownerTier, long userId)
+        public async Task<ActionResult<List<UserPromptDTO>>> GetUserPromptsForOwnerTier(long frameworkContextId, UserPromptTier ownerTier, long userId)
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;
             var prompts = await _mediator.Send(new GetUserPromptsForOwnerTierQuery(frameworkContextId, ownerTier, userId), cancelationToken);

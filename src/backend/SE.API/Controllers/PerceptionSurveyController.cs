@@ -120,7 +120,7 @@ namespace SE.API.Controllers
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;
             var result = await _mediator.Send(new DeleteSurveyCommand(surveyId), cancelationToken);
-            return NoContent();
+            return Unit.Value;
         }
     }
 }
