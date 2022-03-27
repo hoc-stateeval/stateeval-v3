@@ -21,6 +21,7 @@ namespace SE.Core.Queries.UserPrompts
         public GetUserPromptsForOwnerTierQueryValidator()
         {
             RuleFor(x => x.OwnerTier).NotEqual(UserPromptTier.UNDEFINED);
+            RuleFor(x => x.EvaluatorId).NotEmpty().When(x => x.OwnerTier == UserPromptTier.EVALUATOR);
         }
     }
     public sealed class GetUserPromptsForOwnerTierQuery : 
@@ -30,13 +31,15 @@ namespace SE.Core.Queries.UserPrompts
         public UserPromptType PromptType { get; set; }
         public UserPromptTier OwnerTier { get;set; }
         public string SchoolCode { get; set; }
-        public long UserId { get; set; }
+        public long? EvaluatorId { get; set; }
 
-        public GetUserPromptsForOwnerTierQuery(long frameworkContextId, UserPromptTier ownerTier, long userId)
+        public GetUserPromptsForOwnerTierQuery(long frameworkContextId, UserPromptTier ownerTier, UserPromptType promptType, string schoolCode, long? evaluatorId)
         {
             FrameworkContextId = frameworkContextId;
             OwnerTier = ownerTier;
-            UserId = userId;   
+            EvaluatorId = evaluatorId;   
+            SchoolCode = schoolCode;
+            PromptType = promptType;
         }
 
         internal sealed class GetUserPromptsForOwnerTierQueryHandler : 
@@ -55,7 +58,7 @@ namespace SE.Core.Queries.UserPrompts
                                 x.PromptType == request.PromptType &&
                                 x.OwnerTier <= request.OwnerTier &&
                                 (x.OwnerTier == UserPromptTier.DISTRICT_ADMIN || x.SchoolCode == request.SchoolCode) &&
-                                (x.OwnerTier != UserPromptTier.EVALUATOR || x.EvaluatorId == request.UserId))
+                                (x.OwnerTier != UserPromptTier.EVALUATOR || x.EvaluatorId == request.EvaluatorId))
                     .Select(x => x.MapToUserPromptDTO())
                     .ToListAsync();
 

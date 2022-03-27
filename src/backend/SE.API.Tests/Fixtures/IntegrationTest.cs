@@ -7,6 +7,7 @@ using SE.Core.Commands.Evaluations;
 using SE.Core.Commands.PerceptionSurveys;
 using SE.Core.Commands.UserPrompts;
 using SE.Core.Models;
+using SE.Core.Queries.UserPrompts;
 using SE.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -193,6 +194,14 @@ namespace SE.API.Tests.Fixtures
             var response = _client.PostAsJsonAsync<CreateUserPromptCommand>(url, command);
             var userPrompt = await response.Result.Content.ReadFromJsonAsync<UserPromptDTO>();
             return userPrompt;
+        }
+
+        public async Task<List<UserPromptDTO>> GetUserPromptsForOwnerTier(long frameworkContextId, UserPromptTier ownerTier, UserPromptType promptType, string schoolCode,  long? evaluatorId)
+        {
+            var url = $"{userPromptsRoot}/{frameworkContextId}/{ownerTier}/{promptType}/{schoolCode}/{evaluatorId}";
+
+            var prompts = await _client.GetFromJsonAsync<List<UserPromptDTO>>(url);
+            return prompts;
         }
 
 
