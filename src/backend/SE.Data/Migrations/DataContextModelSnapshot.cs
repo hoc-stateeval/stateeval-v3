@@ -1295,6 +1295,9 @@ namespace SE.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
+                    b.Property<bool>("DistrictDefinedOnly")
+                        .HasColumnType("bit");
+
                     b.Property<long?>("EvaluationId")
                         .HasColumnType("bigint");
 
@@ -1322,53 +1325,6 @@ namespace SE.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserPrompt", "dbo");
-                });
-
-            modelBuilder.Entity("SE.Domain.Entities.UserPromptGroup", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<bool>("CreatedAsAdmin")
-                        .HasColumnType("bit");
-
-                    b.Property<long>("CreatedByUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("FrameworkContextId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PromptType")
-                        .HasColumnType("int");
-
-                    b.Property<long?>("SGFrameworkNodeId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("SchoolCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserPromptGroup", "dbo");
-                });
-
-            modelBuilder.Entity("SE.Domain.Entities.UserPromptGroupUserPrompt", b =>
-                {
-                    b.Property<long>("UserPromptGroupId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("UserPromptId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("UserPromptGroupId", "UserPromptId");
-
-                    b.ToTable("UserPromptGroupUserPrompt", "dbo");
                 });
 
             modelBuilder.Entity("SE.Domain.Entities.UserPromptResponse", b =>
@@ -1958,17 +1914,6 @@ namespace SE.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SE.Domain.Entities.UserPromptGroupUserPrompt", b =>
-                {
-                    b.HasOne("SE.Domain.Entities.UserPromptGroup", "UserPromptGroup")
-                        .WithMany("UserPromptGroupUserPrompts")
-                        .HasForeignKey("UserPromptGroupId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("UserPromptGroup");
-                });
-
             modelBuilder.Entity("SE.Domain.Entities.UserPromptResponse", b =>
                 {
                     b.HasOne("SE.Domain.Entities.UserPrompt", null)
@@ -2090,11 +2035,6 @@ namespace SE.Data.Migrations
                     b.Navigation("Responses");
 
                     b.Navigation("TierConfigs");
-                });
-
-            modelBuilder.Entity("SE.Domain.Entities.UserPromptGroup", b =>
-                {
-                    b.Navigation("UserPromptGroupUserPrompts");
                 });
 #pragma warning restore 612, 618
         }

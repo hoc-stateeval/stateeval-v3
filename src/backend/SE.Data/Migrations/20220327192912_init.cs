@@ -141,6 +141,7 @@ namespace SE.Data.Migrations
                     OwnerTier = table.Column<int>(type: "int", nullable: false),
                     SchoolCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EvaluatorId = table.Column<long>(type: "bigint", nullable: true),
+                    DistrictDefinedOnly = table.Column<bool>(type: "bit", nullable: false),
                     PromptType = table.Column<int>(type: "int", nullable: false),
                     Prompt = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ObservationId = table.Column<long>(type: "bigint", nullable: true),
@@ -149,26 +150,6 @@ namespace SE.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserPrompt", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserPromptGroup",
-                schema: "dbo",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FrameworkContextId = table.Column<long>(type: "bigint", nullable: false),
-                    CreatedByUserId = table.Column<long>(type: "bigint", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PromptType = table.Column<int>(type: "int", nullable: false),
-                    SchoolCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedAsAdmin = table.Column<bool>(type: "bit", nullable: false),
-                    SGFrameworkNodeId = table.Column<long>(type: "bigint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserPromptGroup", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -433,25 +414,6 @@ namespace SE.Data.Migrations
                         principalTable: "UserPrompt",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserPromptGroupUserPrompt",
-                schema: "dbo",
-                columns: table => new
-                {
-                    UserPromptGroupId = table.Column<long>(type: "bigint", nullable: false),
-                    UserPromptId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserPromptGroupUserPrompt", x => new { x.UserPromptGroupId, x.UserPromptId });
-                    table.ForeignKey(
-                        name: "FK_UserPromptGroupUserPrompt_UserPromptGroup_UserPromptGroupId",
-                        column: x => x.UserPromptGroupId,
-                        principalSchema: "dbo",
-                        principalTable: "UserPromptGroup",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -1522,10 +1484,6 @@ namespace SE.Data.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "UserPromptGroupUserPrompt",
-                schema: "dbo");
-
-            migrationBuilder.DropTable(
                 name: "UserPromptTierConfig",
                 schema: "dbo");
 
@@ -1551,10 +1509,6 @@ namespace SE.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "StudentGrowthGoalBundle",
-                schema: "dbo");
-
-            migrationBuilder.DropTable(
-                name: "UserPromptGroup",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

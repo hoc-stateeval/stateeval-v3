@@ -18,6 +18,7 @@ namespace SE.Domain.Entities
         public long? EvaluatorId { get; set; }
         public virtual User Evaluator { get; }
 
+        public bool DistrictDefinedOnly { get; set; }
 
         public UserPromptType PromptType { get; set; }
         public string Prompt { get; set; }

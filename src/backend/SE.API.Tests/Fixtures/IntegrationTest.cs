@@ -196,13 +196,31 @@ namespace SE.API.Tests.Fixtures
             return userPrompt;
         }
 
-        public async Task<List<UserPromptDTO>> GetUserPromptsForOwnerTier(long frameworkContextId, UserPromptTier ownerTier, UserPromptType promptType, string schoolCode,  long? evaluatorId)
+        public async Task<List<UserPromptDTO>> GetUserPromptsForDistrictTier(long frameworkContextId, UserPromptType promptType)
         {
-            var url = $"{userPromptsRoot}/{frameworkContextId}/{ownerTier}/{promptType}/{schoolCode}/{evaluatorId}";
+            var url = $"{userPromptsRoot}/{frameworkContextId}/{promptType}";
 
             var prompts = await _client.GetFromJsonAsync<List<UserPromptDTO>>(url);
             return prompts;
         }
+
+        public async Task<List<UserPromptDTO>> GetUserPromptsForSchoolTier(long frameworkContextId, UserPromptType promptType, string schoolCode)
+        {
+            var url = $"{userPromptsRoot}/{frameworkContextId}/{promptType}/{schoolCode}";
+
+            var prompts = await _client.GetFromJsonAsync<List<UserPromptDTO>>(url);
+            return prompts;
+        }
+
+
+        public async Task<List<UserPromptDTO>> GetUserPromptsForEvaluatorTier(long frameworkContextId, UserPromptType promptType, string schoolCode, long? evaluatorId)
+        {
+            var url = $"{userPromptsRoot}/{frameworkContextId}/{promptType}/{schoolCode}/{evaluatorId}";
+
+            var prompts = await _client.GetFromJsonAsync<List<UserPromptDTO>>(url);
+            return prompts;
+        }
+
 
 
         //protected async Task AuthenticateAsync(string userName)

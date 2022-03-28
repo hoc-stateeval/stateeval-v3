@@ -23,7 +23,7 @@ export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: axiosBaseQuery({ baseUrl: baseUrl }),
   keepUnusedDataFor: 10,
-  tagTypes: ['EvidenceItem', 'EvidencePackage', 'PerceptionSurveyStatementIds', 'PerceptionSurveys', 'PerceptionSurvey'],
+  tagTypes: ['EvidenceItem', 'EvidencePackage', 'PerceptionSurveyStatementIds', 'PerceptionSurveys', 'PerceptionSurvey', 'UserPrompts'],
   endpoints: builder => ({
 
     // evidence collections
@@ -84,6 +84,24 @@ export const apiSlice = createApi({
 
     createObservation: builder.mutation({
       query: (data) => ({ url: `observations/evaluation/${data.evaluationId}`, method: 'post', data: data }),
+    }),
+
+    // user prompts
+    getUserPromptsForDistrictTier: builder.query({
+      query: (data) => ({ url: `user-prompts/${data.frameworkContextId}/${data.promptType}`, method: 'get' }),
+      providesTags: ['UserPrompts']
+    }),
+    getUserPromptsForSchoolTier: builder.query({
+      query: (data) => ({ url: `user-prompts/${data.frameworkContextId}/${data.promptType}/${data.schoolCode}`, method: 'get' }),
+      providesTags: ['UserPrompts']
+    }),
+    getUserPromptsForEvaluatorTier: builder.query({
+      query: (data) => ({ url: `user-prompts/${data.frameworkContextId}/${data.promptType}/${data.schoolCode}/${data.evaluatorId}`, method: 'get' }),
+      providesTags: ['UserPrompts']
+    }),
+    createUserPrompt: builder.mutation({
+      query: (data) => ({ url: `user-prompts`, method: 'post', data: data }),
+      invalidatesTags: ['UserPrompts'],
     }),
     
     // perception surveys
@@ -218,48 +236,86 @@ export const apiSlice = createApi({
 })
 
 export const { 
-  useGetLocalLoginDistrictsQuery,
-  useGetLocalLoginUsersForDistrictQuery,
+
+
+  // DTE and DV admin setup
+  useUpdateDteRoleInSchoolsMutation,
+  useUpdateDvRoleInSchoolsMutation,
+
+  // buildings
+  useGetSchoolsInDistrictQuery,
+
+  // school config
   useGetSchoolConfigurationsForFrameworkContextQuery,
   useGetSchoolConfigurationByIdQuery,
-  useGetAssignmentsSummaryForDistrictQuery,
-  useGetAssignmentsDetailQuery,
+
   useUpdateSchoolConfigurationMutation,
   useUpdateSchoolConfigurationBatchEvaluationSetupDelegationMutation,
+
+  // users
   useGetUsersInRoleAtDistrictQuery,
   useGetUsersInRoleAtSchoolQuery,
   useGetUsersInRoleAtSchoolsQuery,
-  useGetSchoolsInDistrictQuery,
-  useUpdateDteRoleInSchoolsMutation,
-  useUpdateDvRoleInSchoolsMutation,
-  useUpdateEvaluationSetEvaluatorMutation,
-  useGetHistoricalEvaluationsQuery,
-  useUpdateEvaluationSetPlanTypeMutation,
+  useGetEvaluatorsForDistrictViewerQuery,
+
+  // assignments
+  useGetAssignmentsSummaryForDistrictQuery,
+  useGetAssignmentsDetailQuery,
+
+  // local login
+  useGetLocalLoginDistrictsQuery,
+  useGetLocalLoginUsersForDistrictQuery,
+
+  useLoginUserMutation,
+
+  // workarea contexts
+  useGetWorkAreaContextsForUserQuery,
+
+  // evaluations
+  useGetEvaluationByIdQuery,
   useGetEvaluationsForWorkAreaContextQuery,
   useGetEvaluationsForDistrictViewerQuery,
-  useGetEvaluatorsForDistrictViewerQuery,
-  useLoginUserMutation,
-  useCreateEvidenceItemMutation,
-  useGetPerceptionSurveyByIdQuery,
-  useCreateEvidencePackageMutation,
-  useGetPerceptionSurveysForEvaluationQuery,
-  useCreatePerceptionSurveyMutation,
-  useGetWorkAreaContextsForUserQuery,
-  useGetEvaluationByIdQuery,
+  useGetHistoricalEvaluationsQuery,
+
+  useUpdateEvaluationSetPlanTypeMutation,
+  useUpdateEvaluationSetEvaluatorMutation,
+
+  // frameworks
   useGetFrameworkByIdQuery,
+
+  // evidence collections
   useGetEvidenceItemsForCollectionQuery,
   useGetEvidencePackagesForCollectionQuery,
+
   useCreateOtherEvidenceItemMutation,
+  useCreateEvidenceItemMutation,
+  useCreateEvidencePackageMutation,
+
+  // observations
+  useGetObservationsForEvaluationQuery,
+
+  useCreateObservationMutation,
+
+  // perception surveys
+  useGetPerceptionSurveyByIdQuery,
+  useGetPerceptionSurveysForEvaluationQuery,
   useGetPerceptionSurveyStatementsForFrameworkTagNameQuery,
   useGetPerceptionSurveyStatementIdsQuery,
+  useGetPerceptionSurveyByGuidQuery,
+  useGetPerceptionSurveyStatementsForSurveyQuery,
+  useGetPerceptionSurveyResponsesQuery,
+
+  useCreatePerceptionSurveyMutation,
   useAddStatementToSurveyMutation,
   useRemoveStatementFromSurveyMutation,
-  useGetPerceptionSurveyByGuidQuery,
-  useGetObservationsForEvaluationQuery,
-  useCreateObservationMutation,
   useDeletePerceptionSurveyMutation,
   useUpdatePerceptionSurveyMutation,
-  useGetPerceptionSurveyStatementsForSurveyQuery,
   useSubmitPerceptionSurveyResponsesMutation,
-  useGetPerceptionSurveyResponsesQuery
+
+  // user prompts
+  useGetUserPromptsForDistrictTierQuery,
+  useGetUserPromptsForSchoolTierQuery,
+  useGetUserPromptsForEvaluatorTierQuery,
+
+  useCreateUserPromptMutation
 } = apiSlice

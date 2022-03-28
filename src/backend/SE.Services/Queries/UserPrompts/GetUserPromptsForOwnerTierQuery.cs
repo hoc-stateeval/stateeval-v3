@@ -20,8 +20,6 @@ namespace SE.Core.Queries.UserPrompts
     {
         public GetUserPromptsForOwnerTierQueryValidator()
         {
-            RuleFor(x => x.OwnerTier).NotEqual(UserPromptTier.UNDEFINED);
-            RuleFor(x => x.EvaluatorId).NotEmpty().When(x => x.OwnerTier == UserPromptTier.EVALUATOR);
         }
     }
     public sealed class GetUserPromptsForOwnerTierQuery : 
@@ -54,6 +52,7 @@ namespace SE.Core.Queries.UserPrompts
             public async Task<List<UserPromptDTO>> Handle(GetUserPromptsForOwnerTierQuery request, CancellationToken cancellationToken)
             {
                 var prompts = await _dataContext.UserPrompts
+                    .Include(x => x.TierConfigs)
                     .Where(x => x.FrameworkContextId == request.FrameworkContextId &&
                                 x.PromptType == request.PromptType &&
                                 x.OwnerTier <= request.OwnerTier &&

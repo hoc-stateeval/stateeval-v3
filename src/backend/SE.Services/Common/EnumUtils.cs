@@ -34,6 +34,19 @@ namespace SE.Core.Common
             return evaluateeTerm;
         }
 
+        public static string UserPromptOwnerTierDisplayName(UserPromptTier ownerTier)
+        {
+            var displayName = ownerTier switch
+            {
+                UserPromptTier.SCHOOL_ADMIN => "School Admin",
+                UserPromptTier.DISTRICT_ADMIN => "District Admin",
+                UserPromptTier.EVALUATOR => "Evaluator",
+                UserPromptTier.UNDEFINED => "Undefined",
+                _ => throw new NotImplementedException($"UserPromptOwnerTierDisplayName: Unknown ownerTier: {ownerTier}")
+            };
+
+            return displayName;
+        }
         public static string EvaluationTypeDisplayName(EvaluationType evaluationType)
         {
             var displayName = evaluationType switch

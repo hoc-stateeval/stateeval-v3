@@ -11,9 +11,13 @@ namespace SE.Core.Models
     {
         public long Id { get; set; }
         public UserPromptTier OwnerTier { get; set; }
+        public UserPromptTier RequiredByTier { get; set; }
+        public string OwnerTierDisplayName { get; set; }
+        public string RequiredByTierDisplayName { get; set; }
         public string SchoolCode { get; set; } = string.Empty;
         public long? EvaluatorId { get; set; } = null;
 
+        public bool DistrictDefinedOnly { get; set; }
         public UserPromptType PromptType { get; set; }
         public string Prompt { get; set; } = string.Empty;
 

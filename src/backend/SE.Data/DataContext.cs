@@ -32,7 +32,6 @@ namespace SE.Data
         public DbSet<SchoolConfiguration> SchoolConfigurations { get; set;}
         public DbSet<User> Users { get; set; }
         public DbSet<UserBuildingRole> UserBuildingRoles { get; set; }  
-        public DbSet<UserPromptGroup> UserPromptGroups { get; set; }
         public DbSet<UserPrompt> UserPrompts { get; set; }
         public DbSet<UserPromptResponse> UserPromptResponses { get; set; }
         public DbSet<UserPromptTierConfig> UserPromptTierConfigs { get; set;}

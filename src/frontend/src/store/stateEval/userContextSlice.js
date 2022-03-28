@@ -89,7 +89,7 @@ const userContextSlice = createSlice({
 
 const getIds = (state) => (state.stateEval.userContext.ids);
 
-export const selectCurrentUser = createSelector(
+const selectCurrentUser = createSelector(
   [(state) => {
     const { currentUser } = state.stateEval.userContext;
     return currentUser;
@@ -97,7 +97,7 @@ export const selectCurrentUser = createSelector(
   return user;
 });
 
-export const selectActiveWorkAreaContext = createSelector(
+const selectActiveWorkAreaContext = createSelector(
   [(state) => {
     const { activeWorkAreaContext } = state.stateEval.userContext;
     return activeWorkAreaContext;
@@ -105,7 +105,7 @@ export const selectActiveWorkAreaContext = createSelector(
   return activeWorkAreaContext;
 });
 
-export const selectActiveFrameworkId = createSelector(
+const selectActiveFrameworkId = createSelector(
   [(state) => {
     const { activeFrameworkId } = getIds(state);
     return activeFrameworkId;
@@ -113,7 +113,7 @@ export const selectActiveFrameworkId = createSelector(
   return id;
 });
 
-export const selectPageTitle = createSelector(
+const selectPageTitle = createSelector(
   [(state) => {
     const { pageTitle } = state.stateEval.userContext;
     return pageTitle;
@@ -121,7 +121,7 @@ export const selectPageTitle = createSelector(
   return title;
 });
 
-export const selectActiveEvaluationId = createSelector(
+const selectActiveEvaluationId = createSelector(
   [(state) => {
     const { activeEvaluationId } = getIds(state);
     return activeEvaluationId;
@@ -129,7 +129,7 @@ export const selectActiveEvaluationId = createSelector(
   return id;
 });
 
-export const selectActiveDistrictViewerSchoolCode = createSelector(
+const selectActiveDistrictViewerSchoolCode = createSelector(
   [(state) => {
     const { activeDistrictViewerSchoolCode } = getIds(state);
     return activeDistrictViewerSchoolCode;
@@ -137,7 +137,7 @@ export const selectActiveDistrictViewerSchoolCode = createSelector(
   return schoolCode;
 });
 
-export const selectActiveDistrictViewerEvaluatorId = createSelector(
+const selectActiveDistrictViewerEvaluatorId = createSelector(
   [(state) => {
     const { activeDistrictViewerEvaluatorId } =  getIds(state);
     return activeDistrictViewerEvaluatorId;
@@ -156,6 +156,17 @@ export const {
   setActiveDistrictViewerEvaluatorId,
   setPageTitle,
 } = userContextSlice.actions;
+
+export {
+  selectCurrentUser,
+  selectActiveWorkAreaContext,
+  selectActiveFrameworkId,
+  selectActiveEvaluationId,
+  selectPageTitle,
+  selectActiveDistrictViewerSchoolCode,
+  selectActiveDistrictViewerEvaluatorId,
+  
+}
 
 export default userContextSlice.reducer;
 

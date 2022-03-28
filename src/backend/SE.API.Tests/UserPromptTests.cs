@@ -190,7 +190,7 @@ namespace SE.API.Tests
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
 
-            var prompts = await GetUserPromptsForOwnerTier(workAreaContext.FrameworkContextId, UserPromptTier.SCHOOL_ADMIN, UserPromptType.PRE_CONFERENCE, workAreaContext.SchoolCode, null);
+            var prompts = await GetUserPromptsForSchoolTier(workAreaContext.FrameworkContextId, UserPromptType.PRE_CONFERENCE, workAreaContext.SchoolCode);
             prompts.Count.Should().Be(2);
 
             prompts.FindAll(x=>x.PromptType == UserPromptType.PRE_CONFERENCE).Count.Should().Be(2);
@@ -233,7 +233,7 @@ namespace SE.API.Tests
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
 
-            var prompts = await GetUserPromptsForOwnerTier(workAreaContext.FrameworkContextId, UserPromptTier.EVALUATOR, UserPromptType.PRE_CONFERENCE, workAreaContext.SchoolCode, evaluator.Id);
+            var prompts = await GetUserPromptsForEvaluatorTier(workAreaContext.FrameworkContextId, UserPromptType.PRE_CONFERENCE, workAreaContext.SchoolCode, evaluator.Id);
             prompts.Count.Should().Be(3);
 
             prompts.FindAll(x => x.PromptType == UserPromptType.PRE_CONFERENCE).Count.Should().Be(3);
@@ -269,7 +269,7 @@ namespace SE.API.Tests
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.SA_TR);
             workAreaContext.Should().NotBeNull();
 
-            var prompts = await GetUserPromptsForOwnerTier(workAreaContext.FrameworkContextId, UserPromptTier.SCHOOL_ADMIN, UserPromptType.PRE_CONFERENCE, workAreaContext.SchoolCode, null);
+            var prompts = await GetUserPromptsForSchoolTier(workAreaContext.FrameworkContextId, UserPromptType.PRE_CONFERENCE, workAreaContext.SchoolCode);
             prompts.Count.Should().Be(1);
             prompts[0].SchoolCode.Should().Be(DAN_District.School1.SchoolCode);
             prompts[0].Prompt.Equals(saSchool1Prompt);
@@ -302,7 +302,7 @@ namespace SE.API.Tests
             var workAreaContext = TestHelpers.FindWorkAreaWithTagName(workAreaContexts, WorkAreaType.PR_TR);
             workAreaContext.Should().NotBeNull();
 
-            var prompts = await GetUserPromptsForOwnerTier(workAreaContext.FrameworkContextId, UserPromptTier.EVALUATOR, UserPromptType.PRE_CONFERENCE, workAreaContext.SchoolCode, torSchool2.Id);
+            var prompts = await GetUserPromptsForEvaluatorTier(workAreaContext.FrameworkContextId, UserPromptType.PRE_CONFERENCE, workAreaContext.SchoolCode, torSchool2.Id);
             prompts.Count.Should().Be(1);
             prompts[0].SchoolCode.Should().Be(DAN_District.School2.SchoolCode);
             prompts[0].Prompt.Equals(torSchool2Prompt);

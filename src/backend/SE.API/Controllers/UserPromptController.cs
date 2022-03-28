@@ -27,11 +27,27 @@ namespace SE.API.Controllers
             return Ok(await _mediator.Send(command, cancelationToken));
         }
 
-        [HttpGet("{frameworkContextId:long}/{ownerTier}/{promptType}/{schoolCode}/{evaluatorId?}")]
-        public async Task<ActionResult<List<UserPromptDTO>>> GetUserPromptsForOwnerTier(long frameworkContextId, UserPromptTier ownerTier, UserPromptType promptType, string schoolCode, long? evaluatorId)
+        [HttpGet("{frameworkContextId:long}/{promptType}")]
+        public async Task<ActionResult<List<UserPromptDTO>>> GetUserPromptsForDistrictTier(long frameworkContextId, UserPromptType promptType)
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;
-            var prompts = await _mediator.Send(new GetUserPromptsForOwnerTierQuery(frameworkContextId, ownerTier, promptType, schoolCode, evaluatorId), cancelationToken);
+            var prompts = await _mediator.Send(new GetUserPromptsForOwnerTierQuery(frameworkContextId, UserPromptTier.DISTRICT_ADMIN, promptType, "", null), cancelationToken);
+            return Ok(prompts);
+        }
+
+        [HttpGet("{frameworkContextId:long}/{promptType}/{schoolCode}")]
+        public async Task<ActionResult<List<UserPromptDTO>>> GetUserPromptsForSchoolTier(long frameworkContextId, UserPromptType promptType, string schoolCode)
+        {
+            CancellationToken cancelationToken = HttpContext.RequestAborted;
+            var prompts = await _mediator.Send(new GetUserPromptsForOwnerTierQuery(frameworkContextId, UserPromptTier.SCHOOL_ADMIN, promptType, schoolCode, null), cancelationToken);
+            return Ok(prompts);
+        }
+
+        [HttpGet("{frameworkContextId:long}/{promptType}/{schoolCode}/{evaluatorId}")]
+        public async Task<ActionResult<List<UserPromptDTO>>> GetUserPromptsForEvaluatorTier(long frameworkContextId, UserPromptType promptType, string schoolCode, long evaluatorId)
+        {
+            CancellationToken cancelationToken = HttpContext.RequestAborted;
+            var prompts = await _mediator.Send(new GetUserPromptsForOwnerTierQuery(frameworkContextId, UserPromptTier.EVALUATOR, promptType, schoolCode, evaluatorId), cancelationToken);
             return Ok(prompts);
         }
     }

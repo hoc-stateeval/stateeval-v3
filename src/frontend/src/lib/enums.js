@@ -123,6 +123,13 @@ export const PerceptionSurveyLevelOfAgreement = {
     'STRONGLY_AGREE': 5
 };
 
+export const UserPromptTier = {
+    'UNDEFINED': 0,
+    'DISTRICT_ADMIN': 1,
+    'SCHOOL_ADMIN': 2,
+    'EVALUATOR': 3
+}
+
 
 
 
