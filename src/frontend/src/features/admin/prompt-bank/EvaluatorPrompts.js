@@ -18,7 +18,7 @@ const EvaluatorPrompts = ({frameworkContextId, schoolCode, promptType}) => {
 
   const { data: prompts, error: getPromptsError } = useGetUserPromptsForEvaluatorTierQuery({
     frameworkContextId,
-    promptType,
+    promptType: promptType.value,
     schoolCode,
     evaluatorId: currentUser.id
   });

@@ -19,9 +19,21 @@ namespace SE.API.Controllers
         /// Creates a UserPrompt
         /// </summary>
         /// <param name="command">The data describing the new prompt</param>
-        /// <returns></returns>
+        /// <returns>no return value</returns>
         [HttpPost()]
         public async Task<ActionResult<UserPromptDTO>> Create([FromBody] CreateUserPromptCommand command)
+        {
+            CancellationToken cancelationToken = HttpContext.RequestAborted;
+            return Ok(await _mediator.Send(command, cancelationToken));
+        }
+
+        /// <summary>
+        /// Updates a UserPrompt
+        /// </summary>
+        /// <param name="command">the data describing the user prompt</param>
+        /// <returns>no return value</returns>
+        [HttpPut()]
+        public async Task<ActionResult<UserPromptDTO>> UpdateUserPrompt([FromBody] UpdateUserPromptCommand command)
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;
             return Ok(await _mediator.Send(command, cancelationToken));

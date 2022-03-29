@@ -40,6 +40,7 @@ const PromptTypeConfig = ({promptType}) => {
 
   const activeWorkAreaContext = useSelector(selectActiveWorkAreaContext);
 
+  const [ activePrompt, setActivePrompt ] = useState(null);
   const [editPromptDlgOpen, setEditPromptDlgOpen] = useState(false);
 
   let promptTier = UserPromptTier.UNDEFINED;
@@ -78,12 +79,12 @@ const PromptTypeConfig = ({promptType}) => {
               color="secondary"
               size="small"
               startIcon={<AddCircleOutlineIcon />}
-              onClick={()=> { setEditPromptDlgOpen(true); }}
+              onClick={()=> { setEditPromptDlgOpen(true); setActivePrompt({prompt: ''})}}
             >
               Add Prompt
             </Button>
             <Dialog open={editPromptDlgOpen} onClose={()=> {setEditPromptDlgOpen(false)}}>
-              <DialogTitle>Delete</DialogTitle>
+              <DialogTitle>Edit Prompt</DialogTitle>
               <DialogContent>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
@@ -113,19 +114,19 @@ const PromptTypeConfig = ({promptType}) => {
           {promptTier===UserPromptTier.DISTRICT_ADMIN &&
            <DistrictPrompts 
             frameworkContextId={activeWorkAreaContext.frameworkContextId} 
-            promptType={promptType.value} />
+            promptType={promptType} />
           } 
           {promptTier===UserPromptTier.SCHOOL_ADMIN &&
            <SchoolPrompts 
             frameworkContextId={activeWorkAreaContext.frameworkContextId} 
             schoolCode={activeWorkAreaContext.schoolCode}
-            promptType={promptType.value} />
+            promptType={promptType} />
           } 
         {promptTier===UserPromptTier.EVALUATOR &&
            <EvaluatorPrompts 
             frameworkContextId={activeWorkAreaContext.frameworkContextId} 
             schoolCode={activeWorkAreaContext.schoolCode}
-            promptType={promptType.value} />
+            promptType={promptType} />
           }           
         </Stack>
       </PageSectionHeader>

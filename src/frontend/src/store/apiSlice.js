@@ -103,6 +103,10 @@ export const apiSlice = createApi({
       query: (data) => ({ url: `user-prompts`, method: 'post', data: data }),
       invalidatesTags: ['UserPrompts'],
     }),
+    updateUserPrompt: builder.mutation({
+      query: (data) => ({ url: `user-prompts`, method: 'put', data: data }),
+      invalidatesTags: ['UserPrompts'],
+    }),
     
     // perception surveys
     getPerceptionSurveysForEvaluation: builder.query({
@@ -316,6 +320,7 @@ export const {
   useGetUserPromptsForDistrictTierQuery,
   useGetUserPromptsForSchoolTierQuery,
   useGetUserPromptsForEvaluatorTierQuery,
-
+  
+  useUpdateUserPromptMutation,
   useCreateUserPromptMutation
 } = apiSlice

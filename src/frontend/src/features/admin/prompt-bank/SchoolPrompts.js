@@ -12,7 +12,7 @@ const SchoolPrompts = ({frameworkContextId, schoolCode, promptType}) => {
 
   const { data: prompts, error: getPromptsError } = useGetUserPromptsForSchoolTierQuery({
     frameworkContextId,
-    promptType,
+    promptType: promptType.value,
     schoolCode,
   });
   if (getPromptsError) errorHandler(getPromptsError);
