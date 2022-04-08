@@ -16,12 +16,36 @@ namespace SE.API.Controllers
         }
 
         /// <summary>
-        /// Creates a UserPrompt
+        /// Creates a district UserPrompt
         /// </summary>
         /// <param name="command">The data describing the new prompt</param>
         /// <returns>no return value</returns>
-        [HttpPost()]
-        public async Task<ActionResult<UserPromptDTO>> Create([FromBody] CreateUserPromptCommand command)
+        [HttpPost("district")]
+        public async Task<ActionResult<UserPromptDTO>> CreateDistrictPrompt([FromBody] CreateDistrictUserPromptCommand command)
+        {
+            CancellationToken cancelationToken = HttpContext.RequestAborted;
+            return Ok(await _mediator.Send(command, cancelationToken));
+        }
+
+        /// <summary>
+        /// Creates a school UserPrompt
+        /// </summary>
+        /// <param name="command">The data describing the new prompt</param>
+        /// <returns>no return value</returns>
+        [HttpPost("school")]
+        public async Task<ActionResult<UserPromptDTO>> CreateSchoolPrompt([FromBody] CreateSchoolUserPromptCommand command)
+        {
+            CancellationToken cancelationToken = HttpContext.RequestAborted;
+            return Ok(await _mediator.Send(command, cancelationToken));
+        }
+
+        /// <summary>
+        /// Creates an evaluator UserPrompt
+        /// </summary>
+        /// <param name="command">The data describing the new prompt</param>
+        /// <returns>no return value</returns>
+        [HttpPost("evaluator")]
+        public async Task<ActionResult<UserPromptDTO>> CreateEvaluatorPrompt([FromBody] CreateEvaluatorUserPromptCommand command)
         {
             CancellationToken cancelationToken = HttpContext.RequestAborted;
             return Ok(await _mediator.Send(command, cancelationToken));

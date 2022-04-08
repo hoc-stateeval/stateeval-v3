@@ -2,17 +2,6 @@ import { useState } from 'react';
 
 import {
   Button,
-  Checkbox,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  FormControlLabel,
-  FormGroup,
-  Grid,
-  TextField,
-  PageSectionHeader,
   Paper,
   Stack,
   Table,
@@ -25,7 +14,11 @@ import {
 
 import { AddCircleOutline as AddCircleOutlineIcon } from "@mui/icons-material";
 
+import { PageSectionHeader } from "@components";
+import EditPromptDialog from './EditPromptDialog';
+
 const PromptGrid = ({prompts, promptType, createPromptFcn, updatePromptFcn}) => {
+
 
   const [activePrompt, setActivePrompt] = useState(null);
   const [editPromptDlgOpen, setEditPromptDlgOpen] = useState(false);
@@ -36,13 +29,30 @@ const PromptGrid = ({prompts, promptType, createPromptFcn, updatePromptFcn}) => 
     setActivePrompt({
       id:0,
       prompt: '',
+      promptType: promptType.value,
       required: false
     });
     setEditPromptDlgOpen(true); 
   }
 
+  const onClickEditPrompt = (prompt) => {
+    setEditMode('edit');
+    setActivePrompt(prompt);
+    setEditPromptDlgOpen(true); 
+  }
+
   return (
     <>
+    <EditPromptDialog 
+      open={editPromptDlgOpen} 
+      setOpen={setEditPromptDlgOpen}
+      prompt={activePrompt}
+      setPrompt={setActivePrompt}
+      editMode={editMode}
+      createPromptFcn={createPromptFcn}
+      updatePromptFcn={updatePromptFcn}
+    />
+
     <PageSectionHeader title={`${promptType.name} Prompts`}>    
       <Stack direction="column" spacing={2}>
         <Stack direction="row" sx={{ justifyContent: "flex-end" }} spacing={2}>
@@ -55,46 +65,6 @@ const PromptGrid = ({prompts, promptType, createPromptFcn, updatePromptFcn}) => 
           >
             Add Prompt
           </Button>
-          <Dialog open={editPromptDlgOpen} onClose={()=> {setEditPromptDlgOpen(false)}}>
-            <DialogTitle>{editMode==='edit'?'Edit':'New'} Prompt</DialogTitle>
-            <DialogContent>
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <FormGroup>
-                  <FormControlLabel
-                        control={
-                          <Checkbox 
-                            color="secondary" 
-                            checked={activePrompt.required} 
-                            name="required"
-                            onChange={()=>{setActivePrompt({
-                              ...activePrompt, 
-                              required:!activePrompt.required
-                            })}} />
-                        }
-                        label="Required"
-                      />
-                    <TextField
-                      name="prompt"
-                      label="Prompt"
-                      value={activePrompt.prompt}
-                      onChange={({target})=>{
-                        setActivePrompt({
-                          ...activePrompt,
-                          prompt: target.value
-                        })
-                      }}
-                    ></TextField>
-                  </FormGroup>
-                </Grid>
-
-              </Grid>
-            </DialogContent>
-            <DialogActions>
-              <Button variant="outlined"  onClick={()=> {setEditPromptDlgOpen(false)}}>Cancel</Button>
-              <Button variant="contained" onClick={onClickSavePrompt}>Save</Button>
-            </DialogActions>
-          </Dialog>
         </Stack>
         <TableContainer component={Paper}>
           <Table size="small" aria-label="simple table">
@@ -120,7 +90,7 @@ const PromptGrid = ({prompts, promptType, createPromptFcn, updatePromptFcn}) => 
                         {prompt.requiredByTierDisplayName}
                       </TableCell>
                       <TableCell align="center">
-                        <Button onClick={()=>{updatePromptFcn(prompt);}}>Edit</Button>
+                        <Button onClick={()=>{onClickEditPrompt(prompt);}}>Edit</Button>
                       </TableCell>
                     </TableRow>
                   ))}

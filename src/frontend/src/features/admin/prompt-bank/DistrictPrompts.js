@@ -2,7 +2,7 @@ import { useErrorHandler } from 'react-error-boundary';
 
 import {
   useGetUserPromptsForDistrictTierQuery,
-  useCreateUserPromptMutation,
+  useCreateDistrictUserPromptMutation,
   useUpdateUserPromptMutation
 } from "@api-slice";
 
@@ -18,23 +18,28 @@ const DistrictPrompts = ({frameworkContextId, promptType}) => {
   });
   if (getPromptsError) errorHandler(getPromptsError);
 
-  const [createPromptAPI, {error: createPromptError}] = useCreateUserPromptMutation();
+  const [ createPromptAPI, { error: createPromptError}] = useCreateDistrictUserPromptMutation();
   if (createPromptError) errorHandler(createPromptError);
 
-  const [updatePromptAPI, {error: updatePromptError}] = useCreateUserPromptMutation();
+
+  const [updatePromptAPI, {error: updatePromptError}] = useUpdateUserPromptMutation();
   if (updatePromptError) errorHandler(updatePromptError);
 
-  const createPrompt = async () => {
+  const createPrompt = async (prompt) => {
+    await createPromptAPI({
+      ...prompt,
+      frameworkContextId: frameworkContextId,
 
+    })
   }
 
   const updatePrompt = async () => {
-
+    await updatePromptAPI(prompt);
   }
 
   return (
     <>
-      <PromptGrid prompts={prompts} prmoptType={promptType} createPromptFcn={createPrompt} updatePromptFcn={updatePrompt} />
+      <PromptGrid prompts={prompts} promptType={promptType} createPromptFcn={createPrompt} updatePromptFcn={updatePrompt} />
     </>
   )
 }

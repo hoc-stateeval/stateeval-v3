@@ -175,12 +175,33 @@
                 A list of statement ids
             </returns>
         </member>
-        <member name="M:SE.API.Controllers.UserPromptController.Create(SE.Core.Commands.UserPrompts.CreateUserPromptCommand)">
+        <member name="M:SE.API.Controllers.UserPromptController.CreateDistrictPrompt(SE.Core.Commands.UserPrompts.CreateDistrictUserPromptCommand)">
             <summary>
-            Creates a UserPrompt
+            Creates a district UserPrompt
             </summary>
             <param name="command">The data describing the new prompt</param>
-            <returns></returns>
+            <returns>no return value</returns>
+        </member>
+        <member name="M:SE.API.Controllers.UserPromptController.CreateSchoolPrompt(SE.Core.Commands.UserPrompts.CreateSchoolUserPromptCommand)">
+            <summary>
+            Creates a school UserPrompt
+            </summary>
+            <param name="command">The data describing the new prompt</param>
+            <returns>no return value</returns>
+        </member>
+        <member name="M:SE.API.Controllers.UserPromptController.CreateEvaluatorPrompt(SE.Core.Commands.UserPrompts.CreateEvaluatorUserPromptCommand)">
+            <summary>
+            Creates an evaluator UserPrompt
+            </summary>
+            <param name="command">The data describing the new prompt</param>
+            <returns>no return value</returns>
+        </member>
+        <member name="M:SE.API.Controllers.UserPromptController.UpdateUserPrompt(SE.Core.Commands.UserPrompts.UpdateUserPromptCommand)">
+            <summary>
+            Updates a UserPrompt
+            </summary>
+            <param name="command">the data describing the user prompt</param>
+            <returns>no return value</returns>
         </member>
         <member name="M:SE.API.Controllers.WorkAreaContextController.GetWorkAreaContextsForUser(System.Int64)">
             <summary>

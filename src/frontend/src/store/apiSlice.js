@@ -99,8 +99,16 @@ export const apiSlice = createApi({
       query: (data) => ({ url: `user-prompts/${data.frameworkContextId}/${data.promptType}/${data.schoolCode}/${data.evaluatorId}`, method: 'get' }),
       providesTags: ['UserPrompts']
     }),
-    createUserPrompt: builder.mutation({
-      query: (data) => ({ url: `user-prompts`, method: 'post', data: data }),
+    createDistrictUserPrompt: builder.mutation({
+      query: (data) => ({ url: `user-prompts/district`, method: 'post', data: data }),
+      invalidatesTags: ['UserPrompts'],
+    }),
+    createSchoolUserPrompt: builder.mutation({
+      query: (data) => ({ url: `user-prompts/school`, method: 'post', data: data }),
+      invalidatesTags: ['UserPrompts'],
+    }),
+    createEvaluatorUserPrompt: builder.mutation({
+      query: (data) => ({ url: `user-prompts/evaluator`, method: 'post', data: data }),
       invalidatesTags: ['UserPrompts'],
     }),
     updateUserPrompt: builder.mutation({
@@ -322,5 +330,7 @@ export const {
   useGetUserPromptsForEvaluatorTierQuery,
   
   useUpdateUserPromptMutation,
-  useCreateUserPromptMutation
+  useCreateDistrictUserPromptMutation,
+  useCreateSchoolUserPromptMutation,
+  useCreateEvaluatorUserPromptMutation,
 } = apiSlice
